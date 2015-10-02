@@ -1,0 +1,25 @@
+<div class="popover popover-task-assign" style="width:225px;">
+    <div class="arrow"></div>
+    <div class="form-group has-feedback has-feedback-left" style="margin-bottom: 0;">
+        <input type="text" class="assign-search" ng-model="searchUser"
+               aria-describedby="inputSuccess2Status" autofocus="" placeholder="Search users in your company">
+        <i class="fa fa-search fa-lg form-control-feedback" aria-hidden="true"></i>
+    </div>
+    <ul class="assign-user-list" ng-show="searchUser">
+        <li ng-repeat="user in sbar.popoverAssignTo.users | propsFilter: {fullName: searchUser} | limitTo: 10"
+            ng-click="sbar.reassignTask(task, user)">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;
+            <span ng-bind="user.fullName | highlight: searchUser"></span>
+        </li>
+    </ul>
+    <div class="popover-content">
+        Recent
+    </div>
+    <ul class="assign-user-list">
+        <li ng-repeat="user in sbar.popoverAssignTo.recent | propsFilter: {fullName: searchUser} | limitTo: 3"
+            ng-click="sbar.reassignTask(task, user)">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;
+            <span ng-bind="user.fullName | highlight: searchUser"></span>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,74 @@
+<div ng-controller="reportsController" ng-init="init()">
+	<div class="module-dashboard-container">
+		<div>
+			<div id="dashboard" ng-show="dashboard">
+				<div id="reporttype">
+					<table>
+						<tr>
+							<td><input type="radio" name="report" ng-model="reportType" value='ENQUIRY'>Enquiry Report
+								</td>
+							<td><input type="radio" name="report" ng-model="reportType" value='ADMISSION'>Admission Report
+								</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div id="enquirySelectionCriteria" ng-show="reportType=='ENQUIRY'">
+					<table>
+						<tr>
+							<td><span>Date From</span></td>
+							<td><input type="date"
+								ng-model="enquiryreportCriteria.dateFrom" ></td>
+							<td><span>Date To</span></td>
+							<td><input type="date"
+								ng-model="enquiryreportCriteria.dateTo"></td>
+						</tr>
+						<tr>
+							<td><button type="button" class="btn btn-success"
+									ng-click="getEnquiryReportByCriteria();dashboard=false">Search Enquiry Report</button></td>
+
+						</tr>
+					</table>
+				</div>
+				
+				<div id="admissionSelectionCriteria" ng-show="reportType=='ADMISSION'">
+					<table>
+						<tr>
+							<td><span>Date From</span></td>
+							<td><input type="date"
+								ng-model="enquiryreportCriteria.dateFrom" ></td>
+							<td><span>Date To</span></td>
+							<td><input type="date"
+								ng-model="enquiryreportCriteria.dateTo"></td>
+						</tr>
+						<tr>
+							<td><button type="button" class="btn btn-success"
+									ng-click="getAdmissionReportByCriteria();dashboard=false">Search Admission Report</button></td>
+
+						</tr>
+					</table>
+				</div>
+				</div>
+<div id=reportArea ng-hide="dashboard">
+<div ng-show="reportType=='ENQUIRY'&& enquiryReport.enquiryReports.length>0">
+<span class="header">Enquiry Report &nbsp &nbsp</span>
+<a ng-href="report/downloadEnquiryReport/{{enquiryReport.reportName}}">Download Excel &nbsp &nbsp &nbsp</a>
+<button type="button" class="btn btn-primary btn-xs" ng-click="dashboard=true">Modify Search</button>
+<div  ng-grid="enquiryGridOptions" id="reportGrid"></div>
+</div>
+
+<div ng-show="reportType=='ADMISSION' && admissionReport.admissionReports.length>0">
+<span class="header">Admission Report &nbsp &nbsp </span>
+<a ng-href="report/downloadEnquiryReport/{{admissionReport.reportName}}">Download Excel &nbsp &nbsp &nbsp</a>
+<button type="button" class="btn btn-primary btn-xs" ng-click="dashboard=true">Modify Search</button>
+<div  ng-grid="admissionGridOptions" id="reportGrid"></div>
+</div>
+
+</div>
+
+
+			
+		</div>
+
+	</div>
+</div>

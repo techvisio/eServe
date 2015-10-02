@@ -1,0 +1,31 @@
+<div class="baseFee-popUp">
+<div class="panel-div-modal">{{admissionDetailManagement.basicInfo.firstName+' '+admissionDetailManagement.basicInfo.lastName}} ({{admissionDetailManagement.basicInfo.registrationNo}}) </div>
+<table>
+<tr><td><span class="header">Base Fee</span></td></tr>
+<tr ng-repeat="object in admissionDetailManagement.applicableFeeDetails">
+<td><span ng-bind="object.feeDetail.head"></span></td>
+<td><input type="text" class="form-control"  ng-model="object.feeAmount" >
+  <span class="input-group-addon">.00</span></td>
+</tr>
+
+<tr>
+<th>Total Fee</th>
+<th>{{totalBaseFee()}}</th>
+</tr>
+
+<tr><td><span class="header">Amenities Charges</span></td></tr>
+<tr ng-repeat="object in admissionDetailManagement.stagingFee|filter:transactonType('D')">
+<td><span ng-bind="object.discountHead.head"></span></td>
+<td><input type="text" class="form-control"  ng-model="object.amount" >
+  <span class="input-group-addon">.00</span></td>
+<tr ng-repeat="object in admissionDetailManagement.stagingFee|filter:transactonType('A')">
+<td><span ng-bind="object.discountHead.head"></span></td>
+<td><input type="text" class="form-control"  ng-model="object.amount" >
+  <span class="input-group-addon">.00</span></td>
+</tr>
+<tr>
+<th>Total Charges</th>
+<th>{{totalCharges()}}</th>
+</tr>
+</table>
+</div>

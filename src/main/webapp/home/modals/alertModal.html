@@ -1,0 +1,8 @@
+<div class="modal-header" ng-if="title">
+    <h3 class="modal-title" ng-bind-html="title | unsafe"></h3>
+</div>
+<!--<div class="modal-body" compile ng-bind-html="content | unsafe"></div>-->
+<div class="modal-body" ng-bind-html="content | unsafe"></div>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-xs" ng-click="ok()">Ok</button>
+</div>

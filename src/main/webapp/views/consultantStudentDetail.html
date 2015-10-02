@@ -1,0 +1,108 @@
+          <form>
+				<div class="enquiry-detail-div">
+					<table>
+                <tr><td colspan=2><span class="header">Student Info.</span></td></tr>
+		<tr>
+			<td><span> Registration No </span></td>
+			<td><input type="text" class="form-control"  ng-model="consultantAdmissionDetail.basicInfo.registrationNo">
+  <span class="input-group-addon">.00</span></td>
+			<td><span> Enrollment No </span></td>
+			<td><input type="text" class="form-control"  ng-model="consultantAdmissionDetail.basicInfo.enrollmentNo">
+  <span class="input-group-addon">.00</span></td>
+		</tr>
+		<tr>
+			<td><span> First Name </span></td>
+			<td><input type="text" class="form-control"  ng-model="consultantAdmissionDetail.basicInfo.firstName">
+  <span class="input-group-addon">.00</span></td>
+			<td><span> Last Name </span></td>
+			<td><input type="text" class="form-control"  ng-model="consultantAdmissionDetail.basicInfo.lastName">
+  <span class="input-group-addon">.00</span></td>
+
+		</tr>
+		<tr>
+			<td><span> Father Name </span></td>
+			<td><input type="text" class="form-control"  ng-model="consultantAdmissionDetail.basicInfo.fatherName">
+  <span class="input-group-addon">.00</span></td>
+			<td><span> Date Of Birth </span></td>
+			<td><input type="text" class="form-control"  ng-model="consultantAdmissionDetail.basicInfo.dob">
+  <span class="input-group-addon">.00</span></td>
+		</tr>
+		<tr>
+			<td><span> Course </span></td>
+			<td><input type="text" class="form-control"  ng-model="consultantAdmissionDetail.basicInfo.course.course">
+  <span class="input-group-addon">.00</span></td>
+			<td><span> Branch </span></td>
+			<td><input type="text" class="form-control"  ng-model="consultantAdmissionDetail.basicInfo.branch.branchName">
+  <span class="input-group-addon">.00</span></td>
+		</tr>
+			</table>
+ <accordion close-others="oneAtATime">
+<div ng-repeat-start = "object in consultantAdmissionDetail.consultantDetails">
+</div>
+<accordion-group heading="Consultant #{{$index+1}}" is-open="true">
+<table>
+<tr><td colspan=2><span class="header">Consultant  Detail</span></td></tr>
+<tr>
+<td><span>Consultant Name </span></td>
+<td><select ng-model="object.consultant.consultantId" class="form-control"
+		ng-options="item.id*1 as item.value  for item in serverModelData.dropdownMasterData.CONSULTANT"></select></td>
+			<td><span> Consultancy Agreed </span></td>
+			<td><input type="checkbox" ng-model="object.consultancyAgreed" /></td>
+		</tr>
+          <tr>
+            <td><span> Payment Mode </span></td>
+			<td><input type="text" class="form-control"  ng-model="object.paymentMode">
+  <span class="input-group-addon">.00</span></td>
+			<td><span> Amount To Pay </span></td>
+			<td><input type="text" class="form-control"  ng-model="object.amountToPay">
+  <span class="input-group-addon">.00</span></td>
+		</tr>
+        <tr>
+			<td><span>Remarks</span></td>
+            <td><textArea rows="3" cols="33"  ng-model="object.remarks"></textArea></td>
+        </tr>
+	
+		<tr><td colspan=2 ng-show="object.consultantPaymentCriterias.length>0"><span class="header">Consultant Payment Criteria Detail</span></td>
+        <td><button type="button" class="btn btn-primary btn-xs" ng-click="addConsultantPaymentCriteria(object)">New Criteria</button></td></tr>
+
+        <tr ng-repeat="criteriaDetail in object.consultantPaymentCriterias track by $index">
+			<td><span> Fee Amount Received </span></td>
+			<td><input type="text" class="form-control"  ng-model="criteriaDetail.feeReceived">
+  <span class="input-group-addon">.00</span></td>
+			<td><span>Amount To Be Paid</span></td>
+			<td><input type="text" class="form-control"  ng-model="criteriaDetail.amountToBePaid">
+  <span class="input-group-addon">.00</span></td>
+				<td><a class='expandable'
+							ng-click="removeConsultantPaymentCriteria(object,$index)"> <i
+							class='glyphicon glyphicon glyphicon-remove collapsed-element'></i>
+						    </a></td>
+		</tr>
+		
+		<tr><td colspan=2  ng-show="object.consultantPaymentDetail.length>0"><span class="header">Consultant Payment Detail</span></td>
+       <td><button type="button" class="btn btn-primary btn-xs" ng-click="addConsultantPaymentDtl(object)">New Payment</button></td>
+          </tr>
+<tr ng-repeat="payDetail in object.consultantPaymentDetail track by $index">
+			<td><span>Amount</span></td>
+			<td><input type="number"
+				ng-model="payDetail.amount"></td>
+			<td><span>Pay Date</span></td>
+  			<td><input type="Date"
+				ng-model="payDetail.payDate"></td>
+							<td><a class='expandable'
+							<td><a class='expandable'
+							ng-click="removeConsultantPaymentDtl(object,$index)"> <i
+							class='glyphicon glyphicon glyphicon-remove collapsed-element'></i>
+						    </a></td>
+		</tr>
+<tr><td><button type="button" class="btn btn-success btn-lg"
+							ng-click="addConsultantAdmissionDetail()">Save Detail</button></td>
+<td><button type="button" class="btn btn-success"
+							ng-click="form.content='dashboard'">Back To Dashboard</button></td>
+</tr>
+</table>
+</accordion-group>
+<div ng-repeat-end>
+</div>
+ </accordion>
+				</div>
+			</form>

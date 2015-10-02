@@ -1,0 +1,15 @@
+<form>
+<div class="baseFee-popUp" ng-init="init()">
+<table>
+<tr>
+<td><span class="header">Add Consultant</span></td></tr>
+<tr>
+    <td><select 
+	ng-options="item.consultantId*1 as item.name  for item in serverModelData.CONSULTANT"
+	></select>
+	</td>	
+</tr>
+<tr><td><button type="button" class="btn btn-primary btn-xs"ng-click="">Add Consultant</button></td></tr>
+</table>
+</div>
+</form>

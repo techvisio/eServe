@@ -1,0 +1,25 @@
+<form >
+<div class="login" ng-controller="userController">
+    <table>
+    <tr>
+    <td><span>Email:</span></td>
+     <td><input type="text" placeholder="user@college.com" ng-model="form.j_username"></td>
+    </tr>
+    
+    <tr>
+    <td><span>Password:</span></td>
+     <td> <input type="password" ng-model="form.j_password"></td>
+    </tr>
+    <tr>
+    <td>
+    <p>
+      <button type="submit" ng-click="authenticateUser()">Login</button>
+    </p>
+    </td>
+    </tr>
+    </table>
+
+    
+
+    </div>
+  </form>

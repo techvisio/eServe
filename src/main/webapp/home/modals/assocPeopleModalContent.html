@@ -1,0 +1,41 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="assocPeopleModalCtrl.cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h3 class="modal-title"
+        ng-bind="assocPeopleModalCtrl.isAdding ? 'Add Associated People' : 'Edit Associated People' "></h3>
+    <span>{{assocPeopleModalCtrl.item.name || assocPeopleModalCtrl.item.description}}</span>
+    <span ng-if="assocPeopleModalCtrl.item.region">| {{assocPeopleModalCtrl.item.region}}</span>
+</div>
+<div class="modal-body">
+    <div class="form-group has-feedback has-feedback-left">
+        <input type="text" class="form-control" ng-model="searchUser" aria-describedby="inputSuccess2Status" placeholder="Search users in your company">
+        <i class="fa fa-search fa-lg form-control-feedback" aria-hidden="true"></i>
+
+        <span id="inputSuccess2Status" class="sr-only">(search)</span>
+    </div>
+    <table class="table table-hover">
+        <tr ng-repeat="user in assocPeopleModalCtrl.item.users | propsFilter: {fullName: searchUser}" ng-if="::$root.getBiggerRole($root.user.role) >= $root.getBiggerRole(user.role)">
+            <td>
+                <span class="associated-users" ng-bind="user.fullName"></span>
+            </td>
+            <td>
+                <span class="associated-users" ng-bind="user.email"></span>
+            </td>
+            <td>
+                <button class="close" 
+                    ng-if="$root.user.userId != user.userId"
+                    ng-show="!assocPeopleModalCtrl.isAdding" 
+                    ng-click="assocPeopleModalCtrl.removeUser(user)">&times;</button>
+
+                <input type="checkbox"
+                       ng-show="assocPeopleModalCtrl.isAdding"
+                       checklist-model="assocPeopleModalCtrl.usersChecked"
+                       checklist-value="user.userId"/>
+            </td>
+        </tr>
+    </table>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-xs" ng-click="assocPeopleModalCtrl.cancel()">Cancel</button>
+    <button class="btn btn-success btn-xs" ng-click="assocPeopleModalCtrl.ok()">Confirm <i class="fa fa-spinner fa-pulse" ng-show="assocPeopleModalCtrl.isLoading.confirmBtn"></i></button>
+</div>

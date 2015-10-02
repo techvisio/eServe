@@ -1,0 +1,261 @@
+<div ng-controller="consultantController" ng-init="init()">
+	<div class="fullscreen-left">
+		<div class="module-dashboard-content">
+
+			<div ng-include src="'consultantStudentDetail.html'"
+				ng-if="form.content==='consultantAdmission'"></div>
+			<div ng-include src="'newConsultant.html'"
+				ng-if="form.content==='newConsultant'"></div>
+
+		</div>
+
+
+		<div ng-show="form.content==='dashboard'"
+			class="module-dashboard-container">
+
+			<div class="module-dashboard-content">
+				<div>
+					<table>
+						<tr>
+							<td><button type="button" class="btn btn-primary btn-lg"
+									ng-click="studentSearch=!studentSearch;consultantSearch=false;searchResultList.length=0">Search
+									Student</button></td>
+							<td><button type="button" class="btn btn-primary btn-lg"
+									ng-click="consultantSearch=!consultantSearch;studentSearch=false ;searchResultList.length=0">Search
+									Consultant</button></td>
+							<td><button type="button" class="btn btn-success btn-lg"
+									ng-click="form.content='newConsultant'">New Consultant</button></td>
+						</tr>
+					</table>
+				</div>
+				<div class="searchcriteria"
+					ng-show="!consultantSearch && studentSearch">
+					<table>
+						<tr>
+							<td><span>Registration No</span></td>
+							<td><input type="text"
+								ng-model="searchCriteria.registrationNo"></td>
+						</tr>
+						<tr>
+							<td><span>Name</span></td>
+							<td><input type="text" ng-model="searchCriteria.firstName"></td>
+						</tr>
+						<tr>
+							<td><span>Enrollment No</span></td>
+							<td><input type="text" ng-model="searchCriteria.enrollNo"></td>
+						</tr>
+						<tr>
+							<td><span>University Enroll No</span></td>
+							<td><input type="text" ng-model="searchCriteria.uniEnrollNo"></td>
+						<tr>
+							<td><span>Email Id</span></td>
+							<td><input type="text" ng-model="searchCriteria.emailId"></td>
+						</tr>
+						<tr>
+							<td><span>Mobile No</span></td>
+							<td><input type="text" ng-model="searchCriteria.mobileNo"></td>
+						</tr>
+
+						<tr>
+							<td><button type="button" class="btn btn-success"
+									ng-click="getStudentByCriteria()">Get Details</button></td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="searchcriteria"
+					ng-show="consultantSearch && !studentSearch">
+					<table>
+						<tr>
+							<td><span>Email Id</span></td>
+							<td><input type="text" ng-model="searchCriteria.emailId"></td>
+						</tr>
+						<tr>
+							<td><span>Consultant Name</span></td>
+							<td><input type="text" ng-model="searchCriteria.name"></td>
+						</tr>
+						<tr>
+							<td><span>Primary Phone No</span></td>
+							<td><input type="text"
+								ng-model="searchCriteria.primaryContactNo"></td>
+						</tr>
+						<tr>
+							<td><span>Secondary Contact No</span></td>
+							<td><input type="text" ng-model="searchCriteria.secondaryNo"></td>
+						</tr>
+						<tr>
+				
+							<td><button type="button" class="btn btn-success"
+									ng-click="getConsultantByCriteria()">Get Details</button></td>
+						</tr>
+					</table>
+				</div>
+				<div class="searchList" ng-show="searchResultList.length>0">
+					<span class="header">Double click a record to see Details</span>
+					<p>
+				
+					<div class="gridStyle" ng-grid="gridOptions" id="gridStyle"></div>
+					<pagination total-items="totalItems" items-per-page="itemsPerPage"
+						ng-model="currentPage" ng-change="pageChanged()"></pagination>
+
+				</div>
+
+			</div>
+		</div>
+
+		<script type="text/ng-template" id="newConsultant.html">
+			<div>
+				<table>
+						<tr>
+							<td><span> Name </span>
+							<td><input type="text" ng-model="consultant.name" required></td>
+						</tr>
+						<tr>
+							<td><span> Primary Phone Number </span></td>
+							<td><input type="text" ng-model="consultant.primaryContactNo" required></td>
+						</tr>
+						<tr>
+							<td><span> Secondary Phone Number </span></td>
+							<td><input type="text" ng-model="consultant.secondaryContactNo"></td>
+						</tr>
+						<tr>
+							<td><span> Email ID </span></td>
+							<td><input type="text" ng-model="consultant.emailId"></td>
+						</tr>
+						<tr>
+							<td><span> Address </span></td>
+							<td><textarea type="text" ng-model="consultant.address"></textarea></td>
+						</tr>
+						<tr>
+							<td>
+								<button type="button" class="btn btn-primary"
+									ng-click="saveConsultant()">Add Consultant</button>
+							</td>
+							<td>
+								<button type="button" class="btn btn-danger"
+									ng-click="resetForm()">Reset</button>
+							</td>
+                             <td><button type="button" class="btn btn-success"
+							ng-click="form.content='dashboard'">Back To Dashboard</button></td>
+						</tr>
+					</table>
+			</div>
+</script>
+
+
+		<script type="text/ng-template" id="consultantStudentDetail.html">
+
+          <form>
+				<div class="enquiry-detail-div">
+					<table>
+                <tr><td colspan=2><span class="header">Student Info.</span></td></tr>
+		<tr>
+			<td><span> Registration No </span></td>
+			<td><input type="text"
+				ng-model="consultantAdmissionDetail.basicInfo.registrationNo"></td>
+			<td><span> Enrollment No </span></td>
+			<td><input type="text"
+				ng-model="consultantAdmissionDetail.basicInfo.enrollmentNo"></td>
+		</tr>
+		<tr>
+			<td><span> First Name </span></td>
+			<td><input type="text"
+				ng-model="consultantAdmissionDetail.basicInfo.firstName"></td>
+			<td><span> Last Name </span></td>
+			<td><input type="text"
+				ng-model="consultantAdmissionDetail.basicInfo.lastName"></td>
+
+		</tr>
+		<tr>
+			<td><span> Father Name </span></td>
+			<td><input type="text"
+				ng-model="consultantAdmissionDetail.basicInfo.fatherName"></td>
+			<td><span> Date Of Birth </span></td>
+			<td><input type="text"
+				ng-model="consultantAdmissionDetail.basicInfo.dob"></td>
+		</tr>
+		<tr>
+			<td><span> Course </span></td>
+			<td><input type="text"
+				ng-model="consultantAdmissionDetail.basicInfo.course.course"></td>
+			<td><span> Branch </span></td>
+			<td><input type="text"
+				ng-model="consultantAdmissionDetail.basicInfo.branch.branchName"></td>
+		</tr>
+			</table>
+ <accordion close-others="oneAtATime">
+<div ng-repeat-start = "object in consultantAdmissionDetail.consultantDetails">
+</div>
+<accordion-group heading="Consultant #{{$index+1}}" is-open="true">
+<table>
+<tr><td colspan=2><span class="header">Consultant  Detail</span></td></tr>
+<tr>
+<td><span>Consultant Name </span></td>
+<td><select ng-model="object.consultant.consultantId"
+		ng-options="item.id*1 as item.value  for item in serverModelData.dropdownMasterData.CONSULTANT"></select></td>
+			<td><span> Consultancy Agreed </span></td>
+			<td><input type="checkbox" ng-model="object.consultancyAgreed" /></td>
+		</tr>
+          <tr>
+            <td><span> Payment Mode </span></td>
+			<td><input type="text"
+				ng-model="object.paymentMode"></td>
+			<td><span> Amount To Pay </span></td>
+			<td><input type="number"
+				ng-model="object.amountToPay"></td>
+		</tr>
+        <tr>
+			<td><span>Remarks</span></td>
+            <td><textArea rows="3" cols="33"  ng-model="object.remarks"></textArea></td>
+        </tr>
+	
+		<tr><td colspan=2 ng-show="object.consultantPaymentCriterias.length>0"><span class="header">Consultant Payment Criteria Detail</span></td>
+        <td><button type="button" class="btn btn-primary btn-xs" ng-click="addConsultantPaymentCriteria(object)">New Criteria</button></td></tr>
+
+        <tr ng-repeat="criteriaDetail in object.consultantPaymentCriterias track by $index">
+			<td><span> Fee Amount Received </span></td>
+			<td><input type="number"
+				ng-model="criteriaDetail.feeReceived"></td>
+			<td><span>Amount To Be Paid</span></td>
+			<td><input type="number"
+				ng-model="criteriaDetail.amountToBePaid"></td>
+				<td><a class='expandable'
+							ng-click="removeConsultantPaymentCriteria(object,$index)"> <i
+							class='glyphicon glyphicon glyphicon-remove collapsed-element'></i>
+						    </a></td>
+		</tr>
+		
+		<tr><td colspan=2  ng-show="object.consultantPaymentDetail.length>0"><span class="header">Consultant Payment Detail</span></td>
+       <td><button type="button" class="btn btn-primary btn-xs" ng-click="addConsultantPaymentDtl(object)">New Payment</button></td>
+          </tr>
+<tr ng-repeat="payDetail in object.consultantPaymentDetail track by $index">
+			<td><span>Amount</span></td>
+			<td><input type="number"
+				ng-model="payDetail.amount"></td>
+			<td><span>Pay Date</span></td>
+  			<td><input type="Date"
+				ng-model="payDetail.payDate"></td>
+							<td><a class='expandable'
+							<td><a class='expandable'
+							ng-click="removeConsultantPaymentDtl(object,$index)"> <i
+							class='glyphicon glyphicon glyphicon-remove collapsed-element'></i>
+						    </a></td>
+		</tr>
+<tr><td><button type="button" class="btn btn-success btn-lg"
+							ng-click="addConsultantAdmissionDetail()">Save Detail</button></td>
+<td><button type="button" class="btn btn-success"
+							ng-click="form.content='dashboard'">Back To Dashboard</button></td>
+</tr>
+</table>
+</accordion-group>
+<div ng-repeat-end>
+</div>
+ </accordion>
+				</div>
+			</form>
+
+
+            </script>
+	</div>
+
+</div>

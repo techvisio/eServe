@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="yes()"><span aria-hidden="true">&times;</span><span
+            class="sr-only">Close</span></button>
+    <h3 class="modal-title">Session is going to expire</h3></div>
+<div class="modal-body">
+    <span>Your session will expire in {{timeout | date:'mm:ss'}} minutes. Do you want to continue?</span>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-xs" ng-click="yes()">Yes</button>
+    <button class="btn btn-error btn-xs" ng-click="no()">No</button>
+</div>
