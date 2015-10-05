@@ -18,42 +18,42 @@ http://www.springframework.org/schema/tx
  
 http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 	<context:annotation-config />
-    <context:component-scan base-package="com.techvisio.eserve.controller, com.techvisio.eserve.db,com.techvisio.eserve.db.impl, com.techvisio.eserve.factory,com.techvisio.eserve.manager,com.techvisio.eserve.manager.impl,com.techvisio.eserve.workflow,com.techvisio.eserve.workflow.impl" /> 
+    <context:component-scan base-package="com.techvisio.einstitution.controller, com.techvisio.einstitution.db,com.techvisio.einstitution.db.impl, com.techvisio.einstitution.factory,com.techvisio.einstitution.manager,com.techvisio.einstitution.manager.impl,com.techvisio.einstitution.workflow,com.techvisio.einstitution.workflow.impl" /> 
 	<!-- DB data source. -->
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="${jdbc.driverClassName}" />
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-		<property name="maxTotal" value="3"/>
-		<property name="maxWaitMillis" value="1000"/>
-		</bean>
-		<import resource="classpath:spring-config/spring-security.xml" />
+<!-- 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" -->
+<!-- 		destroy-method="close"> -->
+<!-- 		<property name="driverClassName" value="${jdbc.driverClassName}" /> -->
+<!-- 		<property name="url" value="${jdbc.url}" /> -->
+<!-- 		<property name="username" value="${jdbc.username}" /> -->
+<!-- 		<property name="password" value="${jdbc.password}" /> -->
+<!-- 		<property name="maxTotal" value="3"/> -->
+<!-- 		<property name="maxWaitMillis" value="1000"/> -->
+<!-- 		</bean> -->
+<!-- 		<import resource="classpath:spring-config/spring-security.xml" /> -->
 		
 		<!-- Enable Annotation based Declarative Transaction Management -->
-    <tx:annotation-driven proxy-target-class="true"
-        transaction-manager="transactionManager" />
+<!--     <tx:annotation-driven proxy-target-class="true" -->
+<!--         transaction-manager="transactionManager" /> -->
  
     <!-- Creating TransactionManager Bean, since JDBC we are creating of type 
         DataSourceTransactionManager -->
-    <bean id="transactionManager"
-        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
+<!--     <bean id="transactionManager" -->
+<!--         class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
+<!--         <property name="dataSource" ref="dataSource" /> -->
+<!--     </bean> -->
     
-    <bean id="sessionFactory"
-    class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-      <property name="dataSource" ref="dataSource" />
-      <property name="packagesToScan" value="com.techvisio.eserve.beans" />
-      <property name="hibernateProperties">
-         <props>
-            <prop key="hibernate.hbm2ddl.auto">false</prop>
-            <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-            <prop key="hibernate.showsql">true</prop>
-         </props>
-      </property>
-   </bean>
+<!--     <bean id="sessionFactory" -->
+<!--     class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> -->
+<!--       <property name="dataSource" ref="dataSource" /> -->
+<!--       <property name="packagesToScan" value="com.techvisio.einstitution.beans" /> -->
+<!--       <property name="hibernateProperties"> -->
+<!--          <props> -->
+<!--             <prop key="hibernate.hbm2ddl.auto">false</prop> -->
+<!--             <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> -->
+<!--             <prop key="hibernate.showsql">true</prop> -->
+<!--          </props> -->
+<!--       </property> -->
+<!--    </bean> -->
     
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -71,11 +71,11 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
 
 <!-- 	<bean id="myAuthenticationProvider"  -->
-<!--          class="com.techvisio.eserve.manager.AuthenticationManager"> -->
+<!--          class="com.techvisio.einstitution.manager.AuthenticationManager"> -->
 <!-- 	</bean> -->
 	
-<!-- 	<bean id="userWorkflowManager" class="com.techvisio.eserve.workflow.impl.UserWorkflowManagerImpl"></bean> -->
-<!-- 	<bean id="userManager" class="com.techvisio.eserve.manager.impl.UserManagerImpl"></bean> -->
-<!-- 	<bean id="userDao" class="com.techvisio.eserve.db.impl.UserDaoImpl"></bean> -->
+<!-- 	<bean id="userWorkflowManager" class="com.techvisio.einstitution.workflow.impl.UserWorkflowManagerImpl"></bean> -->
+<!-- 	<bean id="userManager" class="com.techvisio.einstitution.manager.impl.UserManagerImpl"></bean> -->
+<!-- 	<bean id="userDao" class="com.techvisio.einstitution.db.impl.UserDaoImpl"></bean> -->
 
 </beans>

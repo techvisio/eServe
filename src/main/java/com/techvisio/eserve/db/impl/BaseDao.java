@@ -17,7 +17,7 @@ private JdbcTemplate jdbcTemplate;
 private NamedParameterJdbcTemplate namedParamJdbcTemplate;
 private SessionFactory sessionFactory;
 
-@Autowired
+//@Autowired
 public void setDatasource(DataSource dataSource) {
 	this.dataSource = dataSource;
     this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -30,7 +30,7 @@ public JdbcTemplate getJdbcTemplate() {
 }
 
 
-@Autowired
+//@Autowired
 public void setSessionFactory(SessionFactory sessionFactory) {
 	this.sessionFactory = sessionFactory;
 }

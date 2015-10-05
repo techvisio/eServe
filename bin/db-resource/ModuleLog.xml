@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+
+<entry key="getModuleLog">
+    <![CDATA[
+SELECT 
+	ENTITY_ID, 
+	WORK_FLOW_OPERATION, 
+	ERROR_MESSAGE, 
+	DATE, 
+	USER_ID, 
+	OPERATION 
+	
+FROM modulelog where ENTITY_ID=:ENTITY_ID;]]>
+
+	</entry>
+
+
+	<entry key="addModuleLog">
+    <![CDATA[
+      
+Insert into modulelog
+
+	(ENTITY_ID, 
+	WORK_FLOW_OPERATION, 
+	ERROR_MESSAGE, 
+	DATE, 
+	USER_ID, 
+	OPERATION 
+	) values
+	       
+   (:ENTITY_ID, 
+	:WORK_FLOW_OPERATION, 
+	:ERROR_MESSAGE, 
+	:DATE, 
+	:USER_ID, 
+	:OPERATION 
+	)
+    ]]>
+
+	</entry>
+
+	<entry key="updateModuleLog">
+    <![CDATA[
+      
+Update modulelog set
+ 
+	ENTITY_ID=:ENTITY_ID, 
+	WORK_FLOW_OPERATION=:WORK_FLOW_OPERATION, 
+	ERROR_MESSAGE=:ERROR_MESSAGE, 
+	DATE=:DATE, 
+	USER_ID=:USER_ID, 
+	OPERATION=:OPERATION       
+   
+where ENTITY_ID=:ENTITY_ID ;
+    ]]>
+
+	</entry>
+
+	<entry key="deleteModuleLog">
+    <![CDATA[
+      
+Delete from modulelog where ENTITY_ID=:ENTITY_ID ;
+    ]]>
+
+	</entry>
+
+</properties>
