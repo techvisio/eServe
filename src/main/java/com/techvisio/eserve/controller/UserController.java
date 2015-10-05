@@ -22,7 +22,6 @@ import com.techvisio.eserve.workflow.UserWorkflowManager;
 @RequestMapping("/service/user")
 public class UserController {
 	
-	@Autowired
 	UserWorkflowManager userWorkflowManager;
 
 	@RequestMapping(value="/loggedinuser", method = RequestMethod.GET)

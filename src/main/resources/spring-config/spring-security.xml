@@ -23,15 +23,15 @@
       <security:authentication-provider ref="authenticationProvider"/>
    </authentication-manager>
    
-   <beans:bean id="restAuthenticationEntryPoint" class="com.techvisio.einstitution.security.RestAuthenticationEntryPoint">
+   <beans:bean id="restAuthenticationEntryPoint" class="com.techvisio.eserve.security.RestAuthenticationEntryPoint">
     </beans:bean> 
   
-    <beans:bean id="restAuthenticationSuccessHandler" class="com.techvisio.einstitution.security.RestAuthenticationSuccessHandler">
+    <beans:bean id="restAuthenticationSuccessHandler" class="com.techvisio.eserve.security.RestAuthenticationSuccessHandler">
     </beans:bean> 
     
-    <beans:bean id="restAuthenticationFailureHandler" class="com.techvisio.einstitution.security.RestAuthenticationFailureHandler">
+    <beans:bean id="restAuthenticationFailureHandler" class="com.techvisio.eserve.security.RestAuthenticationFailureHandler">
     </beans:bean> 
     
-    <beans:bean id="authenticationProvider" class="com.techvisio.einstitution.manager.AuthenticationManager">
+    <beans:bean id="authenticationProvider" class="com.techvisio.eserve.manager.AuthenticationManager">
     </beans:bean> 
 </beans:beans>

@@ -1,49 +1,47 @@
-package com.techvisio.eserve.workflow.impl;
+package com.techvisio.eserve.manager.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
+import com.techvisio.eserve.db.SecurityDao;
+import com.techvisio.eserve.db.UserDao;
 import com.techvisio.eserve.manager.UserManager;
-import com.techvisio.eserve.workflow.UserWorkflowManager;
 
-@Component
-@Transactional
-public class UserWorkflowManagerImpl implements UserWorkflowManager {
+public class UserManagerImpl implements UserManager{
 
-	UserManager userManager;
-
+	
+	UserDao userDao;
+	
 	@Override
 	public void addUser(User user) {
-         userManager.addUser(user);
+      userDao.addUser(user);		
 	}
 
 	@Override
 	public User getUser(Long userId) {
-		User user = userManager.getUser(userId);
+		User user = userDao.getUser(userId);
 		return user;
 	}
 
 	@Override
 	public List<Role> getUserRole(Long userId) {
 		
-		List<Role> userRoles = userManager.getUserRole(userId);
+		List<Role> userRoles = userDao.getUserRole(userId);
 		return userRoles;
 	}
 	
 	@Override
 	public void saveSecurityQuestion(SecurityQuestion securityQuestion){
-	    userManager.saveSecurityQuestion(securityQuestion);	
+	    userDao.saveSecurityQuestion(securityQuestion);	
 	}
 	
 	@Override
 	public SecurityQuestion getSecurityQuestion(Long questionId){
-		SecurityQuestion securityQuestion = userManager.getSecurityQuestion(questionId);
+		SecurityQuestion securityQuestion = userDao.getSecurityQuestion(questionId);
 		return securityQuestion;
 	}
 }
