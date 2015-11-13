@@ -1,6 +1,5 @@
 package com.techvisio.eserve.beans;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,23 +7,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 @Entity
-@Table(name = "ADDRESS_DETAIL")    
-public class Address extends BasicEntity {
+@Table(name = "TB_ADDRESS_DETAIL")    
+public class Address extends BasicEntity{
+
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="Address_Id")
 	private Long addressId;
-	@Column(name="House_No")
-	private String houseNo;
-	@Column(name="Locality")
-	private String locality;
-	@Column(name="Landmark")
-	private String landmark;
-	@Column(name="District")
-	private String district;
+	@Column(name="Address_1")
+	private String address1;
+	@Column(name="Address_2")
+	private String address2;
+	@Column(name="Telephone")
+	private String telephone;
+	@Column(name="Mobile")
+	private String mobile;
 	@Column(name="City")
 	private String city;
 	@Column(name="Pincode")
@@ -32,73 +32,26 @@ public class Address extends BasicEntity {
 	@ManyToOne
 	@JoinColumn(name="State_Id")
 	private State State;
-	@Column(name="File_No")
-	private Long fileNo;
 	@Column(name="Address_Type")
 	private String addressType;
 
-	
-	public String getHouseNo() {
-		return houseNo;
-	}
-	
-	public void setHouseNo(String houseNo) {
-		this.houseNo = houseNo;
-	}
-	
-	
-	public String getLocality() {
-		return locality;
-	}
-	
-	public void setLocality(String locality) {
-		this.locality = locality;
-	}
-	
-	
-	public String getLandmark() {
-		return landmark;
-	}
-	
-	public void setLandmark(String landmark) {
-		this.landmark = landmark;
-	}
-	
-	
-	public String getDistrict() {
-		return district;
-	}
-	
-	public void setDistrict(String district) {
-		this.district = district;
-	}
-	
-	
+
 	public String getCity() {
 		return city;
 	}
-	
+
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
-	
+
+
 	public int getPincode() {
 		return pincode;
 	}
-	
-	public Long getFileNo() {
-		return fileNo;
-	}
-
-	public void setFileNo(Long fileNo) {
-		this.fileNo = fileNo;
-	}
-
 	public void setPincode(int pincode) {
 		this.pincode = pincode;
 	}
-	
+
 	public Long getAddressId() {
 		return addressId;
 	}
@@ -118,9 +71,42 @@ public class Address extends BasicEntity {
 	public String getAddressType() {
 		return addressType;
 	}
-	
+
 	public void setAddressType(String addressType) {
 		this.addressType = addressType;
 	}
+
+	public String getAddress1() {
+		return address1;
+	}
+
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+
+	public String getAddress2() {
+		return address2;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
 
 }

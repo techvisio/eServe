@@ -2,104 +2,18 @@
     <i></i>
 </a>
 <div class="side-header">
-    <div class="filter-dropdown" ng-if="sbar.showViewsFilter">
-        <span ng-bind="$root.views[$root.currentView]"></span>
-        <ul>
-            <li ng-repeat="(k, view) in $root.views">
-                <a href ng-click="sbar.changeRole(k)" ng-bind="view"></a>
-            </li>
-        </ul>
+    <div class="filter-dropdown">
     </div>
     Welcome Back, <br/>
-    <h2><a class="user" href="#user/{{$root.user.userId}}" ng-bind="$root.user.fullName"></a></h2>
-    <a ng-if="$root.user.type.length && !$root.isKY3PCompany" 
-        href="#company/{{$root.user.compId}}" 
-        title="{{$root.user.company.compName}}"
-        ng-bind="$root.user.company.compName | short3dot:37"></a>
-    <span ng-if="!$root.user.type.length || $root.isKY3PCompany" 
-        title="{{$root.user.company.compName}}"
-        ng-bind="$root.user.company.compName | short3dot:37"></span>
-    <div 
-        ng-repeat="line in ['department','title','function']"
-        ng-if="$root.user[line]" 
-        title="{{$root.user[line]}}"
-        ng-bind="$root.user[line] | short3dot:37"></div>
+    <h2><a class="user" ></a></h2>
 </div>
 
 <div class="block">
     <div class="block-head">
-        <div class="filter-dropdown" ng-if="sbar.showFilter(sbar.tasksFilters)">
-            {{sbar.tasksFilters[sbar.currentFilter].name}}
+        <div class="filter-dropdown">
             <ul>
-                <li ng-repeat="filter in sbar.tasksFilters"><a href ng-click="filter.action()" ng-bind="filter.name"></a></li>
             </ul>
         </div>
-        <h3>Priority Tasks <i class="fa fa-spinner fa-pulse" ng-show="sbar.loading.reassignTaskSection"></i></h3>
+        <h3>Priority Tasks <i class="fa fa-spinner fa-pulse" ></i></h3>
     </div>
-    <div class="list" ng-show="!sbar.loading.reassignTaskSection">
-        <ul>
-            <li ng-repeat="task in sbar.filteredTasks">
-                <span><span class="task-desc" ng-bind-html="task.taskDesc | unsafe"></span> <i class="fa fa-spinner fa-pulse" ng-show="sbar.loading.updateTask[task.taskId]"></i></span>
-                <span class="date" ng-bind="task.dueDate | date: 'MMM d'"></span>
-                <div class="clearfix"></div>
-                <br/>
-                <div class="task-actions">
-                    <button class="btn btn-default btn-sm btn-inverse" ng-click="sbar.markCompleted(task)">
-                        <i class="fa fa-check"></i> Mark Complete
-                    </button>
-
-                    <button class="btn btn-default btn-sm btn-inverse"
-                            data-template="sidebar/assignTaskPopover.html"
-                            data-placement="bottom-right"
-                            bs-popover>
-                        <i class="fa fa-share"></i> Reassign
-                    </button>
-                </div>
-
-            </li>
-            <li ng-show="!sbar.filteredTasks.length">
-                <p class="lead">No Tasks</p>
-            </li>
-        </ul>
-    </div>
-</div>
-
-<div class="block activity" ng-repeat="block in sbar.blocks" ng-if="block.items.length">
-    <div class="block-head">
-        <div class="filter-dropdown" ng-if="$root.iowl(block,'filters')">
-            Filter By
-            <ul>
-                <li ng-repeat="(filter, action) in block.filters"><a href ng-click="action()" ng-bind="filter"></a></li>
-            </ul>
-        </div>
-        <h3 ng-bind="block.title"></h3>
-    </div>
-    <div class="list">
-        <ul>
-            <li ng-repeat="item in block.items">
-                <span class="date" ng-bind="item.createdOn | date: 'MMM d'"></span>
-                <span class="icon" ng-class="item.activityicon"></span>
-                <span class="wrapword" ng-bind-html="item.text"></span>
-            </li>
-        </ul>
-    </div>
-</div>
-
-<div class="block" ng-if="$root.isLocalhost">
-    <div class="block-head">
-        <h3>Login as:</h3>
-    </div>
-    <select id="loginAs"
-        ng-model="sbar.userPass" 
-        ng-change="sbar.loginAs()">
-        <option value=""> - select -</option>
-        <optgroup label="{{key}}"
-            ng-repeat="(key, group) in sbar.users">
-            <option value="{{pass}}" 
-                ng-repeat="(user,pass) in group"
-                ng-bind="user"
-                ng-selected="user.toLowerCase().indexOf($root.user.email) > -1">
-            </option>
-        </optgroup>
-    </select>
 </div>

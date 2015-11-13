@@ -1,11 +1,14 @@
 package com.techvisio.eserve.workflow;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.Role;
+import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
 
@@ -13,7 +16,7 @@ import com.techvisio.eserve.beans.User;
 @Transactional
 public interface UserWorkflowManager {
 
-	public void addUser(User user);
+	public void saveUser(User user);
 
 	User getUser(Long userId);
 
@@ -23,4 +26,15 @@ public interface UserWorkflowManager {
 
 	SecurityQuestion getSecurityQuestion(Long questionId);
 
+	public List<User> getUsers();
+
+	public List<Privilege> getUserPrivileges(Long userId);
+	
+	public void saveUserPrivileges(List<Privilege> privileges);
+
+	Map<String, Boolean> forcePasswordChange(User user);
+
+	List<User> getUserByCriteria(SearchCriteria searchCriteria);
+
+	User verifyUserNameAndEmialId(SearchCriteria searchCriteria);
 }

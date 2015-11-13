@@ -22,7 +22,9 @@ public class BasicEntity implements Serializable {
 	private Date createdOn;
 	@Column(name="Updated_On")
 	private Date updatedOn;
-	
+	@Column(name="Client_Id")
+	private Long clientId;
+
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -47,15 +49,23 @@ public class BasicEntity implements Serializable {
 	public void setUpdatedOn(Date updatedOn) {
 		this.updatedOn = updatedOn;
 	}
-	
-	@PrePersist
-	  protected void onCreate() {
-	    createdOn = new Date();
-	  }
 
-	  @PreUpdate
-	  protected void onUpdate() {
-	    updatedOn = new Date();
-	  }
-	
+	@PrePersist
+	protected void onCreate() {
+		createdOn = new Date();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		updatedOn = new Date();
+	}
+
+	public Long getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
+	}
+
 }

@@ -2,35 +2,27 @@ package com.techvisio.eserve.beans;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "SECURITY_QUESTION")
-public class SecurityQuestion {
+@Table(name = "TB_SECURITY_QUESTION")
+public class SecurityQuestion extends BasicEntity{
 
 	@Id
-	@Column(name="Security_Qustn_Id")
-	private Long securityQustnId;
-	
-	@ManyToOne
-	@JoinColumn(name="User_Id")
-	private User user;
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="USER_ID")
+	private Long userId;
+	@Column(name="Is_Custom_question")
+    private boolean customQuestion;	
 	@Column(name="Question")
 	private String question;
 	@Column(name="Answer")
 	private String answer;
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
 
 	public String getQuestion() {
 		return question;
@@ -48,13 +40,20 @@ public class SecurityQuestion {
 		this.answer = answer;
 	}
 
-	public Long getSecurityQustnId() {
-		return securityQustnId;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setSecurityQustnId(Long securityQustnId) {
-		this.securityQustnId = securityQustnId;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
-	
+
+	public boolean isCustomQuestion() {
+		return customQuestion;
+	}
+
+	public void setCustomQuestion(boolean customQuestion) {
+		this.customQuestion = customQuestion;
+	}
 	
 }

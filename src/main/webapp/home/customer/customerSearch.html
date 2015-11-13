@@ -1,0 +1,32 @@
+
+<div ng-init="getCustomers()">
+
+<div class="row">
+			<div class="col-sm-8">
+			</div>
+<div class="col-sm-2"><a ui-sref="newcustomer"><button class="btn-primary">Create Customer</button></a></div>
+<div class="col-sm-2"><a ui-sref="#"><button class="btn-primary">Advance Search</button></a></td></div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Customer Id</th>
+            <th>Customer Name</th>
+            <th>Contact No</th>
+            <th>Email Id</th>
+            <th>No Of Units</th>
+        </tr>
+    </thead>
+    <tbody>
+     <tr ng-repeat="customer in customers">
+        <td><a herf="#" ng-click="redirectToCustomerDtlScreen(customer.customerId)">{{customer.customerId}} </a></td></td>
+        <td>{{customer.customerName}}</td>
+        <td>{{customer.contactNo}}</td>
+        <td>{{customer.emailId}}</td>
+        <td></td>
+        <td><a ui-sref="resetpassword"><button class="btn-primary">Reset Password</button></a></td>
+        </tr>
+    </tbody>
+</table>
+</div>

@@ -1,43 +1,154 @@
-<form>
-	<div class="searchcriteria" ng-init="getUserRole()">
-		<table>
 
-			<td><span> Name </span></td>
-			<td><input type="text" class="form-control" ng-model="user.name">
-			<tr>
-				<td><span> User Name </span></td>
-				<td><input type="text" class="form-control"
-					ng-model="user.userName"></td>
-			</tr>
-			<tr>
-				<td><span> Password </span></td>
-				<td><input type="text" class="form-control"
-					ng-model="user.password">
-			</tr>
-
-			<tr>
-				<td><span> Confirm Password </span></td>
-				<td><input type="text" class="form-control">
-			</tr>
-			<tr>
-				<td><span> Department </span></td>
-				<td><input type="text" class="form-control"
-					ng-model="user.department">
-			</tr>
-			<tr>
-				<td><span> designation </span></td>
-				<td><input type="text" class="form-control"
-					ng-model="user.designation">
-			</tr>
-			<tr ng-repeat="role in allUserRoles">
-			<td>&nbsp;&nbsp;<input type="checkbox" ng-click="addAndRemoveRoleFromUser(role)" ng-model="role.selected" />&nbsp;&nbsp;&nbsp;&nbsp;{{role.roleName}}</td>
-			<td>{{role.description}}</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><button type="button" class="btn btn-primary"
-						ng-click="addUser()" >Save</button></td>
-			</tr>
-		</table>
+<div ng-init="getUserPrivileges(); init()">
+	<div>
+		<h3 class="page-header jumbotron">CREATE USER</h3>
 	</div>
-</form>
+	<div class="row">
+		<div class="col-sm-2">
+			<label for="inputlg">First Name</label>
+		</div>
+		<div class="col-sm-3">
+			<input class="form-control input-sm" ng-model="user.firstName"
+				id="inputlg" type="text">
+		</div>
+
+		<div class="col-sm-2">
+			<label for="inputlg">Last Name</label>
+		</div>
+		<div class="col-sm-3">
+			<input class="form-control input-sm" ng-model="user.lastName"
+				id="inputlg" type="text">
+		</div>
+	</div>
+
+	<div class="row">
+
+		<div class="col-sm-2">
+			<label for="inputlg"> Date of Birth</label>
+		</div>
+		<div class="col-sm-3">
+			<div class="date-input">
+				<input type="text" class="form-control datepicker"
+					name="requestDueDate" ng-model="user.dobString"
+					datepicker-popup="{{'MMM dd yyyy'}}" is-open="openedFrom"
+					ng-click="openedFrom = !openedFrom; $event.stopPropagation();"
+					show-button-bar="false" placeholder="Date of Birth"> <span
+					class="input-date-icon"
+					ng-click="requestResponsesCtrl.openedFrom = !requestResponsesCtrl.openedFrom; $event.stopPropagation();"><i
+					class="fa fa-calendar"></i></span>
+			</div>
+		</div>
+
+		<div class="col-sm-2">
+			<label for="inputlg"> Email Id</label>
+		</div>
+		<div class="col-sm-3">
+			<input class="form-control input-sm" ng-model="user.emailId"
+				id="inputlg" type="text">
+		</div>
+
+	</div>
+
+	<div class="row">
+
+		<div class="col-sm-2">
+			<label for="inputlg"> User Name</label>
+		</div>
+		<div class="col-sm-3">
+			<input class="form-control input-sm" ng-model="user.userName"
+				id="inputlg" type="text">
+		</div>
+
+		<div class="col-sm-4">
+			<label> <input type="checkbox" ng-model="user.active" />
+				Active
+			</label>
+		</div>
+
+	</div>
+
+	<div class="row">
+
+		<div class="col-sm-2">
+			<label for="inputlg"> Password</label>
+		</div>
+		<div class="col-sm-3">
+			<input class="form-control input-sm" ng-model="user.password"
+				id="inputlg" type="password">
+		</div>
+
+		<div class="col-sm-2">
+			<label for="inputlg"> Confirm Password</label>
+		</div>
+		<div class="col-sm-3">
+			<input class="form-control input-sm" ng-model="confirmPassword"
+				id="inputlg" type="password">
+		</div>
+		<div class="col-sm-1">
+			<img height="30" width="30" ng-src="../static/images/redwarning.png"
+				ng-show="wrongConfirmPass"
+				title="Choose Diffrent Password ! This Is Same As Old One" />
+		</div>
+
+	</div>
+
+	<div class="row">
+
+		<div class="col-sm-2">
+			<label for="inputlg">Department</label>
+		</div>
+		<div class="col-sm-3">
+			<select ng-model="user.department.departmentId" class="form-control"
+				ng-options="item.departmentId as item.department for item in serverModelData.DEPARTMENT">
+			</select>
+		</div>
+
+
+		<div class="col-sm-2">
+			<label for="inputlg">Designation</label>
+		</div>
+		<div class="col-sm-3">
+			<select ng-model="user.designation.designationId"
+				class="form-control"
+				ng-options="item.designationId as item.designation  for item in serverModelData.DESIGNATION">
+			</select>
+		</div>
+
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<h3 class="new-event-subtitle">USER PRIVILEGS</h3>
+	</div>
+</div>
+<div>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Privilege</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="privilege in allUserPrivileges">
+				<td><input type="checkbox" ng-model="privilege.granted" /></td>
+				<td><span>{{privilege.privilege}}</span></td>
+				<td><span>{{privilege.description}}</span</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="row">
+	<div class="col-sm-10"></div>
+
+	<div class="col-sm-2">
+		<button type="button" class="btn btn-primary" ng-click="addUser()"">Save
+			User</button>
+	</div>
+
+</div>
+</div>

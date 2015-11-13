@@ -22,7 +22,7 @@ public class SecurityDaoImpl extends BaseDao implements SecurityDao {
 	public User authenticateNgetUser(Authentication authentication) {
 		String user=authentication.getName();
 		String password=authentication.getCredentials().toString();
-		String queryString = "FROM User u WHERE u.name = '" + user+"' and password='"+password+"' and active=1";
+		String queryString = "FROM User u WHERE u.userName = '" + user+"' and password='"+password+"' and active=1";
 		Query query = getCurrentSession().createQuery(queryString);
 		User result = (User) query.uniqueResult();
 		return result;

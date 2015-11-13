@@ -9,8 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "moduleLog")
-public class ModuleLog {
+@Table(name = "TB_MODULE_LOG")
+public class ModuleLog extends BasicEntity{
 	
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Id

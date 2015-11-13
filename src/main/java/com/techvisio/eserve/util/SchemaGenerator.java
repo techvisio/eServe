@@ -46,7 +46,7 @@ public class SchemaGenerator
    */
   public static void main(String[] args) throws Exception
   {
-    SchemaGenerator gen = new SchemaGenerator("com.techvisio.einstitution.beans");
+    SchemaGenerator gen = new SchemaGenerator("com.techvisio.eserve.beans");
     gen.generate(Dialect.MYSQL);
   }
 

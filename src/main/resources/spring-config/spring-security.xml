@@ -6,19 +6,27 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-	<http use-expressions="true" entry-point-ref="restAuthenticationEntryPoint">
+	<http use-expressions="true">
 	<csrf disabled="true"/>
       <intercept-url pattern="/service/**" access="isAuthenticated()"/>
-	 <intercept-url pattern="/home**" access="isAnonymous()" />
+	 <intercept-url pattern="/home/**" access="isAuthenticated()" />
       <form-login 
+      login-page="/index.html"
       username-parameter="j_username" 
       password-parameter="j_password" 
       login-processing-url="/j_spring_security_check"
-      authentication-success-handler-ref="restAuthenticationSuccessHandler"
-      authentication-failure-handler-ref="restAuthenticationFailureHandler"
-      default-target-url="/#/home/" />
-
+      authentication-failure-url="/index.html?error"
+      default-target-url="/home/index.html"
+       />
+	<logout 
+	logout-url="/logout"
+	logout-success-url="/index.html" />
    </http>
+   
+<!--    <sec:session-management invalid-session-url="/login"> -->
+<!--         <sec:concurrency-control expired-url="/login" /> -->
+<!-- </sec:session-management> -->
+
    <authentication-manager>
       <security:authentication-provider ref="authenticationProvider"/>
    </authentication-manager>

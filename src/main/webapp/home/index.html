@@ -6,57 +6,65 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>eServe / techVisio</title>
 
-<link href="static/css/login.css" rel="stylesheet" />
-<script src="lib/jquery/dist/jquery.js"></script>
-<script src="lib/angular/angular.min.js"></script>
-<script src="lib/angular-cookies.min.js"></script>
-<script src="lib/angular-route.min.js"></script>
-<script src="lib/ui-bootstrap-tpls-0.12.0.min.js"></script>
-<script src="lib/angular-ui-router.min.js"></script>
-<script src="home/app.js"></script>
+<link href="../static/css/login.css" rel="stylesheet" />
+<link href="../lib/ng-table/ng-table.min.css" rel="stylesheet" />
+<script src="../lib/jquery/dist/jquery.js"></script>
+<script src="../lib/angular/angular.min.js"></script>
+<script src="../lib/angular-cookies.min.js"></script>
+<script src="../lib/angular-route.min.js"></script>
+<script src="../lib/ui-bootstrap-tpls-0.12.0.min.js"></script>
+<script src="../lib/angular-ui-router.min.js"></script>
+<script src="../lib/google-chart/ng-google-chart.min.js"></script>
+<script src="../lib/ng-table/ng-table.js"></script>
+<script src="../lib/ng-table/ng-table.min.css"></script>
+<script src="shared/services.js"></script>
+<script src="customer/customerCntrl.js"></script>
+<script src="customer/customerSrvc.js"></script>
+<script src="shared/masterdata.js"></script>
+<script src="user/userCntrl.js"></script>
+<script src="user/userSrvc.js"></script>
+<script src="app.js"></script>
 
-<link href="static/css/vendors.css" rel="stylesheet" type="text/css">
-<link href="static/css/app.css" rel="stylesheet" type="text/css">
+<link href="../static/css/vendors.css" rel="stylesheet" type="text/css">
+<link href="../static/css/app.css" rel="stylesheet" type="text/css">
 </head>
 
-<body ng-app="erp">
+<body ng-app="erp" ng-controller="ApplicationController">
 	<div class="navbar navbar-default navbar-static-top" role="navigation">
 		<div class="wrapper">
-			<ul class="nav navbar-nav" ng-class="{bigmenu: $root.role == 'O'}">
+			<ul class="nav navbar-nav">
 				<li class="pull-right icon profile"
 					ng-class="isSel('user') || isSel('company')"><a ui-sref="home"><i></i></a>
 					<ul>
 						<li><a ui-sref="home">My Profile</a></li>
+						<li><a ui-sref="searchUser"> User Administration </a></li>
+						<li><a ui-sref="home">Master Data</a></li>
 						<li><a href="../support.html">Support</a></li>
 						<li class="divider"></li>
-						<li><a href="../j_myApplication_logout">Logout</a></li>
+						<li><a href="../logout">Logout</a></li>
 					</ul></li>
 
-				<li ng-class="isSel('dashboard')"><a
-					ui-sref="app.dashboard" ui-sref-opts="{reload: true}">
-						<span>Easing Service & AMC</span>
+				<li ng-class="isSel('dashboard')"><a ui-sref="app.dashboard"
+					ui-sref-opts="{reload: true}"> <span>Easing Service &
+							AMC</span>
 				</a></li>
 
 				<li class="menu pull-right last" ng-class="isSel('activity')"><a
-					ui-sref="home">Customer</a>
-					<ul>
-						<li><a ui-sref="home">Create Customer</a></li>
-						<li><a ui-sref="home">Search Customer</a></li>
-					</ul></li>
+					ui-sref="searchcustomer">Customer</a></li>
 				<li class="menu pull-right" ng-class="isSel('reports')"><a
 					ui-sref="home">Sales</a></li>
 				<li class="menu pull-right" ng-class="isSel('events')"><a
 					ui-sref="app.events.all">Service</a>
 					<ul>
-						<li><a ui-sref="home">Create Complaint</a></li>
+						<li><a ui-sref="complaint">Create Complaint</a></li>
 					</ul></li>
-				<li class="menu pull-right" ng-cloak ng-class="isSel('companies')"><a
-					ui-sref="home">Master</a>
-					<ul>
-						<li><a ui-sref="home">Employee Master</a></li>
-						<li><a ui-sref="home">Equipment Master</a></li>
-						<li><a ui-sref="home">Item Master</a></li>
-					</ul></li>
+<!-- 				<li class="menu pull-right" ng-cloak ng-class="isSel('companies')"><a -->
+<!-- 					ui-sref="home">Master</a> -->
+<!-- 					<ul> -->
+<!-- 						<li><a ui-sref="home">Employee Master</a></li> -->
+<!-- 						<li><a ui-sref="home">Equipment Master</a></li> -->
+<!-- 						<li><a ui-sref="home">Item Master</a></li> -->
+<!-- 					</ul></li> -->
 			</ul>
 		</div>
 	</div>
@@ -64,18 +72,10 @@
 
 	<div class="wrapper">
 		<div class="container">
-<!-- 		<div class="module-container"> -->
-<!-- 			<div ng-include="'home/shared/amc.html'"></div> -->
-<!-- 		</div> -->
-
-<div class="module-container">
-			<div ng-include="'home/shared/complaint.html'"></div>
-		</div>
-
-<!-- <div class="module-container"> -->
-<!-- 			<div ng-include="'home/shared/customerSearch.html'"></div> -->
-<!-- 		</div> -->
-			<div class="sidebar" ng-include="'home/sidebar/sidebar.html'"></div>
+			<div class="module-container">
+				<div ui-view></div>
+			</div>
+			<div class="sidebar" ng-include="'sidebar/sidebar.html'"></div>
 
 		</div>
 	</div>

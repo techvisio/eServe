@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "ROLE_MASTER")   
+@Table(name = "TB_ROLE_MASTER")   
 public class Role extends BasicEntity{
 
 	@Id

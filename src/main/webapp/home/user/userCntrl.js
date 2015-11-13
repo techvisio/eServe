@@ -8,26 +8,38 @@ userModule
 		 '$state',
 		 '$rootScope',
 		 'userService',
-		 'injectedData',
-		 function($scope, $state, $rootScope,userService,injectedData) {
+		 'user',
+		 'masterdataService',
+		 function($scope, $state, $rootScope,userService,user,masterdataService) {
 			 $scope.form={};
+			 $scope.customQuestion = false;
+			 $scope.wrongNewPass = false;
+			 $scope.oldConfirmed = true;
+			 $scope.wrongConfirmPass = false;
+			 $scope.newPassMust = false;
+			 $scope.allUserPrivileges=[];
+			 $scope.users=[];
 			 $scope.user={};
 			 $scope.securityQuestion={};
 			 $scope.user.roles=[];
+			 $scope.openedFrom=false;
+			 $scope.searchCriteria = {};
+			 $scope.verifiedUser = {};
 
 			 $scope.allUserRoles=[];
-			 if(injectedData.data){
-				 $scope.user = injectedData.data.responseBody;
+
+			 if(user){
+				 $scope.user = user;
 			 }			 
+
 			 $scope.authenticateUser=function(){
 				 userService.authenticateUser($scope.form);
 			 }
 
 
-			 $scope.redirectViewUser=function(currentUserId){
-				 $state.go('getUser',{userId:currentUserId});
+			 $scope.redirectToUser=function(currentUserId){
+				 $state.go('user',{userId:currentUserId});
 			 }
-
 
 			 $scope.addAndRemoveRoleFromUser = function(object){
 
@@ -39,9 +51,21 @@ userModule
 				 }
 			 }
 
+			 $scope.showCustom = function() {
+
+				 if ($scope.chkStatus) {
+					 $scope.customQuestion = true;
+				 }
+				 else {
+					 $scope.customQuestion = false;		
+
+				 }
+			 };
+
+
 			 $scope.init = function() {
 				 console
-				 .log('getting masterdata for admission module in init block');
+				 .log('getting masterdata for user');
 
 				 masterdataService
 				 .getUserMasterData()
@@ -64,43 +88,133 @@ userModule
 							 console
 							 .log('Data received from service in controller : ');
 							 console.log(response);
-							 if (response != null
-									 && response.data != null
-									 && response.data.responseBody != null) {
-								 $rootScope.user=response.data.responseBody
+							 if (response != null) {
+								 $rootScope.user=response;
 							 }
 						 })
 			 }
 
 			 $scope.addUser=function(){
+				 
+				 if($scope.user.password != $scope.confirmPassword){
+					 $scope.wrongConfirmPass = true;
+					 return;
+				 }
+				 $scope.user.privileges=$scope.allUserPrivileges;
 				 userService.addUser($scope.user)
 				 .then(
 						 function(response) {
 							 console
 							 .log('user Data received from service in controller : ');
 							 console.log(response);
-							 if (response != null
-									 && response.data != null
-									 && response.data.responseBody != null) {
-								 $scope.user=response.data.responseBody;
+							 if (response != null) {
+								 $scope.user=response;
+							 }
+
+						 })
+			 }
+
+			 $scope.getUser=function(){
+				 userService.getUser($scope.user.userId)
+				 .then(
+						 function(response) {
+							 console
+							 .log('user Data received from service in controller : ');
+							 console.log(response);
+							 if (response != null) {
+								 $scope.user=response;
+								 // $scope.getUserPrivileges();
 								 $scope.redirectViewUser($scope.user.userId)
 							 }
 
 						 })
 			 }
 
-			 $scope.saveQuestion=function(){
-				 userService.saveQuestion($scope.securityQuestion)
+
+			 $scope.getUsers=function(){
+				 userService.getUsers()
 				 .then(
 						 function(response) {
 							 console
-							 .log('security question Data received from service in controller : ');
+							 .log('user Data received from service in controller : ');
 							 console.log(response);
-							 if (response != null
-									 && response.data != null
-									 && response.data.responseBody != null) {
-								 $scope.securityQuestion=response.data.responseBody;
+							 if (response != null) {
+								 $scope.users=response;
 							 }
+
+						 })
+			 }
+
+			 $scope.getUserByCriteria=function(){
+				 userService.getUserByCriteria($scope.searchCriteria)
+				 .then(
+						 function(response) {
+							 console
+							 .log('getting user by criteria in controller : ');
+							 console.log(response);
+							 if (response != null) {
+								 $scope.users=response;
+							 }
+						 })
+			 }
+
+			 $scope.verifyUserNameAndEmailId=function(){
+				
+				 $scope.searchCriteria.userName=$scope.user.userName;
+				 $scope.searchCriteria.emailId=$scope.user.emailId;
+				 userService.verifyUserNameAndEmailId($scope.searchCriteria)
+				 .then(
+						 function(response) {
+							 console
+							 .log('getting verified user with unique userName and EmailId in controller : ');
+							 console.log(response);
+							 if (response != null) {
+								 $scope.verifiedUser=response;
+							 }
+						 })
+			 }
+			 $scope.getUserPrivileges=function(){
+				 userService.getUserPrivileges($scope.user.userId||0)
+				 .then(
+						 function(response) {
+							 console
+							 .log('Privilege Data received from service in controller : ');
+							 console.log(response);
+							 if (response != null) {
+								 $scope.allUserPrivileges=response;
+							 }
+
+						 })
+			 }
+
+			 $scope.saveQuestion=function(){
+
+				 if($scope.user.password == $scope.user.newPassword){
+					 $scope.wrongNewPass = true;
+					 return;
+				 }
+
+				 if($scope.user.newPassword==null){
+					 $scope.newPassMust = true;
+					 return;
+				 }
+
+				 if($scope.user.newPassword != $scope.confirmPassword){
+
+					 $scope.wrongConfirmPass = true;
+					 return;
+				 }
+				 userService.saveQuestion($scope.user)
+				 .then(
+						 function(response) {
+							 if(response){
+								 var success=response.success;
+								 $scope.oldConfirmed=response.passwordMatch;
+								 if(success){
+									 $rootScope.curModal.close();
+								 }
+							 }
+
 						 })
 			 }
 
@@ -112,10 +226,8 @@ userModule
 							 console
 							 .log('userRole Data received from service in controller : ');
 							 console.log(response);
-							 if (response != null
-									 && response.data != null
-									 && response.data.responseBody != null) {
-								 $scope.allUserRoles=response.data.responseBody;
+							 if (response != null) {
+								 $scope.allUserRoles=response;
 							 }
 						 })
 			 }

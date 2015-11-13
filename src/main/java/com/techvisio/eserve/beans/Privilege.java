@@ -6,20 +6,33 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
-@Table(name = "PRIVILEGE")    
+@Table(name = "TB_PRIVILEGE")    
 public class Privilege extends BasicEntity{
 
-	private String privilege;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "Privilege_Id")
 	private Long privilegeId;
-	@Column(name = "PRIVILEGE_ID")
+	@Column(name = "Privilege")
+	private String privilege;
+	@Column(name = "Description")
 	private String description;
 	@Column(name = "Type")
 	private String type;
+	@Transient
+	private boolean granted;
+
+	public boolean isGranted() {
+		return granted;
+	}
+
+	public void setGranted(boolean granted) {
+		this.granted = granted;
+	}
 
 	public String getPrivilege() {
 		return privilege;

@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "STATE_MASTER")
+@Table(name = "TB_STATE_MASTER")
 public class State extends BasicEntity{
 
 	@GeneratedValue(strategy=GenerationType.AUTO)

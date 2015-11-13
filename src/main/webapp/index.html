@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>eVisio / techVisio / Login</title>
+    <link href="static/login.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="static/login.js"></script>
+    <!--Support for full multi-stop gradients with IE9 (using SVG).-->
+    <!--Add a "gradient" class to all your elements that have a gradient, and add the following override to your HTML to complete the IE9 support:-->
+    <!--[if gte IE 9]>
+    <style type="text/css">
+        .gradient {
+            filter: none;
+        }
+    </style>
+    <![endif]-->
+</head>
+<body class="MCSlogin cr" onload="FirstFocus()">
+    <div id="loginContainer">
+        <div id="loginMessage" style="display:none;">
+            <h3>Welcome</h3>
+            <p>The page you requested requires you to log in. If you already have a username, log in below </p>
+            <span class="messagePointer"></span>
+        </div>
+        <div id="loginMain">
+            <div id="loginHeader">
+                <h1 class="logo">
+                    <span>techVisio</span>
+                </h1>
+            </div>
+            <div class="view login">
+                <div class="fLeft">
+                    <div class="loginText">
+                        <span>We are agile, flexible and always keep our Clients front and center, resulting in long standing relationships. </span>
+                    </div>
+                    <ul class="loginLinks">
+                        <li>
+                            <a href="ext/url/learn" target="_blank">Learn more about techVisio</a>
+                        </li>
+                       
+                    </ul>
+                </div>
+                <div class="fRight">
+                    <form method="POST" action="javascript:void(0);" class="UForm" name="login" id="loginForm">
+                        <fieldset class="userData">
+                            <div class="form-group">
+                                <label for="username">Email </label>
+                                <input type="text" value="" name="j_username" id="username" class="form-control" autocomplete="off" autocorrect="off" autocapitalize="off">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" value="" name="j_password" id="password" class="form-control" autocomplete="off" maxlength="80">
+                                <p class="errorMesg" id="errorMesg"></p>
+                                
+                            </div>
+                            
+                            <input type="hidden" name="_request_url_" id="_request_url_" />
+                            
+                        </fieldset>
+
+                        <div class="hasLayout">
+                            <div id="loginActions">
+                                <button type="submit" class="btn btn-login gradient" role="button" style="margin-top:5px" id="loginSubmit">Login</button>
+                            </div>
+                            <a href='#reset' xhref="#reset" class="inputHelper" >
+                                    Forgot your password?
+                                </a>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="checkboxRemMe" name="j_spring_remember_me"> <strong>Remember Me</strong>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="view reset">
+                <div class="fLeft">
+                </div>
+                <div class="fRight">
+                    <form method="POST" action="javascript:void(0);" class="UForm" name="reset" id="resetForm">
+                        <fieldset class="userData">
+                            <div class="form-group">
+                                <label for="username">Email </label>
+                                <input type="text" value="" name="j_username" id="reset_username" class="form-control" autocomplete="off" autocorrect="off" autocapitalize="off">
+                                <p class="errorMesg" id="rErrorMesg"></p>
+                            </div>
+                            
+                        </fieldset>
+                        <br/>
+                        <div class="hasLayout">
+                            <div id="loginActions">
+                                <button type="submit" class="btn btn-login gradient" role="button" style="margin-top:5px" id="resetSubmit">Reset Password</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="view reset-success">
+                 <div class="fLeft">
+                 </div>
+                <div class="fRight">
+                    
+                </div>
+            </div>
+            <div class="view restore">
+                <div class="fLeft">
+                </div>
+                <div class="fRight">
+                    <form method="POST" action="javascript:void(0);" class="UForm" name="restore" id="restoreForm">
+                        <fieldset class="userData">
+                            <div class="form-group">
+                                <label for="password">New password </label>
+                                <input type="password" value="" name="j_password" id="restore_password" class="form-control" autocomplete="off" maxlength="80">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="passwordcopy">Re-enter Password</label>
+                                <input type="password" value="" name="j_password_copy" id="restore_passwordcopy" class="form-control" autocomplete="off" maxlength="80">
+                                <p class="errorMesg" id="rsErrorMesg"></p>
+                                
+                            </div>
+                            
+                        </fieldset>
+                        <br/>
+                        <div class="hasLayout">
+                            <div id="loginActions">
+                                <button type="submit" class="btn btn-login gradient" role="button" style="margin-top:5px" id="restoreSubmit">Save Password</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="view restore-success">
+                <div class="fLeft">
+                </div>
+                <div class="fRight">
+                    <p><b>Success</b></p>
+                    <p>Your password was successfully set.</p>
+                    <p>Click <a href="#">here</a> to login.</p>
+                </div>
+            </div>
+        </div>
+        <div id="loginFooter">
+            <p>Copyright © 2015 techVisio solutions Pvt. Limited. ALL DATA PROVIDED AS IS, WITH NO WARRANTIES. All rights reserved.</p>
+            <ul id="footerMenu">
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
