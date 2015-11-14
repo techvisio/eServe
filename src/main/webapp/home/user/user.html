@@ -3,6 +3,7 @@
 	<div>
 		<h3 class="page-header jumbotron">CREATE USER</h3>
 	</div>
+	<uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
 	<div class="row">
 		<div class="col-sm-2">
 			<label for="inputlg">First Name</label>
@@ -87,7 +88,7 @@
 		<div class="col-sm-1">
 			<img height="30" width="30" ng-src="../static/images/redwarning.png"
 				ng-show="wrongConfirmPass"
-				title="Choose Diffrent Password ! This Is Same As Old One" />
+				title="Password And Confirm Password Should Be Same And Both Fields Are Mandatory" />
 		</div>
 
 	</div>
@@ -146,7 +147,7 @@
 	<div class="col-sm-10"></div>
 
 	<div class="col-sm-2">
-		<button type="button" class="btn btn-primary" ng-click="addUser()"">Save
+		<button type="button" class="btn btn-primary" ng-click="verifyUserNameAndEmailId()"">Save
 			User</button>
 	</div>
 

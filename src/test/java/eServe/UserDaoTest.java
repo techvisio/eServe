@@ -25,6 +25,7 @@ public class UserDaoTest {
 	public void getUserBySearchCriteria(){
 		SearchCriteria searchCriteria = new SearchCriteria();
 		searchCriteria.setUserName("sgusain");;
+		searchCriteria.setEmailId("ddd");
 		User user = userDao.verifyUserNameAndEmialId(searchCriteria);
 		System.out.println("Data Is : " + user);
 	}

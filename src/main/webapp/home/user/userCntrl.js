@@ -1,4 +1,4 @@
-var userModule = angular.module('userModule', []);
+var userModule = angular.module('userModule', ['ui.bootstrap']);
 
 userModule
 .controller(
@@ -63,6 +63,11 @@ userModule
 			 };
 
 
+			 $scope.alerts = [
+			                  { type: 'danger', msg:' ' },
+			                  ];
+
+
 			 $scope.init = function() {
 				 console
 				 .log('getting masterdata for user');
@@ -95,7 +100,7 @@ userModule
 			 }
 
 			 $scope.addUser=function(){
-				 
+
 				 if($scope.user.password != $scope.confirmPassword){
 					 $scope.wrongConfirmPass = true;
 					 return;
@@ -103,12 +108,12 @@ userModule
 				 $scope.user.privileges=$scope.allUserPrivileges;
 				 userService.addUser($scope.user)
 				 .then(
-						 function(response) {
+						 function(savedUser) {
 							 console
 							 .log('user Data received from service in controller : ');
-							 console.log(response);
-							 if (response != null) {
-								 $scope.user=response;
+							 console.log(savedUser);
+							 if (savedUser) {
+								 $scope.user=savedUser;
 							 }
 
 						 })
@@ -117,12 +122,12 @@ userModule
 			 $scope.getUser=function(){
 				 userService.getUser($scope.user.userId)
 				 .then(
-						 function(response) {
+						 function(existingUser) {
 							 console
 							 .log('user Data received from service in controller : ');
-							 console.log(response);
-							 if (response != null) {
-								 $scope.user=response;
+							 console.log(existingUser);
+							 if (existingUser) {
+								 $scope.user=existingUser;
 								 // $scope.getUserPrivileges();
 								 $scope.redirectViewUser($scope.user.userId)
 							 }
@@ -134,12 +139,12 @@ userModule
 			 $scope.getUsers=function(){
 				 userService.getUsers()
 				 .then(
-						 function(response) {
+						 function(users) {
 							 console
 							 .log('user Data received from service in controller : ');
-							 console.log(response);
-							 if (response != null) {
-								 $scope.users=response;
+							 console.log(users);
+							 if (users) {
+								 $scope.users=users;
 							 }
 
 						 })
@@ -148,40 +153,54 @@ userModule
 			 $scope.getUserByCriteria=function(){
 				 userService.getUserByCriteria($scope.searchCriteria)
 				 .then(
-						 function(response) {
+						 function(users) {
 							 console
 							 .log('getting user by criteria in controller : ');
-							 console.log(response);
-							 if (response != null) {
-								 $scope.users=response;
+							 console.log(users);
+							 if (users) {
+								 $scope.users=users;
 							 }
 						 })
 			 }
 
 			 $scope.verifyUserNameAndEmailId=function(){
-				
+
+				 if($scope.user.password == null || $scope.confirmPassword==null || $scope.user.password != $scope.confirmPassword){
+					 $scope.wrongConfirmPass = true
+					 return;
+				 }
+
 				 $scope.searchCriteria.userName=$scope.user.userName;
 				 $scope.searchCriteria.emailId=$scope.user.emailId;
 				 userService.verifyUserNameAndEmailId($scope.searchCriteria)
 				 .then(
-						 function(response) {
+						 function(existingUser) {
 							 console
 							 .log('getting verified user with unique userName and EmailId in controller : ');
-							 console.log(response);
-							 if (response != null) {
-								 $scope.verifiedUser=response;
+							 console.log(existingUser);
+							 if (existingUser) {
+								 
+								 $scope.alerts=[];
+								 $scope.verifiedUser=existingUser;
+
+								 if($scope.verifiedUser.userName==$scope.user.userName || $scope.verifiedUser.emailId==$scope.user.emailId){
+									 $scope.alerts.push({msg: 'This User Name Or Email Id Already Exists!! Choose Different User Name Or Email Id'})
+									 
+									 return;
+								 }
 							 }
+							 $scope.addUser();
 						 })
 			 }
 			 $scope.getUserPrivileges=function(){
 				 userService.getUserPrivileges($scope.user.userId||0)
 				 .then(
-						 function(response) {
+						 function(privileges) {
 							 console
 							 .log('Privilege Data received from service in controller : ');
-							 console.log(response);
-							 if (response != null) {
-								 $scope.allUserPrivileges=response;
+							 console.log(privileges);
+							 if (privileges != null) {
+								 $scope.allUserPrivileges=privileges;
 							 }
 
 						 })
@@ -219,18 +238,18 @@ userModule
 			 }
 
 
-			 $scope.getUserRole=function(){
-				 userService.getUserRole($scope.user.userId)
-				 .then(
-						 function(response) {
-							 console
-							 .log('userRole Data received from service in controller : ');
-							 console.log(response);
-							 if (response != null) {
-								 $scope.allUserRoles=response;
-							 }
-						 })
-			 }
+//			 $scope.getUserRole=function(){
+//			 userService.getUserRole($scope.user.userId)
+//			 .then(
+//			 function(roles) {
+//			 console
+//			 .log('userRole Data received from service in controller : ');
+//			 console.log(response);
+//			 if (response != null && response.data != null && response.data.responseBody != null) {
+//			 $scope.allUserRoles=response.data.responseBody;
+//			 }
+//			 })
+//			 }
 
 
 		 } ]);

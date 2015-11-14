@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -22,8 +24,10 @@ public class BasicEntity implements Serializable {
 	private Date createdOn;
 	@Column(name="Updated_On")
 	private Date updatedOn;
-	@Column(name="Client_Id")
-	private Long clientId;
+	
+	@ManyToOne
+	@JoinColumn(name = "Client_Id")
+	private Client client;
 
 	public String getCreatedBy() {
 		return createdBy;
@@ -60,12 +64,11 @@ public class BasicEntity implements Serializable {
 		updatedOn = new Date();
 	}
 
-	public Long getClientId() {
-		return clientId;
+	public Client getClient() {
+		return client;
 	}
 
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
+	public void setClient(Client client) {
+		this.client = client;
 	}
-
 }

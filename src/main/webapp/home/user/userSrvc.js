@@ -150,7 +150,7 @@ userModule.service('userService', function($http, $q) {
 		console.log('getting verified user with unique userName and EmailId in service');
 		var request = $http({
 			method : "post",
-			url : "../service/user/search/",
+			url : "../service/user/verify/",
 			params : "",
 			data : searchCriteria
 

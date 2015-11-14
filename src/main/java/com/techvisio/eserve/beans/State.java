@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TB_STATE_MASTER")
-public class State extends BasicEntity{
+public class State {
 
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Id
@@ -17,7 +17,8 @@ public class State extends BasicEntity{
 	private Long stateId;
 	@Column(name = "State_Name")
 	private String stateName;
-	
+	@Column(name = "Client_Id")
+	private Long clientId;
 	public State(){}
 	
 	public State(Long id){
@@ -40,4 +41,14 @@ public class State extends BasicEntity{
 	public void setStateName(String stateName) {
 		this.stateName = stateName;
 	}
+
+	public Long getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
+	}
+	
+	
 }

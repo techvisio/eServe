@@ -7,11 +7,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TB_QUESTION_MASTER")
-public class QuestionMaster extends BasicEntity{
+public class QuestionMaster{
 	
 	@Id
 	@Column(name="Question")
 	private String question;
+	
+	@Column(name = "Client_Id")
+	private Long clientId;
 
 	public String getQuestion() {
 		return question;
@@ -19,6 +22,13 @@ public class QuestionMaster extends BasicEntity{
 
 	public void setQuestion(String question) {
 		this.question = question;
+	}
+	public Long getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
 	}
 
 }

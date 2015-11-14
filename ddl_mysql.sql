@@ -29,6 +29,10 @@
 
     alter table TB_USER 
         drop 
+        foreign key FK_gu03pv7i6qh7ghnfa0qpx1hc2;
+
+    alter table TB_USER 
+        drop 
         foreign key FK_33emh5hhr8suqbuw2vsjupele;
 
     alter table TB_USER 
@@ -127,12 +131,14 @@
 
     create table TB_DEPARTMENT_MASTER (
         Department_Id bigint not null,
+        client_Id bigint,
         Department varchar(255),
         primary key (Department_Id)
     );
 
     create table TB_DESIGNATION_MASTER (
         Designation_Id bigint not null,
+        client_Id bigint,
         Designation varchar(255),
         Department_Id bigint,
         primary key (Designation_Id)
@@ -327,6 +333,11 @@
         add constraint FK_c25p14a5xbrp4jghdoapqxbbs 
         foreign key (Customer_Id) 
         references TB_CUSTOMER_DETAIL (Customer_Id);
+
+    alter table TB_USER 
+        add constraint FK_gu03pv7i6qh7ghnfa0qpx1hc2 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (Client_Id);
 
     alter table TB_USER 
         add constraint FK_33emh5hhr8suqbuw2vsjupele 

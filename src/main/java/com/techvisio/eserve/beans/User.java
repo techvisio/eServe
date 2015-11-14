@@ -1,6 +1,5 @@
 package com.techvisio.eserve.beans;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -28,62 +28,70 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "TB_USER")
-public class User extends BasicEntity{
+public class User extends BasicEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -378250549629261597L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "User_Id")
 	private Long userId;
+	
 	@Column(name = "First_Name")
 	private String firstName;
+	
 	@Column(name = "Last_Name")
 	private String lastName;
+	
 	@Column(name = "Email_Id")
 	private String emailId;
 
-	@ManyToMany(cascade = { CascadeType.ALL },fetch=FetchType.EAGER)
-	@JoinTable(name="TB_USER_ROLE", joinColumns = { 
-			@JoinColumn(name = "User_Id") }, 
-			inverseJoinColumns = { @JoinColumn(name = "Role_Id") })
+	@ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	@JoinTable(name = "TB_USER_ROLE", joinColumns = { @JoinColumn(name = "User_Id") }, inverseJoinColumns = { @JoinColumn(name = "Role_Id") })
 	private List<Role> roles;
+	
 	@Column(name = "Password")
 	private char[] password;
+	
 	@Transient
 	private char[] newPassword;
+	
 	@Column(name = "IS_ACTIVE")
 	private boolean active;
+	
 	@Column(name = "Force_Password_Change")
 	private boolean forcePasswordChange;
-	
-	@OneToOne(cascade=CascadeType.ALL)  
-    @PrimaryKeyJoinColumn
-	private SecurityQuestion securityQuestion=new SecurityQuestion();
-	
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
+	private SecurityQuestion securityQuestion = new SecurityQuestion();
+
 	@Column(name = "User_Name")
 	private String userName;
-	@OneToOne
-	@JoinColumn(name="Department_Id")
-	private Department department;
-	@OneToOne
-	@JoinColumn(name="Designation_Id")
-	private Designation designation;
 	
+	@ManyToOne
+	@JoinColumn(name = "Department_Id")
+	private Department department;
+	
+	@ManyToOne
+	@JoinColumn(name = "Designation_Id")
+	private Designation designation;
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "DOB")
 	@JsonIgnore
 	private Date DOB;
-	
+
 	@Transient
 	private String dobString;
-	
-	@JoinTable(name="TB_USER_PRIVILEGE",
-		        joinColumns=
-		            @JoinColumn(name="USER_ID"),
-		        inverseJoinColumns=
-		            @JoinColumn(name="Privilege_Id")
-		        )
-	@ManyToMany(fetch=FetchType.EAGER)
+
+	@JoinTable(name = "TB_USER_PRIVILEGE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "Privilege_Id"))
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Privilege> privileges;
+
 	
 	public Long getUserId() {
 		return userId;
@@ -198,6 +206,7 @@ public class User extends BasicEntity{
 	public void setDOB(Date dOB) {
 		DOB = dOB;
 	}
+
 	public String getEmailId() {
 		return emailId;
 	}
@@ -207,23 +216,22 @@ public class User extends BasicEntity{
 	}
 
 	public String getDobString() {
-		if (this.DOB == null) return null;
+		if (this.DOB == null)
+			return null;
 
-        try {
-            DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
-            return fmt.print(this.DOB.getTime());
+		try {
+			DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+			return fmt.print(this.DOB.getTime());
 
-        } catch (Exception e) {
-         
-        }
-        return null;
+		} catch (Exception e) {
+
+		}
+		return null;
 	}
 
 	public void setDobString(String dobString) {
 		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
-        this.DOB=parser2.parseDateTime(dobString).toDate();
+		this.DOB = parser2.parseDateTime(dobString).toDate();
 	}
 
-
-	
 }
