@@ -13101,10 +13101,28 @@ ng-table-pagination-extended .ng-invalid:focus {
 	background: url(img_navsprites.gif) 0 0;
 }
 
-.ng-invalid input{
+.container .ng-invalid input{
 	border-color : red;
 }
 
-.ng-dirty.ng-valid {
+.container .ng-dirty.ng-valid {
 	border-color: #cccccc;
+}
+
+.container .checkbox-custom input[type=checkbox] + i {
+    padding-left: 16px;
+    background: url(images/sprite.png);
+    background-repeat: no-repeat;
+    background-position: -50px -1017px;
+    background-color: white;
+    border-radius: 4px;
+    display: inline-block;
+    min-height: 20px;
+    min-width: 10px;
+    margin-bottom: -4px;
+}
+.container .checkbox-custom input[type=checkbox]:checked + i {
+    background: url(images/sprite.png);
+    background-repeat: no-repeat;
+    background-position: -50px -984px;
 }
