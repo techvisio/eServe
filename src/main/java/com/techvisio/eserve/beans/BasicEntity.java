@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -14,15 +15,16 @@ import javax.persistence.PreUpdate;
 
 @MappedSuperclass
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@EntityListeners({BasicEntityCallback.class})
 public class BasicEntity implements Serializable {
 
-	@Column(name="Created_By")
+	@Column(name="CREATED_BY")
 	private String createdBy;
-	@Column(name="Updated_By")
+	@Column(name="UPDATED_BY")
 	private String updatedBy;
-	@Column(name="Created_On")
+	@Column(name="CREATED_ON")
 	private Date createdOn;
-	@Column(name="Updated_On")
+	@Column(name="UPDATED_ON")
 	private Date updatedOn;
 	
 	@ManyToOne

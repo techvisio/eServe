@@ -29,7 +29,7 @@ public class CommonUtil {
 		return user;
 	}
 	
-public static Client geurrentClient(){
+public static Client getCurrentClient(){
 		
 		User user = null;
 		if(SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() !=null){

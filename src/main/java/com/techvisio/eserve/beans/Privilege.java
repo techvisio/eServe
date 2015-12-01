@@ -15,24 +15,14 @@ public class Privilege extends BasicEntity{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "Privilege_Id")
+	@Column(name = "PRIVILEGE_ID")
 	private Long privilegeId;
-	@Column(name = "Privilege")
+	@Column(name = "PRIVILEGE")
 	private String privilege;
-	@Column(name = "Description")
+	@Column(name = "DESCRIPTION")
 	private String description;
-	@Column(name = "Type")
+	@Column(name = "TYPE")
 	private String type;
-	@Transient
-	private boolean granted;
-
-	public boolean isGranted() {
-		return granted;
-	}
-
-	public void setGranted(boolean granted) {
-		this.granted = granted;
-	}
 
 	public String getPrivilege() {
 		return privilege;

@@ -1,15 +1,15 @@
 <tabset> <tab active=""> <tab-heading>Customer</tab-heading>
-<div ng-init = "init()">
+<div ng-init="init()">
 	<div>
 		<h3 class="page-header jumbotron">CUSTOMER INFORMATION</h3>
 	</div>
 	<div>
 		<div class="row">
 			<div class="col-sm-2">
-				<label for="inputlg">Customer Id</label>
+				<label for="inputlg">Customer Code</label>
 			</div>
 			<div class="col-sm-4">
-				<input class="form-control input-sm" ng-model="customer.customerId"
+				<input class="form-control input-sm" ng-model="customer.customerCode"
 					id="inputlg" type="text">
 			</div>
 
@@ -43,21 +43,14 @@
 			<div class="col-sm-2">
 				<label for="radiogroup">Customer Type</label>
 			</div>
-			<div class="col-sm-2">
-				<li><input type="radio" name="customerType"
-					ng-model="customer.customerType" value='NAD' />NAD</li>
-			</div>
-			<div class="col-sm-2">
-				<li><input type="radio" name="customerType"
-					ng-model="customer.customerType" value='VIP' />VIP</li>
-			</div>
-			<div class="col-sm-2">
-				<li><input type="radio" name="customerType"
-					ng-model="customer.customerType" value='COR' />Corporate</li>
-			</div>
-			<div class="col-sm-2">
-				<li><input type="radio" name="customerType"
-					ng-model="customer.customerType" value='IND' />Individual</li>
+			<div class="col-sm-4">
+				<select class="form-control" ng-model="customer.customerType">
+					<option></option>
+					<option>NAD</option>
+					<option>VIP</option>
+					<option>CORPORATE</option>
+					<option>INDIVISUAL</option>
+				</select>
 			</div>
 		</div>
 		<!-- </div> -->
@@ -73,80 +66,22 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
-				<label for="inputlg">Title</label>
+				<label for="inputlg">Address</label>
 			</div>
 			<div class="col-sm-4">
-				<select class="form-control">
-					<option></option>
-					<option>Mr</option>
-					<option>Mrs</option>
-					<option>Ms</option>
-				</select>
+				<textarea rows="3" cols="30" class="form-control input-sm"
+					ng-model="customer.address.address" id="inputlg"></textarea>
 			</div>
 
 			<div class="col-sm-2">
-				<label for="inputlg">First Name</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" ng-model="customer.customerId"
-					id="inputlg" type="text">
-			</div>
-
-		</div>
-
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Last Name</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" ng-model="customer.customerId"
-					id="inputlg" type="text">
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Email</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" ng-model="customer.customerId"
-					id="inputlg" type="text">
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Address 1</label>
+				<label for="inputlg">Contact No</label>
 			</div>
 			<div class="col-sm-4">
 				<input class="form-control input-sm"
-					ng-model="customer.address.address1" id="inputlg" type="text">
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Address 2</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm"
-					ng-model="customer.address.address2" id="inputlg" type="text">
+					ng-model="customer.address.contactNo" id="inputlg" type="text">
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Telephone No</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm"
-					ng-model="customer.address.telephone" id="inputlg" type="text">
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Mobile No</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm"
-					ng-model="customer.address.mobile" id="inputlg" type="text">
-			</div>
-		</div>
 
 		<div class="row">
 			<div class="col-sm-2">
@@ -172,24 +107,32 @@
 			</div>
 			<div class="col-sm-4">
 				<select ng-model="customer.address.state.stateId"
-						class="form-control" ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE">
-					</select>
+					class="form-control"
+					ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE">
+				</select>
 			</div>
 		</div>
 	</div>
 
 	<div class="row">
-			<div class="col-sm-6">
-				<h3 class="page-header jumbotron">UNIT DETAILS</h3>
-			</div>
-			<div class="col-sm-4">
-				<button type="button" class="btn btn-info btn-sm" ng-click="addUnit()">Add
-					Unit</button>
-			</div>
+		<div class="col-sm-12">
+			<h3 class="page-header jumbotron">UNIT DETAILS 
+			<button type="button" class="btn btn-primary btn-sm"
+				ng-click="addUnit()">Add Unit</button>
+				</h3>
 		</div>
-		
+	</div>
+
+
 	<div ng-repeat="unit in customer.units">
-	
+
+<div class="row">
+<div class="col-sm-4" ng-show="$index > -1">
+<h3 class="new-event-subtitle">Unit {{$index+1}}</h3>
+</div>
+
+<div class="col-sm-4" ng-show="$index > -1"><button type="button" class="btn btn-info btn-sm" ng-click="redirectToComplaintScreen(customer.customerId)">Create Complaint</button></div>
+</div>
 		<div class="row">
 			<div class="col-sm-2">
 				<label for="inputlg">Service Category</label>
@@ -235,27 +178,6 @@
 		</div>
 
 		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Unit Size</label>
-			</div>
-			<div class="col-sm-2">
-				<select class="form-control">
-					<option></option>
-				</select>
-			</div>
-			<div class="col-sm-2">
-				<select class="form-control">
-					<option></option>
-				</select>
-			</div>
-			<div class="col-sm-2">
-				<select class="form-control">
-					<option></option>
-				</select>
-			</div>
-		</div>
-
-		<div class="row">
 			<div class="col-sm-4">
 				<h3 class="new-event-subtitle">Site Address Details</h3>
 			</div>
@@ -268,78 +190,22 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-2">
-				<label for="inputlg">Title</label>
+				<label for="inputlg">Address</label>
 			</div>
 			<div class="col-sm-4">
-				<select class="form-control">
-					<option></option>
-					<option>Mr</option>
-					<option>Mrs</option>
-					<option>Ms</option>
-				</select>
+				<textarea rows="3" cols="30" class="form-control input-sm"
+					id="inputlg" ng-model="unit.address.address"></textarea>
 			</div>
 
 			<div class="col-sm-2">
-				<label for="inputlg">First Name</label>
+				<label for="inputlg">Contact No</label>
 			</div>
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="customer.customerId">
+					ng-model="unit.address.contactNo">
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Last Name</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="customer.customerId">
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Email</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="customer.customerId">
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Address 1</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.address.address1">
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Address 2</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.address.address2">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Telephone No</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.address.telephone">
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Mobile No</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.address.mobile">
-			</div>
-		</div>
 
 		<div class="row">
 			<div class="col-sm-2">
@@ -364,23 +230,21 @@
 				<label for="inputlg">State</label>
 			</div>
 			<div class="col-sm-4">
-				<select ng-model="unit.address.state.stateId"
-						class="form-control"
-						ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE">
-					</select>
+				<select ng-model="unit.address.state.stateId" class="form-control"
+					ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE">
+				</select>
 			</div>
 		</div>
 
 
 		<div class="row">
-			<div class="col-sm-6">
-				<h3 class="new-event-subtitle">Equipment Details</h3>
-			</div>
 			<div class="col-sm-4">
-				<button type="button" class="btn btn-info btn-sm" ng-click="addMachine()">Add
-					Machine</button>
-			</div>
-		</div>
+				<h3 class="new-event-subtitle">Equipment Details</h3>
+				</div>
+				<div class="col-sm-2">
+				<button type="button" class="btn btn-info btn-sm"
+					ng-click="addMachine(unit)">Add Machine</button>
+			</div></div>
 
 		<div class="row">
 			<div class="col-sm-2">
@@ -404,9 +268,7 @@
 				<label for="inputlg">Warranty Under</label>
 			</div>
 
-			<div class="col-sm-2">
-			
-			</div>
+			<div class="col-sm-2"></div>
 
 		</div>
 
@@ -434,24 +296,32 @@
 					<option></option>
 				</select>
 			</div>
-			<div class="col-sm-2"><img height="35" width="35" ng-src="../static/images/minus.png"
-					ng-click="removeMachine($index)" ng-show="$index>0" /></div>
+			<div class="col-sm-2">
+				<button type="button" class="btn btn-default btn-sm"
+					ng-click="removeMachine(unit,$index)" ng-show="$index>0">
+					<span class="glyphicon glyphicon-remove"></span>
+				</button>
+			</div>
 		</div>
-	<div class="row">
-		<div class="col-sm-3"></div>
+		<div class="row">
+			<div class="col-sm-3"></div>
 
-		<div class="col-sm-3">
-			<button type="button" class="btn btn-primary">Edit</button>
+			<div class="col-sm-3">
+				<button type="button" class="btn btn-primary">Edit</button>
+			</div>
+
+			<div class="col-sm-3">
+				<button type="button" class="btn btn-primary" ng-click="saveUnit(unit)">Save
+					Unit</button>
+			</div>
+			<div class="col-sm-3"></div>
 		</div>
-
-		<div class="col-sm-3">
-			<button type="button" class="btn btn-primary"
-				ng-click="saveUnit()">Save Unit</button>
+		<div class="row">
+			<div class="col-sm-2">
+				<button class="btn-primary" ng-click="removeUnit($index)"
+					ng-show="$index>0">Remove Unit</button>
+			</div>
 		</div>
-		<div class="col-sm-3"></div>
-	</div>
-
-
 	</div>
 	<div class="row">
 		<div class="col-sm-10"></div>
@@ -460,9 +330,8 @@
 			<button type="button" class="btn btn-primary"
 				ng-click="saveCustomer()">Save Customer</button>
 		</div>
-
-	</div>
 </div>
+	</div>
 </tab> <tab> <tab-heading>AMC History</tab-heading> </tab> <tab> <tab-heading>Complaint</tab-heading>
 </tab> <tab> <tab-heading>PMS</tab-heading> </tab> <tab> <tab-heading>Call</tab-heading>
 </tab> </tabset>

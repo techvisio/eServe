@@ -14,27 +14,27 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.Response;
 import com.techvisio.eserve.beans.Unit;
-import com.techvisio.eserve.workflow.CustomerWorkflowManager;
+import com.techvisio.eserve.manager.CustomerManager;
 
 @RestController
 @RequestMapping("/customer")
 public class CustomerService {
 
 	@Autowired
-	CustomerWorkflowManager customerWorkflowManager;
+	CustomerManager customerManager;
 
 	@RequestMapping(value="/",method = RequestMethod.GET)
 	public ResponseEntity<Response> getCustomers() {  
 		Response response=new Response();
-		List<Customer> customers = customerWorkflowManager.getCustomers();
+		List<Customer> customers = customerManager.getCustomers();
 		response.setResponseBody(customers);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value="/{customerId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getCustomer(@PathVariable Long customerId) {  
 		Response response=new Response();
-		Customer customer = customerWorkflowManager.getCustomer(customerId);
+		Customer customer = customerManager.getCustomer(customerId);
 		response.setResponseBody(customer);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -42,8 +42,8 @@ public class CustomerService {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Response> saveCustomer(@RequestBody Customer customer) {  
 		Response response=new Response();
-		customerWorkflowManager.saveCustomer(customer);
-		Customer customerFromDB = customerWorkflowManager.getCustomer(customer.getCustomerId());
+		customerManager.saveCustomer(customer);
+		Customer customerFromDB = customerManager.getCustomer(customer.getCustomerId());
 
 		if(customerFromDB != null){
 			response.setResponseBody(customerFromDB);
@@ -52,10 +52,11 @@ public class CustomerService {
 	}
 
 	@RequestMapping(value="/unit/{customerId}", method = RequestMethod.PUT)
-	public ResponseEntity<Response> saveUnit(@RequestBody List<Unit> units, @PathVariable Long customerId) {  
+	public ResponseEntity<Response> saveUnit(@RequestBody Unit unit, @PathVariable Long customerId) {  
 		Response response=new Response();
-		customerWorkflowManager.saveUnit(units, customerId);
-		List<Unit> unitsFromDB = customerWorkflowManager.getUnits(customerId);
+		unit.setCustomerId(customerId);
+		customerManager.saveUnit(unit);
+		List<Unit> unitsFromDB = customerManager.getUnits(customerId);
 		response.setResponseBody(unitsFromDB);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -64,10 +65,10 @@ public class CustomerService {
 	@RequestMapping(value="/unit/{customerId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getUnits(@PathVariable Long customerId) {  
 		Response response=new Response();
-		List<Unit> units = customerWorkflowManager.getUnits(customerId);
+		List<Unit> units = customerManager.getUnits(customerId);
 		response.setResponseBody(units);
 
-    	return new ResponseEntity<Response>(response,HttpStatus.OK);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
 }

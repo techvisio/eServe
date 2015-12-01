@@ -15,24 +15,20 @@ public class Address extends BasicEntity{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="Address_Id")
+	@Column(name="ADDRESS_ID")
 	private Long addressId;
-	@Column(name="Address_1")
-	private String address1;
-	@Column(name="Address_2")
-	private String address2;
-	@Column(name="Telephone")
-	private String telephone;
-	@Column(name="Mobile")
-	private String mobile;
-	@Column(name="City")
+	@Column(name="ADDRESS")
+	private String address;
+	@Column(name="CONTACT_NO")
+	private String contactNo;
+	@Column(name="CITY")
 	private String city;
-	@Column(name="Pincode")
+	@Column(name="PINCODE")
 	private int pincode;
 	@ManyToOne
-	@JoinColumn(name="State_Id")
+	@JoinColumn(name="STATE_ID")
 	private State State;
-	@Column(name="Address_Type")
+	@Column(name="ADDRESS_TYPE")
 	private String addressType;
 
 
@@ -76,37 +72,20 @@ public class Address extends BasicEntity{
 		this.addressType = addressType;
 	}
 
-	public String getAddress1() {
-		return address1;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAddress1(String address1) {
-		this.address1 = address1;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public String getAddress2() {
-		return address2;
+	public String getContactNo() {
+		return contactNo;
 	}
 
-	public void setAddress2(String address2) {
-		this.address2 = address2;
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
 	}
-
-	public String getTelephone() {
-		return telephone;
-	}
-
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
 
 }

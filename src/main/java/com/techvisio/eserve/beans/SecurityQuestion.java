@@ -17,11 +17,11 @@ public class SecurityQuestion extends BasicEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="USER_ID")
 	private Long userId;
-	@Column(name="Is_Custom_question")
+	@Column(name="IS_CUSTOM_QUESTION")
     private boolean customQuestion;	
-	@Column(name="Question")
+	@Column(name="QUESTION")
 	private String question;
-	@Column(name="Answer")
+	@Column(name="ANSWER")
 	private String answer;
 
 	public String getQuestion() {

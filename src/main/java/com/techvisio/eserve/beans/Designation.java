@@ -9,17 +9,17 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TB_DESIGNATION_MASTER")    
-public class Designation {
+public class Designation extends BasicEntity{
 
 	@Id
-	@Column(name = "Designation_Id")
+	@Column(name = "DESIGNATION_ID")
 	private Long designationId;
-	@Column(name = "client_Id")
+	@Column(name = "CLIENT_ID")
 	private Long clientId;
-	@Column(name = "Designation")
+	@Column(name = "DESIGNATION")
 	private String designation;
     @ManyToOne
-    @JoinColumn(name="Department_Id")
+    @JoinColumn(name="DEPARTMENT_ID")
 	private Department department;
 	
 	public Long getClientId() {

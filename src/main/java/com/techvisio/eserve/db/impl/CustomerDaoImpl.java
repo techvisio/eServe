@@ -34,12 +34,15 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public void saveCustomer(Customer customer) {
+	public Long saveCustomer(Customer customer) {
 		if(customer.getCustomerId()==null){
 		getCurrentSession().save(customer);
 		}
-		
+
+		else{ 
 		getCurrentSession().update(customer);
+		}
+		return customer.getCustomerId();
 	}
 
 	@Override
@@ -62,6 +65,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		else{
 			getCurrentSession().update(unit);
 		}
+		getCurrentSession().flush();
 	}	
 	
 	@Override

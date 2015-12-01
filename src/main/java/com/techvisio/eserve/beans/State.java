@@ -9,15 +9,15 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TB_STATE_MASTER")
-public class State {
+public class State extends BasicEntity{
 
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Id
-	@Column(name = "State_Id")
+	@Column(name = "STATE_ID")
 	private Long stateId;
-	@Column(name = "State_Name")
+	@Column(name = "STATE_NAME")
 	private String stateName;
-	@Column(name = "Client_Id")
+	@Column(name = "CLIENT_ID")
 	private Long clientId;
 	public State(){}
 	

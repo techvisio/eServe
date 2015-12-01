@@ -1,4 +1,4 @@
-var userModule = angular.module('userModule', ['ui.bootstrap']);
+var userModule = angular.module('userModule', ['ui.bootstrap.buttons']);
 
 userModule
 .controller(
@@ -14,6 +14,7 @@ userModule
 			 $scope.form={};
 			 $scope.customQuestion = false;
 			 $scope.wrongNewPass = false;
+			 $scope.isNew = true;
 			 $scope.oldConfirmed = true;
 			 $scope.wrongConfirmPass = false;
 			 $scope.newPassMust = false;
@@ -28,6 +29,19 @@ userModule
 
 			 $scope.allUserRoles=[];
 
+			 if(!user){
+				 userService.getUserprivileges()
+				 .then(
+						 function(userPrivileges) {
+							 console
+							 .log('user privilegs received from service in controller : ');
+							 console.log(userPrivileges);
+							 if (userPrivileges) {
+								 $scope.user.privileges=userPrivileges;
+							 }
+						 })
+			 }			 
+			 
 			 if(user){
 				 $scope.user = user;
 			 }			 
@@ -40,6 +54,7 @@ userModule
 			 $scope.redirectToUser=function(currentUserId){
 				 $state.go('user',{userId:currentUserId});
 			 }
+
 
 			 $scope.addAndRemoveRoleFromUser = function(object){
 
@@ -61,12 +76,6 @@ userModule
 
 				 }
 			 };
-
-
-			 $scope.alerts = [
-			                  { type: 'danger', msg:' ' },
-			                  ];
-
 
 			 $scope.init = function() {
 				 console
@@ -105,12 +114,11 @@ userModule
 					 $scope.wrongConfirmPass = true;
 					 return;
 				 }
-				 $scope.user.privileges=$scope.allUserPrivileges;
 				 userService.addUser($scope.user)
 				 .then(
 						 function(savedUser) {
 							 console
-							 .log('user Data received from service in controller : ');
+							 .log('saving New User in controller : ');
 							 console.log(savedUser);
 							 if (savedUser) {
 								 $scope.user=savedUser;
@@ -119,29 +127,56 @@ userModule
 						 })
 			 }
 
+			 $scope.getUserprivileges = function(){
+				 
+				 userService.getUserprivileges()
+				 .then(
+						 function(userPrivileges) {
+							 console
+							 .log('user privilegs received from service in controller : ');
+							 console.log(userPrivileges);
+							 if (userPrivileges) {
+								 $scope.user.privileges=userPrivileges;
+							 }
+
+						 })
+			 }
+ 			 
 			 $scope.getUser=function(){
 				 userService.getUser($scope.user.userId)
 				 .then(
 						 function(existingUser) {
 							 console
-							 .log('user Data received from service in controller : ');
+							 .log('user received from service in controller : ');
 							 console.log(existingUser);
 							 if (existingUser) {
 								 $scope.user=existingUser;
 								 // $scope.getUserPrivileges();
-								 $scope.redirectViewUser($scope.user.userId)
+								 $scope.redirectToUser($scope.user.userId)
 							 }
 
 						 })
 			 }
 
+//			 $scope.getCurrentPassword=function(){
+//			 userService.getCurrentPassword($scope.user.userId)
+//			 .then(
+//			 function(existingUserPassword) {
+//			 console
+//			 .log('user Data received from service in controller : ');
+//			 console.log(existingUserPassword);
+//			 if (existingUserPassword) {
+//			 $scope.userPassword=existingUserPassword;
+//			 }
 
+//			 })
+//			 }			 
 			 $scope.getUsers=function(){
 				 userService.getUsers()
 				 .then(
 						 function(users) {
 							 console
-							 .log('user Data received from service in controller : ');
+							 .log('All Users received from service in controller : ');
 							 console.log(users);
 							 if (users) {
 								 $scope.users=users;
@@ -163,48 +198,30 @@ userModule
 						 })
 			 }
 
-			 $scope.verifyUserNameAndEmailId=function(){
+//			 return;
+//			 }
+//			 }
+//			 if($scope.user.password==null){
+//			 $scope.userPassword = $scope.getCurrentPassword();
+//			 $scope.user.password = $scope.userPassword.password;
+//			 $scope.addUser();
+//			 }
 
-				 if($scope.user.password == null || $scope.confirmPassword==null || $scope.user.password != $scope.confirmPassword){
-					 $scope.wrongConfirmPass = true
-					 return;
-				 }
+//			 })
+//			 }
+//			 $scope.getUserPrivileges=function(){
+//			 userService.getUserPrivileges($scope.user.userId||0)
+//			 .then(
+//			 function(privileges) {
+//			 console
+//			 .log('Privilege Data received from service in controller : ');
+//			 console.log(privileges);
+//			 if (privileges != null) {
+//			 $scope.allUserPrivileges=privileges;
+//			 }
 
-				 $scope.searchCriteria.userName=$scope.user.userName;
-				 $scope.searchCriteria.emailId=$scope.user.emailId;
-				 userService.verifyUserNameAndEmailId($scope.searchCriteria)
-				 .then(
-						 function(existingUser) {
-							 console
-							 .log('getting verified user with unique userName and EmailId in controller : ');
-							 console.log(existingUser);
-							 if (existingUser) {
-								 
-								 $scope.alerts=[];
-								 $scope.verifiedUser=existingUser;
-
-								 if($scope.verifiedUser.userName==$scope.user.userName || $scope.verifiedUser.emailId==$scope.user.emailId){
-									 $scope.alerts.push({msg: 'This User Name Or Email Id Already Exists!! Choose Different User Name Or Email Id'})
-									 
-									 return;
-								 }
-							 }
-							 $scope.addUser();
-						 })
-			 }
-			 $scope.getUserPrivileges=function(){
-				 userService.getUserPrivileges($scope.user.userId||0)
-				 .then(
-						 function(privileges) {
-							 console
-							 .log('Privilege Data received from service in controller : ');
-							 console.log(privileges);
-							 if (privileges != null) {
-								 $scope.allUserPrivileges=privileges;
-							 }
-
-						 })
-			 }
+//			 })
+//			 }
 
 			 $scope.saveQuestion=function(){
 
@@ -223,6 +240,11 @@ userModule
 					 $scope.wrongConfirmPass = true;
 					 return;
 				 }
+
+				 if($scope.chkStatus){
+
+					 $scope.user.securityQuestion.customQuestion = true;
+				 }
 				 userService.saveQuestion($scope.user)
 				 .then(
 						 function(response) {
@@ -235,6 +257,43 @@ userModule
 							 }
 
 						 })
+			 }
+
+			 $scope.saveUser=function(){
+
+				 if($scope.user.password.length != 6 && $scope.user.password.length < 6){
+					 $scope.userForm.$valid = false;
+					 $scope.alerts=[];
+					 $scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'});
+				 }
+
+				 if(!$scope.userForm.$valid){
+
+					 $scope.alerts=[];
+					 $scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
+					 return;
+				 }
+
+				 if($scope.user.password == null || $scope.confirmPassword==null || $scope.user.password != $scope.confirmPassword){
+					 $scope.wrongConfirmPass = true;
+					 return;
+				 }
+				 userService.saveUser($scope.user)
+				 .then(
+						 function(response) {
+							 if(response){
+								 var success=response.success;
+								 $scope.user = response.user;
+								 $scope.redirectToUser($scope.user.userId);
+								 if(!success){
+									 $scope.alerts=[];
+									 $scope.alerts.push({msg: 'This User Name Or Email Id Already Exists!! Choose Different User Name Or Email Id'});
+									 return;
+								 }
+								 
+							 }
+						 })
+
 			 }
 
 
@@ -250,6 +309,80 @@ userModule
 //			 }
 //			 })
 //			 }
+
+			 //start
+			 $scope.today = function() {
+				 $scope.dt = new Date();
+			 };
+			 $scope.today();
+
+			 $scope.clear = function () {
+				 $scope.dt = null;
+			 };
+
+			 // Disable weekend selection
+			 $scope.disabled = function(date, mode) {
+				 return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+			 };
+
+			 $scope.toggleMin = function() {
+				 $scope.minDate = $scope.minDate ? null : new Date();
+			 };
+			 $scope.toggleMin();
+			 $scope.maxDate = new Date(2020, 5, 22);
+
+			 $scope.open = function($event) {
+				 $scope.status.opened = true;
+			 };
+
+			 $scope.setDate = function(year, month, day) {
+				 $scope.dt = new Date(year, month, day);
+			 };
+
+			 $scope.dateOptions = {
+					 formatYear: 'yy',
+					 startingDay: 1
+			 };
+
+			 $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+			 $scope.format = $scope.formats[0];
+
+			 $scope.status = {
+					 opened: false
+			 };
+
+			 var tomorrow = new Date();
+			 tomorrow.setDate(tomorrow.getDate() + 1);
+			 var afterTomorrow = new Date();
+			 afterTomorrow.setDate(tomorrow.getDate() + 2);
+			 $scope.events =
+				 [
+				  {
+					  date: tomorrow,
+					  status: 'full'
+				  },
+				  {
+					  date: afterTomorrow,
+					  status: 'partially'
+				  }
+				  ];
+
+			 $scope.getDayClass = function(date, mode) {
+				 if (mode === 'day') {
+					 var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+					 for (var i=0;i<$scope.events.length;i++){
+						 var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+						 if (dayToCheck === currentDay) {
+							 return $scope.events[i].status;
+						 }
+					 }
+				 }
+
+				 return '';
+			 };
+			 //end
 
 
 		 } ]);

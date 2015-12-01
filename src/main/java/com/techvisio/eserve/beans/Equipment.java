@@ -13,17 +13,17 @@ public class Equipment extends BasicEntity{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="Equipment_Id")
+	@Column(name="EQUIPMENT_ID")
 	private Long equipmentId;
-	@Column(name="Category")
+	@Column(name="CATEGORY")
 	private String category;
-	@Column(name="Model")
+	@Column(name="MODEL")
 	private String model;
-	@Column(name="Capacity")
+	@Column(name="CAPACITY")
 	private String capacity;
-	@Column(name="Price")
+	@Column(name="PRICE")
 	private Double price;
-	@Column(name="Brand")
+	@Column(name="BRAND")
 	private String brand;
 
 	

@@ -18,15 +18,16 @@ import com.techvisio.eserve.beans.Response;
 import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.User;
+import com.techvisio.eserve.beans.UserPrivilege;
+import com.techvisio.eserve.manager.UserManager;
 import com.techvisio.eserve.util.CommonUtil;
-import com.techvisio.eserve.workflow.UserWorkflowManager;
 
 @RestController
 @RequestMapping("service/user")
 public class UserController {
 
 	@Autowired
-	UserWorkflowManager userWorkflowManager;
+	UserManager userManager;
 
 	@RequestMapping(value="/loggedinuser", method = RequestMethod.GET)
 	public ResponseEntity<Response> getLoggedInUser(){
@@ -37,27 +38,35 @@ public class UserController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Response> saveUser(@RequestBody User user){
-		Response response = new Response();
-		userWorkflowManager.saveUser(user);
-		User userFromDB = userWorkflowManager.getUser(user.getUserId());
-		response.setResponseBody(userFromDB);
-		return new ResponseEntity<Response>(response,HttpStatus.OK);
-	}
+//	@RequestMapping(method = RequestMethod.POST)
+//	public ResponseEntity<Response> saveUser(@RequestBody User user){
+//		Response response = new Response();
+//		userWorkflowManager.saveUser(user);
+//		User userFromDB = userWorkflowManager.getUser(user.getUserId());
+//		response.setResponseBody(userFromDB);
+//		return new ResponseEntity<Response>(response,HttpStatus.OK);
+//	}
 
 	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getUser(@PathVariable Long userId){
 		Response response = new Response();
-		User userFromDB=userWorkflowManager.getUser(userId);
+		User userFromDB=userManager.getUser(userId);
 		response.setResponseBody(userFromDB);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/currentpass/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<Response> getCurrentPassword(@PathVariable Long userId){
+		Response response = new Response();
+		User userPass=userManager.getUser(userId);
+		response.setResponseBody(userPass);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
 	@RequestMapping( method = RequestMethod.GET)
 	public ResponseEntity<Response> getUser(){
 		Response response = new Response();
-		List<User> userFromDB=userWorkflowManager.getUsers();
+		List<User> userFromDB=userManager.getUsers();
 		response.setResponseBody(userFromDB);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -65,7 +74,7 @@ public class UserController {
 	@RequestMapping(value = "/userRole/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getUserRoles(@PathVariable Long userId){
 		Response response = new Response();
-		List<Role> userRoles=userWorkflowManager.getUserRole(userId);
+		List<Role> userRoles=userManager.getUserRole(userId);
 		response.setResponseBody(userRoles);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -74,35 +83,58 @@ public class UserController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> saveManadatoryResetChanges(@RequestBody User user){
 
-		Map<String, Boolean> result = userWorkflowManager.forcePasswordChange(user);
+		Map<String, Boolean> result = userManager.forcePasswordChange(user);
 		Response response=new Response();
 		response.setResponseBody(result);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
 
-	@RequestMapping(value = "/userprivileges/{userId}", method = RequestMethod.GET)
-	public ResponseEntity<Response> getUserPrivileges(@PathVariable Long userId){
+	@RequestMapping(value = "/isuserexists", method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<Response> saveUser(@RequestBody User user){
+
+		Map<String, Object> result = userManager.saveUser(user);
+		Response response=new Response();
+		response.setResponseBody(result);
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+
+	}	
+//	@RequestMapping(value = "/userprivileges/{userId}", method = RequestMethod.GET)
+//	public ResponseEntity<Response> getUserPrivileges(@PathVariable Long userId){
+//		Response response = new Response();
+//		List<Privilege> userPrivileges=userManager.getUserPrivileges(userId);
+//		response.setResponseBody(userPrivileges);
+//		return new ResponseEntity<Response>(response,HttpStatus.OK);
+//	}
+
+	@RequestMapping(value = "/userwithprivileges/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<Response> getUserWithUserPrivileges(@PathVariable Long userId){
 		Response response = new Response();
-		List<Privilege> userPrivileges=userWorkflowManager.getUserPrivileges(userId);
+
+		User user = userManager.getUser(userId);
+		List<UserPrivilege> userPrivileges = userManager.getAllUserPrivileges(user);
+		user.setPrivileges(userPrivileges);
+		response.setResponseBody(user);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/userprivileges/", method = RequestMethod.GET)
+	public ResponseEntity<Response> getUserPrivileges(){
+		Response response = new Response();
+		List<UserPrivilege> userPrivileges = userManager.getUserPrivilegesSet();
 		response.setResponseBody(userPrivileges);
+
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value ="/search/", method = RequestMethod.POST)
 	public ResponseEntity<Response> getStudentDtlByCriteria(@RequestBody SearchCriteria searchCriteria) {
 		Response response=new Response();
-		List<User> userByCriteria = userWorkflowManager.getUserByCriteria(searchCriteria);
+		List<User> userByCriteria = userManager.getUserByCriteria(searchCriteria);
 		response.setResponseBody(userByCriteria);
-
-		return new ResponseEntity<Response>(response,HttpStatus.OK);
-	}
-
-	@RequestMapping(value ="/verify/", method = RequestMethod.POST)
-	public ResponseEntity<Response> verifyUserNameAndEmailId(@RequestBody SearchCriteria searchCriteria) {
-		Response response=new Response();
-		User user = userWorkflowManager.verifyUserNameAndEmialId(searchCriteria);
-		response.setResponseBody(user);
+		
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

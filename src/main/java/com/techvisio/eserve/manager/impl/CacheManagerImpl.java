@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
 import com.techvisio.eserve.beans.State;
 import com.techvisio.eserve.db.CacheDao;
@@ -280,6 +282,10 @@ public class CacheManagerImpl implements CacheManager {
 		return designationMap.get(designationId);
 	}
 
-
+	@Override
+	public List<Privilege> getPrivileges(Long clientId) {
+		List<Privilege> privileges = cacheDao.getPrivileges(clientId);
+		return privileges;
+	}
 }
 

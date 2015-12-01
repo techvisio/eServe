@@ -10,11 +10,11 @@ import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
+import com.techvisio.eserve.beans.UserPrivilege;
 @Component
-@Transactional
 public interface UserDao {
 
-	public void saveUser(User user);
+	public Long saveUser(User user);
 
 	User getUser(Long userId);
 
@@ -28,7 +28,7 @@ public interface UserDao {
 	
 //	public List<Privilege> getPrivileges();
 
-	List<Privilege> getUserPrivileges(Long userId);
+//	List<Privilege> getUserPrivileges(Long userId);
 
 	void saveUserPrivileges(List<Privilege> privileges);
 
@@ -36,6 +36,18 @@ public interface UserDao {
 
 	List<User> getUserByCriteria(SearchCriteria searchCriteria);
 
-	User verifyUserNameAndEmialId(SearchCriteria searchCriteria);
+	User getCurrentPassword(Long userId);
+
+	boolean isUserExists(User user);
+
+	List<UserPrivilege> getAllUserPrivileges(User user);
+
+	void saveUserPrivilege(UserPrivilege userPrivilege);
+
+	void saveUserPrivilege(List<UserPrivilege> userPrivileges, Long userId);
+
+	User getUserWithUserPrivileges(Long userId);
+
+	public List<UserPrivilege> getUserPrivilegesSet();
 
 }

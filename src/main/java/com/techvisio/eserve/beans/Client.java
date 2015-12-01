@@ -1,5 +1,7 @@
 package com.techvisio.eserve.beans;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,16 +11,16 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TB_CLIENT_MASTER")    
-public class Client {
+public class Client implements Serializable{
 
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="Client_Id")
+	@Column(name="CLIENT_ID")
 	private Long clientId;
-	@Column(name="Client")
+	@Column(name="CLIENT")
 	private String client;
-	@Column(name="Client_Code")
+	@Column(name="CLIENT_CODE")
 	private String clientCode;
 	
 	public Long getClientId() {
