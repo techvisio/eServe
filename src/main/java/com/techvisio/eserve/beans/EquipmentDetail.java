@@ -15,20 +15,20 @@ public class EquipmentDetail extends BasicEntity{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="Equipment_Dtl_Id")
+	@Column(name="EQUIPMENT_DTL_ID")
 	private Long equipmentDtlId;
-	@Column(name="Unit_Id")
+	@Column(name="UNIT_ID")
 	private Long unitId;
-	@Column(name="Serial_No")
+	@Column(name="SERIAL_NO")
 	private String serialNo;
-	@Column(name="Invoice_No")
+	@Column(name="INVOICE_NO")
 	private Long invoiceNo;
-	@Column(name="Warranty_Under")
+	@Column(name="WARRANTY_UNDER")
 	private String warrantyUnder;
-	@Column(name="Type")
+	@Column(name="TYPE")
 	private String type;
 	@OneToOne
-	@JoinColumn(name="Equipment_Id")
+	@JoinColumn(name="EQUIPMENT_ID")
 	private Equipment equipment;
 	
 	

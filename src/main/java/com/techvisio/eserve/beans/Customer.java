@@ -23,21 +23,23 @@ public class Customer extends BasicEntity{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="Customer_Id")
+	@Column(name="CUSTOMER_ID")
 	private Long customerId;
-	@Column(name="Customer_Name")
+	@Column(name="CUSTOMER_NAME")
 	private String customerName;
-	@Column(name="Contact_No")
+	@Column(name="CONTACT_NO")
 	private String contactNo;
-	@Column(name="Email_Id")
+	@Column(name="CUSTOMER_CODE")
+	private String customerCode;
+	@Column(name="EMAIL_ID")
 	private String emailId;
-	@Column(name="Customer_Type")
+	@Column(name="CUSTOMER_TYPE")
 	private String customerType;
 	@OneToOne(cascade={CascadeType.ALL})
-	@JoinColumn(name="Address_Id")
+	@JoinColumn(name="ADDRESS_ID")
 	private Address address;
 	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER )
-	@JoinColumn(name="Customer_Id")
+	@JoinColumn(name="CUSTOMER_ID")
 	private List<Unit> units=new ArrayList<Unit>();
 	
 	public Long getCustomerId() {
@@ -82,6 +84,12 @@ public class Customer extends BasicEntity{
 	}
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+	public String getCustomerCode() {
+		return customerCode;
+	}
+	public void setCustomerCode(String customerCode) {
+		this.customerCode = customerCode;
 	}
 	
 }

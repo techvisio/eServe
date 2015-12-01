@@ -7,13 +7,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TB_QUESTION_MASTER")
-public class QuestionMaster{
+public class QuestionMaster extends BasicEntity{
 	
 	@Id
-	@Column(name="Question")
+	@Column(name="QUESTION")
 	private String question;
 	
-	@Column(name = "Client_Id")
+	@Column(name = "CLIENT_ID")
 	private Long clientId;
 
 	public String getQuestion() {

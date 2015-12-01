@@ -1,21 +1,21 @@
-<div class="container">
+<div class="container" ng-init="init()">
 <div>
 	<h3 class="page-header jumbotron">CUSTOMER'S COMPLAINT</h3>
 </div>
 
 <div class="row">
 		<div class="col-sm-2">
-			<label for="inputlg">Customer Id</label>
+			<label for="inputlg">Customer Code</label>
 		</div>
 		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text">
+			<input class="form-control input-sm" id="inputlg" type="text" ng-model="customer.customerCode">
 		</div>
 
 		<div class="col-sm-2">
 			<label for="inputlg">Customer Name</label>
 		</div>
 		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text">
+			<input class="form-control input-sm" id="inputlg" type="text" ng-model="customer.customerName">
 		</div>
 	</div>
 
@@ -24,8 +24,17 @@
 			<label for="inputlg">Contact No</label>
 		</div>
 		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text">
+			<input class="form-control input-sm" id="inputlg" type="text" ng-model="customer.contactNo">
 		</div>
+		
+		<div class="col-sm-2">
+				<label for="inputlg">Email Id</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" ng-model="customer.emailId"
+					id="inputlg" type="text">
+			</div>
+	
 </div>
 <hr>
 <div class="row">
@@ -33,12 +42,14 @@
 <h3 class="new-event-subtitle">Unit Details</h3>
 </div>
 </div>
+<div ng-repeat="unit in customer.units">
+
 <div class="row">
 		<div class="col-sm-2">
 			<label for="inputlg">Service Category</label>
 		</div>
 		<div class="col-sm-4">
-			<select class="form-control">
+			<select class="form-control" ng-model="unit.serviceCategory">
 				<option></option>
 				<option>Warranty</option>
 				<option>AMC</option>
@@ -49,7 +60,7 @@
 			<label for="inputlg">Service Party</label>
 		</div>
 		<div class="col-sm-4">
-			<select class="form-control">
+			<select class="form-control" ng-model="unit.serviceParty">
 				<option></option>
 				<option>ANS</option>
 				<option>BLS</option>
@@ -61,7 +72,7 @@
 			<label for="inputlg">Unit Category</label>
 		</div>
 		<div class="col-sm-4">
-			<select class="form-control">
+			<select class="form-control" ng-model="unit.unitCategory">
 				<option></option>
 				<option>Icecream</option>
 				<option>Blood</option>
@@ -72,7 +83,7 @@
 			<label for="inputlg">External Id</label>
 		</div>
 		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text">
+			<input class="form-control input-sm" id="inputlg" type="text" ng-model="unit.externalId">
 		</div>
 	</div>
 
@@ -127,25 +138,25 @@
 
 	</div>
 
-	<div class="row">
+	<div class="row" ng-repeat="equip in unit.equipmentDetails">
 		<div class="col-sm-2">
-			<select class="form-control">
+			<select class="form-control" ng-model="equip.type">
 				<option></option>
 			</select>
 		</div>
 		<div class="col-sm-3">
-			<select class="form-control">
+			<select class="form-control" ng-model="equip.equipment.model">
 				<option></option>
 			</select>
 		</div>
 		<div class="col-sm-3">
-			<input class="form-control input-sm" id="inputlg" type="text">
+			<input class="form-control input-sm" id="inputlg" type="text" ng-model="equip.serialNo">
 		</div>
 		<div class="col-sm-2">
-			<input class="form-control input-sm" id="inputlg" type="text">
+			<input class="form-control input-sm" id="inputlg" type="text" ng-model="equip.invoiceNo">
 		</div>
 		<div class="col-sm-2">
-			<select class="form-control">
+			<select class="form-control" ng-model="equip.warrantyUnder">
 				<option></option>
 			</select>
 		</div>
@@ -158,90 +169,52 @@
 </div>
 </div>
 <div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Title</label>
-		</div>
-		<div class="col-sm-4">
-			<select class="form-control">
-				<option></option>
-				<option>Mr</option>
-				<option>Mrs</option>
-				<option>Ms</option>
-			</select>
+			<div class="col-sm-2">
+				<label for="inputlg">Address</label>
+			</div>
+			<div class="col-sm-4">
+				<textarea rows="3" cols="30" class="form-control input-sm"
+					id="inputlg" ng-model="unit.address.address"></textarea>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Contact No</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="unit.address.contactNo">
+			</div>
 		</div>
 
-		<div class="col-sm-2">
-			<label for="inputlg">First Name</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text">
-		</div>
-	</div>
 
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Last Name</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text">
-		</div>
-
-	<div class="col-sm-2">
-			<label for="inputlg">Telephone No</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text">
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Address</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text">
-		</div>
-
-<div class="col-sm-2">
-			<label for="inputlg">City</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text">
-		</div>
-		
-		
-	</div>
 		<div class="row">
-		
-		<div class="col-sm-2">
-			<label for="inputlg">Pincode</label>
+			<div class="col-sm-2">
+				<label for="inputlg">City</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="unit.address.city">
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Pincode</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="unit.address.pincode">
+			</div>
 		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text">
+
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">State</label>
+			</div>
+			<div class="col-sm-4">
+				<select ng-model="unit.address.state.stateId" class="form-control"
+					ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE">
+				</select>
+			</div>
 		</div>
-		
-		<div class="col-sm-2">
-			<label for="inputlg">State</label>
-		</div>
-		<div class="col-sm-4">
-			<select class="form-control">
-				<option></option>
-				<option>Delhi</option>
-				<option>Uttar Pradesh</option>
-				<option>Rjasthan</option>
-				<option>Bihar</option>
-				<option>Andhra Pradesh</option>
-				<option>Hariyana</option>
-				<option>Himachal Pradesh</option>
-				<option>Uttarakhand</option>
-				<option>West Bengal</option>
-				<option>Jammu & Kashmir</option>
-				<option>Nagaland</option>
-				<option>Kerala</option>
-				<option>Tamilnadu</option>
-			</select>
-		</div>
-	</div>
 
 <hr>
 
@@ -263,7 +236,7 @@
 		</div>
 		
 		<div class="col-sm-6">
-			<textarea class="form-control"/>
+			<textarea class="form-control"></textarea>
 		</div>
 		</div>
 		
@@ -342,6 +315,7 @@
 			<label for="inputlg">Visi Cooler</label>
 		</div>
 		
+		</div>
 		</div>
 		
 		<div class="row">

@@ -22,29 +22,29 @@ public class Unit extends BasicEntity{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="Unit_Id")
+	@Column(name="UNIT_ID")
 	private Long unitId;
-	@Column(name="Customer_Id") 
+	@Column(name="CUSTOMER_ID") 
 	private Long customerId;
-	@Column(name="Service_Category")
+	@Column(name="SERVICE_CATEGORY")
 	private String serviceCategory;
-	@Column(name="Service_Party")
+	@Column(name="SERVICE_PARTY")
 	private String serviceParty;
-	@Column(name="Unit_Category")
+	@Column(name="UNIT_CATEGORY")
 	private String unitCategory;
-	@Column(name="External_Id")
+	@Column(name="EXTERNAL_ID")
 	private String externalId;
-	@Column(name="Length")
+	@Column(name="LENGTH")
 	private Long length;
-	@Column(name="Width")
+	@Column(name="WIDTH")
 	private Long width;
-	@Column(name="Height")
+	@Column(name="HEIGHT")
 	private Long height;
 	@OneToOne(cascade={CascadeType.ALL})
-	@JoinColumn(name="Address_Id")
+	@JoinColumn(name="ADDRESS_ID")
 	private Address address;
 	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
-	@JoinColumn(name="Unit_Id")
+	@JoinColumn(name="UNIT_ID")
 	private List<EquipmentDetail> equipmentDetails;
 	
 	public String getServiceCategory() {

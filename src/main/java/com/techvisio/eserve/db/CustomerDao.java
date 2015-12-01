@@ -11,7 +11,7 @@ import com.techvisio.eserve.beans.Unit;
 public interface CustomerDao {
 
 	public Customer getCustomer(Long customerId);
-	public void saveCustomer(Customer customer);
+	public Long saveCustomer(Customer customer);
 	public void saveUnit(List<Unit> units,  Long customerId);
 	public void saveUnit(Unit unit);
 	public List<Unit> getUnits(Long customerId);

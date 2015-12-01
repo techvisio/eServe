@@ -14,11 +14,11 @@ public class Role extends BasicEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "Role_Id")
+	@Column(name = "ROLE_ID")
 	private Long roleId;
-	@Column(name = "Role_Name")
+	@Column(name = "ROLE_NAME")
 	private String roleName;
-	@Column(name = "Description")
+	@Column(name = "DESCRIPTION")
 	private String description;
 	@Transient
 	private boolean selected;

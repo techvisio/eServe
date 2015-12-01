@@ -1,7 +1,9 @@
 package com.techvisio.eserve.beans;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -21,6 +24,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -37,23 +41,23 @@ public class User extends BasicEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "User_Id")
+	@Column(name = "USER_ID")
 	private Long userId;
 	
-	@Column(name = "First_Name")
+	@Column(name = "FIRST_NAME")
 	private String firstName;
 	
-	@Column(name = "Last_Name")
+	@Column(name = "LAST_NAME")
 	private String lastName;
 	
-	@Column(name = "Email_Id")
+	@Column(name = "EMAIL_ID")
 	private String emailId;
 
 	@ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-	@JoinTable(name = "TB_USER_ROLE", joinColumns = { @JoinColumn(name = "User_Id") }, inverseJoinColumns = { @JoinColumn(name = "Role_Id") })
+	@JoinTable(name = "TB_USER_ROLE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
 	private List<Role> roles;
 	
-	@Column(name = "Password")
+	@Column(name = "PASSWORD")
 	private char[] password;
 	
 	@Transient
@@ -62,22 +66,22 @@ public class User extends BasicEntity {
 	@Column(name = "IS_ACTIVE")
 	private boolean active;
 	
-	@Column(name = "Force_Password_Change")
+	@Column(name = "FORCE_PASSWORD_CHANGE")
 	private boolean forcePasswordChange;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn
 	private SecurityQuestion securityQuestion = new SecurityQuestion();
 
-	@Column(name = "User_Name")
+	@Column(name = "USER_NAME")
 	private String userName;
 	
 	@ManyToOne
-	@JoinColumn(name = "Department_Id")
+	@JoinColumn(name = "DEPARTMENT_ID")
 	private Department department;
 	
 	@ManyToOne
-	@JoinColumn(name = "Designation_Id")
+	@JoinColumn(name = "DESIGNATION_ID")
 	private Designation designation;
 
 	@Temporal(TemporalType.DATE)
@@ -88,9 +92,9 @@ public class User extends BasicEntity {
 	@Transient
 	private String dobString;
 
-	@JoinTable(name = "TB_USER_PRIVILEGE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "Privilege_Id"))
-	@ManyToMany(fetch = FetchType.EAGER)
-	private List<Privilege> privileges;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@JoinColumn(name="USER_ID")
+	private List<UserPrivilege> privileges = new ArrayList<UserPrivilege>();
 
 	
 	public Long getUserId() {
@@ -115,14 +119,6 @@ public class User extends BasicEntity {
 
 	public void setNewPassword(char[] newPassword) {
 		this.newPassword = newPassword;
-	}
-
-	public List<Privilege> getPrivileges() {
-		return privileges;
-	}
-
-	public void setPrivileges(List<Privilege> privileges) {
-		this.privileges = privileges;
 	}
 
 	public String getFirstName() {
@@ -231,7 +227,18 @@ public class User extends BasicEntity {
 
 	public void setDobString(String dobString) {
 		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
+		if(!StringUtils.isEmpty(dobString)){
 		this.DOB = parser2.parseDateTime(dobString).toDate();
+		}
 	}
 
+	public List<UserPrivilege> getPrivileges() {
+		return privileges;
+	}
+
+	public void setPrivileges(List<UserPrivilege> privileges) {
+		this.privileges = privileges;
+	}
+
+	
 }

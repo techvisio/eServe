@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.User;
@@ -23,6 +24,7 @@ public class AuthenticationManager implements AuthenticationProvider {
 
 	@Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+//		RequestContextHolder.getRequestAttributes().
        User user= securityDao.authenticateNgetUser(authentication);
        if(user==null){
     	   return null;

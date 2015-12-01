@@ -7,14 +7,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TB_DEPARTMENT_MASTER")    
-public class Department {
+public class Department extends BasicEntity{
 
 	@Id
-	@Column(name = "Department_Id")
+	@Column(name = "DEPARTMENT_ID")
 	private Long departmentId;
-	@Column(name = "Department")
+	@Column(name = "DEPARTMENT")
 	private String department;
-	@Column(name = "client_Id")
+	@Column(name = "CLIENT_ID")
 	private Long clientId;
 	
 	public Long getClientId() {

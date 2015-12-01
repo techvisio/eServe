@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
 import com.techvisio.eserve.beans.State;
 
@@ -20,4 +21,5 @@ public interface CacheDao {
 	List<QuestionMaster> getQuestions(Long clientId);
 	List<Department> getDepartments(Long clientId);
 	List<Designation> getDesignations(Long clientId);
+	List<Privilege> getPrivileges(Long clientId);
 }

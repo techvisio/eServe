@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
 import com.techvisio.eserve.beans.State;
 import com.techvisio.eserve.db.CacheDao;
@@ -79,6 +80,14 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 		String queryString="FROM Designation d where d.clientId = " + clientId;
 		Query query=getCurrentSession().createQuery(queryString);
 		List<Designation> result= query.list();
+		return result;
+	}
+
+	@Override
+	public List<Privilege> getPrivileges(Long clientId) {
+		String queryString="FROM Privilege p where p.client.clientId = " + clientId;
+		Query query=getCurrentSession().createQuery(queryString);
+		List<Privilege> result= query.list();
 		return result;
 	}
 }

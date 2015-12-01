@@ -6,12 +6,13 @@ userModule.service('userService', function($http, $q) {
 		getAuthenticatedUser : getAuthenticatedUser,
 		getUser : getUser,
 		getUserByCriteria : getUserByCriteria,
-		verifyUserNameAndEmailId: verifyUserNameAndEmailId,
+		saveUser: saveUser,
 		getUsers : getUsers,
 		addUser : addUser,
 		getUserRole : getUserRole,
 		saveQuestion : saveQuestion,
-		getUserPrivileges : getUserPrivileges
+		getUserwithprivileges : getUserwithprivileges,
+		getUserprivileges : getUserprivileges
 	});
 
 	function authenticateUser(form) {
@@ -61,6 +62,19 @@ userModule.service('userService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
+	function isUserExists(userId){
+
+		console.log('Getting user in service');
+		var request = $http({
+			method : "get",
+			url : "../currentpass/user/" + userId,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+	
 	function getUsers(){
 
 		console.log('Getting all users in service');
@@ -74,12 +88,25 @@ userModule.service('userService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 	
-	function getUserPrivileges(userId){
+	function getUserwithprivileges(userId){
 
 		console.log('Getting all User privileges');
 		var request = $http({
 			method : "get",
-			url : "../service/user/userprivileges/" +userId,
+			url : "../service/user/userwithprivileges/" +userId,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
+	function getUserprivileges(){
+
+		console.log('ser privileges');
+		var request = $http({
+			method : "get",
+			url : "../service/user/userprivileges/",
 			params : {
 				action : "get"
 			}
@@ -145,14 +172,14 @@ userModule.service('userService', function($http, $q) {
 
 	}
 
-	function verifyUserNameAndEmailId(searchCriteria){
+	function saveUser(user){
 
 		console.log('getting verified user with unique userName and EmailId in service');
 		var request = $http({
 			method : "post",
-			url : "../service/user/verify/",
+			url : "../service/user/isuserexists/",
 			params : "",
-			data : searchCriteria
+			data : user
 
 		});
 
