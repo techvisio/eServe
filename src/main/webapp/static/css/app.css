@@ -13101,19 +13101,20 @@ ng-table-pagination-extended .ng-invalid:focus {
 	background: url(img_navsprites.gif) 0 0;
 }
 
-.container .ng-invalid input{
+
+input.ng-invalid{
 	border-color : red;
 }
 
-.container .ng-dirty.ng-valid {
-	border-color: #cccccc;
-}
 
-.container .checkbox-custom input[type=checkbox] + i {
-    padding-left: 16px;
+.container input[type="checkbox"] {
+    display:none;
+}
+.container input[type="checkbox"] + label span {
+   padding-left: 16px;
     background: url(images/sprite.png);
     background-repeat: no-repeat;
-    background-position: -50px -1017px;
+    background-position: 56px 95px;
     background-color: white;
     border-radius: 4px;
     display: inline-block;
@@ -13121,8 +13122,8 @@ ng-table-pagination-extended .ng-invalid:focus {
     min-width: 10px;
     margin-bottom: -4px;
 }
-.container .checkbox-custom input[type=checkbox]:checked + i {
-    background: url(images/sprite.png);
+.container input[type="checkbox"]:checked + label span {
+   background: url(images/sprite.png);
     background-repeat: no-repeat;
-    background-position: -50px -984px;
+    background-position: 78px 95px;
 }
