@@ -26,16 +26,16 @@
 		<div class="col-sm-2">
 			<label for="inputlg"> Date of Birth</label>
 		</div>
+		
+		
+		
 		<div class="col-sm-3">
 			<div class="date-input">
 				<input type="text" class="form-control datepicker" required="required"
 					name="requestDueDate" ng-model="user.dobString"
 					datepicker-popup="{{'MMM dd yyyy'}}" is-open="openedFrom"
 					ng-click="openedFrom = !openedFrom; $event.stopPropagation();"
-					show-button-bar="false" placeholder="Date of Birth"> <span
-					class="input-date-icon"
-					ng-click="requestResponsesCtrl.openedFrom = !requestResponsesCtrl.openedFrom; $event.stopPropagation();"><i
-					class="fa fa-calendar"></i></span>
+					show-button-bar="false" placeholder="Date of Birth">
 			</div>
 		</div>
 <!-- 		<div class="col-md-6"> -->
@@ -132,22 +132,14 @@
 	</div>
 </div>
 <div>
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th></th>
-				<th>Privilege</th>
-				<th>Description</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="privilege in user.privileges">
-				<td><input type="checkbox" ng-model="privilege.granted" /></td>
-				<td><span>{{privilege.privilege.privilege}}</span></td>
-				<td><span>{{privilege.privilege.description}}</span</td>
-			</tr>
-		</tbody>
-	</table>
+			<div class="row" ng-repeat="privilege in user.privileges">
+			<div class="col-sm-6">
+			<input type="checkbox" id="chk_{{$id}}" ng-model="privilege.granted" />
+    		<label for="chk_{{$id}}">{{privilege.privilege.privilege}}</label>
+			</div>
+				<div class="col-sm-6">
+				<span>{{privilege.privilege.description}}</span>
+				</div>
 </div>
 
 <div class="row">
