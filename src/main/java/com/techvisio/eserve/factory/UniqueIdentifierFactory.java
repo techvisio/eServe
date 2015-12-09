@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techvisio.eserve.beans.Customer;
+import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.manager.CacheManager;
 import com.techvisio.eserve.util.CommonUtil;
 import com.techvisio.eserve.util.ContextProvider;
@@ -19,18 +20,36 @@ public class UniqueIdentifierFactory implements UniqueIdentifierGenerator {
 			@Override
 			public String getUniqueIdentifierForCustomer(Customer customer) {
 				
-				String registrationCode = CommonUtil.getCurrentClient().getClientCode();
+				String customerCode = CommonUtil.getCurrentClient().getClientCode()+"/"+"CUSTOMER";
 				
 				SequenceFactory sf=ContextProvider.getContext().getBean(SequenceFactory.class);
 				
-				Long Id = sf.getSequence(registrationCode);
+				Long Id = sf.getSequence(customerCode);
 				
 				if(Id==0){
-					throw new RuntimeException("Enable to generate registration no for code : "+ registrationCode);
+					throw new RuntimeException("Enable to generate registration no for code : "+ customerCode);
 				}
 				
-				String registrationNo=CommonUtil.getCurrentClient().getClientCode()+"/"+Id;
+				String uniqueCustomerCode=CommonUtil.getCurrentClient().getClientCode()+"/"+"CUSTOMER"+"/"+String.format("%05d", Id);
 				
-				return registrationNo;
+				return uniqueCustomerCode;
+			}
+			
+			@Override
+			public String getUniqueIdentifierForUnit(Unit unit) {
+				
+				String unitCode = CommonUtil.getCurrentClient().getClientCode()+"/"+"UNIT";
+				
+				SequenceFactory sf=ContextProvider.getContext().getBean(SequenceFactory.class);
+				
+				Long Id = sf.getSequence(unitCode);
+				
+				if(Id==0){
+					throw new RuntimeException("Enable to generate unique UnitCode for code : "+ unitCode);
+				}
+				
+				String uniqueUnitCode=CommonUtil.getCurrentClient().getClientCode()+"/"+"UNIT"+"/"+String.format("%05d", Id);
+				
+				return uniqueUnitCode;
 			}
 	}

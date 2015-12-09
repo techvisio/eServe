@@ -1,5 +1,5 @@
 
-<div ng-init="getCustomers()">
+<div>
 
 <div class="row">
 			<div class="col-sm-8">
@@ -16,6 +16,18 @@
             <th>Contact No</th>
             <th>Email Id</th>
             <th>No Of Units</th>
+        </tr>
+        
+        <tr>
+            <td><input class="form-control input-sm" ng-model="searchCriteria.customerCode"
+				id="inputlg" type="text"></td>
+            <td><input class="form-control input-sm" ng-model="searchCriteria.customerName"
+				id="inputlg" type="text"></td>
+            <td><input class="form-control input-sm" ng-model="searchCriteria.contactNo"
+				id="inputlg" type="text"></td>
+            <td><input class="form-control input-sm" ng-model="searchCriteria.emailId"
+				id="inputlg" type="text"></td>
+            <th><button class="btn-primary" ng-click="getCustomerByCriteria()">Search</button></a></th>
         </tr>
     </thead>
     <tbody>

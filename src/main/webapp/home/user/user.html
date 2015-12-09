@@ -9,14 +9,14 @@
 			<label for="inputlg">First Name</label>
 		</div>
 		<div class="col-sm-3">
-			<input class="form-control input-sm" ng-model="user.firstName" type="text" required="required">
+			<input class="form-control input-sm" ng-model="user.firstName" type="text" ng-pattern="/^[a-zA-Z]+$/i" required="required">
 		</div>
 
 		<div class="col-sm-2">
 			<label for="inputlg">Last Name</label>
 		</div>
 		<div class="col-sm-3">
-			<input class="form-control input-sm" ng-model="user.lastName"
+			<input class="form-control input-sm" ng-pattern="/^[a-zA-Z]+$/i" ng-model="user.lastName"
 				id="inputlg" type="text" required="required">
 		</div>
 	</div>
@@ -51,7 +51,7 @@
 			<label for="inputlg"> Email Id</label>
 		</div>
 		<div class="col-sm-3">
-			<input class="form-control input-sm" ng-model="user.emailId"
+			<input class="form-control input-sm" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i" ng-model="user.emailId"
 				id="inputlg" type="email" required="required">
 		</div>
 
@@ -63,7 +63,7 @@
 			<label for="inputlg"> User Name</label>
 		</div>
 		<div class="col-sm-3">
-			<input class="form-control input-sm" ng-model="user.userName"
+			<input class="form-control input-sm" ng-pattern="/^[a-zA-_-Z0-9]+$/i" ng-model="user.userName"
 				id="inputlg" type="text" required="required">
 		</div>
 
@@ -81,8 +81,8 @@
 			<label for="inputlg"> Password</label>
 		</div>
 		<div class="col-sm-3">
-			<input class="form-control input-sm" pattern=".{6,}" ng-model="user.password" id="pass"
-				id="inputlg" type="password" tooltip="Password must be atleast 6 character" required="required">
+			<input class="form-control input-sm" name="password" pattern=".{6,}" ng-model="user.password" id="pass"
+				id="inputlg" type="password" tooltip-enable="userForm.$invalid" tooltip="Password must be atleast 6 character" required="required">
 		</div>
 
 		<div class="col-sm-2">
@@ -95,7 +95,7 @@
 		<div class="col-sm-1">
 			<img height="30" width="30" ng-src="../static/images/redwarning.png"
 				ng-show="wrongConfirmPass"
-				tooltip="Password And Confirm Password Should Be Same" />
+				tooltip="Password And Confirm Password Must Be Same" />
 		</div>
 
 	</div>

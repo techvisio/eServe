@@ -1,21 +1,23 @@
-<div class="container" ng-init="init()">
-<div>
-	<h3 class="page-header jumbotron">CUSTOMER'S COMPLAINT</h3>
-</div>
+<div ng-init="init()">
+	<div>
+		<h3 class="page-header jumbotron">CUSTOMER'S COMPLAINT</h3>
+	</div>
 
-<div class="row">
+	<div class="row">
 		<div class="col-sm-2">
 			<label for="inputlg">Customer Code</label>
 		</div>
 		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text" ng-model="customer.customerCode">
+			<input class="form-control input-sm" id="inputlg" type="text"
+				ng-model="customerComplaint.customerCode">
 		</div>
 
 		<div class="col-sm-2">
 			<label for="inputlg">Customer Name</label>
 		</div>
 		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text" ng-model="customer.customerName">
+			<input class="form-control input-sm" id="inputlg" type="text"
+				ng-model="customerComplaint.customerName">
 		</div>
 	</div>
 
@@ -24,32 +26,33 @@
 			<label for="inputlg">Contact No</label>
 		</div>
 		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text" ng-model="customer.contactNo">
+			<input class="form-control input-sm" id="inputlg" type="text"
+				ng-model="customerComplaint.contactNo">
 		</div>
-		
-		<div class="col-sm-2">
-				<label for="inputlg">Email Id</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" ng-model="customer.emailId"
-					id="inputlg" type="text">
-			</div>
-	
-</div>
-<hr>
-<div class="row">
-<div class="col-sm-12">
-<h3 class="new-event-subtitle">Unit Details</h3>
-</div>
-</div>
-<div ng-repeat="unit in customer.units">
 
-<div class="row">
+		<div class="col-sm-2">
+			<label for="inputlg">Email Id</label>
+		</div>
+		<div class="col-sm-4">
+			<input class="form-control input-sm" id="inputlg" type="text"
+				ng-model="customerComplaint.emailId">
+		</div>
+
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-sm-12">
+			<h3 class="new-event-subtitle">Unit Details</h3>
+		</div>
+	</div>
+
+	<div class="row">
 		<div class="col-sm-2">
 			<label for="inputlg">Service Category</label>
 		</div>
 		<div class="col-sm-4">
-			<select class="form-control" ng-model="unit.serviceCategory">
+			<select class="form-control"
+				ng-model="customerComplaint.unit.serviceCategory">
 				<option></option>
 				<option>Warranty</option>
 				<option>AMC</option>
@@ -60,7 +63,8 @@
 			<label for="inputlg">Service Party</label>
 		</div>
 		<div class="col-sm-4">
-			<select class="form-control" ng-model="unit.serviceParty">
+			<select class="form-control"
+				ng-model="customerComplaint.unit.serviceParty">
 				<option></option>
 				<option>ANS</option>
 				<option>BLS</option>
@@ -72,7 +76,8 @@
 			<label for="inputlg">Unit Category</label>
 		</div>
 		<div class="col-sm-4">
-			<select class="form-control" ng-model="unit.unitCategory">
+			<select class="form-control"
+				ng-model="customerComplaint.unit.unitCategory">
 				<option></option>
 				<option>Icecream</option>
 				<option>Blood</option>
@@ -83,248 +88,164 @@
 			<label for="inputlg">External Id</label>
 		</div>
 		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text" ng-model="unit.externalId">
+			<input class="form-control input-sm" id="inputlg" type="text"
+				ng-model="customerComplaint.unit.externalId">
+		</div>
+	</div>
+
+	<hr>
+
+<div class="row">
+		<div class="col-sm-12">
+			<h3 class="new-event-subtitle">ISSUE DESCRIPTION</h3>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="col-sm-2">
-			<label for="inputlg">Unit Size</label>
-		</div>
-		<div class="col-sm-2">
-			<select class="form-control">
-				<option></option>
-			</select>
-		</div>
-		<div class="col-sm-2">
-			<select class="form-control">
-				<option></option>
-			</select>
-		</div>
-		<div class="col-sm-2">
-			<select class="form-control">
-				<option></option>
-			</select>
-		</div>
-	</div>
-
-<div class="row">
-<div class="col-sm-12">
-	<h3 class="new-event-subtitle">Equipment Details</h3>
-	</div>
-	</div>
-	
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">type</label>
-		</div>
-
-		<div class="col-sm-3">
-			<label for="inputlg">Model No</label>
-		</div>
-
-		<div class="col-sm-3">
-			<label for="inputlg">Serial No</label>
-		</div>
-
-		<div class="col-sm-2">
-			<label for="inputlg">Invoice No</label>
-		</div>
-
-
-		<div class="col-sm-2">
-			<label for="inputlg">Warranty Under</label>
-		</div>
-
-	</div>
-
-	<div class="row" ng-repeat="equip in unit.equipmentDetails">
-		<div class="col-sm-2">
-			<select class="form-control" ng-model="equip.type">
-				<option></option>
-			</select>
-		</div>
-		<div class="col-sm-3">
-			<select class="form-control" ng-model="equip.equipment.model">
-				<option></option>
-			</select>
-		</div>
-		<div class="col-sm-3">
-			<input class="form-control input-sm" id="inputlg" type="text" ng-model="equip.serialNo">
-		</div>
-		<div class="col-sm-2">
-			<input class="form-control input-sm" id="inputlg" type="text" ng-model="equip.invoiceNo">
-		</div>
-		<div class="col-sm-2">
-			<select class="form-control" ng-model="equip.warrantyUnder">
-				<option></option>
-			</select>
-		</div>
-
-	</div>
-	
-	<div class="row">
-<div class="col-sm-12">
-<h3 class="new-event-subtitle">Site Address</h3>
-</div>
-</div>
-<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Address</label>
-			</div>
-			<div class="col-sm-4">
-				<textarea rows="3" cols="30" class="form-control input-sm"
-					id="inputlg" ng-model="unit.address.address"></textarea>
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Contact No</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.address.contactNo">
-			</div>
-		</div>
-
-
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">City</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.address.city">
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Pincode</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.address.pincode">
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">State</label>
-			</div>
-			<div class="col-sm-4">
-				<select ng-model="unit.address.state.stateId" class="form-control"
-					ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE">
-				</select>
-			</div>
-		</div>
-
-<hr>
-
-<div class="row">
-		<div class="col-sm-4">
 			<label for="inputlg">Issue</label>
 		</div>
-		
-		<div class="col-sm-6">
-			<select class="form-control">
-	<option> </option>
+
+		<div class="col-sm-4">
+			<select class="form-control" ng-model="customerComplaint.issue">
+				<option></option>
 			</select>
 		</div>
-		</div>
-		
-		<div class="row">
-		<div class="col-sm-4">
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2">
 			<label for="inputlg">Description</label>
 		</div>
-		
-		<div class="col-sm-6">
-			<textarea class="form-control"></textarea>
-		</div>
-		</div>
-		
-		<div class="row">
-<div class="col-sm-12">
-<h3 class="new-event-subtitle">Estimated Part</h3>
-</div>
-</div>
 
+		<div class="col-sm-4">
+			<textarea rows="3" cols="30" class="form-control"
+				ng-model="customerComplaint.description"></textarea>
+		</div>
+		
+		<div class="col-sm-1">
+			<input type="checkbox"/>
+		</div>
+
+		<div class="col-sm-4">
+			<label for="inputlg">Trouble Shooting Check List Done</label>
+		</div>
+	</div>
+
+<div ng-show="!newComplaint">
 <div class="row">
-
-<div class="col-sm-2">
-			<input type="checkbox" class="form-control"/>
+		<div class="col-sm-12">
+			<h3 class="new-event-subtitle">SOLUTION</h3>
 		</div>
- <div class="col-sm-2">
-			<label for="inputlg">Chiller</label>
-		</div>
-
-<div class="col-sm-2">
-			<input type="checkbox" class="form-control"/>
-		</div>
-		
+	</div>
+	<div class="row">
 		<div class="col-sm-2">
-			<label for="inputlg">FCV</label>
-		</div>
+			<label for="inputlg">Issue</label>
 		</div>
 
-		<div class="row">
+		<div class="col-sm-4">
+			<select class="form-control">
+				<option></option>
+			</select>
+		</div>
+	</div>
 
-<div class="col-sm-2">
-			<input type="checkbox" class="form-control"/>
+	<div class="row">
+		<div class="col-sm-2">
+			<label for="inputlg">Description</label>
 		</div>
 
- <div class="col-sm-2">
-			<label for="inputlg">Bump</label>
+		<div class="col-sm-4">
+			<textarea rows="3" cols="30" class="form-control"></textarea>
 		</div>
-<div class="col-sm-2">
-			<input type="checkbox" class="form-control"/>
-		</div>
-		
-		<div class="col-sm-2">
-			<label for="inputlg">SAC</label>
-		</div>
-		</div>
-		<div class="row">
+</div>	
+	
+</div>
+	<!-- 		<div class="row"> -->
+	<!-- <div class="col-sm-12"> -->
+	<!-- <h3 class="new-event-subtitle">Estimated Part</h3> -->
+	<!-- </div> -->
+	<!-- </div> -->
 
-<div class="col-sm-2">
-			<input type="checkbox" class="form-control"/>
-		</div>
- <div class="col-sm-2">
-			<label for="inputlg">WIC</label>
-		</div>
-		
-<div class="col-sm-2">
-			<input type="checkbox" class="form-control"/>
-		</div>
-		
+	<!-- <div class="row"> -->
+
+	<!-- <div class="col-sm-2"> -->
+	<!-- 			<input type="checkbox" class="form-control"/> -->
+	<!-- 		</div> -->
+	<!--  <div class="col-sm-2"> -->
+	<!-- 			<label for="inputlg">Chiller</label> -->
+	<!-- 		</div> -->
+
+	<!-- <div class="col-sm-2"> -->
+	<!-- 			<input type="checkbox" class="form-control"/> -->
+	<!-- 		</div> -->
+
+	<!-- 		<div class="col-sm-2"> -->
+	<!-- 			<label for="inputlg">FCV</label> -->
+	<!-- 		</div> -->
+	<!-- 		</div> -->
+
+	<!-- 		<div class="row"> -->
+
+	<!-- <div class="col-sm-2"> -->
+	<!-- 			<input type="checkbox" class="form-control"/> -->
+	<!-- 		</div> -->
+
+	<!--  <div class="col-sm-2"> -->
+	<!-- 			<label for="inputlg">Bump</label> -->
+	<!-- 		</div> -->
+	<!-- <div class="col-sm-2"> -->
+	<!-- 			<input type="checkbox" class="form-control"/> -->
+	<!-- 		</div> -->
+
+	<!-- 		<div class="col-sm-2"> -->
+	<!-- 			<label for="inputlg">SAC</label> -->
+	<!-- 		</div> -->
+	<!-- 		</div> -->
+	<!-- 		<div class="row"> -->
+
+	<!-- <div class="col-sm-2"> -->
+	<!-- 			<input type="checkbox" class="form-control"/> -->
+	<!-- 		</div> -->
+	<!--  <div class="col-sm-2"> -->
+	<!-- 			<label for="inputlg">WIC</label> -->
+	<!-- 		</div> -->
+
+	<!-- <div class="col-sm-2"> -->
+	<!-- 			<input type="checkbox" class="form-control"/> -->
+	<!-- 		</div> -->
+
+	<!-- 		<div class="col-sm-2"> -->
+	<!-- 			<label for="inputlg">VRF</label> -->
+	<!-- 		</div> -->
+
+	<!-- 		</div> -->
+	<!-- 		<div class="row"> -->
+
+	<!-- 		<div class="col-sm-2"> -->
+	<!-- 			<input type="checkbox" class="form-control"/> -->
+	<!-- 		</div> -->
+	<!--  <div class="col-sm-2"> -->
+	<!-- 			<label for="inputlg">DF</label> -->
+	<!-- 		</div> -->
+
+	<!-- <div class="col-sm-2"> -->
+	<!-- 			<input type="checkbox" class="form-control"/> -->
+	<!-- 		</div>		 -->
+	<!-- 		<div class="col-sm-2"> -->
+	<!-- 			<label for="inputlg">Visi Cooler</label> -->
+	<!-- 		</div> -->
+
+	<!-- 		</div> -->
+	<!-- 		</div> -->
+
+	<div class="row">
+		<div class="col-sm-10"></div>
+
 		<div class="col-sm-2">
-			<label for="inputlg">VRF</label>
+			<button type="button" class="btn btn-primary"
+				ng-click="saveComplaint()">Create Complain</button>
 		</div>
-		
-		</div>
-		<div class="row">
-		
-		<div class="col-sm-2">
-			<input type="checkbox" class="form-control"/>
-		</div>
- <div class="col-sm-2">
-			<label for="inputlg">DF</label>
-		</div>
-		
-<div class="col-sm-2">
-			<input type="checkbox" class="form-control"/>
-		</div>		
-		<div class="col-sm-2">
-			<label for="inputlg">Visi Cooler</label>
-		</div>
-		
-		</div>
-		</div>
-		
-		<div class="row">
- <div class="col-sm-10">
-		</div>
-		
-		<div class="col-sm-2">
-		<button type="button" class="btn btn-primary">Create Complain</button>
-		</div>
-		
-		</div>
-		</div>
+
+	</div>
+</div>

@@ -3,10 +3,11 @@ var customerModule = angular.module('customerModule', []);
 customerModule.controller('customerController', ['$scope','customerService','$state','$filter','injectedData','masterdataService', 
                                                  function($scope,customerService,$state,filter,injectedData,masterdataService) {
 
-
+	$scope.newComplaint=true;
 	$scope.customer={};
 	$scope.customers=[];
-	
+	$scope.searchCriteria = {};
+	$scope.customerComplaint = {};
 	$scope.dummyEquipmentDetails ={};
 	$scope.dummyUnit ={
 			"equipmentDetails" : [ {} ]
@@ -22,6 +23,28 @@ customerModule.controller('customerController', ['$scope','customerService','$st
 		$scope.customer = injectedData;
 	}
 
+	$scope.getCustomerForComplaint = function(){
+		customerService.getCustomerForComplaint(injectedData.customerId)
+		.then(function(response) {
+			console.log('customer Data received in controller : ');
+			console.log(response);
+			if (response) {
+				$scope.customer = response;
+				$scope.customerComplaint.customerCode = $scope.customer.customerCode;
+				$scope.customerComplaint.contactNo = $scope.customer.contactNo;
+				$scope.customerComplaint.emailId = $scope.customer.emailId;
+				$scope.customerComplaint.customerName = $scope.customer.customerName;
+			} 
+		})
+	}
+
+	if(injectedData){
+		
+		$scope.getCustomerForComplaint();
+		$scope.customerComplaint.unit = injectedData;
+	}
+
+	
 	$scope.init = function() {
 		console
 		.log('getting masterdata for customer');
@@ -71,10 +94,23 @@ customerModule.controller('customerController', ['$scope','customerService','$st
 		$state.go('customer',{customerId:currentCustomerId});
 	}
 	
-	$scope.redirectToComplaintScreen=function(currentCustomerId){
-		$state.go('complaint',{customerId:currentCustomerId});
+	$scope.redirectToComplaintScreen=function(currentUnitId){
+		$state.go('customerToComplaint',{unitId:currentUnitId});
 	}
 
+	 $scope.getCustomerByCriteria=function(){
+		 customerService.getCustomerByCriteria($scope.searchCriteria)
+		 .then(
+				 function(customers) {
+					 console
+					 .log('getting customer by criteria in controller : ');
+					 console.log(customers);
+					 if (customers) {
+						 $scope.customers=customers;
+					 }
+				 })
+	 }
+	
 	$scope.getCustomer = function(){
 		customerService.getCustomer($scope.customer.customerId)
 		.then(function(response) {
@@ -107,6 +143,20 @@ customerModule.controller('customerController', ['$scope','customerService','$st
 				$scope.customer = response;
 				alert("Your Records Saved Successfully")
 				$scope.redirectToCustomerDtlScreen($scope.customer.customerId);
+			} 
+		})
+	};
+
+	$scope.saveComplaint = function() {
+		console.log('save complaint called in controller');
+		customerService.saveComplaint($scope.customerComplaint)
+		.then(function(response) {
+			console.log('complaint Data received from service : ');
+			console.log(response);
+			if (response) {
+				$scope.customerComplaint = response;
+				$scope.newComplaint = false;
+				alert("Your Records Saved Successfully")
 			} 
 		})
 	};

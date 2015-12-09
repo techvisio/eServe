@@ -35,17 +35,16 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 	})
 
 	.state('complaint', {
-		url: "/complaint/{customerId:[0-9]{1,8}}",
+		url: "/complaint",
 		templateUrl: 'customer/complaint.html',
-		controller: "customerController",
-		resolve:{
-			injectedData: ['$stateParams','customerService', function($stateParams,customerService){
-				return customerService.getCustomer($stateParams.customerId);
+	    controller:"customerController",
+	    resolve:{
+			injectedData: ['$stateParams', function($stateParams){
+				return null;
 			}]
-		}
-
+	    }
 	})
-	
+
 	.state('newcustomer', {
 		url: "/customer/new",
 		templateUrl: 'customer/amc.html',
@@ -57,6 +56,17 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		}
 	})
 
+	.state('customerToComplaint', {
+		url: "/complaint/{unitId:[0-9]{1,8}}",
+		templateUrl: 'customer/complaint.html',
+		controller: "customerController",
+		resolve:{
+			injectedData: ['$stateParams','customerService', function($stateParams,customerService){
+				return customerService.getUnitForComplaint($stateParams.unitId);
+			}]
+		}
+	})
+	
 	.state('searchcustomer', {
 		url: "/customer",
 		templateUrl: 'customer/customerSearch.html',
@@ -169,9 +179,6 @@ erp.controller('ApplicationController',
 			$rootScope.enableSidebar = true;
 
 			$rootScope.$on('showError', function (o, e, type) {
-				if (!$.isEmptyObject($rootScope.curModal)) {
-					return;
-				}
 				$rootScope.curModal = $modal.open({
 					templateUrl: 'modals/errorModalContent.html',
 					controller: function ($scope) {

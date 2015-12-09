@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techvisio.eserve.beans.Customer;
+import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.Response;
+import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.manager.CustomerManager;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("service/customer")
 public class CustomerService {
 
 	@Autowired
@@ -71,4 +74,39 @@ public class CustomerService {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
+	@RequestMapping(value ="/search/", method = RequestMethod.POST)
+	public ResponseEntity<Response> getCustomerByCriteria(@RequestBody SearchCriteria searchCriteria) {
+		Response response=new Response();
+		List<Customer> customerByCriteria = customerManager.getCustomerByCriteria(searchCriteria);
+		response.setResponseBody(customerByCriteria);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+
+	@RequestMapping(value ="/complaint/", method = RequestMethod.POST)
+	public ResponseEntity<Response> saveCustomerComplaint(@RequestBody CustomerComplaint complaint) {
+		Response response=new Response();
+        customerManager.saveComplaint(complaint);
+		CustomerComplaint complaintFromDB = customerManager.getCustomerComplaint(complaint.getComplaintId());
+        response.setResponseBody(complaintFromDB);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+
+	
+	@RequestMapping(value="complaint/{customerId}",method = RequestMethod.GET)
+	public ResponseEntity<Response> getCustomerForComplaint(@PathVariable Long customerId) {  
+		Response response=new Response();
+		Customer customer = customerManager.getCustomerBasicInfo(customerId);
+		response.setResponseBody(customer);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="unitcomplaint/{unitId}",method = RequestMethod.GET)
+	public ResponseEntity<Response> getUnitForComplaint(@PathVariable Long unitId) {  
+		Response response=new Response();
+		Unit unit = customerManager.getUnitBasicInfo(unitId);
+		response.setResponseBody(unit);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
 }

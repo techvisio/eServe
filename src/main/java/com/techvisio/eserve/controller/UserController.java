@@ -95,6 +95,11 @@ public class UserController {
 	public ResponseEntity<Response> saveUser(@RequestBody User user){
 
 		Map<String, Object> result = userManager.saveUser(user);
+		user = (User) result.get("user");
+		if(user!=null){
+		List<UserPrivilege> userPrivileges = userManager.getAllUserPrivileges(user);
+		user.setPrivileges(userPrivileges);
+		}
 		Response response=new Response();
 		response.setResponseBody(result);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
@@ -130,7 +135,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value ="/search/", method = RequestMethod.POST)
-	public ResponseEntity<Response> getStudentDtlByCriteria(@RequestBody SearchCriteria searchCriteria) {
+	public ResponseEntity<Response> getUserByCriteria(@RequestBody SearchCriteria searchCriteria) {
 		Response response=new Response();
 		List<User> userByCriteria = userManager.getUserByCriteria(searchCriteria);
 		response.setResponseBody(userByCriteria);

@@ -2,6 +2,9 @@ package com.techvisio.eserve.beans;
 
 public class SearchCriteria {
 
+	private String customerName;
+	private String customerCode;
+	private String contactNo;
 	private String firstName;
 	private String lastName;
 	private String emailId;
@@ -80,6 +83,24 @@ public class SearchCriteria {
 	}
 	public void setClientId(Long clientId) {
 		this.clientId = clientId;
+	}
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+	public String getContactNo() {
+		return contactNo;
+	}
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
+	}
+	public String getCustomerCode() {
+		return customerCode;
+	}
+	public void setCustomerCode(String customerCode) {
+		this.customerCode = customerCode;
 	}
 	
 	

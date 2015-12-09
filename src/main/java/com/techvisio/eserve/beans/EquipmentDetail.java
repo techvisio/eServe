@@ -75,5 +75,4 @@ public class EquipmentDetail extends BasicEntity{
 		this.unitId = unitId;
 	}
 	
-	
 }

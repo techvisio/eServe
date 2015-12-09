@@ -1,5 +1,6 @@
 package com.techvisio.eserve.beans;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -26,6 +27,14 @@ public class Unit extends BasicEntity{
 	private Long unitId;
 	@Column(name="CUSTOMER_ID") 
 	private Long customerId;
+	@Column(name="UNIT_CODE")
+	private String unitCode;
+
+	@Column(name="CONTRACT_START_ON") 
+	private Date contractStartOn;
+	@Column(name="CONTRACT_EXPIRE_ON")
+	private Date contractExpireOn;
+	
 	@Column(name="SERVICE_CATEGORY")
 	private String serviceCategory;
 	@Column(name="SERVICE_PARTY")
@@ -114,6 +123,24 @@ public class Unit extends BasicEntity{
 	}
 	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
+	}
+	public String getUnitCode() {
+		return unitCode;
+	}
+	public void setUnitCode(String unitCode) {
+		this.unitCode = unitCode;
+	}
+	public Date getContractStartOn() {
+		return contractStartOn;
+	}
+	public void setContractStartOn(Date contractStartOn) {
+		this.contractStartOn = contractStartOn;
+	}
+	public Date getContractExpireOn() {
+		return contractExpireOn;
+	}
+	public void setContractExpireOn(Date contractExpireOn) {
+		this.contractExpireOn = contractExpireOn;
 	}
 	
 }

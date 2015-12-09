@@ -116,30 +116,44 @@
 
 	<div class="row">
 		<div class="col-sm-12">
-			<h3 class="page-header jumbotron">UNIT DETAILS 
+			<h3 class="custom-page-header">UNIT DETAILS 
+			<div class="child-right">
 			<button type="button" class="btn btn-primary btn-sm"
 				ng-click="addUnit()">Add Unit</button>
-				</h3>
+				</div></h3>
 		</div>
 	</div>
 
 
 	<div ng-repeat="unit in customer.units">
 
-<div class="row">
-<div class="col-sm-4" ng-show="$index > -1">
-<h3 class="new-event-subtitle">Unit {{$index+1}}</h3>
-</div>
+<accordion>
+    <accordion-group heading="Unit {{$index+1}}">
+      <accordion-heading>
+       
+        <div class="row">
+      <div class="col-sm-4"><label> Unit {{$index+1}} 
+      </div>
+      <div class="col-sm-2 child-right">
+      <button type="button" class="btn btn-primary btn-sm" ng-click="redirectToComplaintScreen(unit.unitId)">Create Complaint</button>
+      </label>
+   </div>
+    </div>
+      </accordion-heading>
+    
+<!-- <div class="row"> -->
+<!-- <div class="col-sm-4" ng-show="$index > -1"> -->
+<!-- <h3 class="new-event-subtitle">Unit {{$index+1}}</h3> -->
+<!-- </div> -->
 
-<div class="col-sm-4" ng-show="$index > -1"><button type="button" class="btn btn-info btn-sm" ng-click="redirectToComplaintScreen(customer.customerId)">Create Complaint</button></div>
-</div>
+<!-- <div class="col-sm-4" ng-show="$index > -1"><button type="button" class="btn btn-info btn-sm" ng-click="redirectToComplaintScreen(customer.customerId)">Create Complaint</button></div> -->
+<!-- </div> -->
 		<div class="row">
 			<div class="col-sm-2">
 				<label for="inputlg">Service Category</label>
 			</div>
 			<div class="col-sm-4">
 				<select class="form-control" ng-model="unit.serviceCategory">
-					<option></option>
 					<option>Warranty</option>
 					<option>AMC</option>
 					<option>Paid</option>
@@ -150,7 +164,6 @@
 			</div>
 			<div class="col-sm-4">
 				<select class="form-control" ng-model="unit.serviceParty">
-					<option></option>
 					<option>ANS</option>
 					<option>BLS</option>
 				</select>
@@ -162,7 +175,6 @@
 			</div>
 			<div class="col-sm-4">
 				<select class="form-control" ng-model="unit.unitCategory">
-					<option></option>
 					<option>Icecream</option>
 					<option>Blood</option>
 					<option>Medicine</option>
@@ -241,9 +253,9 @@
 			<div class="col-sm-4">
 				<h3 class="new-event-subtitle">Equipment Details</h3>
 				</div>
-				<div class="col-sm-2">
-				<button type="button" class="btn btn-info btn-sm"
-					ng-click="addMachine(unit)">Add Machine</button>
+				<div class="col-sm-2 child-right">
+				<button type="button" class="btn btn-primary btn-sm"
+					ng-click="addMachine(unit)">Add Equipment</button>
 			</div></div>
 
 		<div class="row">
@@ -322,11 +334,13 @@
 					ng-show="$index>0">Remove Unit</button>
 			</div>
 		</div>
+		</accordion-group>
+  </accordion>
+		
 	</div>
 	<div class="row">
-		<div class="col-sm-10"></div>
 
-		<div class="col-sm-2">
+		<div class="col-sm-2 child-right">
 			<button type="button" class="btn btn-primary"
 				ng-click="saveCustomer()">Save Customer</button>
 		</div>

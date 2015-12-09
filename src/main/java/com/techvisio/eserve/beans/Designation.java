@@ -18,24 +18,13 @@ public class Designation extends BasicEntity{
 	private Long clientId;
 	@Column(name = "DESIGNATION")
 	private String designation;
-    @ManyToOne
-    @JoinColumn(name="DEPARTMENT_ID")
-	private Department department;
-	
+
 	public Long getClientId() {
 		return clientId;
 	}
 
 	public void setClientId(Long clientId) {
 		this.clientId = clientId;
-	}
-
-	public Department getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(Department department) {
-		this.department = department;
 	}
 
 	public Long getDesignationId() {
@@ -53,6 +42,6 @@ public class Designation extends BasicEntity{
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
-	
-	
+
+
 }

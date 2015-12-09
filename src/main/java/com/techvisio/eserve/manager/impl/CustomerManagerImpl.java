@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techvisio.eserve.beans.Customer;
+import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.factory.UniqueIdentifierGenerator;
@@ -19,9 +21,6 @@ public class CustomerManagerImpl implements CustomerManager {
 	@Autowired
 	CustomerDao customerDao;
 	
-	@Autowired
-	UniqueIdentifierGenerator identifierGenerator;
-	
 	@Override
 	public Customer getCustomer(Long customerId) {
 		Customer customer = customerDao.getCustomer(customerId);
@@ -29,14 +28,15 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 
 	@Override
+	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria) {
+		List<Customer> customers = customerDao.getCustomerByCriteria(searchCriteria);
+		return customers;
+	}
+	
+	@Override
 	public Long saveCustomer(Customer customer) {
 		
-	    String clientCode = null;
-	    if(clientCode==null){
-	    	clientCode=identifierGenerator.getUniqueIdentifierForCustomer(customer);
-	    }
 	    customer.setClient(CommonUtil.getCurrentClient());
-	    customer.setCustomerCode(clientCode);
 		Long customerId=customerDao.saveCustomer(customer);	
 		return customerId;
 	}
@@ -64,4 +64,25 @@ public class CustomerManagerImpl implements CustomerManager {
 		return customers;
 	}
 
+	@Override
+	public CustomerComplaint getCustomerComplaint(Long complaintId) {
+		CustomerComplaint complaint = customerDao.getCustomerComplaint(complaintId);
+    	return complaint;
+	}
+	@Override
+	public void saveComplaint(CustomerComplaint customerComplaint){
+		customerDao.saveComplaint(customerComplaint);
+	}
+
+	@Override
+	public Customer getCustomerBasicInfo(Long customerId) {
+		Customer customer = customerDao.getCustomerBasicInfo(customerId);
+		return customer;
+	}
+
+	@Override
+	public Unit getUnitBasicInfo(Long unitId) {
+		Unit unit = customerDao.getUnitBasicInfo(unitId);
+		return unit;
+	}
 }
