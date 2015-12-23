@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.techvisio.eserve.beans.ComplaintAssignment;
+import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.Response;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
-import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.manager.CustomerManager;
 
 @RestController
@@ -94,7 +95,7 @@ public class CustomerService {
 	}
 
 	
-	@RequestMapping(value="complaint/{customerId}",method = RequestMethod.GET)
+	@RequestMapping(value="customercomplaint/{customerId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getCustomerForComplaint(@PathVariable Long customerId) {  
 		Response response=new Response();
 		Customer customer = customerManager.getCustomerBasicInfo(customerId);
@@ -109,4 +110,41 @@ public class CustomerService {
 		response.setResponseBody(unit);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="complaints/{customerId}",method = RequestMethod.GET)
+	public ResponseEntity<Response> getAllCustomerComplaints(@PathVariable Long customerId) {  
+		Response response=new Response();
+		List<CustomerComplaint> complaints = customerManager.getCustomerComplaints(customerId);
+		response.setResponseBody(complaints);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+
+	@RequestMapping(value="complaint/{complaintId}",method = RequestMethod.GET)
+	public ResponseEntity<Response> getCustomerComplaint(@PathVariable Long complaintId) {  
+		Response response=new Response();
+		CustomerComplaint complaint = customerManager.getCustomerComplaint(complaintId);
+		response.setResponseBody(complaint);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+
+	@RequestMapping(value ="/complaintresolution/{complaintId}", method = RequestMethod.POST)
+	public ResponseEntity<Response> saveComplaintResolution(@PathVariable Long complaintId, @RequestBody ComplaintResolution complaintResolution) {
+		Response response=new Response();
+        customerManager.saveComplaintResolution(complaintId, complaintResolution);
+        ComplaintResolution complaintResolutionFromDB = customerManager.getComplaintResolution(complaintResolution.getComplaintId());
+        response.setResponseBody(complaintResolutionFromDB);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value ="/complaintassignment/{complaintId}", method = RequestMethod.POST)
+	public ResponseEntity<Response> saveComplaintAssignment(@PathVariable Long complaintId, @RequestBody ComplaintAssignment complaintAssignment) {
+		Response response=new Response();
+        customerManager.saveComplaintAssignment(complaintId, complaintAssignment);
+		CustomerComplaint complaintFromDB = customerManager.getCustomerComplaint(complaintId);
+        response.setResponseBody(complaintFromDB);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
 }

@@ -12,7 +12,8 @@ userModule.service('userService', function($http, $q) {
 		getUserRole : getUserRole,
 		saveQuestion : saveQuestion,
 		getUserwithprivileges : getUserwithprivileges,
-		getUserprivileges : getUserprivileges
+		getUserprivileges : getUserprivileges,
+		getCurrentPassword :getCurrentPassword
 	});
 
 	function authenticateUser(form) {
@@ -62,12 +63,12 @@ userModule.service('userService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function isUserExists(userId){
+	function getCurrentPassword(userId){
 
 		console.log('Getting user in service');
 		var request = $http({
 			method : "get",
-			url : "../currentpass/user/" + userId,
+			url : "../service/user/currentpass/" + userId,
 			params : {
 				action : "get"
 			}

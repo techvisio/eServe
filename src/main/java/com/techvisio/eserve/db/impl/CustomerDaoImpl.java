@@ -8,13 +8,15 @@ import org.hibernate.SQLQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.ComplaintAssignment;
+import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
-import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.factory.UniqueIdentifierGenerator;
+import com.techvisio.eserve.util.AppConstants;
 
 @Component
 public class CustomerDaoImpl extends BaseDao implements CustomerDao{
@@ -79,7 +81,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 					}
 				}
 			}
-			
+
 			getCurrentSession().save(customer);
 		}
 
@@ -105,7 +107,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 
 		String unitCode = unit.getUnitCode();
 		if(unit.getUnitId() == null){
-			
+
 			if(unitCode==null){
 				unitCode=identifierGenerator.getUniqueIdentifierForUnit(unit);
 				unit.setUnitCode(unitCode);
@@ -134,6 +136,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	@Override
 	public void saveComplaint(CustomerComplaint customerComplaint) {
 		if(customerComplaint.getComplaintId()==null){
+			customerComplaint.setStatus(AppConstants.complaintStatus.UNASSIGNED.name());
 			getCurrentSession().save(customerComplaint);
 		}
 
@@ -141,6 +144,16 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 			getCurrentSession().update(customerComplaint);
 		}
 	}
+
+	@Override
+	public List<CustomerComplaint> getCustomerComplaints(Long customerId) {
+		String queryString="FROM CustomerComplaint cus WHERE cus.customerId = "+ customerId;
+		Query query=getCurrentSession().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<CustomerComplaint> complaints= (List<CustomerComplaint>)query.list();
+		return complaints;
+	}
+
 
 	@Override
 	public CustomerComplaint getCustomerComplaint(Long complaintId) {
@@ -153,7 +166,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		}
 		return null;
 	}
-	
+
 	@Override
 	public Customer getCustomerBasicInfo(Long customerId) {
 		String queryString="SELECT CUSTOMER_ID, CREATED_BY, CREATED_ON, UPDATED_BY, UPDATED_ON, CONTACT_NO, CUSTOMER_CODE, CUSTOMER_NAME, CUSTOMER_TYPE, EMAIL_ID, Client_Id, ADDRESS_ID FROM tb_customer_detail where CUSTOMER_ID = "+customerId ;
@@ -178,5 +191,62 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		return null;
 	}
 
-	
+
+	@Override
+	public void saveComplaintResolution(Long complaintId, ComplaintResolution complaintResolution) {
+		if(complaintResolution.getComplaintId()==null){
+			CustomerComplaint complaint = getCustomerComplaint(complaintId);	
+			complaintResolution.setCustomerComplaint(complaint);
+			getCurrentSession().save(complaintResolution);
+		}
+
+		else{ 
+			getCurrentSession().update(complaintResolution);
+		}
+	}
+
+	@Override
+	public ComplaintResolution getComplaintResolution(Long complaintId) {
+		String queryString="FROM ComplaintResolution cus WHERE cus.complaintId = "+ complaintId;
+		Query query=getCurrentSession().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<ComplaintResolution> resolutions= (List<ComplaintResolution>)query.list();
+		if(resolutions != null && resolutions.size()>0){
+			return resolutions.get(0);
+		}
+		return null;
+	}
+
+
+	@Override
+	public void saveComplaintAssignment(Long complaintId, ComplaintAssignment complaintAssignment) {
+		if(complaintAssignment.getComplaintId()==null){
+			CustomerComplaint complaint = getCustomerComplaint(complaintId);
+			if(complaint.getStatus()==null || complaint.getStatus().equals(AppConstants.complaintStatus.UNASSIGNED.name())){
+				complaint.setStatus(AppConstants.complaintStatus.ASSIGNED.name());
+				saveComplaint(complaint);	
+			}
+			
+			complaintAssignment.setCustomerComplaint(complaint);
+
+			getCurrentSession().save(complaintAssignment);
+		}
+
+		else{ 
+			getCurrentSession().update(complaintAssignment);
+		}
+	}
+
+	@Override
+	public ComplaintAssignment getComplaintAssignment(Long complaintId) {
+		String queryString="FROM ComplaintAssignment cus WHERE cus.complaintId = "+ complaintId;
+		Query query=getCurrentSession().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<ComplaintAssignment> assignments= (List<ComplaintAssignment>)query.list();
+		if(assignments != null && assignments.size()>0){
+			return assignments.get(0);
+		}
+		return null;
+	}
+
 }

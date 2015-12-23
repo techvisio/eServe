@@ -6,8 +6,10 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
+import com.techvisio.eserve.beans.Resolution;
 import com.techvisio.eserve.beans.State;
 
 @Component
@@ -23,4 +25,6 @@ public interface CacheManager {
 	public Department getDepartmentById(Long departmentId);
 	public Designation getDesignationByQuestion(Long designationId);
 	List<Privilege> getPrivileges(Long clientId);
+	Resolution getResolutionMasters(Long resolutionId);
+	Issue getIssue(Long issueId);
 }

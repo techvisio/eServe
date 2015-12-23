@@ -17,8 +17,7 @@ public class State extends BasicEntity{
 	private Long stateId;
 	@Column(name = "STATE_NAME")
 	private String stateName;
-	@Column(name = "CLIENT_ID")
-	private Long clientId;
+
 	public State(){}
 	
 	public State(Long id){
@@ -41,14 +40,5 @@ public class State extends BasicEntity{
 	public void setStateName(String stateName) {
 		this.stateName = stateName;
 	}
-
-	public Long getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
-	}
-	
 	
 }

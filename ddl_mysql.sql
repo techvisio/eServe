@@ -7,6 +7,46 @@
         drop 
         foreign key FK_im3tux72fl67al6v1h9uatcl3;
 
+    alter table TB_COMPLAINT_ASSIGNMENT 
+        drop 
+        foreign key FK_efy1rj6xyhvfpslvetcmak7cv;
+
+    alter table TB_COMPLAINT_ASSIGNMENT 
+        drop 
+        foreign key FK_j3o67txjumuedjphkx9f7xlf2;
+
+    alter table TB_COMPLAINT_ASSIGNMENT 
+        drop 
+        foreign key FK_nuwbb7pohotx6gbai57ly13f8;
+
+    alter table TB_COMPLAINT_RESOLUTION 
+        drop 
+        foreign key FK_b7c34492wmue9o8hovw0y4361;
+
+    alter table TB_COMPLAINT_RESOLUTION 
+        drop 
+        foreign key FK_d7cm5awc490s4lnensj6uvdid;
+
+    alter table TB_COMPLAINT_RESOLUTION 
+        drop 
+        foreign key FK_n33dxsve4d1x71cfm46fxjjl1;
+
+    alter table TB_CONFIG 
+        drop 
+        foreign key FK_bu8i693dhiy4sbl9tucpiwfht;
+
+    alter table TB_CUSTOMER_COMPLAINT 
+        drop 
+        foreign key FK_n124pnn94fdds0dcr8faj05aw;
+
+    alter table TB_CUSTOMER_COMPLAINT 
+        drop 
+        foreign key FK_ivbs4lvovumsgq6p8xi6eokpj;
+
+    alter table TB_CUSTOMER_COMPLAINT 
+        drop 
+        foreign key FK_5swkjwe8343mp2aghxtbj9hvs;
+
     alter table TB_CUSTOMER_DETAIL 
         drop 
         foreign key FK_tljo0rst9x21wgr6b980g1vuf;
@@ -22,10 +62,6 @@
     alter table TB_DESIGNATION_MASTER 
         drop 
         foreign key FK_2cukmf7ss9s9vb7hl1ekh7539;
-
-    alter table TB_DESIGNATION_MASTER 
-        drop 
-        foreign key FK_nudlguofhfqcpmvumgo2dxv1q;
 
     alter table TB_EQUIPMENT_DETAIL 
         drop 
@@ -43,6 +79,10 @@
         drop 
         foreign key FK_g2knoota7mm923vp006iw706l;
 
+    alter table TB_ISSUE_MASTER 
+        drop 
+        foreign key FK_38gjt49t15rjbd8mby5pvoyl9;
+
     alter table TB_MODULE_LOG 
         drop 
         foreign key FK_2c65ta99wws5dp03l51wpklon;
@@ -54,6 +94,10 @@
     alter table TB_QUESTION_MASTER 
         drop 
         foreign key FK_oqwkem6mbs8r60b513ankmkw2;
+
+    alter table TB_RESOLUTION_MASTER 
+        drop 
+        foreign key FK_1p9loturrda0tvuv78wl084ef;
 
     alter table TB_ROLE_MASTER 
         drop 
@@ -115,6 +159,14 @@
 
     drop table if exists TB_CLIENT_MASTER;
 
+    drop table if exists TB_COMPLAINT_ASSIGNMENT;
+
+    drop table if exists TB_COMPLAINT_RESOLUTION;
+
+    drop table if exists TB_CONFIG;
+
+    drop table if exists TB_CUSTOMER_COMPLAINT;
+
     drop table if exists TB_CUSTOMER_DETAIL;
 
     drop table if exists TB_DEPARTMENT_MASTER;
@@ -125,11 +177,15 @@
 
     drop table if exists TB_EQUIPMENT_MASTER;
 
+    drop table if exists TB_ISSUE_MASTER;
+
     drop table if exists TB_MODULE_LOG;
 
     drop table if exists TB_PRIVILEGE;
 
     drop table if exists TB_QUESTION_MASTER;
+
+    drop table if exists TB_RESOLUTION_MASTER;
 
     drop table if exists TB_ROLE_MASTER;
 
@@ -168,6 +224,63 @@
         primary key (CLIENT_ID)
     );
 
+    create table TB_COMPLAINT_ASSIGNMENT (
+        COMPLAINT_ID bigint not null,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        Client_Id bigint,
+        USER_ID bigint,
+        primary key (COMPLAINT_ID)
+    );
+
+    create table TB_COMPLAINT_RESOLUTION (
+        COMPLAINT_ID bigint not null,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        DESCRIPTION varchar(255),
+        Client_Id bigint,
+        RESOLUTION_ID bigint,
+        primary key (COMPLAINT_ID)
+    );
+
+    create table TB_CONFIG (
+        CONFIG_TB_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        PROPERTY varchar(255),
+        VALUE varchar(255),
+        Client_Id bigint,
+        primary key (CONFIG_TB_ID)
+    );
+
+    create table TB_CUSTOMER_COMPLAINT (
+        COMPLAINT_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        CONTACT_NO varchar(255),
+        CUSTOMER_CODE varchar(255),
+        CUSTOMER_ID bigint,
+        CUSTOMER_NAME varchar(255),
+        DESCRIPTION varchar(255),
+        EMAIL_ID varchar(255),
+        PARENT_COMPLAINT_ID bigint,
+        PRIORITY varchar(255),
+        SLA_DATE datetime,
+        STATUS varchar(255),
+        Client_Id bigint,
+        ISSUE_ID bigint,
+        UNIT_ID bigint,
+        primary key (COMPLAINT_ID)
+    );
+
     create table TB_CUSTOMER_DETAIL (
         CUSTOMER_ID bigint not null auto_increment,
         CREATED_BY varchar(255),
@@ -190,8 +303,8 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
-        CLIENT_ID bigint,
         DEPARTMENT varchar(255),
+        Client_Id bigint,
         primary key (DEPARTMENT_ID)
     );
 
@@ -201,9 +314,8 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
-        CLIENT_ID bigint,
         DESIGNATION varchar(255),
-        DEPARTMENT_ID bigint,
+        Client_Id bigint,
         primary key (DESIGNATION_ID)
     );
 
@@ -236,6 +348,17 @@
         PRICE double precision,
         Client_Id bigint,
         primary key (EQUIPMENT_ID)
+    );
+
+    create table TB_ISSUE_MASTER (
+        ISSUE_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        VALUE varchar(255),
+        Client_Id bigint,
+        primary key (ISSUE_ID)
     );
 
     create table TB_MODULE_LOG (
@@ -273,8 +396,19 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
-        CLIENT_ID bigint,
+        Client_Id bigint,
         primary key (QUESTION)
+    );
+
+    create table TB_RESOLUTION_MASTER (
+        RESOLUTION_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        VALUE varchar(255),
+        Client_Id bigint,
+        primary key (RESOLUTION_ID)
     );
 
     create table TB_ROLE_MASTER (
@@ -308,8 +442,8 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
-        CLIENT_ID bigint,
         STATE_NAME varchar(255),
+        Client_Id bigint,
         primary key (STATE_ID)
     );
 
@@ -319,6 +453,8 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
+        CONTRACT_EXPIRE_ON date,
+        CONTRACT_START_ON date,
         CUSTOMER_ID bigint,
         EXTERNAL_ID varchar(255),
         HEIGHT bigint,
@@ -326,6 +462,7 @@
         SERVICE_CATEGORY varchar(255),
         SERVICE_PARTY varchar(255),
         UNIT_CATEGORY varchar(255),
+        UNIT_CODE varchar(255),
         WIDTH bigint,
         Client_Id bigint,
         ADDRESS_ID bigint,
@@ -379,6 +516,56 @@
         foreign key (STATE_ID) 
         references TB_STATE_MASTER (STATE_ID);
 
+    alter table TB_COMPLAINT_ASSIGNMENT 
+        add constraint FK_efy1rj6xyhvfpslvetcmak7cv 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_COMPLAINT_ASSIGNMENT 
+        add constraint FK_j3o67txjumuedjphkx9f7xlf2 
+        foreign key (USER_ID) 
+        references TB_USER (USER_ID);
+
+    alter table TB_COMPLAINT_ASSIGNMENT 
+        add constraint FK_nuwbb7pohotx6gbai57ly13f8 
+        foreign key (COMPLAINT_ID) 
+        references TB_CUSTOMER_COMPLAINT (COMPLAINT_ID);
+
+    alter table TB_COMPLAINT_RESOLUTION 
+        add constraint FK_b7c34492wmue9o8hovw0y4361 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_COMPLAINT_RESOLUTION 
+        add constraint FK_d7cm5awc490s4lnensj6uvdid 
+        foreign key (RESOLUTION_ID) 
+        references TB_RESOLUTION_MASTER (RESOLUTION_ID);
+
+    alter table TB_COMPLAINT_RESOLUTION 
+        add constraint FK_n33dxsve4d1x71cfm46fxjjl1 
+        foreign key (COMPLAINT_ID) 
+        references TB_CUSTOMER_COMPLAINT (COMPLAINT_ID);
+
+    alter table TB_CONFIG 
+        add constraint FK_bu8i693dhiy4sbl9tucpiwfht 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_CUSTOMER_COMPLAINT 
+        add constraint FK_n124pnn94fdds0dcr8faj05aw 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_CUSTOMER_COMPLAINT 
+        add constraint FK_ivbs4lvovumsgq6p8xi6eokpj 
+        foreign key (ISSUE_ID) 
+        references TB_ISSUE_MASTER (ISSUE_ID);
+
+    alter table TB_CUSTOMER_COMPLAINT 
+        add constraint FK_5swkjwe8343mp2aghxtbj9hvs 
+        foreign key (UNIT_ID) 
+        references TB_UNIT_DETAIL (UNIT_ID);
+
     alter table TB_CUSTOMER_DETAIL 
         add constraint FK_tljo0rst9x21wgr6b980g1vuf 
         foreign key (Client_Id) 
@@ -398,11 +585,6 @@
         add constraint FK_2cukmf7ss9s9vb7hl1ekh7539 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
-
-    alter table TB_DESIGNATION_MASTER 
-        add constraint FK_nudlguofhfqcpmvumgo2dxv1q 
-        foreign key (DEPARTMENT_ID) 
-        references TB_DEPARTMENT_MASTER (DEPARTMENT_ID);
 
     alter table TB_EQUIPMENT_DETAIL 
         add constraint FK_3duvxcybmp3reaecywsyksbbn 
@@ -424,6 +606,11 @@
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 
+    alter table TB_ISSUE_MASTER 
+        add constraint FK_38gjt49t15rjbd8mby5pvoyl9 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
     alter table TB_MODULE_LOG 
         add constraint FK_2c65ta99wws5dp03l51wpklon 
         foreign key (Client_Id) 
@@ -436,6 +623,11 @@
 
     alter table TB_QUESTION_MASTER 
         add constraint FK_oqwkem6mbs8r60b513ankmkw2 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_RESOLUTION_MASTER 
+        add constraint FK_1p9loturrda0tvuv78wl084ef 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 

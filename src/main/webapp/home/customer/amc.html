@@ -1,351 +1,427 @@
-<tabset> <tab active=""> <tab-heading>Customer</tab-heading>
-<div ng-init="init()">
-	<div>
-		<h3 class="page-header jumbotron">CUSTOMER INFORMATION</h3>
-	</div>
-	<div>
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Customer Code</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" ng-model="customer.customerCode"
-					id="inputlg" type="text">
+
+<form name='customerForm'>
+	<tabset> <tab active=""> <tab-heading>Customer</tab-heading>
+
+	<div ng-init="init()">
+		<div ng show="alerts..length>0 || !$scope.customerForm.$valid">
+			<alert ng-repeat="alert in alerts" type="{{alert.type}}"
+				close="closeAlert($index)">{{alert.msg}}</alert>
+		</div>
+		<div>
+			<h3 class="page-header jumbotron">CUSTOMER INFORMATION</h3>
+		</div>
+		<div>
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">Customer Code</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm"
+						ng-model="customer.customerCode" id="inputlg" type="text" readOnly>
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Customer Name</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm"
+						ng-model="customer.customerName" required="required"
+						ng-pattern="/^[a-zA-Z ]+$/i" id="inputlg" type="text">
+				</div>
 			</div>
 
-			<div class="col-sm-2">
-				<label for="inputlg">Customer Name</label>
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">Contact No</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" required="required"
+						ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/"
+						ng-model="customer.contactNo" id="inputlg" type="text">
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Email Id</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" ng-model="customer.emailId"
+						required="required"
+						ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
+						id="inputlg" type="email">
+				</div>
 			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm"
-					ng-model="customer.customerName" id="inputlg" type="text">
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="radiogroup">Customer Type</label>
+				</div>
+				<div class="col-sm-4">
+					<select class="form-control" required="required"
+						ng-model="customer.customerType">
+						<option></option>
+						<option>NAD</option>
+						<option>VIP</option>
+						<option>CORPORATE</option>
+						<option>INDIVISUAL</option>
+					</select>
+				</div>
+			</div>
+			<!-- </div> -->
+
+			<!-- <div> -->
+			<!--   <h3>Billing Address</h3> -->
+			<!-- </div> -->
+			<!-- <div class="jumbotron"> -->
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="new-event-subtitle">BILLING ADDRESS</h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">Address</label>
+				</div>
+				<div class="col-sm-4">
+					<textarea rows="3" cols="30" class="form-control input-sm"
+						ng-model="customer.address.address" id="inputlg"></textarea>
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Contact No</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm"
+						ng-model="customer.address.contactNo" id="inputlg" type="text">
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">City</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm"
+						ng-model="customer.address.city" id="inputlg" type="text">
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Pincode</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm"
+						ng-model="customer.address.pincode" id="inputlg" type="text">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">State</label>
+				</div>
+				<div class="col-sm-4">
+					<select ng-model="customer.address.state.stateId"
+						class="form-control"
+						ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE">
+					</select>
+				</div>
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Contact No</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" ng-model="customer.contactNo"
-					id="inputlg" type="text">
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Email Id</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" ng-model="customer.emailId"
-					id="inputlg" type="text">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="radiogroup">Customer Type</label>
-			</div>
-			<div class="col-sm-4">
-				<select class="form-control" ng-model="customer.customerType">
-					<option></option>
-					<option>NAD</option>
-					<option>VIP</option>
-					<option>CORPORATE</option>
-					<option>INDIVISUAL</option>
-				</select>
-			</div>
-		</div>
-		<!-- </div> -->
-
-		<!-- <div> -->
-		<!--   <h3>Billing Address</h3> -->
-		<!-- </div> -->
-		<!-- <div class="jumbotron"> -->
 		<div class="row">
 			<div class="col-sm-12">
-				<h3 class="new-event-subtitle">BILLING ADDRESS</h3>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Address</label>
-			</div>
-			<div class="col-sm-4">
-				<textarea rows="3" cols="30" class="form-control input-sm"
-					ng-model="customer.address.address" id="inputlg"></textarea>
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Contact No</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm"
-					ng-model="customer.address.contactNo" id="inputlg" type="text">
+				<h3 class="custom-page-header">
+					UNIT DETAILS
+					<div class="child-right">
+						<button type="button" class="btn btn-primary btn-sm"
+							ng-click="addUnit()">Add Unit</button>
+					</div>
+				</h3>
 			</div>
 		</div>
 
 
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">City</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm"
-					ng-model="customer.address.city" id="inputlg" type="text">
-			</div>
+		<div ng-repeat="unit in customer.units">
 
-			<div class="col-sm-2">
-				<label for="inputlg">Pincode</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm"
-					ng-model="customer.address.pincode" id="inputlg" type="text">
-			</div>
-		</div>
+			<accordion> <accordion-group heading="Unit {{$index+1}}">
+			<accordion-heading>
 
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">State</label>
-			</div>
-			<div class="col-sm-4">
-				<select ng-model="customer.address.state.stateId"
-					class="form-control"
-					ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE">
-				</select>
-			</div>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-sm-12">
-			<h3 class="custom-page-header">UNIT DETAILS 
-			<div class="child-right">
-			<button type="button" class="btn btn-primary btn-sm"
-				ng-click="addUnit()">Add Unit</button>
-				</div></h3>
-		</div>
-	</div>
-
-
-	<div ng-repeat="unit in customer.units">
-
-<accordion>
-    <accordion-group heading="Unit {{$index+1}}">
-      <accordion-heading>
-       
-        <div class="row">
-      <div class="col-sm-4"><label> Unit {{$index+1}} 
-      </div>
-      <div class="col-sm-2 child-right">
-      <button type="button" class="btn btn-primary btn-sm" ng-click="redirectToComplaintScreen(unit.unitId)">Create Complaint</button>
-      </label>
-   </div>
-    </div>
-      </accordion-heading>
-    
-<!-- <div class="row"> -->
-<!-- <div class="col-sm-4" ng-show="$index > -1"> -->
-<!-- <h3 class="new-event-subtitle">Unit {{$index+1}}</h3> -->
-<!-- </div> -->
-
-<!-- <div class="col-sm-4" ng-show="$index > -1"><button type="button" class="btn btn-info btn-sm" ng-click="redirectToComplaintScreen(customer.customerId)">Create Complaint</button></div> -->
-<!-- </div> -->
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Service Category</label>
-			</div>
-			<div class="col-sm-4">
-				<select class="form-control" ng-model="unit.serviceCategory">
-					<option>Warranty</option>
-					<option>AMC</option>
-					<option>Paid</option>
-				</select>
-			</div>
-			<div class="col-sm-2">
-				<label for="inputlg">Service Party</label>
-			</div>
-			<div class="col-sm-4">
-				<select class="form-control" ng-model="unit.serviceParty">
-					<option>ANS</option>
-					<option>BLS</option>
-				</select>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Unit Category</label>
-			</div>
-			<div class="col-sm-4">
-				<select class="form-control" ng-model="unit.unitCategory">
-					<option>Icecream</option>
-					<option>Blood</option>
-					<option>Medicine</option>
-				</select>
-			</div>
-			<div class="col-sm-2">
-				<label for="inputlg">External Id</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.externalId">
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-4">
-				<h3 class="new-event-subtitle">Site Address Details</h3>
-			</div>
-			<div class="col-sm-1">
-				<input type="checkbox" />
-			</div>
-			<div class="col-sm-4">
-				<label id="sameAsAbove">Same As Billing Address</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Address</label>
-			</div>
-			<div class="col-sm-4">
-				<textarea rows="3" cols="30" class="form-control input-sm"
-					id="inputlg" ng-model="unit.address.address"></textarea>
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Contact No</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.address.contactNo">
-			</div>
-		</div>
-
-
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">City</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.address.city">
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Pincode</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.address.pincode">
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">State</label>
-			</div>
-			<div class="col-sm-4">
-				<select ng-model="unit.address.state.stateId" class="form-control"
-					ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE">
-				</select>
-			</div>
-		</div>
-
-
-		<div class="row">
-			<div class="col-sm-4">
-				<h3 class="new-event-subtitle">Equipment Details</h3>
+			<div class="row">
+				<div class="col-sm-4">
+					<label> Unit {{$index+1}} 
 				</div>
 				<div class="col-sm-2 child-right">
-				<button type="button" class="btn btn-primary btn-sm"
-					ng-click="addMachine(unit)">Add Equipment</button>
-			</div></div>
+					<button type="button" class="btn btn-primary btn-sm"
+						ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)">Create
+						Complaint</button>
+					</label>
+				</div>
+			</div>
+			</accordion-heading>
 
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">Unit Code</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" id="inputlg" type="text"
+						ng-model="unit.unitCode" readOnly> 
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Service Category</label>
+				</div>
+				<div class="col-sm-4">
+					<select class="form-control" ng-model="unit.serviceCategory">
+						<option>Warranty</option>
+						<option>AMC</option>
+						<option>Paid</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="col-sm-2">
+					<label for="inputlg">Service Party</label>
+				</div>
+				<div class="col-sm-4">
+					<select class="form-control" ng-model="unit.serviceParty">
+						<option>ANS</option>
+						<option>BLS</option>
+					</select>
+				</div>
+				<div class="col-sm-2">
+					<label for="inputlg">Unit Category</label>
+				</div>
+				<div class="col-sm-4">
+					<select class="form-control" ng-model="unit.unitCategory">
+						<option>Icecream</option>
+						<option>Blood</option>
+						<option>Medicine</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="col-sm-2">
+					<label for="inputlg">External Id</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" id="inputlg" type="text"
+						ng-model="unit.externalId">
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg"> Contract Start On</label>
+				</div>
+				<div class="col-sm-4">
+					<div class="date-input">
+						<input type="text" class="form-control datepicker"
+							name="requestDueDate" ng-model="unit.contractStartOnString"
+							datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
+							ng-click="startDate = !startDate; $event.stopPropagation();"
+							show-button-bar="false">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="col-sm-2">
+					<label for="inputlg"> Contract Expire On</label>
+				</div>
+				<div class="col-sm-4">
+					<div class="date-input">
+						<input type="text" class="form-control datepicker"
+							name="requestDueDate" ng-model="unit.contractExpireOnString"
+							datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate"
+							ng-click="expireDate = !expireDate; $event.stopPropagation();"
+							show-button-bar="false">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<h3 class="new-event-subtitle">Site Address Details</h3>
+				</div>
+				<div class="col-sm-6 child-right">
+					<input type="checkbox" id="chk_act" /> <label for="chk_act">Same
+						As Billing Address</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">Address</label>
+				</div>
+				<div class="col-sm-4">
+					<textarea rows="3" cols="30" class="form-control input-sm"
+						id="inputlg" ng-model="unit.address.address"></textarea>
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Contact No</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" id="inputlg" type="text"
+						ng-model="unit.address.contactNo">
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">City</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" id="inputlg" type="text"
+						ng-model="unit.address.city">
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Pincode</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" id="inputlg" type="text"
+						ng-model="unit.address.pincode">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">State</label>
+				</div>
+				<div class="col-sm-4">
+					<select ng-model="unit.address.state.stateId" class="form-control"
+						ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE">
+					</select>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-sm-4">
+					<h3 class="new-event-subtitle">Equipment Details</h3>
+				</div>
+				<div class="col-sm-2 child-right">
+					<button type="button" class="btn btn-primary btn-sm"
+						ng-click="addMachine(unit)">Add Equipment</button>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">type</label>
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Model No</label>
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Serial No</label>
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Invoice No</label>
+				</div>
+
+
+				<div class="col-sm-2">
+					<label for="inputlg">Warranty Under</label>
+				</div>
+
+				<div class="col-sm-2"></div>
+
+			</div>
+
+			<div class="row" ng-repeat="equip in unit.equipmentDetails">
+				<div class="col-sm-2">
+					<select class="form-control" ng-model="equip.type">
+						<option></option>
+					</select>
+				</div>
+				<div class="col-sm-2">
+					<select class="form-control" ng-model="equip.equipment.model">
+						<option></option>
+					</select>
+				</div>
+				<div class="col-sm-2">
+					<input class="form-control input-sm" id="inputlg" type="text"
+						ng-model="equip.serialNo">
+				</div>
+				<div class="col-sm-2">
+					<input class="form-control input-sm" id="inputlg" type="text"
+						ng-model="equip.invoiceNo">
+				</div>
+				<div class="col-sm-2">
+					<select class="form-control" ng-model="equip.warrantyUnder">
+						<option></option>
+					</select>
+				</div>
+				<div class="col-sm-2">
+					<button type="button" class="btn btn-default btn-sm"
+						ng-click="removeMachine(unit,$index)" ng-show="$index>0">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3"></div>
+
+				<div class="col-sm-3">
+					<button type="button" class="btn btn-primary">Edit</button>
+				</div>
+
+				<div class="col-sm-3">
+					<button type="button" class="btn btn-primary"
+						ng-click="saveUnit(unit)">Save Unit</button>
+				</div>
+				<div class="col-sm-3"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<button class="btn-primary" ng-click="removeUnit($index)"
+						ng-show="$index>0">Remove Unit</button>
+				</div>
+			</div>
+			</accordion-group> </accordion>
+
+		</div>
 		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">type</label>
-			</div>
 
-			<div class="col-sm-2">
-				<label for="inputlg">Model No</label>
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Serial No</label>
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Invoice No</label>
-			</div>
-
-
-			<div class="col-sm-2">
-				<label for="inputlg">Warranty Under</label>
-			</div>
-
-			<div class="col-sm-2"></div>
-
-		</div>
-
-		<div class="row" ng-repeat="equip in unit.equipmentDetails">
-			<div class="col-sm-2">
-				<select class="form-control" ng-model="equip.type">
-					<option></option>
-				</select>
-			</div>
-			<div class="col-sm-2">
-				<select class="form-control" ng-model="equip.equipment.model">
-					<option></option>
-				</select>
-			</div>
-			<div class="col-sm-2">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="equip.serialNo">
-			</div>
-			<div class="col-sm-2">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="equip.invoiceNo">
-			</div>
-			<div class="col-sm-2">
-				<select class="form-control" ng-model="equip.warrantyUnder">
-					<option></option>
-				</select>
-			</div>
-			<div class="col-sm-2">
-				<button type="button" class="btn btn-default btn-sm"
-					ng-click="removeMachine(unit,$index)" ng-show="$index>0">
-					<span class="glyphicon glyphicon-remove"></span>
-				</button>
+			<div class="col-sm-2 child-right">
+				<button type="button" class="btn btn-primary"
+					ng-click="saveCustomer()">Save Customer</button>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-3"></div>
-
-			<div class="col-sm-3">
-				<button type="button" class="btn btn-primary">Edit</button>
-			</div>
-
-			<div class="col-sm-3">
-				<button type="button" class="btn btn-primary" ng-click="saveUnit(unit)">Save
-					Unit</button>
-			</div>
-			<div class="col-sm-3"></div>
-		</div>
-		<div class="row">
-			<div class="col-sm-2">
-				<button class="btn-primary" ng-click="removeUnit($index)"
-					ng-show="$index>0">Remove Unit</button>
-			</div>
-		</div>
-		</accordion-group>
-  </accordion>
-		
 	</div>
-	<div class="row">
-
-		<div class="col-sm-2 child-right">
-			<button type="button" class="btn btn-primary"
-				ng-click="saveCustomer()">Save Customer</button>
-		</div>
+</form>
+</tab>
+<tab> <tab-heading>AMC History</tab-heading> </tab>
+<tab> <tab-heading>Complaint</tab-heading>
+<div ng-init="getAllComplaints()">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Customer Code</th>
+				<th>Customer Name</th>
+				<th>Unit Code</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="complaint in customerComplaints">
+				<td><a herf="#"
+					ng-click="redirectToComplaintScreen(complaint.complaintId)">{{complaint.complaintId}}
+				</a></td>
+				</td>
+				<td>{{complaint.customerName}}</td>
+				<td>{{complaint.unit.unitCode}}</td>
+				<td>{{complaint.status}}</td>
+				<!--         <td><a ui-sref="resetpassword"><button class="btn-primary">Reset Password</button></a></td> -->
+			</tr>
+		</tbody>
+	</table>
 </div>
-	</div>
-</tab> <tab> <tab-heading>AMC History</tab-heading> </tab> <tab> <tab-heading>Complaint</tab-heading>
-</tab> <tab> <tab-heading>PMS</tab-heading> </tab> <tab> <tab-heading>Call</tab-heading>
-</tab> </tabset>
+
+</tab>
+<tab> <tab-heading>PMS</tab-heading> </tab>
+<tab> <tab-heading>Call</tab-heading> </tab>
+</tabset>

@@ -14,6 +14,8 @@ userModule
 			 $scope.form={};
 			 $scope.customQuestion = false;
 			 $scope.wrongNewPass = false;
+			 $scope.wrongCurrntPass = false;
+			 $scope.userPassword = {};
 			 $scope.isNew = true;
 			 $scope.oldConfirmed = true;
 			 $scope.wrongConfirmPass = false;
@@ -158,19 +160,33 @@ userModule
 						 })
 			 }
 
+			 $scope.getCurrentPassword=function(){
+				 userService.getUser($scope.user.userId)
+				 .then(
+						 function(existingUser) {
+							 console
+							 .log('user received from service in controller : ');
+							 console.log(existingUser);
+							 if (existingUser) {
+								 $scope.userPassword=existingUser;
+							 }
+
+						 })
+			 }
 //			 $scope.getCurrentPassword=function(){
-//			 userService.getCurrentPassword($scope.user.userId)
-//			 .then(
-//			 function(existingUserPassword) {
-//			 console
-//			 .log('user Data received from service in controller : ');
-//			 console.log(existingUserPassword);
-//			 if (existingUserPassword) {
-//			 $scope.userPassword=existingUserPassword;
+//				 userService.getCurrentPassword($scope.user.userId)
+//				 .then(
+//						 function(userPassword) {
+//							 console
+//							 .log('user password received from service in controller : ');
+//							 console.log(userPassword);
+//							 if (userPassword) {
+//								 $scope.userPassword=userPassword;
+//							 }
+//
+//						 })
 //			 }
 
-//			 })
-//			 }			 
 			 $scope.getUsers=function(){
 				 userService.getUsers()
 				 .then(
@@ -224,7 +240,7 @@ userModule
 //			 }
 
 			 $scope.saveQuestion=function(){
-
+				 
 				 if($scope.user.password == $scope.user.newPassword){
 					 $scope.wrongNewPass = true;
 					 return;
@@ -261,9 +277,9 @@ userModule
 
 			 $scope.saveUser=function(){
 
-				 if($scope.user.password.length != 6 && $scope.user.password.length < 6){
-					 $scope.userForm.$valid = false;
-				 }
+//				 if($scope.user.password.length != 6 && $scope.user.password.length < 6){
+//				 $scope.userForm.$valid = false;
+//				 }
 
 				 if(!$scope.userForm.$valid){
 
@@ -272,22 +288,22 @@ userModule
 					 return;
 				 }
 
-				 if($scope.user.password == null || $scope.confirmPassword==null || $scope.user.password != $scope.confirmPassword){
-					 $scope.wrongConfirmPass = true;
-					 return;
-				 }
+//				 if($scope.user.password == null || $scope.confirmPassword==null || $scope.user.password != $scope.confirmPassword){
+//				 $scope.wrongConfirmPass = true;
+//				 return;
+//				 }
 				 userService.saveUser($scope.user)
 				 .then(
 						 function(response) {
 							 if(response){
 								 var success=response.success;
 								 if(success){
-								 $scope.user = response.user;
-								 $scope.alerts=[];
-								 alert("User Saved Successfully");
-								 $scope.redirectToUser($scope.user.userId);
+									 $scope.user = response.user;
+									 $scope.alerts=[];
+									 alert("User Saved Successfully");
+									 $scope.redirectToUser($scope.user.userId);
 								 }
-								 
+
 								 if(!success){
 									 $scope.alerts=[];
 									 $scope.alerts.push({msg: 'This User Name Or Email Id Already Exists!! Choose Different User Name Or Email Id'});
@@ -297,19 +313,19 @@ userModule
 						 })
 			 }
 
-		$scope.allLetter = function(inputtxt)  
-			  {  
-			   var letters = /^[A-Za-z]+$/;  
-			   if($scope.user.firstName.value.match(letters))  
-			     {  
-			      return true;  
-			     }  
-			   else  
-			     {  
-			     alert("Fields are not valid");  
-			     return false;  
-			     }  
-			  }  
+			 $scope.allLetter = function(inputtxt)  
+			 {  
+				 var letters = /^[A-Za-z]+$/;  
+				 if($scope.user.firstName.value.match(letters))  
+				 {  
+					 return true;  
+				 }  
+				 else  
+				 {  
+					 alert("Fields are not valid");  
+					 return false;  
+				 }  
+			 }  
 
 //			 $scope.getUserRole=function(){
 //			 userService.getUserRole($scope.user.userId)

@@ -9,15 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
+import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.SecurityDao;
 import com.techvisio.eserve.db.UserDao;
 import com.techvisio.eserve.manager.UserManager;
+import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 @Component
 @Transactional
@@ -25,6 +28,9 @@ public class UserManagerImpl implements UserManager{
 
 	@Autowired
 	UserDao userDao;
+	
+	@Autowired
+	CacheDao cacheDao;
 
 	@Override
 	public User getUser(Long userId) {
@@ -34,7 +40,7 @@ public class UserManagerImpl implements UserManager{
 
 	@Override
 	public User getCurrentPassword(Long userId){
-		User user = userDao.getUser(userId);
+		User user = userDao.getCurrentPassword(userId);
 		return user;
 	}
 
@@ -113,6 +119,14 @@ public class UserManagerImpl implements UserManager{
 		}
 		
             user.setClient(CommonUtil.getCurrentClient());		
+            
+            if(user.getUserId()==null){
+            	List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
+            	for(Config config : defaultValues){
+            	if(config.getProperty()==AppConstants.DefaultValues.DEFAULT_PASSWORD.name());
+            	user.setPassword(config.getValue().toCharArray());
+            		}
+            }
     		Iterator<UserPrivilege> itr = user.getPrivileges().iterator();
 
     		while (itr.hasNext()) {

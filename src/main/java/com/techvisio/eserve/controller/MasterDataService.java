@@ -38,6 +38,8 @@ public class MasterDataService {
 		Response response=new Response();
 		String[] masterEntity=new String[]{
 				AppConstants.STATE,
+				AppConstants.RESOLUTION,
+				AppConstants.ISSUE
 		};
 
 		try{

@@ -33,6 +33,7 @@ public class UserController {
 	public ResponseEntity<Response> getLoggedInUser(){
 		User user =null;
 		user = CommonUtil.getCurrentUser();
+		user.setPassword(null);
 		Response response=new Response();
 		response.setResponseBody(user);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -58,7 +59,7 @@ public class UserController {
 	@RequestMapping(value = "/currentpass/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getCurrentPassword(@PathVariable Long userId){
 		Response response = new Response();
-		User userPass=userManager.getUser(userId);
+		User userPass=userManager.getCurrentPassword(userId);
 		response.setResponseBody(userPass);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -83,6 +84,9 @@ public class UserController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> saveManadatoryResetChanges(@RequestBody User user){
 
+		User loggedinUser = CommonUtil.getCurrentUser();
+		User userFrromDB = userManager.getUser(user.getUserId());
+		loggedinUser.setPassword(userFrromDB.getPassword());
 		Map<String, Boolean> result = userManager.forcePasswordChange(user);
 		Response response=new Response();
 		response.setResponseBody(result);

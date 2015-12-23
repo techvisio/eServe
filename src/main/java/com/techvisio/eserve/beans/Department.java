@@ -14,15 +14,7 @@ public class Department extends BasicEntity{
 	private Long departmentId;
 	@Column(name = "DEPARTMENT")
 	private String department;
-	@Column(name = "CLIENT_ID")
-	private Long clientId;
 	
-	public Long getClientId() {
-		return clientId;
-	}
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
-	}
 	public Long getDepartmentId() {
 		return departmentId;
 	}

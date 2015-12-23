@@ -6,10 +6,13 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
+import com.techvisio.eserve.beans.Resolution;
 import com.techvisio.eserve.beans.State;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.util.CustomLogger;
@@ -52,6 +55,31 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 	}
 	
 	@Override
+	public List<Config> getDefaultValues() {
+		String queryString="FROM Config";
+		Query query=getCurrentSession().createQuery(queryString);
+		List<Config> result= query.list();
+		return result;
+	}
+	
+	
+	@Override
+	public List<Resolution> getResolution(){
+		String queryString="FROM Resolution";
+		Query query=getCurrentSession().createQuery(queryString);
+		List<Resolution> result= query.list();
+		return result;
+	}
+	
+	@Override
+	public List<Issue> getIssues(){
+		String queryString="FROM Issue";
+		Query query=getCurrentSession().createQuery(queryString);
+		List<Issue> result= query.list();
+		return result;
+	}
+	
+	@Override
 	public List<State> getState(Long clientId){
 		String queryString="FROM State s where s.clientId = "+ clientId ;
 		Query query=getCurrentSession().createQuery(queryString);
@@ -88,6 +116,14 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 		String queryString="FROM Privilege p where p.client.clientId = " + clientId;
 		Query query=getCurrentSession().createQuery(queryString);
 		List<Privilege> result= query.list();
+		return result;
+	}
+	
+	@Override
+	public List<Config> getDefalutValues(Long clientId) {
+		String queryString="FROM Config c where c.client.clientId = " + clientId;
+		Query query=getCurrentSession().createQuery(queryString);
+		List<Config> result= query.list();
 		return result;
 	}
 }

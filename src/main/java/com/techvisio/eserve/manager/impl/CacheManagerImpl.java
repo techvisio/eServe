@@ -5,15 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
+import com.techvisio.eserve.beans.Resolution;
 import com.techvisio.eserve.beans.State;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.impl.CacheDaoImpl;
@@ -48,7 +49,9 @@ public class CacheManagerImpl implements CacheManager {
 	private static Map<String, QuestionMaster> questionMap = new HashMap<String, QuestionMaster>();
 	private static Map<Long, Department> departmentMap = new HashMap<Long, Department>();
 	private static Map<Long, Designation> designationMap = new HashMap<Long, Designation>();
-
+	private static Map<Long, Resolution> resolutionMap = new HashMap<Long, Resolution>();
+	private static Map<Long, Issue> issueMap = new HashMap<Long, Issue>();
+	
 	public  List<State> getStates(Long clientId) {
 		Map<String, List> clientMap = clientEntityListMap.get(clientId);
 		if (clientMap != null){
@@ -101,6 +104,29 @@ public class CacheManagerImpl implements CacheManager {
 		return new ArrayList<Designation>();
 	}
 
+	
+	public  List<Resolution> getComplaintResolutions(Long clientId) {
+		Map<String, List> clientMap = clientEntityListMap.get(clientId);
+		if (clientMap != null){
+			List data = clientMap.get(AppConstants.RESOLUTION); 
+			if(data != null){
+				return (List<Resolution>)data;
+			}
+		}
+		return new ArrayList<Resolution>();
+	}
+	
+	public  List<Issue> getIssues(Long clientId) {
+		Map<String, List> clientMap = clientEntityListMap.get(clientId);
+		if (clientMap != null){
+			List data = clientMap.get(AppConstants.ISSUE); 
+			if(data != null){
+				return (List<Issue>)data;
+			}
+		}
+		return new ArrayList<Issue>();
+	}
+	
 	public void builtEntityListCache(){
 		List<State> states=new ArrayList<State>();
 		logger.info("{} : built entity list cache work for get state ",this.getClass().getName());
@@ -118,6 +144,14 @@ public class CacheManagerImpl implements CacheManager {
 		List<Designation> designations =new ArrayList<Designation>();
 		designations=cacheDao.getDesignations();
 		entityListMap.put(AppConstants.DESIGNATION, designations);
+
+		List<Resolution> resolutions =new ArrayList<Resolution>();
+		resolutions=cacheDao.getResolution();
+		entityListMap.put(AppConstants.RESOLUTION, resolutions);
+
+		List<Issue> issues =new ArrayList<Issue>();
+		issues=cacheDao.getIssues();
+		entityListMap.put(AppConstants.ISSUE, issues);
 
 		buildEntityMap();
 
@@ -153,6 +187,17 @@ public class CacheManagerImpl implements CacheManager {
 			entityListMap.put(AppConstants.DESIGNATION, designations);
 			break;
 
+		case AppConstants.RESOLUTION:
+			List<Resolution> resolutions =new ArrayList<Resolution>();
+			resolutions=cacheDao.getResolution();
+			entityListMap.put(AppConstants.RESOLUTION, resolutions);
+			break;
+			
+		case AppConstants.ISSUE:
+			List<Issue> issues =new ArrayList<Issue>();
+			issues=cacheDao.getIssues();
+			entityListMap.put(AppConstants.ISSUE, issues);
+			break;
 		default:
 
 		}
@@ -173,7 +218,7 @@ public class CacheManagerImpl implements CacheManager {
 		if(states!=null){
 			for(State state : states){
 
-				Long clientId = state.getClientId();
+				Long clientId = state.getClient().getClientId();
 
 				Map<String, List> subMap = clientEntityListMap.get(clientId);
 				if(subMap==null){
@@ -196,7 +241,7 @@ public class CacheManagerImpl implements CacheManager {
 		if(questionMasters!=null){
 			for(QuestionMaster questionMaster : questionMasters){
 
-				Long clientId = questionMaster.getClientId();
+				Long clientId = questionMaster.getClient().getClientId();
 
 				Map<String, List> subMap = clientEntityListMap.get(clientId);
 				if(subMap==null){
@@ -219,7 +264,7 @@ public class CacheManagerImpl implements CacheManager {
 		if(departments!=null){
 			for(Department department : departments){
 
-				Long clientId = department.getClientId();
+				Long clientId = department.getClient().getClientId();
 
 				Map<String, List> subMap = clientEntityListMap.get(clientId);
 				if(subMap==null){
@@ -242,7 +287,7 @@ public class CacheManagerImpl implements CacheManager {
 		if(designations!=null){
 			for(Designation designation : designations){
 
-				Long clientId = designation.getClientId();
+				Long clientId = designation.getClient().getClientId();
 
 				Map<String, List> subMap = clientEntityListMap.get(clientId);
 				if(subMap==null){
@@ -258,6 +303,52 @@ public class CacheManagerImpl implements CacheManager {
 					subMap.put(AppConstants.DESIGNATION,data);
 				}
 				data.add(designation);
+			}
+		}
+		
+		List<Resolution> resolutions = cacheDao.getResolution();
+		if(resolutions!=null){
+			for(Resolution resolutionMaster : resolutions){
+
+				Long clientId = resolutionMaster.getClient().getClientId();
+
+				Map<String, List> subMap = clientEntityListMap.get(clientId);
+				if(subMap==null){
+
+					subMap = new HashMap<String, List>();
+					clientEntityListMap.put(clientId, subMap);
+				}
+
+				List data = subMap.get(AppConstants.RESOLUTION);
+
+				if(data==null){
+					data = new ArrayList<Resolution>();
+					subMap.put(AppConstants.RESOLUTION,data);
+				}
+				data.add(resolutionMaster);
+			}
+		}
+
+		List<Issue> issues = cacheDao.getIssues();
+		if(issues!=null){
+			for(Issue issue : issues){
+
+				Long clientId = issue.getClient().getClientId();
+
+				Map<String, List> subMap = clientEntityListMap.get(clientId);
+				if(subMap==null){
+
+					subMap = new HashMap<String, List>();
+					clientEntityListMap.put(clientId, subMap);
+				}
+
+				List data = subMap.get(AppConstants.ISSUE);
+
+				if(data==null){
+					data = new ArrayList<Issue>();
+					subMap.put(AppConstants.ISSUE,data);
+				}
+				data.add(issue);
 			}
 		}
 	}
@@ -282,6 +373,15 @@ public class CacheManagerImpl implements CacheManager {
 		return designationMap.get(designationId);
 	}
 
+	@Override
+	public Resolution getResolutionMasters(Long resolutionId){
+		return resolutionMap.get(resolutionId);
+	}
+
+	@Override
+	public Issue getIssue(Long issueId){
+		return issueMap.get(issueId);
+	}
 	@Override
 	public List<Privilege> getPrivileges(Long clientId) {
 		List<Privilege> privileges = cacheDao.getPrivileges(clientId);

@@ -14,7 +14,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techvisio.eserve.util.CommonUtil;
 
 @Entity
@@ -30,10 +38,21 @@ public class Unit extends BasicEntity{
 	@Column(name="UNIT_CODE")
 	private String unitCode;
 
-	@Column(name="CONTRACT_START_ON") 
+	@Temporal(TemporalType.DATE)
+	@Column(name="CONTRACT_START_ON")
+	@JsonIgnore
 	private Date contractStartOn;
+	
+	@Transient
+	private String contractStartOnString;
+	
+	@Temporal(TemporalType.DATE)
 	@Column(name="CONTRACT_EXPIRE_ON")
+	@JsonIgnore
 	private Date contractExpireOn;
+	
+	@Transient
+	private String contractExpireOnString;
 	
 	@Column(name="SERVICE_CATEGORY")
 	private String serviceCategory;
@@ -142,5 +161,50 @@ public class Unit extends BasicEntity{
 	public void setContractExpireOn(Date contractExpireOn) {
 		this.contractExpireOn = contractExpireOn;
 	}
+	
+	public String getContractStartOnString() {
+		if (this.contractStartOn == null)
+			return null;
+
+		try {
+			DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+			return fmt.print(this.contractStartOn.getTime());
+
+		} catch (Exception e) {
+
+		}
+		return null;
+	}
+
+	public void setContractStartOnString(String contractStartOnString) {
+		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
+		if(!StringUtils.isEmpty(contractStartOnString)){
+		this.contractStartOn = parser2.parseDateTime(contractStartOnString).toDate();
+		}
+	}
+
+	
+	public String getContractExpireOnString() {
+		if (this.contractExpireOn == null)
+			return null;
+
+		try {
+			DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+			return fmt.print(this.contractExpireOn.getTime());
+
+		} catch (Exception e) {
+
+		}
+		return null;
+	}
+
+	public void setContractExpireOnString(String contractExpireOnString) {
+		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
+		if(!StringUtils.isEmpty(contractExpireOnString)){
+		this.contractExpireOn = parser2.parseDateTime(contractExpireOnString).toDate();
+		}
+	}
+	
+	
 	
 }

@@ -13094,6 +13094,9 @@ ng-table-pagination-extended .ng-invalid:focus {
 	text-transform: uppercase;
 	margin-bottom: 17px;
 }
+.child-right{
+    float:right;	
+}
 
 #sameAsAbove {
 	padding-top: 11px;

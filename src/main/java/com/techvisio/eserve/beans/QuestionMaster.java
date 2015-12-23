@@ -12,9 +12,6 @@ public class QuestionMaster extends BasicEntity{
 	@Id
 	@Column(name="QUESTION")
 	private String question;
-	
-	@Column(name = "CLIENT_ID")
-	private Long clientId;
 
 	public String getQuestion() {
 		return question;
@@ -22,13 +19,6 @@ public class QuestionMaster extends BasicEntity{
 
 	public void setQuestion(String question) {
 		this.question = question;
-	}
-	public Long getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
 	}
 
 }

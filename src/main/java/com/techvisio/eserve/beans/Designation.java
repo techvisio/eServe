@@ -14,18 +14,8 @@ public class Designation extends BasicEntity{
 	@Id
 	@Column(name = "DESIGNATION_ID")
 	private Long designationId;
-	@Column(name = "CLIENT_ID")
-	private Long clientId;
 	@Column(name = "DESIGNATION")
 	private String designation;
-
-	public Long getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
-	}
 
 	public Long getDesignationId() {
 		return designationId;

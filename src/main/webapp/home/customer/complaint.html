@@ -1,251 +1,327 @@
-<div ng-init="init()">
-	<div>
-		<h3 class="page-header jumbotron">CUSTOMER'S COMPLAINT</h3>
+<form name="complaintForm">
+	<div ng-init="init(); getUsers()">
+		<div>
+			<h3 class="page-header jumbotron">CUSTOMER'S COMPLAINT</h3>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">Customer Code</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="customerComplaint.customerCode" readOnly>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Customer Name</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="customerComplaint.customerName" required="required"
+						ng-pattern="/^[a-zA-Z ]+$/i">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">Contact No</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="customerComplaint.contactNo" required="required"
+						ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/">
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Email Id</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="customerComplaint.emailId" required="required"
+						ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i">
+			</div>
+
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-sm-12">
+				<h3 class="new-event-subtitle">Unit Details</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">Unit Code</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="customerComplaint.unit.unitCode" readOnly>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Service Category</label>
+			</div>
+			<div class="col-sm-4">
+				<select class="form-control"
+					ng-model="customerComplaint.unit.serviceCategory">
+					<option></option>
+					<option>Warranty</option>
+					<option>AMC</option>
+					<option>Paid</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">Service Party</label>
+			</div>
+			<div class="col-sm-4">
+				<select class="form-control"
+					ng-model="customerComplaint.unit.serviceParty">
+					<option></option>
+					<option>ANS</option>
+					<option>BLS</option>
+				</select>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Unit Category</label>
+			</div>
+			<div class="col-sm-4">
+				<select class="form-control"
+					ng-model="customerComplaint.unit.unitCategory">
+					<option></option>
+					<option>Icecream</option>
+					<option>Blood</option>
+					<option>Medicine</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">External Id</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="customerComplaint.unit.externalId">
+			</div>
+		</div>
+
+		<hr>
+
+		<div class="row">
+			<div class="col-sm-12">
+				<h3 class="new-event-subtitle">ISSUE DESCRIPTION</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">Issue</label>
+			</div>
+
+			<div class="col-sm-4">
+				<select class="form-control"
+					ng-model="customerComplaint.issue.issueId"
+					ng-options="item.issueId*1 as item.value for item in serverModelData.ISSUE">
+				</select>
+			</div>
+
+			<div class="col-sm-4">
+				<input type="checkbox" id="chk_act" /> <label for="chk_act">Trouble
+					Shooting Check List Done</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">Priority</label>
+			</div>
+			<div class="col-sm-4">
+				<select class="form-control" ng-model="customerComplaint.priority">
+					<option></option>
+					<option value="C">Critical</option>
+					<option value="H">High</option>
+					<option value="M">Medium</option>
+					<option value="L">Low</option>
+				</select>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">SLA DATE</label>
+			</div>
+			<div class="col-sm-4">
+				<input type="text" class="form-control datepicker"
+					name="requestDueDate" ng-model="customerComplaint.slaDateString"
+					datepicker-popup="{{'MMM dd yyyy'}}">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">Description</label>
+			</div>
+
+			<div class="col-sm-4">
+				<textarea rows="3" cols="30" class="form-control"
+					ng-model="customerComplaint.description"></textarea>
+			</div>
+			<div ng-show="showStatus">
+				<div class="col-sm-2">
+					<label for="inputlg">Status</label>
+				</div>
+				<div class="col-sm-4">
+					<label for="inputlg">{{customerComplaint.status}}</label>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-2">
+						<h3 class="new-event-subtitle">ASSIGN TO</h3>
+					</div>
+					<div class="col-sm-2">
+						<select class="form-control"
+							ng-model="customerComplaint.complaintAssignment.user.userId"
+							ng-options="item.userId*1 as item.firstName for item in users">
+						</select>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-2">
+							<button type="button" class="btn btn-primary child-right"
+								ng-click="saveComplaintAssignment()">Assign</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div ng-show="!newComplaint">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="new-event-subtitle">COMPLAINT RESOLUTION</h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">Resolution</label>
+				</div>
+
+				<div class="col-sm-4">
+					<select class="form-control"
+						ng-model="customerComplaint.complaintResolution.resolution.resolutionId"
+						ng-options="item.resolutionId*1 as item.value for item in serverModelData.RESOLUTION">
+					</select>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">Description</label>
+				</div>
+
+				<div class="col-sm-4">
+					<textarea rows="3" cols="30" class="form-control"
+						ng-model="customerComplaint.complaintResolution.description"></textarea>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-4"></div>
+
+				<div class="col-sm-2">
+					<button type="button" class="btn btn-primary child-right"
+						ng-click="saveComplaintResolution()">Save Resolution</button>
+				</div>
+			</div>
+
+		</div>
+		<!-- 		<div class="row"> -->
+		<!-- <div class="col-sm-12"> -->
+		<!-- <h3 class="new-event-subtitle">Estimated Part</h3> -->
+		<!-- </div> -->
+		<!-- </div> -->
+
+		<!-- <div class="row"> -->
+
+		<!-- <div class="col-sm-2"> -->
+		<!-- 			<input type="checkbox" class="form-control"/> -->
+		<!-- 		</div> -->
+		<!--  <div class="col-sm-2"> -->
+		<!-- 			<label for="inputlg">Chiller</label> -->
+		<!-- 		</div> -->
+
+		<!-- <div class="col-sm-2"> -->
+		<!-- 			<input type="checkbox" class="form-control"/> -->
+		<!-- 		</div> -->
+
+		<!-- 		<div class="col-sm-2"> -->
+		<!-- 			<label for="inputlg">FCV</label> -->
+		<!-- 		</div> -->
+		<!-- 		</div> -->
+
+		<!-- 		<div class="row"> -->
+
+		<!-- <div class="col-sm-2"> -->
+		<!-- 			<input type="checkbox" class="form-control"/> -->
+		<!-- 		</div> -->
+
+		<!--  <div class="col-sm-2"> -->
+		<!-- 			<label for="inputlg">Bump</label> -->
+		<!-- 		</div> -->
+		<!-- <div class="col-sm-2"> -->
+		<!-- 			<input type="checkbox" class="form-control"/> -->
+		<!-- 		</div> -->
+
+		<!-- 		<div class="col-sm-2"> -->
+		<!-- 			<label for="inputlg">SAC</label> -->
+		<!-- 		</div> -->
+		<!-- 		</div> -->
+		<!-- 		<div class="row"> -->
+
+		<!-- <div class="col-sm-2"> -->
+		<!-- 			<input type="checkbox" class="form-control"/> -->
+		<!-- 		</div> -->
+		<!--  <div class="col-sm-2"> -->
+		<!-- 			<label for="inputlg">WIC</label> -->
+		<!-- 		</div> -->
+
+		<!-- <div class="col-sm-2"> -->
+		<!-- 			<input type="checkbox" class="form-control"/> -->
+		<!-- 		</div> -->
+
+		<!-- 		<div class="col-sm-2"> -->
+		<!-- 			<label for="inputlg">VRF</label> -->
+		<!-- 		</div> -->
+
+		<!-- 		</div> -->
+		<!-- 		<div class="row"> -->
+
+		<!-- 		<div class="col-sm-2"> -->
+		<!-- 			<input type="checkbox" class="form-control"/> -->
+		<!-- 		</div> -->
+		<!--  <div class="col-sm-2"> -->
+		<!-- 			<label for="inputlg">DF</label> -->
+		<!-- 		</div> -->
+
+		<!-- <div class="col-sm-2"> -->
+		<!-- 			<input type="checkbox" class="form-control"/> -->
+		<!-- 		</div>		 -->
+		<!-- 		<div class="col-sm-2"> -->
+		<!-- 			<label for="inputlg">Visi Cooler</label> -->
+		<!-- 		</div> -->
+
+		<!-- 		</div> -->
+		<!-- 		</div> -->
+
+		<div class="row">
+			<div class="col-sm-10"></div>
+
+			<div class="col-sm-2">
+				<button type="button" class="btn btn-primary"
+					ng-click="saveComplaint()">Create Complain</button>
+			</div>
+
+		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Customer Code</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text"
-				ng-model="customerComplaint.customerCode">
-		</div>
-
-		<div class="col-sm-2">
-			<label for="inputlg">Customer Name</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text"
-				ng-model="customerComplaint.customerName">
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Contact No</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text"
-				ng-model="customerComplaint.contactNo">
-		</div>
-
-		<div class="col-sm-2">
-			<label for="inputlg">Email Id</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text"
-				ng-model="customerComplaint.emailId">
-		</div>
-
-	</div>
-	<hr>
-	<div class="row">
-		<div class="col-sm-12">
-			<h3 class="new-event-subtitle">Unit Details</h3>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Service Category</label>
-		</div>
-		<div class="col-sm-4">
-			<select class="form-control"
-				ng-model="customerComplaint.unit.serviceCategory">
-				<option></option>
-				<option>Warranty</option>
-				<option>AMC</option>
-				<option>Paid</option>
-			</select>
-		</div>
-		<div class="col-sm-2">
-			<label for="inputlg">Service Party</label>
-		</div>
-		<div class="col-sm-4">
-			<select class="form-control"
-				ng-model="customerComplaint.unit.serviceParty">
-				<option></option>
-				<option>ANS</option>
-				<option>BLS</option>
-			</select>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Unit Category</label>
-		</div>
-		<div class="col-sm-4">
-			<select class="form-control"
-				ng-model="customerComplaint.unit.unitCategory">
-				<option></option>
-				<option>Icecream</option>
-				<option>Blood</option>
-				<option>Medicine</option>
-			</select>
-		</div>
-		<div class="col-sm-2">
-			<label for="inputlg">External Id</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text"
-				ng-model="customerComplaint.unit.externalId">
-		</div>
-	</div>
-
-	<hr>
-
-<div class="row">
-		<div class="col-sm-12">
-			<h3 class="new-event-subtitle">ISSUE DESCRIPTION</h3>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Issue</label>
-		</div>
-
-		<div class="col-sm-4">
-			<select class="form-control" ng-model="customerComplaint.issue">
-				<option></option>
-			</select>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Description</label>
-		</div>
-
-		<div class="col-sm-4">
-			<textarea rows="3" cols="30" class="form-control"
-				ng-model="customerComplaint.description"></textarea>
-		</div>
-		
-		<div class="col-sm-1">
-			<input type="checkbox"/>
-		</div>
-
-		<div class="col-sm-4">
-			<label for="inputlg">Trouble Shooting Check List Done</label>
-		</div>
-	</div>
-
-<div ng-show="!newComplaint">
-<div class="row">
-		<div class="col-sm-12">
-			<h3 class="new-event-subtitle">SOLUTION</h3>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Issue</label>
-		</div>
-
-		<div class="col-sm-4">
-			<select class="form-control">
-				<option></option>
-			</select>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Description</label>
-		</div>
-
-		<div class="col-sm-4">
-			<textarea rows="3" cols="30" class="form-control"></textarea>
-		</div>
-</div>	
-	
-</div>
-	<!-- 		<div class="row"> -->
-	<!-- <div class="col-sm-12"> -->
-	<!-- <h3 class="new-event-subtitle">Estimated Part</h3> -->
-	<!-- </div> -->
-	<!-- </div> -->
-
-	<!-- <div class="row"> -->
-
-	<!-- <div class="col-sm-2"> -->
-	<!-- 			<input type="checkbox" class="form-control"/> -->
-	<!-- 		</div> -->
-	<!--  <div class="col-sm-2"> -->
-	<!-- 			<label for="inputlg">Chiller</label> -->
-	<!-- 		</div> -->
-
-	<!-- <div class="col-sm-2"> -->
-	<!-- 			<input type="checkbox" class="form-control"/> -->
-	<!-- 		</div> -->
-
-	<!-- 		<div class="col-sm-2"> -->
-	<!-- 			<label for="inputlg">FCV</label> -->
-	<!-- 		</div> -->
-	<!-- 		</div> -->
-
-	<!-- 		<div class="row"> -->
-
-	<!-- <div class="col-sm-2"> -->
-	<!-- 			<input type="checkbox" class="form-control"/> -->
-	<!-- 		</div> -->
-
-	<!--  <div class="col-sm-2"> -->
-	<!-- 			<label for="inputlg">Bump</label> -->
-	<!-- 		</div> -->
-	<!-- <div class="col-sm-2"> -->
-	<!-- 			<input type="checkbox" class="form-control"/> -->
-	<!-- 		</div> -->
-
-	<!-- 		<div class="col-sm-2"> -->
-	<!-- 			<label for="inputlg">SAC</label> -->
-	<!-- 		</div> -->
-	<!-- 		</div> -->
-	<!-- 		<div class="row"> -->
-
-	<!-- <div class="col-sm-2"> -->
-	<!-- 			<input type="checkbox" class="form-control"/> -->
-	<!-- 		</div> -->
-	<!--  <div class="col-sm-2"> -->
-	<!-- 			<label for="inputlg">WIC</label> -->
-	<!-- 		</div> -->
-
-	<!-- <div class="col-sm-2"> -->
-	<!-- 			<input type="checkbox" class="form-control"/> -->
-	<!-- 		</div> -->
-
-	<!-- 		<div class="col-sm-2"> -->
-	<!-- 			<label for="inputlg">VRF</label> -->
-	<!-- 		</div> -->
-
-	<!-- 		</div> -->
-	<!-- 		<div class="row"> -->
-
-	<!-- 		<div class="col-sm-2"> -->
-	<!-- 			<input type="checkbox" class="form-control"/> -->
-	<!-- 		</div> -->
-	<!--  <div class="col-sm-2"> -->
-	<!-- 			<label for="inputlg">DF</label> -->
-	<!-- 		</div> -->
-
-	<!-- <div class="col-sm-2"> -->
-	<!-- 			<input type="checkbox" class="form-control"/> -->
-	<!-- 		</div>		 -->
-	<!-- 		<div class="col-sm-2"> -->
-	<!-- 			<label for="inputlg">Visi Cooler</label> -->
-	<!-- 		</div> -->
-
-	<!-- 		</div> -->
-	<!-- 		</div> -->
-
-	<div class="row">
-		<div class="col-sm-10"></div>
-
-		<div class="col-sm-2">
-			<button type="button" class="btn btn-primary"
-				ng-click="saveComplaint()">Create Complain</button>
-		</div>
-
-	</div>
-</div>
+</form>
