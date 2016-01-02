@@ -15,7 +15,7 @@
       username-parameter="j_username" 
       password-parameter="j_password" 
       login-processing-url="/j_spring_security_check"
-      authentication-failure-url="/index.html?error"
+      authentication-failure-handler-ref="customAuthenticationFailureHandler"
       default-target-url="/home/index.html"
        />
 	<logout 
@@ -30,6 +30,11 @@
    <authentication-manager>
       <security:authentication-provider ref="authenticationProvider"/>
    </authentication-manager>
+   
+   <beans:bean id="customAuthenticationFailureHandler"
+              class="com.techvisio.eserve.security.CustomAuthenticationFailureHandler">
+              <beans:property name="defaultFailureUrl" value="/index.html?code=failed" />
+    </beans:bean>
    
    <beans:bean id="restAuthenticationEntryPoint" class="com.techvisio.eserve.security.RestAuthenticationEntryPoint">
     </beans:bean> 
