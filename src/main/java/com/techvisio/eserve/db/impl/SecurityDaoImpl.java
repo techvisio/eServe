@@ -4,10 +4,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Query;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.User;
@@ -22,17 +23,21 @@ public class SecurityDaoImpl extends BaseDao implements SecurityDao {
 	public User authenticateNgetUser(Authentication authentication) {
 		String user=authentication.getName();
 		String password=authentication.getCredentials().toString();
-		String queryString = "FROM User u WHERE u.userName = '" + user+"' and password='"+password+"' and active=1";
-		Query query = getCurrentSession().createQuery(queryString);
-		User result = (User) query.uniqueResult();
-		return result;
+		String queryString = "FROM User u WHERE u.userName = '" + user+"' or u.emailId = '"+ user +"' and password='"+password+"' and active=1";
+		Query query = getEntityManager().createQuery(queryString);
+		List<User> result = (List<User>) query.getResultList();
+		if(result!=null){
+			return result.get(0);
+		}
+		
+		return null;
 	}
 
 	@Override
 	public Set<Privilege> getUserPrivilege(Long userId) {
 		String queryString=" from Privilege as p , Role as r , User as u  where u.userId = "+userId;
-		Query query=getCurrentSession().createQuery(queryString);
-		List<Privilege> result= query.list();
+		Query query=getEntityManager().createQuery(queryString);
+		List<Privilege> result= query.getResultList();
 		Set<Privilege> privileges = new HashSet<Privilege>(result);
 		return privileges;
 	}

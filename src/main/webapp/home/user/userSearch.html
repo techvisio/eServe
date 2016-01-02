@@ -45,7 +45,7 @@
         <td>{{user.emailId}}</td>
         <td>{{user.department.department}}</td>
         <td>{{user.designation.designation}}</td>
-        <td><a ui-sref="resetpassword"><button class="btn-primary">Reset Password</button></a></td>
+        <td><a><button class="btn-primary" ng-click="resetPassword(user)">Reset</button></a></td>
         </tr>
     </tbody>
 </table>

@@ -1,6 +1,7 @@
 package com.techvisio.eserve.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
@@ -18,6 +20,8 @@ import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.Response;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.User;
+import com.techvisio.eserve.beans.UserPrivilege;
 import com.techvisio.eserve.manager.CustomerManager;
 
 @RestController
@@ -44,15 +48,23 @@ public class CustomerService {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> saveCustomer(@RequestBody Customer customer) {  
+		Map<String, Object> result = customerManager.saveCustomer(customer);
+		customer = (Customer) result.get("customer");
 		Response response=new Response();
-		customerManager.saveCustomer(customer);
-		Customer customerFromDB = customerManager.getCustomer(customer.getCustomerId());
-
-		if(customerFromDB != null){
-			response.setResponseBody(customerFromDB);
-		}
-		return new ResponseEntity<Response>(response,HttpStatus.OK);
+		response.setResponseBody(result);
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT)
+	@ResponseStatus(value = HttpStatus.OK)
+	public ResponseEntity<Response> updateCustomer(@RequestBody Customer customer) {  
+		Map<String, Object> result = customerManager.saveCustomer(customer);
+		customer = (Customer) result.get("customer");
+		Response response=new Response();
+		response.setResponseBody(result);
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(value="/unit/{customerId}", method = RequestMethod.PUT)
@@ -131,9 +143,8 @@ public class CustomerService {
 	public ResponseEntity<Response> saveComplaintResolution(@PathVariable Long complaintId, @RequestBody ComplaintResolution complaintResolution) {
 		Response response=new Response();
         customerManager.saveComplaintResolution(complaintId, complaintResolution);
-        ComplaintResolution complaintResolutionFromDB = customerManager.getComplaintResolution(complaintResolution.getComplaintId());
-        response.setResponseBody(complaintResolutionFromDB);
-
+        CustomerComplaint complaintFromDB = customerManager.getCustomerComplaint(complaintId);
+        response.setResponseBody(complaintFromDB);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	

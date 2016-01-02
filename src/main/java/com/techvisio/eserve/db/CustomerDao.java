@@ -30,4 +30,5 @@ public interface CustomerDao {
 	public ComplaintResolution getComplaintResolution(Long complaintId);
 	public void saveComplaintAssignment(Long complaintId, ComplaintAssignment complaintAssignment);
 	public ComplaintAssignment getComplaintAssignment(Long complaintId);
+	public boolean isCustomerExists(Customer customer);
 }

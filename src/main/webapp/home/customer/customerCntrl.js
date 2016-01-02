@@ -1,14 +1,17 @@
 var customerModule = angular.module('customerModule', []);
 
-customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','unitComplaint','complaint','masterdataService','userService',
-                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,unitComplaint,complaint,masterdataService,userService) {
+customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','isFromComplaintScreen','customer','unitComplaint','complaint','masterdataService','userService',
+                                                 function($scope,$window,$rootScope,customerService,$state,filter,isFromComplaintScreen,customer,unitComplaint,complaint,masterdataService,userService) {
 
 
 	$scope.form={};
+	$scope.isEdit=true;
 	$scope.startDate=false;
 	$scope.expireDate=false;
-	$scope.newComplaint=false;
+	$scope.newComplaint=true;
 	$scope.showStatus=false;
+	$scope.isFromComplaintScreen=false;
+	$scope.getAllComplaints=false;
 	$scope.customer={};
 	$scope.customers=[];
 	$scope.searchCriteria = {};
@@ -18,6 +21,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.dummyUnit ={
 			"equipmentDetails" : [ {} ]
 	};
+
+	$scope.customer.address = {};
+	$scope.customer.address = angular.copy($scope.dummyAddress);
+	$scope.dummyAddress= {};
 
 	$scope.unit={};
 	$scope.customer.units=[];
@@ -29,6 +36,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			.copy($scope.dummyUnit));
 
 	if(customer){
+		$scope.getAllComplaints = true;
+		$scope.isEdit = false;
 		$scope.customer = customer;
 	}
 
@@ -48,16 +57,19 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		})
 	}
 
-	$scope.getAllComplaints = function(){
-		customerService.getAllComplaints(customer.customerId)
-		.then(function(response) {
-			console.log('getting all complaints in controller : ');
-			console.log(response);
-			if (response) {
-				$scope.customerComplaints = response;
-			} 
-		})
+	if($scope.getAllComplaints){
+		$scope.getAllComplaints = function(){
+			customerService.getAllComplaints(customer.customerId)
+			.then(function(response) {
+				console.log('getting all complaints in controller : ');
+				console.log(response);
+				if (response) {
+					$scope.customerComplaints = response;
+				} 
+			})
+		}
 	}
+
 
 	if(unitComplaint){
 
@@ -66,10 +78,15 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.customerComplaint.unit = unitComplaint;
 	}
 
-	if(complaint){
+	if(isFromComplaintScreen){
+		$scope.isFromComplaintScreen = true;
+	}
 
+	if(complaint){
+		$scope.newComplaint=false;
 		$scope.showStatus = true;
-//		$scope.newComplaint = true;
+		$scope.isEdit = false;
+		//		$scope.newComplaint = true;
 		$scope.customerComplaint = complaint;
 	}
 
@@ -159,11 +176,21 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$state.go('complaint');
 	}
 
-	$scope.showconfirmbox = function () {
-		if ($window.confirm("Do you want to continue?")){
+//	$scope.redirectToCustomer=function(){
+//	$state.go('newcustomer');
+//	}
+
+	$scope.showconfirmboxComplaint = function () {
+		if ($window.confirm("No Record Found ! Want To Create New Complaint?")){
 			$scope.redirectToComplaint();
 		}
 	}
+
+//	$scope.showconfirmboxCustomer = function () {
+//	if ($window.confirm("No Record Found ! Want To Create New Customer?")){
+//	$scope.redirectToCustomer();
+//	}
+//	}
 
 	$scope.getCustomerByCriteria=function(){
 		customerService.getCustomerByCriteria($scope.searchCriteria)
@@ -175,7 +202,9 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 					if (customers) {
 						$scope.customers=customers;
 						if($scope.customers.length==0){
-							$scope.showconfirmbox();
+							if($scope.isFromComplaintScreen){
+								$scope.showconfirmboxComplaint();
+							}
 						}
 					}
 				})
@@ -205,11 +234,15 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.saveCustomer = function() {
 
-		if(!$scope.customerForm.$valid){
+		if(!$scope.CUSTOMER.$valid){
 
 			$scope.alerts=[];
 			$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
 			return;
+		}
+
+		$scope.resetAleart = function(){
+			$scope.alerts=[];
 		}
 
 		console.log('save customer called');
@@ -218,22 +251,56 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			console.log('customer Data received from service : ');
 			console.log(response);
 			if (response) {
-				$scope.customer = response;
-				alert("Your Records Saved Successfully")
-				$scope.redirectToCustomerDtlScreen($scope.customer.customerId);
+				var success=response.success;
+				if(success){
+					$scope.customer = response.customer;
+					$scope.alerts=[];
+					alert("Customer Saved Successfully");
+					$scope.redirectToCustomerDtlScreen($scope.customer.customerId);
+				}
+
+				if(!success){
+					$scope.alerts=[];
+					$scope.alerts.push({msg: 'This Contact No Or Email Id Already Exists!! Enter Different Contact No Or Email Id'});
+					return;
+				}
+			} 
+		})
+	};
+
+	$scope.saveAndUpdateCustomer = function(){
+
+		if(!$scope.customer.customerId){
+			$scope.saveCustomer();			
+		}
+		else{
+			$scope.updateCustomer();
+		}
+	}
+
+	$scope.updateCustomer = function() {
+
+		customerService.updateCustomer($scope.customer)
+		.then(function(response) {
+			console.log('customer Data received from service : ');
+			console.log(response);
+			if (response) {
+				var success=response.success;
+				if(success){
+					$scope.customer = response.customer;
+					$scope.alerts=[];
+					alert("Customer Saved Successfully");
+					$scope.redirectToCustomerDtlScreen($scope.customer.customerId);
+				}
 			} 
 		})
 	};
 
 	$scope.countUnit = function(customer) {
-
 		var count = 0;
-
 		for(var i = 0; i <customer.units.length; i++){
-
 			count++;
 		}
-
 		return count; 
 	}
 
@@ -248,8 +315,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				$scope.showStatus = true;
 				alert("Your Records Saved Successfully");
 				$scope.redirectToComplaintScreen($scope.customerComplaint.complaintId);
-
-
 			} 
 		})
 	};
@@ -262,7 +327,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			console.log('complaintResolution Data received from service : ');
 			console.log(response);
 			if (response) {
-				$scope.complaintResolution = response;
+				$scope.customerComplaint = response;
 				alert("Your Records Saved Successfully")
 			} 
 		})
@@ -305,5 +370,45 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			} 
 		})
 	};
+
+	$scope.toggleReadOnly = function(form) {
+
+		if(!$scope.isEdit){
+			$('#' + form + ' *').attr('readonly',
+					true);
+			$('#' + form + ' input[type="radio"]')
+			.attr('disabled', true);
+			$('#' + form + ' input[type="checkbox"]')
+			.attr('disabled', true);
+			$scope.isEdit = !$scope.isEdit;
+		}
+
+		else{
+			$('#' + form + ' *').attr('readonly',
+					false);
+			$('#' + form + ' input[type="radio"]')
+			.attr('disabled', false);
+			$('#' + form + ' input[type="checkbox"]')
+			.attr('disabled', false);
+			
+			$scope.isEdit = !$scope.isEdit;
+		}
+	};
+
+
+	$scope.copyCustomerAddress = function(unit,sameAsAbove) {
+		console.log('same as above');
+		console.log(sameAsAbove);
+		if (sameAsAbove) {
+			console.log('same as above');
+			var unitAddress = $scope.customer.address;
+			unitAddress.addressId = null;
+			unit.address = angular.copy(unitAddress);
+		}
+
+		if (!sameAsAbove){
+			unit.address = {};
+		}
+	}
 
 } ]);

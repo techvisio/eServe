@@ -31,6 +31,8 @@ public class EquipmentDetail extends BasicEntity{
 	@JoinColumn(name="EQUIPMENT_ID")
 	private Equipment equipment;
 	
+	@Column(name="IS_UNDER_WARRANTY")
+	private boolean underWarranty;
 	
 	public Long getEquipmentDtlId() {
 		return equipmentDtlId;
@@ -73,6 +75,12 @@ public class EquipmentDetail extends BasicEntity{
 	}
 	public void setUnitId(Long unitId) {
 		this.unitId = unitId;
+	}
+	public boolean isUnderWarranty() {
+		return underWarranty;
+	}
+	public void setUnderWarranty(boolean underWarranty) {
+		this.underWarranty = underWarranty;
 	}
 	
 }

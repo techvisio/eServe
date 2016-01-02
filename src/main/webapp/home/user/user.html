@@ -1,9 +1,9 @@
-<form name='userForm'>
+<form name='USER'>
 	<div ng-init="init()">
 		<div>
 			<h3 class="page-header jumbotron">CREATE USER</h3>
 		</div>
-		<div ng show="alerts..length>0 || !$scope.userForm.$valid">
+		<div ng show="alerts..length>0 || !$scope.USER.$valid">
 			<alert ng-repeat="alert in alerts" type="{{alert.type}}"
 				close="closeAlert($index)">{{alert.msg}}</alert>
 		</div>
@@ -159,10 +159,10 @@
 			<div class="col-sm-10"></div>
 
 			<div class="col-sm-2">
-				<button type="button" class="btn btn-primary" ng-click="saveUser()">Save
+				<button type="button" class="btn btn-primary" ng-click="saveAndUpdateUser()">Save
 					User</button>
 			</div>
-
+			
 		</div>
 	</div>
 </form>

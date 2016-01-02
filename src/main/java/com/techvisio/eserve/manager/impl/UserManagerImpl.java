@@ -5,9 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.Privilege;
@@ -28,7 +29,7 @@ public class UserManagerImpl implements UserManager{
 
 	@Autowired
 	UserDao userDao;
-	
+
 	@Autowired
 	CacheDao cacheDao;
 
@@ -57,7 +58,7 @@ public class UserManagerImpl implements UserManager{
 		return user;
 	}
 
-	
+
 	@Override
 	public List<User> getUserByCriteria(SearchCriteria searchCriteria){
 		List<User> users = userDao.getUserByCriteria(searchCriteria);
@@ -83,11 +84,11 @@ public class UserManagerImpl implements UserManager{
 		return securityQuestion;
 	}
 
-//	@Override
-//	public List<Privilege> getUserPrivileges(Long userId) {
-//		List<Privilege> privileges = userDao.getUserPrivileges(userId);
-//		return privileges;
-//	}
+	//	@Override
+	//	public List<Privilege> getUserPrivileges(Long userId) {
+	//		List<Privilege> privileges = userDao.getUserPrivileges(userId);
+	//		return privileges;
+	//	}
 
 	@Override
 	public void saveUserPrivileges(List<Privilege> privileges) {
@@ -95,13 +96,30 @@ public class UserManagerImpl implements UserManager{
 		Iterator<Privilege> itr = privileges.iterator();
 
 
-//		while (itr.hasNext()) {
-//			Privilege privilege=itr.next();
-//			if (!privilege.isGranted()) {
-//				itr.remove();
-//			}
-//		}
+		//		while (itr.hasNext()) {
+		//			Privilege privilege=itr.next();
+		//			if (!privilege.isGranted()) {
+		//				itr.remove();
+		//			}
+		//		}
 		userDao.saveUserPrivileges(privileges);
+	}
+
+	@Override
+	public void resetPassword(User user){
+
+		List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
+		for(Config config : defaultValues){
+			if(config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.DEFAULT_PASSWORD.name()));
+			user.setPassword(config.getValue().toCharArray());
+		}
+		user.setForcePasswordChange(true);
+
+		List<UserPrivilege> userPrivileges = user.getPrivileges();
+		for(UserPrivilege privilege : userPrivileges){
+			privilege.setGranted(true);
+		}
+		userDao.saveUser(user);
 	}
 
 	@Override
@@ -109,7 +127,7 @@ public class UserManagerImpl implements UserManager{
 		Map<String,Object> result=new HashMap<String, Object>();
 
 		if(user.getUserId()==null){
-			
+
 			boolean isUserExists = userDao.isUserExists(user);
 			if(isUserExists){
 				result.put("existingUser", null);
@@ -117,31 +135,31 @@ public class UserManagerImpl implements UserManager{
 				return result;
 			}
 		}
-		
-            user.setClient(CommonUtil.getCurrentClient());		
-            
-            if(user.getUserId()==null){
-            	List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
-            	for(Config config : defaultValues){
-            	if(config.getProperty()==AppConstants.DefaultValues.DEFAULT_PASSWORD.name());
-            	user.setPassword(config.getValue().toCharArray());
-            		}
-            }
-    		Iterator<UserPrivilege> itr = user.getPrivileges().iterator();
 
-    		while (itr.hasNext()) {
-    			UserPrivilege privilege=itr.next();
-    			if (!privilege.isGranted()) {
-    				itr.remove();
-    			}
-    		}
-            
-            Long userId = userDao.saveUser(user);	
-			
-			User UserFromDB = userDao.getUser(userId);
-			result.put("user", UserFromDB);
-			result.put("success", true);
-			return result;
+		user.setClient(CommonUtil.getCurrentClient());		
+
+		if(user.getUserId()==null){
+			List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
+			for(Config config : defaultValues){
+				if(config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.DEFAULT_PASSWORD.name()));
+				user.setPassword(config.getValue().toCharArray());
+			}
+		}
+		Iterator<UserPrivilege> itr = user.getPrivileges().iterator();
+
+		while (itr.hasNext()) {
+			UserPrivilege privilege=itr.next();
+			if (!privilege.isGranted()) {
+				itr.remove();
+			}
+		}
+
+		Long userId = userDao.saveUser(user);	
+
+		User UserFromDB = userDao.getUser(userId);
+		result.put("user", UserFromDB);
+		result.put("success", true);
+		return result;
 	}
 
 
@@ -159,6 +177,10 @@ public class UserManagerImpl implements UserManager{
 		{
 			user.setPassword(user.getNewPassword());
 			user.setForcePasswordChange(false);
+			List<UserPrivilege> userPrivileges = user.getPrivileges();
+			for(UserPrivilege privilege : userPrivileges){
+				privilege.setGranted(true);
+			}
 			saveUser(user);
 
 			result.put("passwordMatch", true);
@@ -169,7 +191,7 @@ public class UserManagerImpl implements UserManager{
 
 	@Override
 	public List<UserPrivilege> getAllUserPrivileges(User user) {
-		
+
 		List<UserPrivilege> userPrivileges =  userDao.getAllUserPrivileges(user);
 		return userPrivileges;
 	}

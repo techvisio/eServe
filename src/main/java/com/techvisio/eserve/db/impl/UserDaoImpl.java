@@ -1,55 +1,57 @@
 package com.techvisio.eserve.db.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Query;
+
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.Client;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
-import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.UserDao;
 import com.techvisio.eserve.manager.CacheManager;
 import com.techvisio.eserve.util.CommonUtil;
+
 @Component
 public class UserDaoImpl extends BaseDao implements UserDao{
 
 	@Autowired
 	CacheManager cacheManager;
 
+
 	@Override
 	public Long saveUser(User user){
 		if(user.getUserId()==null){
 			user.setForcePasswordChange(true);
-			getCurrentSession().persist(user);
+			getEntityManager().persist(user);
 		}
 		else{
-			getCurrentSession().update(user);
-			saveUserPrivilege(user.getPrivileges(), user.getUserId());
+			deleteUserPrivilegeExclusion(user.getPrivileges(), user.getUserId());
+			getEntityManager().merge(user);
+			//saveUserPrivilege(user.getPrivileges(), user.getUserId());
 		}
 
 		//Explicitly flush session
-		getCurrentSession().flush();
+		getEntityManager().flush();
 		return user.getUserId();
 	}
 
 	@Override
 	public User getUser(Long userId) {
 		String queryString="FROM User u WHERE u.userId = "+userId;
-		Query query=getCurrentSession().createQuery(queryString);
+		Query query= getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
-		List<User> result= (List<User>)query.list();
+		List<User> result= (List<User>)query.getResultList();
 		if(result != null && result.size()>0){
 			return result.get(0);
 		}
@@ -59,9 +61,9 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 	@Override
 	public User getCurrentPassword(Long userId) {
 		String queryString="FROM User u WHERE u.userId = "+userId;
-		Query query=getCurrentSession().createQuery(queryString);
+		Query query= getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
-		List<User> result= (List<User>)query.list();
+		List<User> result= (List<User>)query.getResultList();
 		if(result != null && result.size()>0){
 			return result.get(0);
 		}
@@ -71,9 +73,9 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 	@Override
 	public List<User> getUsers() {
 		String queryString="FROM User";
-		Query query=getCurrentSession().createQuery(queryString);
+		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
-		List<User> result= (List<User>)query.list();
+		List<User> result= (List<User>)query.getResultList();
 		return result;
 	}
 
@@ -81,7 +83,7 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 	public List<User> getUserByCriteria(SearchCriteria searchCriteria) {
 
 		String queryString="from User WHERE client.clientId = coalesce(:clientId, client.clientId) and userId = coalesce(:userId, userId) and department.departmentId = coalesce(:departmentId, department.departmentId) and designation.designationId = coalesce(:designationId, designation.designationId) and lower(emailId) = coalesce(:emailId, emailId) and  lower(firstName) LIKE :firstName and lower(lastName) Like :lastName and lower(userName) Like :userName";
-		Query query=getCurrentSession().createQuery(queryString);
+		Query query=getEntityManager().createQuery(queryString);
 
 		String firstName = StringUtils.isEmpty(searchCriteria.getFirstName())?"":searchCriteria.getFirstName().toLowerCase();
 		String lastName = StringUtils.isEmpty(searchCriteria.getLastName())?"":searchCriteria.getLastName().toLowerCase();
@@ -97,7 +99,7 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 		query.setParameter("emailId", emailId);
 
 		@SuppressWarnings("unchecked")
-		List<User> result= (List<User>)query.list();
+		List<User> result= (List<User>)query.getResultList();
 		return result;
 
 	}
@@ -105,8 +107,8 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 	@Override
 	public boolean isUserExists(User user) {
 
-		String queryString="from User WHERE lower(emailId) = coalesce(:emailId, emailId) or lower(userName) = coalesce(:userName, userName)";
-		Query query=getCurrentSession().createQuery(queryString);
+		String queryString="from User WHERE lower(emailId) = coalesce(:emailId, emailId) or lower(userName) = coalesce(:userName, userName) and active = 1";
+		Query query= getEntityManager().createQuery(queryString);
 
 		SearchCriteria searchCriteria = new SearchCriteria();
 		searchCriteria.setUserName(user.getUserName());
@@ -118,7 +120,7 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 		query.setParameter("userName", userName);
 
 		@SuppressWarnings("unchecked")
-		List<User> result= (List<User>)query.list();
+		List<User> result= (List<User>)query.getResultList();
 		if(result != null && result.size()>0){
 			User existingUser = result.get(0);
 			if(existingUser != null){
@@ -131,24 +133,23 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 	@Override
 	public List<Role> getUserRole(Long userId) {
 		String queryString="select Role_Id,Role_Name,Description,created_By,created_on,updated_by,updated_on,case when exists(select 1 from tb_user_role ur where ur.role_id=rm.role_id and ur.user_id="+userId+") then 1 else 0 end as selected from tb_role_master rm" ;
-		SQLQuery query=getCurrentSession().createSQLQuery(queryString);
-		query.addEntity(Role.class);
-		List<Role> userRoles = (List<Role>)query.list();
+		Query query=getEntityManager().createNativeQuery(queryString,Role.class);
+		List<Role> userRoles = (List<Role>)query.getResultList();
 
 		return userRoles;
 	}
 
 	@Override
 	public void saveSecurityQuestion(SecurityQuestion securityQuestion){
-		getCurrentSession().merge(securityQuestion);
+		getEntityManager().merge(securityQuestion);
 	}	
 
 	@Override
 	public SecurityQuestion getSecurityQuestion(Long questionId) {
 		String queryString="FROM SecurityQuestion u WHERE u.securityQustnId = "+questionId;
-		Query query=getCurrentSession().createQuery(queryString);
+		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
-		List<SecurityQuestion> result= (List<SecurityQuestion>)query.list();
+		List<SecurityQuestion> result= (List<SecurityQuestion>)query.getResultList();
 		if(result != null && result.size()>0){
 			return result.get(0);
 		}
@@ -186,7 +187,7 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 
 	@Override
 	public void savePrivilege(Privilege privilege) {
-		getCurrentSession().merge(privilege);
+		getEntityManager().merge(privilege);
 	}	
 
 	@Override
@@ -244,48 +245,48 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 			result.add(userPrivilege);	
 		}
 
-	return result;
-}
+		return result;
+	}
 
-@Override
-public void saveUserPrivilege(List<UserPrivilege> userPrivileges, Long userId) {
+	@Override
+	public void saveUserPrivilege(List<UserPrivilege> userPrivileges, Long userId) {
 
-	if(userPrivileges!=null && userPrivileges.size()>0){
-		deleteUserPrivilegeExclusion(userPrivileges, userId);
-		for(UserPrivilege userPrivilege : userPrivileges){
-			saveUserPrivilege(userPrivilege);
+		if(userPrivileges!=null && userPrivileges.size()>0){
+			deleteUserPrivilegeExclusion(userPrivileges, userId);
+			for(UserPrivilege userPrivilege : userPrivileges){
+				saveUserPrivilege(userPrivilege);
+			}
 		}
 	}
-}
 
-@Override
-public void saveUserPrivilege(UserPrivilege userPrivilege) {
+	@Override
+	public void saveUserPrivilege(UserPrivilege userPrivilege) {
 
-	if(userPrivilege.getUserPrivilegeId() == null){
-		getCurrentSession().persist(userPrivilege);
-	}		
-}
+		if(userPrivilege.getUserPrivilegeId() == null){
+			getEntityManager().persist(userPrivilege);
+		}		
+	}
 
 
-public void deleteUserPrivilegeExclusion(
-		List<UserPrivilege> userPrivileges, Long userId) {
+	public void deleteUserPrivilegeExclusion(
+			List<UserPrivilege> userPrivileges, Long userId) {
 
-	List<Long> userPrivilegeId = new ArrayList<Long>();
-	if (userPrivileges != null) {
-		for (UserPrivilege userPrivilege : userPrivileges) {
-			if(userPrivilege.getUserPrivilegeId() != null){
-				userPrivilegeId.add(userPrivilege.getUserPrivilegeId());
+		List<Long> userPrivilegeId = new ArrayList<Long>();
+		if (userPrivileges != null) {
+			for (UserPrivilege userPrivilege : userPrivileges) {
+				if(userPrivilege.getUserPrivilegeId() != null){
+					userPrivilegeId.add(userPrivilege.getUserPrivilegeId());
+				}
+			}
+
+			if (userPrivilegeId.size() == 0) {
+				userPrivilegeId.add(-1L);
 			}
 		}
 
-		if (userPrivilegeId.size() == 0) {
-			userPrivilegeId.add(-1L);
-		}
-	}
+		String deleteQuery = "Delete from tb_user_privilege where USER_ID =:USER_ID and USER_PRVLG_ID not in :USER_PRVLG_ID";
 
-	String deleteQuery = "Delete from tb_user_privilege where USER_ID =:USER_ID and USER_PRVLG_ID not in :USER_PRVLG_ID";
-
-	Query query=getCurrentSession().createSQLQuery(deleteQuery).setParameter("USER_ID", userId).setParameterList("USER_PRVLG_ID", userPrivilegeId);
-	query.executeUpdate();	}
+		Query query=(Query) getEntityManager().createNativeQuery(deleteQuery).setParameter("USER_ID", userId).setParameter("USER_PRVLG_ID", userPrivilegeId);
+		query.executeUpdate();	}
 
 }

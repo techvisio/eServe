@@ -57,7 +57,6 @@ userModule
 				 $state.go('user',{userId:currentUserId});
 			 }
 
-
 			 $scope.addAndRemoveRoleFromUser = function(object){
 
 				 if($scope.user.roles.indexOf(object)<0){
@@ -174,17 +173,17 @@ userModule
 						 })
 			 }
 //			 $scope.getCurrentPassword=function(){
-//				 userService.getCurrentPassword($scope.user.userId)
-//				 .then(
-//						 function(userPassword) {
-//							 console
-//							 .log('user password received from service in controller : ');
-//							 console.log(userPassword);
-//							 if (userPassword) {
-//								 $scope.userPassword=userPassword;
-//							 }
-//
-//						 })
+//			 userService.getCurrentPassword($scope.user.userId)
+//			 .then(
+//			 function(userPassword) {
+//			 console
+//			 .log('user password received from service in controller : ');
+//			 console.log(userPassword);
+//			 if (userPassword) {
+//			 $scope.userPassword=userPassword;
+//			 }
+
+//			 })
 //			 }
 
 			 $scope.getUsers=function(){
@@ -214,6 +213,27 @@ userModule
 						 })
 			 }
 
+			 $scope.resetPassword=function(user){
+				 userService.resetPassword(user)
+				 .then(
+						 function(user) {
+							 console
+							 .log('reset user password in controller : ');
+							 console.log(user);
+							 if (user) {
+								 $scope.user=user;
+								 alert("Resetting User Password Is Done");
+							 }
+						 })
+			 }
+
+			 $scope.logout=function(){
+
+				 window.location=document.getElementById('logout').href;
+			 }
+
+
+
 //			 return;
 //			 }
 //			 }
@@ -240,13 +260,13 @@ userModule
 //			 }
 
 			 $scope.saveQuestion=function(){
-				 
+
 				 if($scope.user.password == $scope.user.newPassword){
 					 $scope.wrongNewPass = true;
 					 return;
 				 }
 
-				 if($scope.user.newPassword==null){
+				 if($scope.user.newPassword==null || $scope.user.newPassword==""){
 					 $scope.newPassMust = true;
 					 return;
 				 }
@@ -269,6 +289,7 @@ userModule
 								 $scope.oldConfirmed=response.passwordMatch;
 								 if(success){
 									 $rootScope.curModal.close();
+									 $scope.logout();
 								 }
 							 }
 
@@ -278,10 +299,10 @@ userModule
 			 $scope.saveUser=function(){
 
 //				 if($scope.user.password.length != 6 && $scope.user.password.length < 6){
-//				 $scope.userForm.$valid = false;
+//				 $scope.`.$valid = false;
 //				 }
 
-				 if(!$scope.userForm.$valid){
+				 if(!$scope.USER.$valid){
 
 					 $scope.alerts=[];
 					 $scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
@@ -311,6 +332,33 @@ userModule
 								 }
 							 }
 						 })
+			 };
+
+			 $scope.updateUser=function(){
+
+				 userService.updateUser($scope.user)
+				 .then(
+						 function(response) {
+							 if(response){
+								 var success=response.success;
+								 if(success){
+									 $scope.user = response.user;
+									 $scope.alerts=[];
+									 alert("User Updated Successfully");
+									 $scope.redirectToUser($scope.user.userId);
+								 }
+							 }
+						 })
+			 }
+
+			 $scope.saveAndUpdateUser = function(){
+				 
+				 if(!$scope.user.userId){
+					 $scope.saveUser();
+				 }
+				 else{
+					 $scope.updateUser();
+				 }
 			 }
 
 			 $scope.allLetter = function(inputtxt)  

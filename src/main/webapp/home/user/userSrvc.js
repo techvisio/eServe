@@ -7,13 +7,14 @@ userModule.service('userService', function($http, $q) {
 		getUser : getUser,
 		getUserByCriteria : getUserByCriteria,
 		saveUser: saveUser,
+		updateUser : updateUser,
 		getUsers : getUsers,
-		addUser : addUser,
 		getUserRole : getUserRole,
 		saveQuestion : saveQuestion,
 		getUserwithprivileges : getUserwithprivileges,
 		getUserprivileges : getUserprivileges,
-		getCurrentPassword :getCurrentPassword
+		getCurrentPassword :getCurrentPassword,
+		resetPassword : resetPassword
 	});
 
 	function authenticateUser(form) {
@@ -128,21 +129,6 @@ userModule.service('userService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function addUser(user){
-
-		console.log('add user called in service');
-		var request = $http({
-			method : "post",
-			url : "../service/user/",
-			params : "",
-			data : user
-
-		});
-
-		return (request.then(handleSuccess, handleError));
-
-	}
-	
 	function saveQuestion(user){
 
 		console.log('saveSecurityQuestion called in service');
@@ -178,16 +164,44 @@ userModule.service('userService', function($http, $q) {
 		console.log('getting verified user with unique userName and EmailId in service');
 		var request = $http({
 			method : "post",
-			url : "../service/user/isuserexists/",
+			url : "../service/user/",
 			params : "",
 			data : user
 
 		});
 
 		return (request.then(handleSuccess, handleError));
-
 	}
 
+	function updateUser(user){
+
+		console.log('getting verified user with unique userName and EmailId in service');
+		var request = $http({
+			method : "put",
+			url : "../service/user/",
+			params : "",
+			data : user
+
+		});
+
+		return (request.then(handleSuccess, handleError));
+	}
+	
+	function resetPassword(user){
+
+		console.log('Reset user password');
+		var request = $http({
+			method : "post",
+			url : "../service/user/resetpassword/",
+			params : "",
+			data : user
+
+		});
+
+		return (request.then(handleSuccess, handleError));
+	}
+
+	
 	function handleError(response) {
 		console.log('Error occured while calling service');
 		console.log(response);

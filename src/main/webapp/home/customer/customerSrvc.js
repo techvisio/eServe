@@ -3,6 +3,7 @@ customerModule.service('customerService', function($http, $q) {
 	// Return public API.
 	return ({
 		saveCustomer  : saveCustomer,
+		updateCustomer : updateCustomer,
 		getCustomer : getCustomer,
 		getCustomers:getCustomers,
 		saveUnit : saveUnit,
@@ -48,6 +49,18 @@ customerModule.service('customerService', function($http, $q) {
 		console.log('add new customer');
 		var request = $http({
 			method : "post",
+			url : "../service/customer/",
+			params : "",
+			data: customer
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
+	function updateCustomer(customer){
+		console.log('add new customer');
+		var request = $http({
+			method : "put",
 			url : "../service/customer/",
 			params : "",
 			data: customer

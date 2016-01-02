@@ -1,9 +1,9 @@
 
-<form name='customerForm'>
+<form name='CUSTOMER' id="CUSTOMER">
 	<tabset> <tab active=""> <tab-heading>Customer</tab-heading>
 
-	<div ng-init="init()">
-		<div ng show="alerts..length>0 || !$scope.customerForm.$valid">
+	<div ng-init="init(); toggleReadOnly('CUSTOMER')">
+		<div ng show="alerts..length>0 || !$scope.CUSTOMER.$valid">
 			<alert ng-repeat="alert in alerts" type="{{alert.type}}"
 				close="closeAlert($index)">{{alert.msg}}</alert>
 		</div>
@@ -17,7 +17,7 @@
 				</div>
 				<div class="col-sm-4">
 					<input class="form-control input-sm"
-						ng-model="customer.customerCode" id="inputlg" type="text" readOnly>
+						ng-model="customer.customerCode" id="inputlg" type="text" disabled>
 				</div>
 
 				<div class="col-sm-2">
@@ -26,7 +26,7 @@
 				<div class="col-sm-4">
 					<input class="form-control input-sm"
 						ng-model="customer.customerName" required="required"
-						ng-pattern="/^[a-zA-Z ]+$/i" id="inputlg" type="text">
+						ng-pattern="/^[a-zA-Z-. ]+$/i" id="inputlg" type="text">
 				</div>
 			</div>
 
@@ -37,7 +37,8 @@
 				<div class="col-sm-4">
 					<input class="form-control input-sm" required="required"
 						ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/"
-						ng-model="customer.contactNo" id="inputlg" type="text">
+						ng-model="customer.contactNo" id="inputlg" type="text"
+						ng-click="resetAleart()">
 				</div>
 
 				<div class="col-sm-2">
@@ -47,7 +48,7 @@
 					<input class="form-control input-sm" ng-model="customer.emailId"
 						required="required"
 						ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
-						id="inputlg" type="email">
+						id="inputlg" type="email" ng-click="resetAleart()">
 				</div>
 			</div>
 			<div class="row">
@@ -61,7 +62,7 @@
 						<option>NAD</option>
 						<option>VIP</option>
 						<option>CORPORATE</option>
-						<option>INDIVISUAL</option>
+						<option>INDIVIDUAL</option>
 					</select>
 				</div>
 			</div>
@@ -89,8 +90,9 @@
 					<label for="inputlg">Contact No</label>
 				</div>
 				<div class="col-sm-4">
-					<input class="form-control input-sm"
-						ng-model="customer.address.contactNo" id="inputlg" type="text">
+					<input class="form-control input-sm" required="required"
+						ng-pattern="/^[0-9--]+$/" ng-model="customer.address.contactNo"
+						id="inputlg" type="text">
 				</div>
 			</div>
 
@@ -109,7 +111,9 @@
 				</div>
 				<div class="col-sm-4">
 					<input class="form-control input-sm"
-						ng-model="customer.address.pincode" id="inputlg" type="text">
+						ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}$/"
+						required="required" ng-model="customer.address.pincode"
+						id="inputlg" type="text">
 				</div>
 			</div>
 
@@ -163,7 +167,7 @@
 				</div>
 				<div class="col-sm-4">
 					<input class="form-control input-sm" id="inputlg" type="text"
-						ng-model="unit.unitCode" readOnly> 
+						ng-model="unit.unitCode" disabled>
 				</div>
 
 				<div class="col-sm-2">
@@ -242,7 +246,9 @@
 					<h3 class="new-event-subtitle">Site Address Details</h3>
 				</div>
 				<div class="col-sm-6 child-right">
-					<input type="checkbox" id="chk_act" /> <label for="chk_act">Same
+					<input type="checkbox" id="chk_act_{{$id}}"
+						ng-change="copyCustomerAddress(unit,sameAsAbove)"
+						ng-model="sameAsAbove" /> <label for="chk_act_{{$id}}">Same
 						As Billing Address</label>
 				</div>
 			</div>
@@ -260,6 +266,7 @@
 				</div>
 				<div class="col-sm-4">
 					<input class="form-control input-sm" id="inputlg" type="text"
+						
 						ng-model="unit.address.contactNo">
 				</div>
 			</div>
@@ -278,8 +285,9 @@
 					<label for="inputlg">Pincode</label>
 				</div>
 				<div class="col-sm-4">
-					<input class="form-control input-sm" id="inputlg" type="text"
-						ng-model="unit.address.pincode">
+					<input class="form-control input-sm" id="inputlg" type="text"<input
+						class="form-control input-sm"
+						 ng-model="unit.address.pincode">
 				</div>
 			</div>
 
@@ -326,9 +334,6 @@
 				<div class="col-sm-2">
 					<label for="inputlg">Warranty Under</label>
 				</div>
-
-				<div class="col-sm-2"></div>
-
 			</div>
 
 			<div class="row" ng-repeat="equip in unit.equipmentDetails">
@@ -356,6 +361,10 @@
 					</select>
 				</div>
 				<div class="col-sm-2">
+				<input type="checkbox" id="chk_act_{{$id}}"
+						ng-model="equip.underWarranty" /> <label for="chk_act_{{$id}}">Under Warranty</label>
+				</div>
+				<div class="col-sm-2">
 					<button type="button" class="btn btn-default btn-sm"
 						ng-click="removeMachine(unit,$index)" ng-show="$index>0">
 						<span class="glyphicon glyphicon-remove"></span>
@@ -366,7 +375,8 @@
 				<div class="col-sm-3"></div>
 
 				<div class="col-sm-3">
-					<button type="button" class="btn btn-primary">Edit</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="toggleReadOnly('CUSTOMER')">Edit</button>
 				</div>
 
 				<div class="col-sm-3">
@@ -388,7 +398,7 @@
 
 			<div class="col-sm-2 child-right">
 				<button type="button" class="btn btn-primary"
-					ng-click="saveCustomer()">Save Customer</button>
+					ng-click="saveAndUpdateCustomer()">Save Customer</button>
 			</div>
 		</div>
 	</div>
@@ -400,7 +410,7 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Customer Code</th>
+				<th>Complaint Id</th>
 				<th>Customer Name</th>
 				<th>Unit Code</th>
 				<th>Status</th>

@@ -1,6 +1,7 @@
 package com.techvisio.eserve.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,7 @@ public interface CustomerManager {
 
 	public List<Customer> getCustomers();
 	public Customer getCustomer(Long customerId);
-	public Long saveCustomer(Customer customer);
+	public Map<String, Object> saveCustomer(Customer customer);
 	public void saveUnit(List<Unit> units,  Long customerId);
 	public void saveUnit(Unit unit);
 	public List<Unit> getUnits(Long customerId);

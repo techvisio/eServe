@@ -43,4 +43,6 @@ public interface UserManager {
 	public List<UserPrivilege> getAllUserPrivileges(User user);
 	
 	public List<UserPrivilege> getUserPrivilegesSet();
+
+	public void resetPassword(User user);
 }

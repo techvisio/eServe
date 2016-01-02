@@ -1,5 +1,5 @@
-<form name="complaintForm">
-	<div ng-init="init(); getUsers()">
+<form name="COMPLAINT" id="COMPLAINT">
+	<div ng-init="init(); getUsers(); toggleReadOnly('COMPLAINT')">
 		<div>
 			<h3 class="page-header jumbotron">CUSTOMER'S COMPLAINT</h3>
 		</div>
@@ -10,7 +10,7 @@
 			</div>
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="customerComplaint.customerCode" readOnly>
+					ng-model="customerComplaint.customerCode" disabled>
 			</div>
 
 			<div class="col-sm-2">
@@ -19,7 +19,7 @@
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
 					ng-model="customerComplaint.customerName" required="required"
-						ng-pattern="/^[a-zA-Z ]+$/i">
+						ng-pattern="/^[a-zA-Z-. ]+$/i">
 			</div>
 		</div>
 
@@ -55,7 +55,7 @@
 			</div>
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="customerComplaint.unit.unitCode" readOnly>
+					ng-model="customerComplaint.unit.unitCode" disabled>
 			</div>
 
 			<div class="col-sm-2">
@@ -152,7 +152,7 @@
 			<div class="col-sm-4">
 				<input type="text" class="form-control datepicker"
 					name="requestDueDate" ng-model="customerComplaint.slaDateString"
-					datepicker-popup="{{'MMM dd yyyy'}}">
+					datepicker-popup="{{'MMM dd yyyy'}}" disabled>
 			</div>
 		</div>
 		<div class="row">
@@ -185,7 +185,7 @@
 
 					<div class="row">
 						<div class="col-sm-2"></div>
-						<div class="col-sm-2">
+						<div class="col-sm-2" ng-show="!isEdit">
 							<button type="button" class="btn btn-primary child-right"
 								ng-click="saveComplaintAssignment()">Assign</button>
 						</div>
@@ -228,7 +228,7 @@
 			<div class="row">
 				<div class="col-sm-4"></div>
 
-				<div class="col-sm-2">
+				<div class="col-sm-2" ng-show="!isEdit">
 					<button type="button" class="btn btn-primary child-right"
 						ng-click="saveComplaintResolution()">Save Resolution</button>
 				</div>
@@ -314,9 +314,17 @@
 		<!-- 		</div> -->
 
 		<div class="row">
-			<div class="col-sm-10"></div>
+			<div class="col-sm-9"></div>
 
-			<div class="col-sm-2">
+<div class="col-sm-2" ng-show="isEdit">
+				<button type="button" class="btn btn-primary"
+					ng-click="toggleReadOnly('COMPLAINT')">Edit</button>
+			</div>
+			<div class="col-sm-1" ng-show="!isEdit">
+				<button type="button" class="btn btn-primary"
+					ng-click="toggleReadOnly('COMPLAINT')">Cancel</button>
+			</div>
+			<div class="col-sm-2" ng-show="!isEdit">
 				<button type="button" class="btn btn-primary"
 					ng-click="saveComplaint()">Create Complain</button>
 			</div>

@@ -20,13 +20,16 @@ public class Config extends BasicEntity{
 	private String property;
 	@Column(name = "VALUE")
 	private String value;
+	@Column(name="INCLUDE_BUSINESS_DAYS")
+	private boolean includeBusinessDays;
+
 	public Long getConfigTBId() {
 		return configTBId;
 	}
 	public void setConfigTBId(Long configTBId) {
 		this.configTBId = configTBId;
 	}
-	
+
 	public String getProperty() {
 		return property;
 	}
@@ -39,5 +42,5 @@ public class Config extends BasicEntity{
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
+
 }

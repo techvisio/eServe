@@ -3,12 +3,13 @@ package com.techvisio.eserve.beans;
 import java.util.Date;
 
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import com.techvisio.eserve.util.CommonUtil;
 
 public class BasicEntityCallback {
 
-	
+	 
 	 @PrePersist
 	  public void prePersist(BasicEntity basicEntity) {
 		 basicEntity.setClient(CommonUtil.getCurrentClient());
@@ -18,4 +19,9 @@ public class BasicEntityCallback {
 		 basicEntity.setUpdatedOn(new Date());
 	 }
 	 
+	 @PreUpdate
+	 public void preUpdate(BasicEntity basicEntity) {
+		 basicEntity.setUpdatedBy(CommonUtil.getCurrentUser().getUserName());
+		 basicEntity.setUpdatedOn(new Date());
+	 }
 }

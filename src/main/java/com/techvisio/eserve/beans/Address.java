@@ -28,8 +28,6 @@ public class Address extends BasicEntity{
 	@ManyToOne
 	@JoinColumn(name="STATE_ID")
 	private State State;
-	@Column(name="ADDRESS_TYPE")
-	private String addressType;
 
 
 	public String getCity() {
@@ -62,14 +60,6 @@ public class Address extends BasicEntity{
 
 	public void setState(State state) {
 		State = state;
-	}
-
-	public String getAddressType() {
-		return addressType;
-	}
-
-	public void setAddressType(String addressType) {
-		this.addressType = addressType;
 	}
 
 	public String getAddress() {

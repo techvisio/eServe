@@ -53,7 +53,7 @@ public class User extends BasicEntity {
 	@Column(name = "EMAIL_ID")
 	private String emailId;
 
-	@ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = { CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	@JoinTable(name = "TB_USER_ROLE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
 	private List<Role> roles;
 	
@@ -92,7 +92,8 @@ public class User extends BasicEntity {
 	@Transient
 	private String dobString;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	
 	@JoinColumn(name="USER_ID")
 	private List<UserPrivilege> privileges = new ArrayList<UserPrivilege>();
 
