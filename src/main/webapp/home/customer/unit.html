@@ -1,0 +1,265 @@
+<div ng-init="init(); toggleReadOnly('UNIT')">
+	<div ng-repeat="unit in customer.units">
+
+		<accordion> <accordion-group heading="Unit {{$index+1}}">
+		<accordion-heading>
+
+		<div class="row">
+			<div class="col-sm-4">
+				<label> Unit {{$index+1}} 
+			</div>
+			<div class="child-right">
+				<button type="button" class="btn btn-primary btn-sm"
+					ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)">Create
+					Complaint</button>
+				</label>
+			</div>
+			<div class="child-right">
+				<button type="button" class="btn btn-primary btn-sm"
+					ng-click="addUnit()" ng-enabled= "isPrivileged('CREATE_CUSTOMER') || isPrivileged('UPDATE_CUSTOMER')">Add Unit</button>
+			</div>
+		</div>
+		</accordion-heading>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">Unit Code</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="unit.unitCode" disabled>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Service Category</label>
+			</div>
+			<div class="col-sm-4">
+				<select class="form-control" ng-model="unit.serviceCategory"
+					required>
+					<option>Warranty</option>
+					<option>AMC</option>
+					<option>Paid</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+
+			<div class="col-sm-2">
+				<label for="inputlg">Service Party</label>
+			</div>
+			<div class="col-sm-4">
+				<select class="form-control" ng-model="unit.serviceParty" required>
+					<option>ANS</option>
+					<option>BLS</option>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<label for="inputlg">Unit Category</label>
+			</div>
+			<div class="col-sm-4">
+				<select class="form-control" ng-model="unit.unitCategory" required>
+					<option>Icecream</option>
+					<option>Blood</option>
+					<option>Medicine</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+
+			<div class="col-sm-2">
+				<label for="inputlg">External Id</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					required ng-model="unit.externalId">
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg"> Contract Start On</label>
+			</div>
+			<div class="col-sm-4">
+				<div class="date-input">
+					<input type="text" class="form-control datepicker"
+						name="requestDueDate" ng-model="unit.contractStartOnString"
+						datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate" required
+						ng-click="startDate = !startDate; $event.stopPropagation();"
+						show-button-bar="false">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+
+			<div class="col-sm-2">
+				<label for="inputlg"> Contract Expire On</label>
+			</div>
+			<div class="col-sm-4">
+				<div class="date-input">
+					<input type="text" class="form-control datepicker"
+						name="requestDueDate" ng-model="unit.contractExpireOnString"
+						datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate" required
+						ng-click="expireDate = !expireDate; $event.stopPropagation();"
+						show-button-bar="false">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<h3 class="new-event-subtitle">Site Address Details</h3>
+			</div>
+			<div class="col-sm-6 child-right" ng-disabled="unit.address.addressId">
+				<input type="checkbox" id="chk_act_{{$id}}" ng-disabled="unit.address.addressId"
+					ng-change="copyCustomerAddress(unit,sameAsAbove)"
+					ng-model="sameAsAbove" /> <label for="chk_act_{{$id}}">Same
+					As Billing Address</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">Address</label>
+			</div>
+			<div class="col-sm-4">
+				<textarea rows="3" cols="30" class="form-control input-sm"
+					id="inputlg" ng-model="unit.address.address" required></textarea>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Contact No</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-pattern="/^[0-9--]+$/" ng-model="unit.address.contactNo"
+					required>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">City</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="unit.address.city" ng-pattern="/^[a-zA-Z]+$/i" required>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Pincode</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"<input
+					ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}$/"
+					class="form-control input-sm" ng-model="unit.address.pincode"
+					required>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">State</label>
+			</div>
+			<div class="col-sm-4">
+				<select ng-model="unit.address.state.stateId" class="form-control"
+					ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE"
+					required>
+				</select>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-sm-4">
+				<h3 class="new-event-subtitle">Equipment Details</h3>
+			</div>
+			<div class="col-sm-2 child-right">
+				<button type="button" class="btn btn-primary btn-sm"
+					ng-click="addMachine(unit)">Add Equipment</button>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">type</label>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Model No</label>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Serial No</label>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Invoice No</label>
+			</div>
+
+
+			<div class="col-sm-2">
+				<label for="inputlg">Warranty Under</label>
+			</div>
+		</div>
+
+		<div class="row" ng-repeat="equip in unit.equipmentDetails">
+			<div class="col-sm-2">
+				<select class="form-control" ng-model="equip.type">
+					<option></option>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<select class="form-control" ng-model="equip.equipment.model">
+					<option></option>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="equip.serialNo" required>
+			</div>
+			<div class="col-sm-2">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="equip.invoiceNo" required>
+			</div>
+			<div class="col-sm-2">
+				<select class="form-control" ng-model="equip.warrantyUnder">
+					<option></option>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<input type="checkbox" id="chk_act_{{$id}}"
+					ng-model="equip.underWarranty" /> <label for="chk_act_{{$id}}">Under
+					Warranty</label>
+			</div>
+			<div class="col-sm-2">
+				<button type="button" class="btn btn-default btn-sm"
+					ng-click="removeMachine(unit,$index)" ng-show="$index>0">
+					<span class="glyphicon glyphicon-remove"></span>
+				</button>
+			</div>
+		</div>
+		<div class="row">
+
+			<div class="col-sm-8"></div>
+
+			<div class="col-sm-1">
+				<button type="button" class="btn btn-primary"
+					ng-click="toggleReadOnly('UNIT')" ng-show="!isNew">Edit</button>
+			</div>
+			<div class="col-sm-1">
+				<button type="button" class="btn btn-primary"
+					ng-click="toggleReadOnly('UNIT')" ng-show="!isEdit">Cancel</button>
+			</div>
+			<div class="col-sm-2 child-right">
+				<button type="button" class="btn btn-primary"
+					ng-click="saveUnit(unit)" ng-show="!isNew" ng-enabled= "isPrivileged('CREATE_CUSTOMER') || isPrivileged('UPDATE_CUSTOMER')">Save Unit</button>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<button class="btn-primary" ng-click="removeUnit($index)"
+					ng-show="$index>0">Remove Unit</button>
+			</div>
+		</div>
+		</accordion-group> </accordion>
+
+	</div>
+</div>

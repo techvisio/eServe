@@ -12,6 +12,7 @@ userModule
 		 'masterdataService',
 		 function($scope, $state, $rootScope,userService,user,masterdataService) {
 			 $scope.form={};
+             $scope.isEdit = true;
 			 $scope.customQuestion = false;
 			 $scope.wrongNewPass = false;
 			 $scope.wrongCurrntPass = false;
@@ -45,6 +46,7 @@ userModule
 			 }			 
 
 			 if(user){
+				 $scope.isEdit = false;
 				 $scope.user = user;
 			 }			 
 
@@ -343,9 +345,10 @@ userModule
 								 var success=response.success;
 								 if(success){
 									 $scope.user = response.user;
+									 $scope.isEdit = false;
+									 $scope.toggleReadOnly('USER');
 									 $scope.alerts=[];
 									 alert("User Updated Successfully");
-									 $scope.redirectToUser($scope.user.userId);
 								 }
 							 }
 						 })
@@ -388,4 +391,32 @@ userModule
 //			 })
 //			 }
 
+				$scope.toggleReadOnly = function(form) {
+
+					if(!$scope.isEdit){
+						$('#' + form + ' *').attr('readonly',
+								true);
+						$('#' + form + ' input[type="radio"]')
+						.attr('disabled', true);
+						$('#' + form + ' input[type="checkbox"]')
+						.attr('disabled', true);
+						$('#' + form + ' input[type="button"]')
+						.attr('disabled', true);
+						$scope.isEdit = !$scope.isEdit;
+					}
+
+					else{
+						$('#' + form + ' *').attr('readonly',
+								false);
+						$('#' + form + ' input[type="radio"]')
+						.attr('disabled', false);
+						$('#' + form + ' input[type="checkbox"]')
+						.attr('disabled', false);
+						$('#' + form + ' input[type="button"]')
+						.attr('disabled', false);
+						$scope.isEdit = !$scope.isEdit;
+					}
+				};
+
+			 
 		 } ]);

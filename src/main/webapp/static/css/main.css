@@ -576,3 +576,15 @@ body {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+.searchScreen-left
+{
+	float: left;
+	width: 30%;
+}
+
+.searchScreen-left
+{
+	float: right;
+	width: 70%;
+}

@@ -20,8 +20,6 @@ public class Config extends BasicEntity{
 	private String property;
 	@Column(name = "VALUE")
 	private String value;
-	@Column(name="INCLUDE_BUSINESS_DAYS")
-	private boolean includeBusinessDays;
 
 	public Long getConfigTBId() {
 		return configTBId;

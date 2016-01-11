@@ -46,23 +46,34 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			complaint: ['$stateParams', function($stateParams){
 				return null;
-
 			}],
 			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
 
 			}],
-
 			customer: ['$stateParams', function($stateParams){
 				return null;
-			}],
-			isFromComplaintScreen : ['$stateParams', function($stateParams){
-
-				return false;
 			}]
 		}
 	})
 
+		.state('amcMain', {
+		url: "/customer/new",
+		templateUrl: 'customer/amcMain.html',
+		controller:"customerController",
+		resolve:{
+			customer: ['$stateParams', function($stateParams){
+				return null;
+			}],
+			complaint: ['$stateParams', function($stateParams){
+				return null;
+			}],
+			unitComplaint: ['$stateParams', function($stateParams){
+				return null;
+			}]
+		}
+	})
+	
 	.state('newcustomer', {
 		url: "/customer/new",
 		templateUrl: 'customer/amc.html',
@@ -73,14 +84,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			complaint: ['$stateParams', function($stateParams){
 				return null;
-
 			}],
 			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
-			}],
-			isFromComplaintScreen : ['$stateParams', function($stateParams){
-
-				return false;
 			}]
 		}
 	})
@@ -95,20 +101,10 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			complaint: ['$stateParams', function($stateParams){
 				return null;
-
 			}],
 			customer: ['$stateParams', function($stateParams){
 				return null;
-
-			}],
-
-			isFromComplaintScreen : ['$stateParams', function($stateParams){
-
-				return false;
 			}]
-
-
-
 		}
 	})
 
@@ -122,18 +118,10 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			customer: ['$stateParams', function($stateParams){
 				return null;
-
 			}],
 			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
-
-			}],
-
-			isFromComplaintScreen : ['$stateParams', function($stateParams){
-
-				return false;
 			}]
-
 		}
 	})
 
@@ -147,22 +135,16 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			complaint: ['$stateParams', function($stateParams){
 				return null;
-
 			}],
 			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
-
-			}],
-
-			isFromComplaintScreen : ['$stateParams', function($stateParams){
-				return false;
 			}]
 		}
 	})
 
 	.state('searchcomplaint', {
 		url: "/search/complaint",
-		templateUrl: 'customer/customerSearch.html',
+		templateUrl: 'customer/complaintSearch.html',
 		controller:"customerController",
 		resolve:{
 			customer: ['$stateParams','customerService', function($stateParams){
@@ -170,22 +152,16 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			complaint: ['$stateParams', function($stateParams){
 				return null;
-
 			}],
 			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
-
-			}],
-			isFromComplaintScreen : ['$stateParams', function($stateParams){
-
-				return true;
 			}]
 		}
 	})
 
 	.state('customer', {
 		url: "/customer/{customerId:[0-9]{1,8}}",
-		templateUrl: 'customer/amc.html',
+		templateUrl: 'customer/amcMain.html',
 		controller: "customerController",
 		resolve:{
 			customer: ['$stateParams','customerService', function($stateParams,customerService){
@@ -193,15 +169,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			complaint: ['$stateParams', function($stateParams){
 				return null;
-
 			}],
 			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
-
-			}],
-			isFromComplaintScreen : ['$stateParams', function($stateParams){
-
-				return false;
 			}]
 		}
 	})

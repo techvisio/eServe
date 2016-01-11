@@ -1,5 +1,5 @@
-<form name='USER'>
-	<div ng-init="init()">
+<form name='USER' id="USER">
+	<div ng-init="init(); toggleReadOnly('USER')">
 		<div>
 			<h3 class="page-header jumbotron">CREATE USER</h3>
 		</div>
@@ -80,38 +80,38 @@
 				<label> Active </label>
 			</div>
 			<div class="col-sm-2">
-				 <input type="checkbox" id="chk_act" ng-model="user.active" />
-				 <label	for="chk_act"></label>
+				<input type="checkbox" id="chk_act" ng-model="user.active" /> <label
+					for="chk_act"></label>
 			</div>
 
 		</div>
 
-<!-- 		<div class="row"> -->
+		<!-- 		<div class="row"> -->
 
-<!-- 			<div class="col-sm-2"> -->
-<!-- 				<label for="inputlg"> Password</label> -->
-<!-- 			</div> -->
-<!-- 			<div class="col-sm-3"> -->
-<!-- 				<input class="form-control input-sm" name="password" pattern=".{6,}" -->
-<!-- 					ng-model="user.password" id="pass" id="inputlg" type="password" -->
-<!-- 					tooltip-enable="userForm.$invalid" -->
-<!-- 					tooltip="Password must be atleast 6 character" required="required"> -->
-<!-- 			</div> -->
+		<!-- 			<div class="col-sm-2"> -->
+		<!-- 				<label for="inputlg"> Password</label> -->
+		<!-- 			</div> -->
+		<!-- 			<div class="col-sm-3"> -->
+		<!-- 				<input class="form-control input-sm" name="password" pattern=".{6,}" -->
+		<!-- 					ng-model="user.password" id="pass" id="inputlg" type="password" -->
+		<!-- 					tooltip-enable="userForm.$invalid" -->
+		<!-- 					tooltip="Password must be atleast 6 character" required="required"> -->
+		<!-- 			</div> -->
 
-<!-- 			<div class="col-sm-2"> -->
-<!-- 				<label for="inputlg"> Confirm Password</label> -->
-<!-- 			</div> -->
-<!-- 			<div class="col-sm-3"> -->
-<!-- 				<input class="form-control input-sm" ng-model="confirmPassword" -->
-<!-- 					id="inputlg" type="password" required="required"> -->
-<!-- 			</div> -->
-<!-- 			<div class="col-sm-1"> -->
-<!-- 				<img height="30" width="30" ng-src="../static/images/redwarning.png" -->
-<!-- 					ng-show="wrongConfirmPass" -->
-<!-- 					tooltip="Password And Confirm Password Must Be Same" /> -->
-<!-- 			</div> -->
+		<!-- 			<div class="col-sm-2"> -->
+		<!-- 				<label for="inputlg"> Confirm Password</label> -->
+		<!-- 			</div> -->
+		<!-- 			<div class="col-sm-3"> -->
+		<!-- 				<input class="form-control input-sm" ng-model="confirmPassword" -->
+		<!-- 					id="inputlg" type="password" required="required"> -->
+		<!-- 			</div> -->
+		<!-- 			<div class="col-sm-1"> -->
+		<!-- 				<img height="30" width="30" ng-src="../static/images/redwarning.png" -->
+		<!-- 					ng-show="wrongConfirmPass" -->
+		<!-- 					tooltip="Password And Confirm Password Must Be Same" /> -->
+		<!-- 			</div> -->
 
-<!-- 		</div> -->
+		<!-- 		</div> -->
 
 		<div class="row">
 
@@ -120,7 +120,7 @@
 			</div>
 			<div class="col-sm-3">
 				<select ng-model="user.department.departmentId" class="form-control"
-					ng-options="item.departmentId as item.department for item in serverModelData.DEPARTMENT">
+					ng-options="item.departmentId as item.department for item in serverModelData.DEPARTMENT" required>
 				</select>
 			</div>
 
@@ -131,13 +131,13 @@
 			<div class="col-sm-3">
 				<select ng-model="user.designation.designationId"
 					class="form-control"
-					ng-options="item.designationId as item.designation  for item in serverModelData.DESIGNATION">
+					ng-options="item.designationId as item.designation  for item in serverModelData.DESIGNATION" required>
 				</select>
 			</div>
 
 
 		</div>
-	</div>
+	
 	</br>
 	<div class="row">
 		<div class="col-sm-12">
@@ -156,13 +156,23 @@
 		</div>
 
 		<div class="row">
-			<div class="col-sm-10"></div>
+			<div class="col-sm-9"></div>
 
-			<div class="col-sm-2">
-				<button type="button" class="btn btn-primary" ng-click="saveAndUpdateUser()">Save
-					User</button>
+			<div class="col-sm-2" ng-show="isEdit">
+				<button type="button" class="btn btn-primary"
+					ng-click="toggleReadOnly('USER')">Edit</button>
 			</div>
-			
+			<div class="col-sm-1" ng-show="!isEdit">
+				<button type="button" class="btn btn-primary"
+					ng-click="toggleReadOnly('USER')">Cancel</button>
+			</div>
+
+			<div class="col-sm-2" ng-show="!isEdit">
+				<button type="button" class="btn btn-primary"
+					ng-click="saveAndUpdateUser()">Save User</button>
+			</div>
+
 		</div>
+	</div>
 	</div>
 </form>

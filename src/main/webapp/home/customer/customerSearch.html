@@ -4,8 +4,8 @@
 <div class="row">
 			<div class="col-sm-8">
 			</div>
-<div class="col-sm-2" ng-show="!isFromComplaintScreen"><a ui-sref="newcustomer"><button class="btn-primary"><i class="glyphicon glyphicon-plus"></i>Create Customer</button></a></div>
-<div class="col-sm-2" ng-show="!isFromComplaintScreen"><a ui-sref="#"><button class="btn-primary">Advance Search</button></a></td></div>
+<div class="col-sm-2"><a ui-sref="newcustomer"><button class="btn-primary"><i class="glyphicon glyphicon-plus"></i>Create Customer</button></a></div>
+<div class="col-sm-2"><a ui-sref="#"><button class="btn-primary">Advance Search</button></a></td></div>
 </div>
 
 <table class="table table-striped">
@@ -27,7 +27,7 @@
 				id="inputlg" type="text"></td>
             <td><input class="form-control input-sm" ng-model="searchCriteria.emailId"
 				id="inputlg" type="text"></td>
-            <th><button class="btn-primary" ng-click="getCustomerByCriteria()">Search</button></a></th>
+            <th><button class="btn-primary" ng-click="getCustomerByCriteria()" ng-disabled="!isPrivileged('VIEW_CUSTOMER')">Search</button></a></th>
         </tr>
     </thead>
     <tbody>

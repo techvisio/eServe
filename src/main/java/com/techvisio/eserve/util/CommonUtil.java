@@ -21,20 +21,20 @@ public class CommonUtil {
 	}
 
 	public static User getCurrentUser(){
-		
+
 		User user = null;
 		if(SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() !=null){
-		user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			}
+			user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		}
 		return user;
 	}
-	
-public static Client getCurrentClient(){
-		
+
+	public static Client getCurrentClient(){
+
 		User user = null;
 		if(SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() !=null){
-		user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			}
+			user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		}
 		return user.getClient();
 	}
 }

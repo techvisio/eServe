@@ -18,6 +18,9 @@ import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.SearchComplaint;
+import com.techvisio.eserve.beans.SearchComplaintCustomer;
+import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.User;
@@ -33,6 +36,9 @@ public class CustomerManagerImpl implements CustomerManager {
 
 	@Autowired
 	CustomerDao customerDao;
+
+	@Autowired
+	CacheDao cacheDao;
 
 	@Override
 	public Customer getCustomer(Long customerId) {
@@ -70,7 +76,7 @@ public class CustomerManagerImpl implements CustomerManager {
 		return result;
 	}
 
-	
+
 	@Override
 	public void saveUnit(List<Unit> units, Long customerId) {
 		customerDao.saveUnit(units, customerId);
@@ -101,42 +107,46 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 	@Override
 	public void saveComplaint(CustomerComplaint customerComplaint){
-		if(customerComplaint.getPriority().equalsIgnoreCase("C")){
-			Date date = new Date();
-			Calendar c = Calendar.getInstance(); 
-			c.setTime(date); 
-			c.add(Calendar.DATE, 1);
-			date = c.getTime();
-			customerComplaint.setSlaDate(date);
-		}
 
-		if(customerComplaint.getPriority().equalsIgnoreCase("H")){
-			Date date = new Date();
-			Calendar c = Calendar.getInstance(); 
-			c.setTime(date); 
-			c.add(Calendar.DATE, 3);
-			date = c.getTime();
-			customerComplaint.setSlaDate(date);
-		}
+		List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
+		for(Config config : defaultValues){
 
-		if(customerComplaint.getPriority().equalsIgnoreCase("M")){
-			Date date = new Date();
-			Calendar c = Calendar.getInstance(); 
-			c.setTime(date); 
-			c.add(Calendar.DATE, 5);
-			date = c.getTime();
-			customerComplaint.setSlaDate(date);
-		}
+			if(customerComplaint.getPriority().equalsIgnoreCase("C") && config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.SLA_DAYS_CRITICAL.name())){
+				Date date = new Date();
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(date); 
+				c.add(Calendar.DATE, Integer.parseInt(config.getValue()));
+				date = c.getTime();
+				customerComplaint.setSlaDate(date);
+			}
 
-		if(customerComplaint.getPriority().equalsIgnoreCase("L")){
-			Date date = new Date();
-			Calendar c = Calendar.getInstance(); 
-			c.setTime(date); 
-			c.add(Calendar.DATE, 7);
-			date = c.getTime();
-			customerComplaint.setSlaDate(date);
-		}
+			if(customerComplaint.getPriority().equalsIgnoreCase("H") && config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.SLA_DAYS_HIGH.name())){
+				Date date = new Date();
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(date); 
+				c.add(Calendar.DATE, Integer.parseInt(config.getValue()));
+				date = c.getTime();
+				customerComplaint.setSlaDate(date);
+			}
 
+			if(customerComplaint.getPriority().equalsIgnoreCase("M") && config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.SLA_DAYS_MEDIUM.name())){
+				Date date = new Date();
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(date); 
+				c.add(Calendar.DATE, Integer.parseInt(config.getValue()));
+				date = c.getTime();
+				customerComplaint.setSlaDate(date);
+			}
+
+			if(customerComplaint.getPriority().equalsIgnoreCase("L") && config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.SLA_DAYS_LOW.name())){
+				Date date = new Date();
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(date); 
+				c.add(Calendar.DATE, Integer.parseInt(config.getValue()));
+				date = c.getTime();
+				customerComplaint.setSlaDate(date);
+			}
+		}
 		if(customerComplaint.getCustomerId()==null){
 
 			Customer customer = new Customer();
@@ -154,6 +164,9 @@ public class CustomerManagerImpl implements CustomerManager {
 			customerComplaint.setCustomerId(customerFromDB.getCustomerId());
 		}
 
+		if(customerComplaint.getComplaintId() == null){
+			customerComplaint.setStatus(AppConstants.complaintStatus.UNASSIGNED.name());
+		}
 		customerDao.saveComplaint(customerComplaint);
 	}
 
@@ -195,5 +208,28 @@ public class CustomerManagerImpl implements CustomerManager {
 	public ComplaintAssignment getComplaintAssignment(Long complaintId) {
 		ComplaintAssignment complaintAssignment = customerDao.getComplaintAssignment(complaintId);
 		return complaintAssignment;
+	}
+
+	@Override
+	public List<SearchComplaintCustomer> getCustomerForComplaintByCriteria(
+			SearchCriteria searchCriteria) {
+		List<SearchComplaintCustomer> customers = customerDao.getCustomerForComplaintByCriteria(searchCriteria);
+		if(searchCriteria.getComplaintCode() != null ){
+			customers = customerDao.getCustomerByComplaintCode(searchCriteria);
+		}
+		
+		return customers;
+	}
+
+	@Override
+	public List<SearchComplaintUnit> getSearchUnitByCustomerId(Long customerId) {
+		List<SearchComplaintUnit> complaintUnits = customerDao.getSearchUnitByCustomerId(customerId);
+		return complaintUnits;
+	}
+
+	@Override
+	public List<SearchComplaint> getComplaintByUnitId(Long unitId) {
+		List<SearchComplaint> complaints = customerDao.getComplaintByUnitId(unitId);
+		return complaints;
 	}
 }

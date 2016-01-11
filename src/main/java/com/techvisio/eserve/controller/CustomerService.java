@@ -18,6 +18,9 @@ import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.Response;
+import com.techvisio.eserve.beans.SearchComplaint;
+import com.techvisio.eserve.beans.SearchComplaintCustomer;
+import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.User;
@@ -157,5 +160,31 @@ public class CustomerService {
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
+
+	@RequestMapping(value ="/searchcomplaintcustomer/", method = RequestMethod.POST)
+	public ResponseEntity<Response> getCustomerComplaintByCriteria(@RequestBody SearchCriteria searchCriteria) {
+		Response response=new Response();
+		List<SearchComplaintCustomer> complaintByCriteria = customerManager.getCustomerForComplaintByCriteria(searchCriteria);
+		response.setResponseBody(complaintByCriteria);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
 	
+	@RequestMapping(value ="/searchcomplaintunit/{customerId}", method = RequestMethod.GET)
+	public ResponseEntity<Response> getSearchUnitByCustomerId(@PathVariable Long customerId) {
+		Response response=new Response();
+		List<SearchComplaintUnit> searchComplaintUnits = customerManager.getSearchUnitByCustomerId(customerId);
+		response.setResponseBody(searchComplaintUnits);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value ="/searchcomplaint/{unitId}", method = RequestMethod.GET)
+	public ResponseEntity<Response> getComplaintByUnitId(@PathVariable Long unitId) {
+		Response response=new Response();
+		List<SearchComplaint> searchComplaints = customerManager.getComplaintByUnitId(unitId);
+		response.setResponseBody(searchComplaints);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
 }

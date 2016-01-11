@@ -110,8 +110,9 @@ public class UserManagerImpl implements UserManager{
 
 		List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
 		for(Config config : defaultValues){
-			if(config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.DEFAULT_PASSWORD.name()));
+			if(config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.DEFAULT_PASSWORD.name())){
 			user.setPassword(config.getValue().toCharArray());
+			}
 		}
 		user.setForcePasswordChange(true);
 
@@ -141,8 +142,9 @@ public class UserManagerImpl implements UserManager{
 		if(user.getUserId()==null){
 			List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
 			for(Config config : defaultValues){
-				if(config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.DEFAULT_PASSWORD.name()));
-				user.setPassword(config.getValue().toCharArray());
+				if(config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.DEFAULT_PASSWORD.name())){
+					user.setPassword(config.getValue().toCharArray());
+				}
 			}
 		}
 		Iterator<UserPrivilege> itr = user.getPrivileges().iterator();

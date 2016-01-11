@@ -1,18 +1,21 @@
 var customerModule = angular.module('customerModule', []);
 
-customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','isFromComplaintScreen','customer','unitComplaint','complaint','masterdataService','userService',
-                                                 function($scope,$window,$rootScope,customerService,$state,filter,isFromComplaintScreen,customer,unitComplaint,complaint,masterdataService,userService) {
+customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','unitComplaint','complaint','masterdataService','userService',
+                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,unitComplaint,complaint,masterdataService,userService) {
 
 
 	$scope.form={};
+	$scope.isNew=true;
 	$scope.isEdit=true;
+	$scope.isUnitCollapsed = true;
+	$scope.isComplaintCollapsed = true;
 	$scope.startDate=false;
 	$scope.expireDate=false;
 	$scope.newComplaint=true;
 	$scope.showStatus=false;
-	$scope.isFromComplaintScreen=false;
 	$scope.getAllComplaints=false;
 	$scope.customer={};
+	$scope.complaintCustomers = [];
 	$scope.customers=[];
 	$scope.searchCriteria = {};
 	$scope.customerComplaint = {};
@@ -38,6 +41,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	if(customer){
 		$scope.getAllComplaints = true;
 		$scope.isEdit = false;
+		$scope.isNew=false;
 		$scope.customer = customer;
 	}
 
@@ -75,12 +79,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 		$scope.getCustomerForComplaint();
 		$scope.newComplaint = true;
+		$scope.isEdit=false;
 		$scope.customerComplaint.unit = unitComplaint;
 	}
 
-	if(isFromComplaintScreen){
-		$scope.isFromComplaintScreen = true;
-	}
 
 	if(complaint){
 		$scope.newComplaint=false;
@@ -201,13 +203,48 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 					console.log(customers);
 					if (customers) {
 						$scope.customers=customers;
-						if($scope.customers.length==0){
-							if($scope.isFromComplaintScreen){
-								$scope.showconfirmboxComplaint();
-							}
+					}
+				})
+	}
+
+	$scope.getComplaintByCriteria=function(){
+		customerService.getComplaintByCriteria($scope.searchCriteria)
+		.then(
+				function(customers) {
+					console
+					.log('getting complaint by criteria in controller : ');
+					console.log(customers);
+					if (customers) {
+						$scope.complaintCustomers=customers;
+						if($scope.complaintCustomers.length==0){
+							$scope.showconfirmboxComplaint();
 						}
 					}
 				})
+	}
+
+
+	$scope.getSearchUnitByCustomerId = function(customerId){
+		customerService.getSearchUnitByCustomerId(customerId)
+		.then(function(response) {
+			console.log('getting units by customerId in controller : ');
+			console.log(response);
+			if (response) {
+				$scope.units = response;
+			} 
+		})
+	}
+
+	$scope.getComplaintByUnitId = function(unit,unitId){
+		customerService.getComplaintByUnitId(unitId)
+		.then(function(response) {
+			console.log('get Complaints by unitId in controller : ');
+			console.log(response);
+			if (response) {
+				$scope.customerComplaints = response;
+				unit.complaints = $scope.customerComplaints;
+			} 
+		})
 	}
 
 	$scope.getCustomer = function(){
@@ -234,7 +271,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.saveCustomer = function() {
 
-		if(!$scope.CUSTOMER.$valid){
+		if(!$scope.CUSTOMER.$valid || !$scope.UNIT.$valid){
 
 			$scope.alerts=[];
 			$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
@@ -305,6 +342,18 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	}
 
 	$scope.saveComplaint = function() {
+
+		if(!$scope.COMPLAINT.$valid){
+
+			$scope.alerts=[];
+			$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
+			return;
+		}
+
+		$scope.resetAleart = function(){
+			$scope.alerts=[];
+		}
+
 		console.log('save complaint called in controller');
 		customerService.saveComplaint($scope.customerComplaint)
 		.then(function(response) {
@@ -360,6 +409,18 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.saveUnit = function(object) {
 		console.log('save unit called');
+
+		if(!$scope.CUSTOMER.$valid){
+
+			$scope.alerts=[];
+			$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
+			return;
+		}
+
+		$scope.resetAleart = function(){
+			$scope.alerts=[];
+		}
+
 		customerService.saveUnit(object, $scope.customer.customerId)
 		.then(function(response) {
 			console.log('unit Data received from service : ');
@@ -380,6 +441,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			.attr('disabled', true);
 			$('#' + form + ' input[type="checkbox"]')
 			.attr('disabled', true);
+			$('#' + form + ' input[type="button"]')
+			.attr('disabled', true);
 			$scope.isEdit = !$scope.isEdit;
 		}
 
@@ -390,25 +453,52 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			.attr('disabled', false);
 			$('#' + form + ' input[type="checkbox"]')
 			.attr('disabled', false);
-			
+			$('#' + form + ' input[type="button"]')
+			.attr('disabled', false);
 			$scope.isEdit = !$scope.isEdit;
 		}
 	};
 
-
 	$scope.copyCustomerAddress = function(unit,sameAsAbove) {
 		console.log('same as above');
 		console.log(sameAsAbove);
-		if (sameAsAbove) {
-			console.log('same as above');
-			var unitAddress = $scope.customer.address;
-			unitAddress.addressId = null;
-			unit.address = angular.copy(unitAddress);
+
+		var customerAddressClone = angular.copy($scope.customer.address);
+		if(unit.address != null || !angular.isUndefined(unit.address)){
+			customerAddressClone.addressId = unit.address.addressId||null;
 		}
 
+		else{
+			customerAddressClone.addressId = null;
+		}
+
+		if (sameAsAbove) {
+			console.log('same as above');
+			unit.address = customerAddressClone;
+		}
 		if (!sameAsAbove){
 			unit.address = {};
+			unit.address.addressId=customerAddressClone.addressId;
 		}
+	}
+
+
+	$scope.isPrivileged = function(role){
+
+		var userPrivilege = $rootScope.user.privileges;
+		var result=false;
+		 angular.forEach(userPrivilege, function(privilege) {
+		      if (privilege.privilege.privilege===role) result= true;
+		    });
+
+//		 angular.forEach(oldTodos, function(todo) {
+//			 if(userPrivilege[i].privilege.privilege==role){
+//
+//					return true;
+//		    });
+//		
+		return result;		
+
 	}
 
 } ]);

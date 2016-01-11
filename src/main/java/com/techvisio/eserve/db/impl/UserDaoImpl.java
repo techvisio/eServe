@@ -107,7 +107,7 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 	@Override
 	public boolean isUserExists(User user) {
 
-		String queryString="from User WHERE lower(emailId) = coalesce(:emailId, emailId) or lower(userName) = coalesce(:userName, userName) and active = 1";
+		String queryString="from User WHERE lower(emailId) = coalesce(:emailId, emailId) or lower(userName) = coalesce(:userName, userName)";
 		Query query= getEntityManager().createQuery(queryString);
 
 		SearchCriteria searchCriteria = new SearchCriteria();

@@ -1,7 +1,11 @@
 <form name="COMPLAINT" id="COMPLAINT">
 	<div ng-init="init(); getUsers(); toggleReadOnly('COMPLAINT')">
+	<div ng show="alerts..length>0 || !$scope.COMPLAINT.$valid">
+			<alert ng-repeat="alert in alerts" type="{{alert.type}}"
+				close="closeAlert($index)">{{alert.msg}}</alert>
+		</div>
 		<div>
-			<h3 class="page-header jumbotron">CUSTOMER'S COMPLAINT</h3>
+			<h3 class="custom-page-header">CUSTOMER COMPLAINT</h3>
 		</div>
 
 		<div class="row">
@@ -19,7 +23,7 @@
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
 					ng-model="customerComplaint.customerName" required="required"
-						ng-pattern="/^[a-zA-Z-. ]+$/i">
+						ng-pattern="/^[a-zA-Z-z&-. ]+$/i">
 			</div>
 		</div>
 
@@ -63,7 +67,7 @@
 			</div>
 			<div class="col-sm-4">
 				<select class="form-control"
-					ng-model="customerComplaint.unit.serviceCategory">
+					ng-model="customerComplaint.unit.serviceCategory" required>
 					<option></option>
 					<option>Warranty</option>
 					<option>AMC</option>
@@ -77,7 +81,7 @@
 			</div>
 			<div class="col-sm-4">
 				<select class="form-control"
-					ng-model="customerComplaint.unit.serviceParty">
+					ng-model="customerComplaint.unit.serviceParty" required>
 					<option></option>
 					<option>ANS</option>
 					<option>BLS</option>
@@ -89,7 +93,7 @@
 			</div>
 			<div class="col-sm-4">
 				<select class="form-control"
-					ng-model="customerComplaint.unit.unitCategory">
+					ng-model="customerComplaint.unit.unitCategory" required>
 					<option></option>
 					<option>Icecream</option>
 					<option>Blood</option>
@@ -103,7 +107,7 @@
 			</div>
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="customerComplaint.unit.externalId">
+					ng-model="customerComplaint.unit.externalId" required>
 			</div>
 		</div>
 
@@ -123,7 +127,7 @@
 			<div class="col-sm-4">
 				<select class="form-control"
 					ng-model="customerComplaint.issue.issueId"
-					ng-options="item.issueId*1 as item.value for item in serverModelData.ISSUE">
+					ng-options="item.issueId*1 as item.value for item in serverModelData.ISSUE" required>
 				</select>
 			</div>
 
@@ -137,7 +141,7 @@
 				<label for="inputlg">Priority</label>
 			</div>
 			<div class="col-sm-4">
-				<select class="form-control" ng-model="customerComplaint.priority">
+				<select class="form-control" ng-model="customerComplaint.priority" required>
 					<option></option>
 					<option value="C">Critical</option>
 					<option value="H">High</option>
@@ -162,7 +166,7 @@
 
 			<div class="col-sm-4">
 				<textarea rows="3" cols="30" class="form-control"
-					ng-model="customerComplaint.description"></textarea>
+					ng-model="customerComplaint.description" required></textarea>
 			</div>
 			<div ng-show="showStatus">
 				<div class="col-sm-2">

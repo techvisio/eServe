@@ -8,6 +8,9 @@ import com.techvisio.eserve.beans.ComplaintAssignment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.SearchComplaint;
+import com.techvisio.eserve.beans.SearchComplaintCustomer;
+import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
 
@@ -31,4 +34,10 @@ public interface CustomerDao {
 	public void saveComplaintAssignment(Long complaintId, ComplaintAssignment complaintAssignment);
 	public ComplaintAssignment getComplaintAssignment(Long complaintId);
 	public boolean isCustomerExists(Customer customer);
+	public List<SearchComplaintCustomer> getCustomerForComplaintByCriteria(
+			SearchCriteria searchCriteria);
+	public List<SearchComplaintUnit> getSearchUnitByCustomerId(Long customerId);
+	public List<SearchComplaint> getComplaintByUnitId(Long unitId);
+	public List<SearchComplaintCustomer> getCustomerByComplaintCode(
+			SearchCriteria searchCriteria);
 }

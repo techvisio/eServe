@@ -31,6 +31,8 @@ public class CustomerComplaint extends BasicEntity{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="COMPLAINT_ID")
 	private Long complaintId;
+	@Column(name="COMPLAINT_CODE")
+	private String complaintCode;
 	@Column(name="PARENT_COMPLAINT_ID")
 	private Long parentComplaintId;
 	@Column(name="CUSTOMER_ID")
@@ -188,6 +190,14 @@ public class CustomerComplaint extends BasicEntity{
 		if(!StringUtils.isEmpty(slaDateString)){
 			this.slaDate = parser2.parseDateTime(slaDateString).toDate();
 		}
+	}
+	
+	public String getComplaintCode() {
+		return complaintCode;
+	}
+	
+	public void setComplaintCode(String complaintCode) {
+		this.complaintCode = complaintCode;
 	}
 
 }

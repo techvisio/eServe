@@ -4,6 +4,7 @@ public class SearchCriteria {
 
 	private String customerName;
 	private String customerCode;
+	private String complaintCode;
 	private String contactNo;
 	private String firstName;
 	private String lastName;
@@ -102,6 +103,11 @@ public class SearchCriteria {
 	public void setCustomerCode(String customerCode) {
 		this.customerCode = customerCode;
 	}
-	
+	public String getComplaintCode() {
+		return complaintCode;
+	}
+	public void setComplaintCode(String complaintCode) {
+		this.complaintCode = complaintCode;
+	}
 	
 }

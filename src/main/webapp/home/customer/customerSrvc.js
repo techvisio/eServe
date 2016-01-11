@@ -15,7 +15,10 @@ customerModule.service('customerService', function($http, $q) {
 		getAllComplaints : getAllComplaints,
 		getCustomerComplaint : getCustomerComplaint,
 		saveComplaintAssignment :saveComplaintAssignment,
-		saveComplaintResolution :saveComplaintResolution    		
+		saveComplaintResolution :saveComplaintResolution,
+		getComplaintByCriteria : getComplaintByCriteria,
+		getSearchUnitByCustomerId : getSearchUnitByCustomerId,
+		getComplaintByUnitId : getComplaintByUnitId		
 	});
 
 	
@@ -107,6 +110,18 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
+	function getComplaintByCriteria(searchCriteria){
+
+		console.log('getting complaint customer by search criteria');
+		var request = $http({
+			method : "post",
+			url : "../service/customer/searchcomplaintcustomer/",
+			params : "",
+			data : searchCriteria
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
 	function saveComplaint(customerComplaint){
 		console.log('save complaint call in service');
 		var request = $http({
@@ -172,6 +187,32 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}	
 
+	
+	function getSearchUnitByCustomerId(customerId){
+		console.log('getting units by customerId in service');
+
+		var request = $http({
+			method : "get",
+			url : "../service/customer/searchcomplaintunit/"+customerId,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}	
+	
+	function getComplaintByUnitId(unitId){
+		console.log('getting complaints by unitId in service');
+
+		var request = $http({
+			method : "get",
+			url : "../service/customer/searchcomplaint/"+unitId,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}	
 	function saveComplaintResolution(complaintId,complaintResolution){
 		console.log('save ComplaintResolution call in service');
 		var request = $http({

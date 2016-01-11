@@ -1678,9 +1678,8 @@ a.bg-danger:hover {
     font-size: 18px;
 	color: #226191;
 	text-transform: uppercase;
-	margin-bottom: 20px;
-	border-bottom: 1px solid #eeeeee;
 	padding: 10px 10px;
+	margin-top: 0px;
 	background-color: #eeeeee;
 }
 

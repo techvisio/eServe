@@ -1,0 +1,141 @@
+
+<div class="row">
+	<div class="col-sm-2">
+		<label for="inputlg">Customer Code</label>
+	</div>
+
+	<div class="col-sm-2">
+		<label for="inputlg">Customer Name</label>
+	</div>
+
+	<div class="col-sm-2">
+		<label for="inputlg">Contact No</label>
+	</div>
+
+	<div class="col-sm-2">
+		<label for="inputlg">Email Id</label>
+	</div>
+	
+		<div class="col-sm-2">
+		<label for="inputlg">Complaint Code</label>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-2">
+		<input class="form-control input-sm"
+			ng-model="searchCriteria.customerCode" id="inputlg" type="text">
+	</div>
+	<div class="col-sm-2">
+		<input class="form-control input-sm"
+			ng-model="searchCriteria.customerName" id="inputlg" type="text">
+	</div>
+	<div class="col-sm-2">
+		<input class="form-control input-sm"
+			ng-model="searchCriteria.contactNo" id="inputlg" type="text">
+	</div>
+	<div class="col-sm-2">
+		<input class="form-control input-sm" ng-model="searchCriteria.emailId"
+			id="inputlg" type="text">
+	</div>
+	
+	<div class="col-sm-2">
+		<input class="form-control input-sm" ng-model="searchCriteria.complaintCode"
+			id="inputlg" type="text">
+	</div>
+	<div class="col-sm-2">
+		<button class="btn-primary" ng-click="getComplaintByCriteria()">Search</button>
+		</a>
+	</div>
+</div>
+
+<div ng-repeat="customer in complaintCustomers">
+	<div class="row"
+		ng-click="isUnitCollapsed = !isUnitCollapsed; getSearchUnitByCustomerId(customer.customerId)">
+		
+		<div class="col-sm-2">
+			<i class="glyphicon glyphicon-plus"></i>
+			<a herf="#"
+				ng-click="redirectToCustomerDtlScreen(customer.customerId)">{{customer.customerCode}}
+			</a>
+		</div>
+		<div class="col-sm-2">{{customer.customerName}}</div>
+		<div class="col-sm-2">{{customer.contactNo}}</div>
+		<div class="col-sm-2">{{customer.emailId}}</div>
+	</div>
+
+	<div class="row" ng-show="!isUnitCollapsed">
+		<div class="col-sm-2">
+			<label for="inputlg">Unit Code</label>
+		</div>
+
+		<div class="col-sm-2">
+			<label for="inputlg">Service Category</label>
+		</div>
+
+		<div class="col-sm-2">
+			<label for="inputlg">Service Party</label>
+		</div>
+
+		<div class="col-sm-2">
+			<label for="inputlg">Unit Category</label>
+		</div>
+
+		<div class="col-sm-2">
+			<label for="inputlg">External Id</label>
+		</div>
+	</div>
+
+	<div ng-repeat="unit in units"
+		ng-click="isComplaintCollapsed = !isComplaintCollapsed; getComplaintByUnitId(unit,unit.unitId)"
+		collapse="isUnitCollapsed">
+
+		<div class="row">
+			<div class="col-sm-2"><i class="glyphicon glyphicon-plus"></i>{{unit.unitCode}}</div>
+			<div class="col-sm-2">{{unit.serviceCategory}}</div>
+			<div class="col-sm-2">{{unit.serviceParty}}</div>
+			<div class="col-sm-2">{{unit.unitCategory}}</div>
+			<div class="col-sm-2">{{unit.externalId}}</div>
+			<div class="col-sm-2 child-right">
+				<button type="button" class="btn btn-primary btn-sm"
+					ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)">Create
+					Complaint</button>
+				</label>
+			</div>
+		</div>
+		<div class="row" ng-show="!isComplaintCollapsed">
+			<div class="col-sm-2">
+				<label for="inputlg">Complaint Code</label>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Priority</label>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Assign To</label>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">SLA Date</label>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Status</label>
+			</div>
+		</div>
+
+		<div class="row" ng-repeat="complaint in unit.complaints"
+			collapse="isComplaintCollapsed">
+			<div class="col-sm-2"><a herf="#"
+				ng-click="redirectToComplaintScreen(complaint.complaintId)">{{complaint.complaintCode}}
+			</a>
+	</div>
+			<div class="col-sm-2">{{complaint.priority}}</div>
+			<div class="col-sm-2">{{complaint.assignTo}}</div>
+			<div class="col-sm-2">{{complaint.slaDate}}</div>
+			<div class="col-sm-2">{{complaint.status}}</div>
+		</div>
+	</div>
+
+</div>

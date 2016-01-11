@@ -39,9 +39,6 @@ public class UserService {
 		User user =null;
 		user = CommonUtil.getCurrentUser();
 		user.setPassword(null);
-		user.getSecurityQuestion().setCustomQuestion(false);
-		user.getSecurityQuestion().setAnswer(null);
-		user.getSecurityQuestion().setQuestion(null);
 		Response response=new Response();
 		response.setResponseBody(user);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -103,9 +100,6 @@ public class UserService {
 		User loggedinUser = CommonUtil.getCurrentUser();
 		User userFrromDB = userManager.getUser(user.getUserId());
 		loggedinUser.setPassword(userFrromDB.getPassword());
-		if(user.getSecurityQuestion().getUserId()!=null){
-			loggedinUser.setSecurityQuestion(userFrromDB.getSecurityQuestion());
-		}
 		Map<String, Boolean> result = userManager.forcePasswordChange(user);
 		Response response=new Response();
 		response.setResponseBody(result);
