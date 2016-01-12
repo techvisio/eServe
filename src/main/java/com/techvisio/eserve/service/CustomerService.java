@@ -1,4 +1,4 @@
-package com.techvisio.eserve.manager;
+package com.techvisio.eserve.service;
 
 import java.util.List;
 import java.util.Map;
@@ -16,8 +16,10 @@ import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
+
 @Component
-public interface CustomerManager {
+@Transactional
+public interface CustomerService {
 
 	public List<Customer> getCustomers();
 	public Customer getCustomer(Long customerId);

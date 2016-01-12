@@ -6,7 +6,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.form={};
 	$scope.isNew=true;
-	$scope.isEdit=true;
+	$scope.isEdit=false;
 	$scope.isUnitCollapsed = true;
 	$scope.isComplaintCollapsed = true;
 	$scope.startDate=false;
@@ -40,7 +40,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	if(customer){
 		$scope.getAllComplaints = true;
-		$scope.isEdit = false;
+		$scope.isEdit = true;
 		$scope.isNew=false;
 		$scope.customer = customer;
 	}
@@ -79,7 +79,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 		$scope.getCustomerForComplaint();
 		$scope.newComplaint = true;
-		$scope.isEdit=false;
+		$scope.isEdit=true;
 		$scope.customerComplaint.unit = unitComplaint;
 	}
 
@@ -87,7 +87,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	if(complaint){
 		$scope.newComplaint=false;
 		$scope.showStatus = true;
-		$scope.isEdit = false;
+		$scope.isEdit = true;
 		//		$scope.newComplaint = true;
 		$scope.customerComplaint = complaint;
 	}
@@ -224,13 +224,14 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	}
 
 
-	$scope.getSearchUnitByCustomerId = function(customerId){
+	$scope.getSearchUnitByCustomerId = function(customer,customerId){
 		customerService.getSearchUnitByCustomerId(customerId)
 		.then(function(response) {
 			console.log('getting units by customerId in controller : ');
 			console.log(response);
 			if (response) {
 				$scope.units = response;
+				customer.units = $scope.units;
 			} 
 		})
 	}
@@ -434,7 +435,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.toggleReadOnly = function(form) {
 
-		if(!$scope.isEdit){
+		if($scope.isEdit){
 			$('#' + form + ' *').attr('readonly',
 					true);
 			$('#' + form + ' input[type="radio"]')
@@ -482,23 +483,14 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		}
 	}
 
-
 	$scope.isPrivileged = function(role){
 
 		var userPrivilege = $rootScope.user.privileges;
 		var result=false;
-		 angular.forEach(userPrivilege, function(privilege) {
-		      if (privilege.privilege.privilege===role) result= true;
-		    });
-
-//		 angular.forEach(oldTodos, function(todo) {
-//			 if(userPrivilege[i].privilege.privilege==role){
-//
-//					return true;
-//		    });
-//		
+		angular.forEach(userPrivilege, function(privilege) {
+			if (privilege.privilege.privilege===role) result= true;
+		});
 		return result;		
-
 	}
 
 } ]);

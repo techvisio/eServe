@@ -26,18 +26,19 @@ import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
 import com.techvisio.eserve.manager.CustomerManager;
+import com.techvisio.eserve.service.CustomerService;
 
 @RestController
 @RequestMapping("service/customer")
-public class CustomerService {
+public class CustomerController {
 
 	@Autowired
-	CustomerManager customerManager;
+	CustomerService customerService;
 
 	@RequestMapping(value="/",method = RequestMethod.GET)
 	public ResponseEntity<Response> getCustomers() {  
 		Response response=new Response();
-		List<Customer> customers = customerManager.getCustomers();
+		List<Customer> customers = customerService.getCustomers();
 		response.setResponseBody(customers);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -45,7 +46,7 @@ public class CustomerService {
 	@RequestMapping(value="/{customerId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getCustomer(@PathVariable Long customerId) {  
 		Response response=new Response();
-		Customer customer = customerManager.getCustomer(customerId);
+		Customer customer = customerService.getCustomer(customerId);
 		response.setResponseBody(customer);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -53,7 +54,7 @@ public class CustomerService {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> saveCustomer(@RequestBody Customer customer) {  
-		Map<String, Object> result = customerManager.saveCustomer(customer);
+		Map<String, Object> result = customerService.saveCustomer(customer);
 		customer = (Customer) result.get("customer");
 		Response response=new Response();
 		response.setResponseBody(result);
@@ -63,7 +64,7 @@ public class CustomerService {
 	@RequestMapping(method = RequestMethod.PUT)
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> updateCustomer(@RequestBody Customer customer) {  
-		Map<String, Object> result = customerManager.saveCustomer(customer);
+		Map<String, Object> result = customerService.saveCustomer(customer);
 		customer = (Customer) result.get("customer");
 		Response response=new Response();
 		response.setResponseBody(result);
@@ -74,8 +75,8 @@ public class CustomerService {
 	public ResponseEntity<Response> saveUnit(@RequestBody Unit unit, @PathVariable Long customerId) {  
 		Response response=new Response();
 		unit.setCustomerId(customerId);
-		customerManager.saveUnit(unit);
-		List<Unit> unitsFromDB = customerManager.getUnits(customerId);
+		customerService.saveUnit(unit);
+		List<Unit> unitsFromDB = customerService.getUnits(customerId);
 		response.setResponseBody(unitsFromDB);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -84,7 +85,7 @@ public class CustomerService {
 	@RequestMapping(value="/unit/{customerId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getUnits(@PathVariable Long customerId) {  
 		Response response=new Response();
-		List<Unit> units = customerManager.getUnits(customerId);
+		List<Unit> units = customerService.getUnits(customerId);
 		response.setResponseBody(units);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -93,7 +94,7 @@ public class CustomerService {
 	@RequestMapping(value ="/search/", method = RequestMethod.POST)
 	public ResponseEntity<Response> getCustomerByCriteria(@RequestBody SearchCriteria searchCriteria) {
 		Response response=new Response();
-		List<Customer> customerByCriteria = customerManager.getCustomerByCriteria(searchCriteria);
+		List<Customer> customerByCriteria = customerService.getCustomerByCriteria(searchCriteria);
 		response.setResponseBody(customerByCriteria);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -102,8 +103,8 @@ public class CustomerService {
 	@RequestMapping(value ="/complaint/", method = RequestMethod.POST)
 	public ResponseEntity<Response> saveCustomerComplaint(@RequestBody CustomerComplaint complaint) {
 		Response response=new Response();
-        customerManager.saveComplaint(complaint);
-		CustomerComplaint complaintFromDB = customerManager.getCustomerComplaint(complaint.getComplaintId());
+        customerService.saveComplaint(complaint);
+		CustomerComplaint complaintFromDB = customerService.getCustomerComplaint(complaint.getComplaintId());
         response.setResponseBody(complaintFromDB);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -113,7 +114,7 @@ public class CustomerService {
 	@RequestMapping(value="customercomplaint/{customerId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getCustomerForComplaint(@PathVariable Long customerId) {  
 		Response response=new Response();
-		Customer customer = customerManager.getCustomerBasicInfo(customerId);
+		Customer customer = customerService.getCustomerBasicInfo(customerId);
 		response.setResponseBody(customer);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -121,7 +122,7 @@ public class CustomerService {
 	@RequestMapping(value="unitcomplaint/{unitId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getUnitForComplaint(@PathVariable Long unitId) {  
 		Response response=new Response();
-		Unit unit = customerManager.getUnitBasicInfo(unitId);
+		Unit unit = customerService.getUnitBasicInfo(unitId);
 		response.setResponseBody(unit);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -129,7 +130,7 @@ public class CustomerService {
 	@RequestMapping(value="complaints/{customerId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getAllCustomerComplaints(@PathVariable Long customerId) {  
 		Response response=new Response();
-		List<CustomerComplaint> complaints = customerManager.getCustomerComplaints(customerId);
+		List<CustomerComplaint> complaints = customerService.getCustomerComplaints(customerId);
 		response.setResponseBody(complaints);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -137,7 +138,7 @@ public class CustomerService {
 	@RequestMapping(value="complaint/{complaintId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getCustomerComplaint(@PathVariable Long complaintId) {  
 		Response response=new Response();
-		CustomerComplaint complaint = customerManager.getCustomerComplaint(complaintId);
+		CustomerComplaint complaint = customerService.getCustomerComplaint(complaintId);
 		response.setResponseBody(complaint);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -145,8 +146,8 @@ public class CustomerService {
 	@RequestMapping(value ="/complaintresolution/{complaintId}", method = RequestMethod.POST)
 	public ResponseEntity<Response> saveComplaintResolution(@PathVariable Long complaintId, @RequestBody ComplaintResolution complaintResolution) {
 		Response response=new Response();
-        customerManager.saveComplaintResolution(complaintId, complaintResolution);
-        CustomerComplaint complaintFromDB = customerManager.getCustomerComplaint(complaintId);
+        customerService.saveComplaintResolution(complaintId, complaintResolution);
+        CustomerComplaint complaintFromDB = customerService.getCustomerComplaint(complaintId);
         response.setResponseBody(complaintFromDB);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -154,8 +155,8 @@ public class CustomerService {
 	@RequestMapping(value ="/complaintassignment/{complaintId}", method = RequestMethod.POST)
 	public ResponseEntity<Response> saveComplaintAssignment(@PathVariable Long complaintId, @RequestBody ComplaintAssignment complaintAssignment) {
 		Response response=new Response();
-        customerManager.saveComplaintAssignment(complaintId, complaintAssignment);
-		CustomerComplaint complaintFromDB = customerManager.getCustomerComplaint(complaintId);
+        customerService.saveComplaintAssignment(complaintId, complaintAssignment);
+		CustomerComplaint complaintFromDB = customerService.getCustomerComplaint(complaintId);
         response.setResponseBody(complaintFromDB);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -164,7 +165,7 @@ public class CustomerService {
 	@RequestMapping(value ="/searchcomplaintcustomer/", method = RequestMethod.POST)
 	public ResponseEntity<Response> getCustomerComplaintByCriteria(@RequestBody SearchCriteria searchCriteria) {
 		Response response=new Response();
-		List<SearchComplaintCustomer> complaintByCriteria = customerManager.getCustomerForComplaintByCriteria(searchCriteria);
+		List<SearchComplaintCustomer> complaintByCriteria = customerService.getCustomerForComplaintByCriteria(searchCriteria);
 		response.setResponseBody(complaintByCriteria);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -173,7 +174,7 @@ public class CustomerService {
 	@RequestMapping(value ="/searchcomplaintunit/{customerId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getSearchUnitByCustomerId(@PathVariable Long customerId) {
 		Response response=new Response();
-		List<SearchComplaintUnit> searchComplaintUnits = customerManager.getSearchUnitByCustomerId(customerId);
+		List<SearchComplaintUnit> searchComplaintUnits = customerService.getSearchUnitByCustomerId(customerId);
 		response.setResponseBody(searchComplaintUnits);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -182,7 +183,7 @@ public class CustomerService {
 	@RequestMapping(value ="/searchcomplaint/{unitId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getComplaintByUnitId(@PathVariable Long unitId) {
 		Response response=new Response();
-		List<SearchComplaint> searchComplaints = customerManager.getComplaintByUnitId(unitId);
+		List<SearchComplaint> searchComplaints = customerService.getComplaintByUnitId(unitId);
 		response.setResponseBody(searchComplaints);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);

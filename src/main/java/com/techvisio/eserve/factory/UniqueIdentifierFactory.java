@@ -31,7 +31,7 @@ public class UniqueIdentifierFactory implements UniqueIdentifierGenerator {
 			throw new RuntimeException("Enable to generate customer Code for code : "+ customerCode);
 		}
 
-		String uniqueCustomerCode=CommonUtil.getCurrentClient().getClientCode()+"/"+"CST"+"/"+String.format("%05d", Id);
+		String uniqueCustomerCode=CommonUtil.getCurrentClient().getClientCode()+"/"+"CST"+String.format("%05d", Id);
 
 		return uniqueCustomerCode;
 	}
@@ -49,7 +49,7 @@ public class UniqueIdentifierFactory implements UniqueIdentifierGenerator {
 			throw new RuntimeException("Enable to generate unique UnitCode for code : "+ unitCode);
 		}
 
-		String uniqueUnitCode=CommonUtil.getCurrentClient().getClientCode()+"/"+"U"+"/"+String.format("%06d", Id);
+		String uniqueUnitCode=CommonUtil.getCurrentClient().getClientCode()+"/"+"U"+String.format("%06d", Id);
 
 		return uniqueUnitCode;
 	}
@@ -67,7 +67,7 @@ public class UniqueIdentifierFactory implements UniqueIdentifierGenerator {
 			throw new RuntimeException("Enable to generate complaint code for code : "+ complaintCode);
 		}
 
-		String uniqueComplaintCode=CommonUtil.getCurrentClient().getClientCode()+"/"+"C"+"/"+String.format("%07d", Id);
+		String uniqueComplaintCode=CommonUtil.getCurrentClient().getClientCode()+"/"+"C"+String.format("%07d", Id);
 
 		return uniqueComplaintCode;
 	}

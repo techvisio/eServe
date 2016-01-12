@@ -1,4 +1,4 @@
-<div ng-init="init(); toggleReadOnly('UNIT')">
+<div ng-init="init()">
 	<div ng-repeat="unit in customer.units">
 
 		<accordion> <accordion-group heading="Unit {{$index+1}}">
@@ -16,7 +16,7 @@
 			</div>
 			<div class="child-right">
 				<button type="button" class="btn btn-primary btn-sm"
-					ng-click="addUnit()" ng-enabled= "isPrivileged('CREATE_CUSTOMER') || isPrivileged('UPDATE_CUSTOMER')">Add Unit</button>
+					ng-click="addUnit()" ng-disabled= "(isNew && !isPrivileged('CREATE_CUSTOMER')) || (isEdit && !isPrivileged('UPDATE_CUSTOMER'))">Add Unit</button>
 			</div>
 		</div>
 		</accordion-heading>
@@ -172,7 +172,7 @@
 			</div>
 			<div class="col-sm-2 child-right">
 				<button type="button" class="btn btn-primary btn-sm"
-					ng-click="addMachine(unit)">Add Equipment</button>
+					ng-click="addMachine(unit)" ng-disabled= "(isNew && !isPrivileged('CREATE_CUSTOMER')) || (isEdit && !isPrivileged('UPDATE_CUSTOMER'))">Add Equipment</button>
 			</div>
 		</div>
 
@@ -241,15 +241,15 @@
 
 			<div class="col-sm-1">
 				<button type="button" class="btn btn-primary"
-					ng-click="toggleReadOnly('UNIT')" ng-show="!isNew">Edit</button>
+					ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && !isEdit" ng-disabled= "(isNew && !isPrivileged('CREATE_CUSTOMER')) || (isEdit && !isPrivileged('UPDATE_CUSTOMER'))">Edit</button>
 			</div>
 			<div class="col-sm-1">
 				<button type="button" class="btn btn-primary"
-					ng-click="toggleReadOnly('UNIT')" ng-show="!isEdit">Cancel</button>
+					ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && isEdit">Cancel</button>
 			</div>
 			<div class="col-sm-2 child-right">
 				<button type="button" class="btn btn-primary"
-					ng-click="saveUnit(unit)" ng-show="!isNew" ng-enabled= "isPrivileged('CREATE_CUSTOMER') || isPrivileged('UPDATE_CUSTOMER')">Save Unit</button>
+					ng-click="saveUnit(unit)" ng-show="!isNew" ng-disabled= "(isNew && !isPrivileged('CREATE_CUSTOMER')) || (isEdit && !isPrivileged('UPDATE_CUSTOMER'))">Save Unit</button>
 			</div>
 
 		</div>

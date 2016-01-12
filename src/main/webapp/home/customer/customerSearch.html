@@ -32,7 +32,7 @@
     </thead>
     <tbody>
      <tr ng-repeat="customer in customers">
-        <td><a herf="#" ng-click="redirectToCustomerDtlScreen(customer.customerId)">{{customer.customerCode}} </a></td></td>
+        <td><a herf="#" ng-click="redirectToCustomerDtlScreen(customer.customerId); toggleReadOnly('CUSTOMER')">{{customer.customerCode}} </a></td></td>
         <td>{{customer.customerName}}</td>
         <td>{{customer.contactNo}}</td>
         <td>{{customer.emailId}}</td>

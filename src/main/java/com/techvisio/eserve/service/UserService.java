@@ -1,4 +1,4 @@
-package com.techvisio.eserve.manager;
+package com.techvisio.eserve.service;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,8 @@ import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
 @Component
-public interface UserManager {
+@Transactional
+public interface UserService {
 
 	public Map<String, Object> saveUser(User user);
 	

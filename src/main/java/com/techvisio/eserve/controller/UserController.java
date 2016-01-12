@@ -25,14 +25,15 @@ import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
 import com.techvisio.eserve.manager.UserManager;
+import com.techvisio.eserve.service.UserService;
 import com.techvisio.eserve.util.CommonUtil;
 
 @RestController
 @RequestMapping("service/user")
-public class UserService {
+public class UserController {
 
 	@Autowired
-	UserManager userManager;
+	UserService userService;
 
 	@RequestMapping(value="/loggedinuser", method = RequestMethod.GET)
 	public ResponseEntity<Response> getLoggedInUser(){
@@ -64,7 +65,7 @@ public class UserService {
 	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getUser(@PathVariable Long userId){
 		Response response = new Response();
-		User userFromDB=userManager.getUser(userId);
+		User userFromDB=userService.getUser(userId);
 		response.setResponseBody(userFromDB);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -72,7 +73,7 @@ public class UserService {
 	@RequestMapping(value = "/currentpass/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getCurrentPassword(@PathVariable Long userId){
 		Response response = new Response();
-		User userPass=userManager.getCurrentPassword(userId);
+		User userPass=userService.getCurrentPassword(userId);
 		response.setResponseBody(userPass);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -80,7 +81,7 @@ public class UserService {
 	@RequestMapping( method = RequestMethod.GET)
 	public ResponseEntity<Response> getUser(){
 		Response response = new Response();
-		List<User> userFromDB=userManager.getUsers();
+		List<User> userFromDB=userService.getUsers();
 		response.setResponseBody(userFromDB);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -88,7 +89,7 @@ public class UserService {
 	@RequestMapping(value = "/userRole/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getUserRoles(@PathVariable Long userId){
 		Response response = new Response();
-		List<Role> userRoles=userManager.getUserRole(userId);
+		List<Role> userRoles=userService.getUserRole(userId);
 		response.setResponseBody(userRoles);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -98,9 +99,9 @@ public class UserService {
 	public ResponseEntity<Response> saveManadatoryResetChanges(@RequestBody User user){
 
 		User loggedinUser = CommonUtil.getCurrentUser();
-		User userFrromDB = userManager.getUser(user.getUserId());
+		User userFrromDB = userService.getUser(user.getUserId());
 		loggedinUser.setPassword(userFrromDB.getPassword());
-		Map<String, Boolean> result = userManager.forcePasswordChange(user);
+		Map<String, Boolean> result = userService.forcePasswordChange(user);
 		Response response=new Response();
 		response.setResponseBody(result);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
@@ -111,7 +112,7 @@ public class UserService {
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> saveUser(@RequestBody User user){
 
-		Map<String, Object> result = userManager.saveUser(user);
+		Map<String, Object> result = userService.saveUser(user);
 		user = (User) result.get("user");
 		Response response=new Response();
 		response.setResponseBody(result);
@@ -123,10 +124,10 @@ public class UserService {
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> updateUser(@RequestBody User user){
 
-		Map<String, Object> result = userManager.saveUser(user);
+		Map<String, Object> result = userService.saveUser(user);
 		user = (User) result.get("user");
 		if(user!=null){
-		List<UserPrivilege> userPrivileges = userManager.getAllUserPrivileges(user);
+		List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(user);
 		user.setPrivileges(userPrivileges);
 		}
 		Response response=new Response();
@@ -146,8 +147,8 @@ public class UserService {
 	public ResponseEntity<Response> getUserWithUserPrivileges(@PathVariable Long userId){
 		Response response = new Response();
 
-		User user = userManager.getUser(userId);
-		List<UserPrivilege> userPrivileges = userManager.getAllUserPrivileges(user);
+		User user = userService.getUser(userId);
+		List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(user);
 		user.setPrivileges(userPrivileges);
 		response.setResponseBody(user);
 
@@ -157,7 +158,7 @@ public class UserService {
 	@RequestMapping(value = "/userprivileges/", method = RequestMethod.GET)
 	public ResponseEntity<Response> getUserPrivileges(){
 		Response response = new Response();
-		List<UserPrivilege> userPrivileges = userManager.getUserPrivilegesSet();
+		List<UserPrivilege> userPrivileges = userService.getUserPrivilegesSet();
 		response.setResponseBody(userPrivileges);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -166,7 +167,7 @@ public class UserService {
 	@RequestMapping(value ="/search/", method = RequestMethod.POST)
 	public ResponseEntity<Response> getUserByCriteria(@RequestBody SearchCriteria searchCriteria) {
 		Response response=new Response();
-		List<User> userByCriteria = userManager.getUserByCriteria(searchCriteria);
+		List<User> userByCriteria = userService.getUserByCriteria(searchCriteria);
 		response.setResponseBody(userByCriteria);
 		
 
@@ -176,8 +177,8 @@ public class UserService {
 	@RequestMapping(value ="/resetpassword/", method = RequestMethod.POST)
 	public ResponseEntity<Response> resetPassword(@RequestBody User user) {
 		Response response=new Response();
-		userManager.resetPassword(user);
-		User userFromDB = userManager.getUser(user.getUserId());
+		userService.resetPassword(user);
+		User userFromDB = userService.getUser(user.getUserId());
 		response.setResponseBody(userFromDB);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);

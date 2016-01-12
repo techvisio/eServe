@@ -51,7 +51,7 @@
 
 <div ng-repeat="customer in complaintCustomers">
 	<div class="row"
-		ng-click="isUnitCollapsed = !isUnitCollapsed; getSearchUnitByCustomerId(customer.customerId)">
+		ng-click="isUnitCollapsed = !isUnitCollapsed; getSearchUnitByCustomerId(customer,customer.customerId)">
 		
 		<div class="col-sm-2">
 			<i class="glyphicon glyphicon-plus"></i>
@@ -86,7 +86,7 @@
 		</div>
 	</div>
 
-	<div ng-repeat="unit in units"
+	<div ng-repeat="unit in customer.units"
 		ng-click="isComplaintCollapsed = !isComplaintCollapsed; getComplaintByUnitId(unit,unit.unitId)"
 		collapse="isUnitCollapsed">
 

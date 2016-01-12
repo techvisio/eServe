@@ -126,16 +126,21 @@
 			</div>
 			<div class="row">
 
-				<div class="col-sm-9"></div>
+				<div class="col-sm-8"></div>
 
 				<div class="col-sm-1">
 					<button type="button" class="btn btn-primary"
-						ng-click="toggleReadOnly('CUSTOMER')" ng-show="!isNew" ng-disabled= "!isPrivileged('UPDATE_CUSTOMER')">Edit</button>
+						ng-click="toggleReadOnly('CUSTOMER')" ng-show="!isNew && !isEdit" ng-disabled= "isEdit && !isPrivileged('UPDATE_CUSTOMER')">Edit</button>
 				</div>
-				<div class="col-sm-2 child-right">
+				<div class="col-sm-1">
 					<button type="button" class="btn btn-primary"
-						ng-click="saveAndUpdateCustomer()" ng-enabled= "isPrivileged('CREATE_CUSTOMER') || isPrivileged('UPDATE_CUSTOMER')">Save Customer</button>
+						ng-click="toggleReadOnly('CUSTOMER')" ng-show="!isNew && isEdit">Cancel</button>
+				</div>
+				<div class="col-sm-2">
+					<button type="button" class="btn btn-primary"
+						ng-click="saveAndUpdateCustomer()" ng-disabled= "(isNew && !isPrivileged('CREATE_CUSTOMER')) || (isEdit && !isPrivileged('UPDATE_CUSTOMER'))">Save Customer</button>
 				</div>
 			</div>
+			
 		</div>
 	</div>

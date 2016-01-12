@@ -1,7 +1,7 @@
 <form name='USER' id="USER">
 	<div ng-init="init(); toggleReadOnly('USER')">
 		<div>
-			<h3 class="page-header jumbotron">CREATE USER</h3>
+			<h3 class="custom-page-header">CREATE USER</h3>
 		</div>
 		<div ng show="alerts..length>0 || !$scope.USER.$valid">
 			<alert ng-repeat="alert in alerts" type="{{alert.type}}"

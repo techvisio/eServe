@@ -24,7 +24,6 @@ import com.techvisio.eserve.manager.UserManager;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 @Component
-@Transactional
 public class UserManagerImpl implements UserManager{
 
 	@Autowired
