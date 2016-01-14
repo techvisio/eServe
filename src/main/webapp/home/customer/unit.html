@@ -10,7 +10,7 @@
 			</div>
 			<div class="child-right">
 				<button type="button" class="btn btn-primary btn-sm"
-					ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)">Create
+					ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)" ng-show="unit.unitId" ng-disabled= "(isEdit && !isPrivileged('CREATE_COMPLAINT'))">Create
 					Complaint</button>
 				</label>
 			</div>
@@ -241,7 +241,7 @@
 
 			<div class="col-sm-1">
 				<button type="button" class="btn btn-primary"
-					ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && !isEdit" ng-disabled= "(isNew && !isPrivileged('CREATE_CUSTOMER')) || (isEdit && !isPrivileged('UPDATE_CUSTOMER'))">Edit</button>
+					ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && !isEdit" ng-disabled= "(isEdit && !isPrivileged('UPDATE_CUSTOMER'))">Edit</button>
 			</div>
 			<div class="col-sm-1">
 				<button type="button" class="btn btn-primary"
@@ -256,7 +256,7 @@
 		<div class="row">
 			<div class="col-sm-2">
 				<button class="btn-primary" ng-click="removeUnit($index)"
-					ng-show="$index>0">Remove Unit</button>
+					ng-show="$index>0" ng-disabled="(isNew && !isPrivileged('CREATE_CUSTOMER')) || (isEdit && !isPrivileged('UPDATE_CUSTOMER'))">Remove Unit</button>
 			</div>
 		</div>
 		</accordion-group> </accordion>

@@ -12,7 +12,7 @@ userModule
 		 'masterdataService',
 		 function($scope, $state, $rootScope,userService,user,masterdataService) {
 			 $scope.form={};
-             $scope.isEdit = true;
+             $scope.isEdit = false;
 			 $scope.customQuestion = false;
 			 $scope.wrongNewPass = false;
 			 $scope.wrongCurrntPass = false;
@@ -46,7 +46,8 @@ userModule
 			 }			 
 
 			 if(user){
-				 $scope.isEdit = false;
+				 $scope.isEdit = true;
+				 $scope.isNew = false;
 				 $scope.user = user;
 			 }			 
 
@@ -69,6 +70,11 @@ userModule
 				 }
 			 }
 
+			 if($rootScope.user.securityQuestion.customQuestion){
+				 $scope.chkStatus = true;
+				 $scope.customQuestion = true;
+			 }
+			 
 			 $scope.showCustom = function() {
 
 				 if ($scope.chkStatus) {
@@ -336,6 +342,10 @@ userModule
 						 })
 			 };
 
+			 $scope.reserAlert = function(){
+				 $scope.alerts=[];	 
+			 }
+			 
 			 $scope.updateUser=function(){
 
 				 userService.updateUser($scope.user)
@@ -393,7 +403,7 @@ userModule
 
 				$scope.toggleReadOnly = function(form) {
 
-					if(!$scope.isEdit){
+					if($scope.isEdit){
 						$('#' + form + ' *').attr('readonly',
 								true);
 						$('#' + form + ' input[type="radio"]')
@@ -418,5 +428,15 @@ userModule
 					}
 				};
 
-			 
+				$scope.isPrivileged = function(role){
+
+					var userPrivilege = $rootScope.user.privileges;
+					var result=false;
+					angular.forEach(userPrivilege, function(privilege) {
+						if (privilege.privilege.privilege===role) result= true;
+					});
+					return result;		
+				}
+
+				
 		 } ]);

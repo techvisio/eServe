@@ -189,7 +189,7 @@
 
 					<div class="row">
 						<div class="col-sm-2"></div>
-						<div class="col-sm-2" ng-show="!isEdit">
+						<div class="col-sm-2" ng-show="isEdit">
 							<button type="button" class="btn btn-primary child-right"
 								ng-click="saveComplaintAssignment()">Assign</button>
 						</div>
@@ -232,7 +232,7 @@
 			<div class="row">
 				<div class="col-sm-4"></div>
 
-				<div class="col-sm-2" ng-show="!isEdit">
+				<div class="col-sm-2" ng-show="isEdit">
 					<button type="button" class="btn btn-primary child-right"
 						ng-click="saveComplaintResolution()">Save Resolution</button>
 				</div>
@@ -320,17 +320,17 @@
 		<div class="row">
 			<div class="col-sm-9"></div>
 
-<div class="col-sm-2" ng-show="isEdit">
+<div class="col-sm-2" ng-show="!isEdit">
 				<button type="button" class="btn btn-primary"
-					ng-click="toggleReadOnly('COMPLAINT')">Edit</button>
+					ng-click="toggleReadOnly('COMPLAINT')" ng-disabled= "(isEdit && !isPrivileged('UPDATE_COMPLAINT'))">Edit</button>
 			</div>
-			<div class="col-sm-1" ng-show="!isEdit">
+			<div class="col-sm-1" ng-show="isEdit">
 				<button type="button" class="btn btn-primary"
 					ng-click="toggleReadOnly('COMPLAINT')">Cancel</button>
 			</div>
-			<div class="col-sm-2" ng-show="!isEdit">
+			<div class="col-sm-2" ng-show="isEdit">
 				<button type="button" class="btn btn-primary"
-					ng-click="saveComplaint()">Create Complain</button>
+					ng-click="saveAndUpdateComplaint()" ng-disabled= "(isNew && !isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) || (isEdit && !isPrivileged('UPDATE_COMPLAINT'))">Create Complain</button>
 			</div>
 
 		</div>

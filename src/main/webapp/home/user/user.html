@@ -59,7 +59,7 @@
 			<div class="col-sm-3">
 				<input class="form-control input-sm"
 					ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
-					ng-model="user.emailId" id="inputlg" type="email"
+					ng-model="user.emailId" id="inputlg" type="email" ng-click="reserAlert()"
 					required="required">
 			</div>
 
@@ -73,7 +73,7 @@
 			<div class="col-sm-3">
 				<input class="form-control input-sm"
 					ng-pattern="/^[a-zA-_-Z0-9]+$/i" ng-model="user.userName"
-					id="inputlg" type="text" required="required">
+					id="inputlg" type="text" required="required" ng-click="reserAlert()">
 			</div>
 
 			<div class="col-sm-2">
@@ -158,16 +158,16 @@
 		<div class="row">
 			<div class="col-sm-9"></div>
 
-			<div class="col-sm-2" ng-show="isEdit">
+			<div class="col-sm-2" ng-show="!isEdit">
 				<button type="button" class="btn btn-primary"
-					ng-click="toggleReadOnly('USER')">Edit</button>
+					ng-click="toggleReadOnly('USER')" ng-disabled="(isEdit && !isPrivileged('UPDATE_USER'))">Edit</button>
 			</div>
-			<div class="col-sm-1" ng-show="!isEdit">
+			<div class="col-sm-1" ng-show="!isNew && isEdit">
 				<button type="button" class="btn btn-primary"
 					ng-click="toggleReadOnly('USER')">Cancel</button>
 			</div>
 
-			<div class="col-sm-2" ng-show="!isEdit">
+			<div class="col-sm-2" ng-show="isEdit">
 				<button type="button" class="btn btn-primary"
 					ng-click="saveAndUpdateUser()">Save User</button>
 			</div>

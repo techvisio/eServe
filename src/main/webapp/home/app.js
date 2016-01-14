@@ -5,6 +5,7 @@ var erp = angular
                 'ui.router',
                 'erp.services',
                 'customerModule',
+                'complaintModule',
                 'userModule',
                 'masterdataModule',
                 ]);
@@ -41,8 +42,8 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 //	
 	.state('complaint', {
 		url: "/complaint",
-		templateUrl: 'customer/complaint.html',
-		controller:"customerController",
+		templateUrl: 'complaint/complaint.html',
+		controller:"complaintController",
 		resolve:{
 			complaint: ['$stateParams', function($stateParams){
 				return null;
@@ -50,9 +51,6 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
 
-			}],
-			customer: ['$stateParams', function($stateParams){
-				return null;
 			}]
 		}
 	})
@@ -63,12 +61,6 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		controller:"customerController",
 		resolve:{
 			customer: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			complaint: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
 			}]
 		}
@@ -81,28 +73,19 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			customer: ['$stateParams', function($stateParams){
 				return null;
-			}],
-			complaint: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			unitComplaint: ['$stateParams', function($stateParams){
-				return null;
 			}]
 		}
 	})
 
 	.state('customerToComplaint', {
 		url: "/complaint/unit/{unitId:[0-9]{1,8}}",
-		templateUrl: 'customer/complaint.html',
-		controller: "customerController",
+		templateUrl: 'complaint/complaint.html',
+		controller: "complaintController",
 		resolve:{
-			unitComplaint: ['$stateParams','customerService', function($stateParams,customerService){
-				return customerService.getUnitForComplaint($stateParams.unitId);
+			unitComplaint: ['$stateParams','complaintService', function($stateParams,complaintService){
+				return complaintService.getUnitForComplaint($stateParams.unitId);
 			}],
 			complaint: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			customer: ['$stateParams', function($stateParams){
 				return null;
 			}]
 		}
@@ -110,14 +93,11 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 
 	.state('complaintScreen', {
 		url: "/complaint/{complaintId:[0-9]{1,8}}",
-		templateUrl: 'customer/complaint.html',
-		controller: "customerController",
+		templateUrl: 'complaint/complaint.html',
+		controller: "complaintController",
 		resolve:{
-			complaint: ['$stateParams','customerService', function($stateParams,customerService){
-				return customerService.getCustomerComplaint($stateParams.complaintId);
-			}],
-			customer: ['$stateParams', function($stateParams){
-				return null;
+			complaint: ['$stateParams','complaintService', function($stateParams,complaintService){
+				return complaintService.getCustomerComplaint($stateParams.complaintId);
 			}],
 			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
@@ -132,24 +112,15 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			customer: ['$stateParams','customerService', function($stateParams){
 				return null;
-			}],
-			complaint: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			unitComplaint: ['$stateParams', function($stateParams){
-				return null;
 			}]
 		}
 	})
 
 	.state('searchcomplaint', {
 		url: "/search/complaint",
-		templateUrl: 'customer/complaintSearch.html',
-		controller:"customerController",
+		templateUrl: 'complaint/complaintSearch.html',
+		controller:"complaintController",
 		resolve:{
-			customer: ['$stateParams','customerService', function($stateParams){
-				return null;
-			}],
 			complaint: ['$stateParams', function($stateParams){
 				return null;
 			}],
@@ -166,12 +137,6 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			customer: ['$stateParams','customerService', function($stateParams,customerService){
 				return customerService.getCustomer($stateParams.customerId);
-			}],
-			complaint: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			unitComplaint: ['$stateParams', function($stateParams){
-				return null;
 			}]
 		}
 	})

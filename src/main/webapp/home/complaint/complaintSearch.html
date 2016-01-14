@@ -98,7 +98,7 @@
 			<div class="col-sm-2">{{unit.externalId}}</div>
 			<div class="col-sm-2 child-right">
 				<button type="button" class="btn btn-primary btn-sm"
-					ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)">Create
+					ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)" ng-disabled= "(!isEdit && !isPrivileged('CREATE_COMPLAINT'))">Create
 					Complaint</button>
 				</label>
 			</div>

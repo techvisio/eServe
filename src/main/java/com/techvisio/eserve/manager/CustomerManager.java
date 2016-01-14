@@ -26,18 +26,5 @@ public interface CustomerManager {
 	public void saveUnit(Unit unit);
 	public List<Unit> getUnits(Long customerId);
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
-	public void saveComplaint(CustomerComplaint customerComplaint);
-	public CustomerComplaint getCustomerComplaint(Long complaintId);
-	public Customer getCustomerBasicInfo(Long customerId);
-	public Unit getUnitBasicInfo(Long unitId);
-	public List<CustomerComplaint> getCustomerComplaints(Long customerId);
-	public void saveComplaintResolution(Long complaintId, ComplaintResolution complaintResolution);
-	public ComplaintResolution getComplaintResolution(Long complaintId);
-	public void saveComplaintAssignment(Long complaintId, ComplaintAssignment complaintAssignment);
-	public ComplaintAssignment getComplaintAssignment(Long complaintId);
-	public List<SearchComplaintCustomer> getCustomerForComplaintByCriteria(
-			SearchCriteria searchCriteria);
-	public List<SearchComplaintUnit> getSearchUnitByCustomerId(Long customerId);
-	public List<SearchComplaint> getComplaintByUnitId(Long unitId);
 
 }

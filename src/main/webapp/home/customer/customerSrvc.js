@@ -9,16 +9,7 @@ customerModule.service('customerService', function($http, $q) {
 		saveUnit : saveUnit,
 		getUnit : getUnit,
 		getCustomerByCriteria : getCustomerByCriteria,
-		saveComplaint : saveComplaint,
-		getCustomerForComplaint : getCustomerForComplaint,
-		getUnitForComplaint : getUnitForComplaint,
 		getAllComplaints : getAllComplaints,
-		getCustomerComplaint : getCustomerComplaint,
-		saveComplaintAssignment :saveComplaintAssignment,
-		saveComplaintResolution :saveComplaintResolution,
-		getComplaintByCriteria : getComplaintByCriteria,
-		getSearchUnitByCustomerId : getSearchUnitByCustomerId,
-		getComplaintByUnitId : getComplaintByUnitId		
 	});
 
 	
@@ -110,63 +101,12 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function getComplaintByCriteria(searchCriteria){
-
-		console.log('getting complaint customer by search criteria');
-		var request = $http({
-			method : "post",
-			url : "../service/customer/searchcomplaintcustomer/",
-			params : "",
-			data : searchCriteria
-
-		});
-		return (request.then(handleSuccess, handleError));
-	}
-	function saveComplaint(customerComplaint){
-		console.log('save complaint call in service');
-		var request = $http({
-			method : "post",
-			url : "../service/customer/complaint/",
-			params : "",
-			data: customerComplaint
-
-		});
-		return (request.then(handleSuccess, handleError));
-	}
-
-	function getCustomerForComplaint(customerId){
-		console.log('get customer for complaint');
-
-		var request = $http({
-			method : "get",
-			url : "../service/customer/customercomplaint/"+customerId,
-			params : {
-				action : "get"
-			}
-		});
-		return (request.then(handleSuccess, handleError));
-	}
-	
-	function getUnitForComplaint(unitId){
-		console.log('get unit for complaint');
-
-		var request = $http({
-			method : "get",
-			url : "../service/customer/unitcomplaint/"+unitId,
-			params : {
-				action : "get"
-			}
-		});
-		return (request.then(handleSuccess, handleError));
-	}
-
-	
 	function getAllComplaints(customerId){
 		console.log('getting all customer complaints in service');
 
 		var request = $http({
 			method : "get",
-			url : "../service/customer/complaints/"+customerId,
+			url : "../service/complaint/complaints/"+customerId,
 			params : {
 				action : "get"
 			}
@@ -174,69 +114,6 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 	
-	function getCustomerComplaint(complaintId){
-		console.log('getting customer complaint in service');
-
-		var request = $http({
-			method : "get",
-			url : "../service/customer/complaint/"+complaintId,
-			params : {
-				action : "get"
-			}
-		});
-		return (request.then(handleSuccess, handleError));
-	}	
-
-	
-	function getSearchUnitByCustomerId(customerId){
-		console.log('getting units by customerId in service');
-
-		var request = $http({
-			method : "get",
-			url : "../service/customer/searchcomplaintunit/"+customerId,
-			params : {
-				action : "get"
-			}
-		});
-		return (request.then(handleSuccess, handleError));
-	}	
-	
-	function getComplaintByUnitId(unitId){
-		console.log('getting complaints by unitId in service');
-
-		var request = $http({
-			method : "get",
-			url : "../service/customer/searchcomplaint/"+unitId,
-			params : {
-				action : "get"
-			}
-		});
-		return (request.then(handleSuccess, handleError));
-	}	
-	function saveComplaintResolution(complaintId,complaintResolution){
-		console.log('save ComplaintResolution call in service');
-		var request = $http({
-			method : "post",
-			url : "../service/customer/complaintresolution/"+complaintId,
-			params : "",
-			data: complaintResolution
-
-		});
-		return (request.then(handleSuccess, handleError));
-	}
-
-	function saveComplaintAssignment(complaintId, complaintAssignment){
-		console.log('save CustomerComplaint call in service');
-		var request = $http({
-			method : "post",
-			url : "../service/customer/complaintassignment/"+complaintId,
-			params : "",
-			data: complaintAssignment
-
-		});
-		return (request.then(handleSuccess, handleError));
-	}
-
 	function handleError(response) {
 		console.log('Error occured while calling service');
 		console.log(response);
