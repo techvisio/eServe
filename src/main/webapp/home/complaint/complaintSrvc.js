@@ -11,7 +11,8 @@ complaintModule.service('complaintService', function($http, $q) {
 		saveComplaintResolution :saveComplaintResolution,
 		getComplaintByCriteria : getComplaintByCriteria,
 		getSearchUnitByCustomerId : getSearchUnitByCustomerId,
-		getComplaintByUnitId : getComplaintByUnitId		
+		getComplaintByUnitId : getComplaintByUnitId,
+		getAllComplaintsForUnit : getAllComplaintsForUnit		
 	});
 
 	
@@ -106,7 +107,7 @@ complaintModule.service('complaintService', function($http, $q) {
 	}	
 	
 	function getComplaintByUnitId(unitId){
-		console.log('getting complaints by unitId in service');
+		console.log('getting SearchComplaint by unitId in service');
 
 		var request = $http({
 			method : "get",
@@ -118,6 +119,20 @@ complaintModule.service('complaintService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}	
 	
+	
+	function getAllComplaintsForUnit(unitId){
+		console.log('getting all complaints for single unit in service');
+
+		var request = $http({
+			method : "get",
+			url : "../service/complaint/complaint/"+unitId,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}	
+
 	function saveComplaintResolution(complaintId,complaintResolution){
 		console.log('save ComplaintResolution call in service');
 		var request = $http({

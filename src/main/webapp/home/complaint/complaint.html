@@ -1,6 +1,6 @@
 <form name="COMPLAINT" id="COMPLAINT">
 	<div ng-init="init(); getUsers(); toggleReadOnly('COMPLAINT')">
-	<div ng show="alerts..length>0 || !$scope.COMPLAINT.$valid">
+		<div ng show="alerts..length>0 || !$scope.COMPLAINT.$valid">
 			<alert ng-repeat="alert in alerts" type="{{alert.type}}"
 				close="closeAlert($index)">{{alert.msg}}</alert>
 		</div>
@@ -23,7 +23,7 @@
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
 					ng-model="customerComplaint.customerName" required="required"
-						ng-pattern="/^[a-zA-Z-z&-. ]+$/i">
+					ng-pattern="/^[a-zA-Z-z&-. ]+$/i">
 			</div>
 		</div>
 
@@ -34,7 +34,7 @@
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
 					ng-model="customerComplaint.contactNo" required="required"
-						ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/">
+					ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/">
 			</div>
 
 			<div class="col-sm-2">
@@ -43,7 +43,7 @@
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
 					ng-model="customerComplaint.emailId" required="required"
-						ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i">
+					ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i">
 			</div>
 
 		</div>
@@ -127,7 +127,8 @@
 			<div class="col-sm-4">
 				<select class="form-control"
 					ng-model="customerComplaint.issue.issueId"
-					ng-options="item.issueId*1 as item.value for item in serverModelData.ISSUE" required>
+					ng-options="item.issueId*1 as item.value for item in serverModelData.ISSUE"
+					required>
 				</select>
 			</div>
 
@@ -141,7 +142,8 @@
 				<label for="inputlg">Priority</label>
 			</div>
 			<div class="col-sm-4">
-				<select class="form-control" ng-model="customerComplaint.priority" required>
+				<select class="form-control" ng-model="customerComplaint.priority"
+					required>
 					<option></option>
 					<option value="C">Critical</option>
 					<option value="H">High</option>
@@ -180,10 +182,10 @@
 					<div class="col-sm-2">
 						<h3 class="new-event-subtitle">ASSIGN TO</h3>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-sm-3">
 						<select class="form-control"
 							ng-model="customerComplaint.complaintAssignment.user.userId"
-							ng-options="item.userId*1 as item.firstName for item in users">
+							ng-options="item.userId*1 as item.firstName+' '+item.lastName  for item in users">
 						</select>
 					</div>
 
@@ -320,9 +322,10 @@
 		<div class="row">
 			<div class="col-sm-9"></div>
 
-<div class="col-sm-2" ng-show="!isEdit">
+			<div class="col-sm-2" ng-show="!isEdit">
 				<button type="button" class="btn btn-primary"
-					ng-click="toggleReadOnly('COMPLAINT')" ng-disabled= "(isEdit && !isPrivileged('UPDATE_COMPLAINT'))">Edit</button>
+					ng-click="toggleReadOnly('COMPLAINT')"
+					ng-disabled="isCreateOrUpdatePrivileged()">Edit</button>
 			</div>
 			<div class="col-sm-1" ng-show="isEdit">
 				<button type="button" class="btn btn-primary"
@@ -330,7 +333,8 @@
 			</div>
 			<div class="col-sm-2" ng-show="isEdit">
 				<button type="button" class="btn btn-primary"
-					ng-click="saveAndUpdateComplaint()" ng-disabled= "(isNew && !isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) || (isEdit && !isPrivileged('UPDATE_COMPLAINT'))">Create Complain</button>
+					ng-click="saveAndUpdateComplaint()"
+					ng-disabled="isCreateOrUpdatePrivileged()">Create Complain</button>
 			</div>
 
 		</div>

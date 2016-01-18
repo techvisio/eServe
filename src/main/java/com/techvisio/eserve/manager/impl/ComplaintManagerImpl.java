@@ -1,11 +1,12 @@
 package com.techvisio.eserve.manager.impl;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,9 +23,8 @@ import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.ComplaintDao;
-import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.manager.ComplaintManager;
-import com.techvisio.eserve.manager.CustomerManager;
+import com.techvisio.eserve.service.CustomerService;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 
@@ -38,7 +38,7 @@ public class ComplaintManagerImpl implements ComplaintManager{
 	CacheDao cacheDao;
 
 	@Autowired
-	CustomerManager customerManager;
+	CustomerService customerService;
 
 	@Override
 	public CustomerComplaint getCustomerComplaint(Long complaintId) {
@@ -52,30 +52,13 @@ public class ComplaintManagerImpl implements ComplaintManager{
 		Map<String, Object> result = new HashMap<String, Object>();
 
 		if(customerComplaint.getCustomerId()==null){
-
-			Customer customer = new Customer();
-			customer.setCustomerName(customerComplaint.getCustomerName());
-			customer.setContactNo(customerComplaint.getContactNo());
-			customer.setEmailId(customerComplaint.getEmailId());
-			List<Unit> units = new ArrayList<Unit>();
-			units.add(customerComplaint.getUnit());
-
-			customer.setUnits(units);
-			result = customerManager.saveCustomer(customer);
-
+			result = customerService.checkCustomerExistOrNot(customerComplaint);
+		
 			if(!(boolean) result.get("success")){
 				return result;
 			}
-
-			Customer customerFromDB = customerManager.getCustomer(customer.getCustomerId());
-			customerComplaint.setCustomerCode(customerFromDB.getCustomerCode());
-			customerComplaint.setCustomerId(customerFromDB.getCustomerId());
 		}
 
-		if(customerComplaint.getComplaintId() == null){
-			customerComplaint.setStatus(AppConstants.complaintStatus.UNASSIGNED.name());
-		}
-		
 		complaintDao.saveComplaint(customerComplaint);
 		
 		Long customerId = complaintDao.saveComplaint(customerComplaint);	
@@ -85,7 +68,7 @@ public class ComplaintManagerImpl implements ComplaintManager{
 		result.put("success", true);
 		return result;
 	}
-
+	
 	private void getSlaDateByPriority(CustomerComplaint customerComplaint) {
 
 		List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
@@ -187,8 +170,14 @@ public class ComplaintManagerImpl implements ComplaintManager{
 	}
 
 	@Override
-	public List<SearchComplaint> getComplaintByUnitId(Long unitId) {
-		List<SearchComplaint> complaints = complaintDao.getComplaintByUnitId(unitId);
+	public List<SearchComplaint> getComplaintSearchByUnitId(Long unitId) {
+		List<SearchComplaint> complaints = complaintDao.getComplaintSearchByUnitId(unitId);
+		return complaints;
+	}
+	
+	@Override
+	public List<CustomerComplaint> getAllComplaintsForUnit(Long unitId) {
+		List<CustomerComplaint> complaints= complaintDao.getAllComplaintsForUnit(unitId);
 		return complaints;
 	}
 }

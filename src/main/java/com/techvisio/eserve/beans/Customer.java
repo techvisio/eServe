@@ -37,7 +37,7 @@ public class Customer extends BasicEntity{
 	private String customerType;
 	@OneToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="ADDRESS_ID")
-	private Address address;
+	private Address address = new Address();
 	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER )
 	@JoinColumn(name="CUSTOMER_ID")
 	private List<Unit> units=new ArrayList<Unit>();

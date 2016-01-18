@@ -120,10 +120,19 @@ public class ComplaintController {
 	}
 	
 	@RequestMapping(value ="/searchcomplaint/{unitId}", method = RequestMethod.GET)
-	public ResponseEntity<Response> getComplaintByUnitId(@PathVariable Long unitId) {
+	public ResponseEntity<Response> getComplaintSearchByUnitId(@PathVariable Long unitId) {
 		Response response=new Response();
-		List<SearchComplaint> searchComplaints = complaintService.getComplaintByUnitId(unitId);
+		List<SearchComplaint> searchComplaints = complaintService.getComplaintSearchByUnitId(unitId);
 		response.setResponseBody(searchComplaints);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value ="/complaint/{unitId}", method = RequestMethod.GET)
+	public ResponseEntity<Response> getAllComplaintsForUnit(@PathVariable Long unitId) {
+		Response response=new Response();
+		List<CustomerComplaint> complaints = complaintService.getAllComplaintsForUnit(unitId);
+		response.setResponseBody(complaints);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

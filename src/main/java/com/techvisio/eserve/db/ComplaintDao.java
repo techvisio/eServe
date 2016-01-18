@@ -29,8 +29,9 @@ public interface ComplaintDao {
 	public List<SearchComplaintCustomer> getCustomerForComplaintByCriteria(
 			SearchCriteria searchCriteria);
 	public List<SearchComplaintUnit> getSearchUnitByCustomerId(Long customerId);
-	public List<SearchComplaint> getComplaintByUnitId(Long unitId);
+	public List<SearchComplaint> getComplaintSearchByUnitId(Long unitId);
 	public List<SearchComplaintCustomer> getCustomerByComplaintCode(
 			SearchCriteria searchCriteria);
+	List<CustomerComplaint> getAllComplaintsForUnit(Long unitId);
 
 }

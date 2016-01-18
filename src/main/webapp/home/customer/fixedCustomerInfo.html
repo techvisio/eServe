@@ -70,9 +70,11 @@
 			<!-- <div class="jumbotron"> -->
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="new-event-subtitle">BILLING ADDRESS</h3>
+					<h3 class="new-event-subtitle"> <i class="glyphicon glyphicon-plus" ng-click="isCollapsed=!isCollapsed"></i> &nbsp BILLING ADDRESS</h3>
 				</div>
 			</div>
+			<hr>
+			<div collapse="isCollapsed">
 			<div class="row">
 				<div class="col-sm-2">
 					<label for="inputlg">Address</label>
@@ -124,21 +126,23 @@
 					</select>
 				</div>
 			</div>
+</div>
+
 			<div class="row">
 
 				<div class="col-sm-8"></div>
 
-				<div class="col-sm-1">
+				<div class="col-sm-1" ng-show="!isNew && isEdit">
 					<button type="button" class="btn btn-primary"
-						ng-click="toggleReadOnly('CUSTOMER')" ng-show="!isNew && !isEdit" ng-disabled= "isEdit && !isPrivileged('UPDATE_CUSTOMER')">Edit</button>
+						ng-click="toggleReadOnly('CUSTOMER')" ng-disabled= "isCreateOrUpdatePrivileged()">Edit</button>
 				</div>
-				<div class="col-sm-1">
+				<div class="col-sm-1" ng-show="!isNew && !isEdit">
 					<button type="button" class="btn btn-primary"
-						ng-click="toggleReadOnly('CUSTOMER')" ng-show="!isNew && isEdit">Cancel</button>
+						ng-click="toggleReadOnly('CUSTOMER')">Cancel</button>
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-2 child-right" ng-show="isNew || isEdit">
 					<button type="button" class="btn btn-primary"
-						ng-click="saveAndUpdateCustomer()" ng-disabled= "(isNew && !isPrivileged('CREATE_CUSTOMER')) || (isEdit && !isPrivileged('UPDATE_CUSTOMER'))">Save Customer</button>
+						ng-click="saveAndUpdateCustomer()" ng-disabled= "isCreateOrUpdatePrivileged()">Save Customer</button>
 				</div>
 			</div>
 			

@@ -1,16 +1,17 @@
 var customerModule = angular.module('customerModule', []);
 
-customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','masterdataService','userService',
-                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,masterdataService,userService) {
+customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','masterdataService','userService','complaintService',
+                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,masterdataService,userService,complaintService) {
 
 
 	$scope.form={};
+	$scope.isCollapsed = true;
 	$scope.isNew=true;
 	$scope.isEdit=false;
 	$scope.startDate=false;
 	$scope.expireDate=false;
 	$scope.showStatus=false;
-	$scope.getAllComplaints=false;
+//	$scope.getAllComplaints=false;
 	$scope.customer={};
 	$scope.customers=[];
 	$scope.searchCriteria = {};
@@ -30,7 +31,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			.copy($scope.dummyUnit));
 
 	if(customer){
-		$scope.getAllComplaints = true;
+//		$scope.getAllComplaints = true;
 		$scope.isEdit = true;
 		$scope.isNew=false;
 		angular.forEach(customer.units, function(unit) {
@@ -77,6 +78,16 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				})
 	};
 
+	$scope.getAllComplaintsForUnit = function(unitId){
+		complaintService.getAllComplaintsForUnit(unitId)
+		.then(function(response) {
+			console.log('getting all Complaint for single unit in controller : ');
+			console.log(response);
+			if (response) {
+				$scope.customerComplaints = response;
+			} 
+		})
+	}
 
 	$scope.addMachine = function(object) {
 
@@ -108,6 +119,11 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.redirectToCustomerDtlScreen=function(currentCustomerId){
 		$scope.alerts=[];
 		$state.go('customer',{customerId:currentCustomerId});
+	}
+
+	$scope.redirectToComplaintScreen=function(currentComplaintId ){
+
+		$state.go('complaintScreen',{complaintId:currentComplaintId});
 	}
 
 	$scope.redirectToComplaintScreenByUnitId=function(unit, currentUnitId ){
@@ -213,7 +229,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				if(success){
 					$scope.customer = response.customer;
 					$scope.alerts=[];
-					alert("Customer Saved Successfully");
+					alert("Customer Updated Successfully");
 					$scope.redirectToCustomerDtlScreen($scope.customer.customerId);
 				}
 			} 
@@ -260,23 +276,23 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			console.log(response);
 			if (response) {
 				$scope.customer.units = response;
-				alert("Your Records Saved Successfully")
+				alert("Unit Saved Successfully")
 			} 
 		})
 	};
 	
-	if($scope.getAllComplaints){
-		$scope.getAllComplaints = function(){
-			customerService.getAllComplaints(customer.customerId)
-			.then(function(response) {
-				console.log('getting all complaints in controller : ');
-				console.log(response);
-				if (response) {
-					$scope.customerComplaints = response;
-				} 
-			})
-		}
-	}
+//	if($scope.getAllComplaints){
+//		$scope.getAllComplaints = function(){
+//			customerService.getAllComplaints(customer.customerId)
+//			.then(function(response) {
+//				console.log('getting all complaints in controller : ');
+//				console.log(response);
+//				if (response) {
+//					$scope.customerComplaints = response;
+//				} 
+//			})
+//		}
+//	}
 
 	$scope.toggleReadOnly = function(form) {
 
@@ -310,6 +326,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		console.log(sameAsAbove);
 
 		var customerAddressClone = angular.copy($scope.customer.address);
+		
 		if(unit.address != null || !angular.isUndefined(unit.address)){
 			customerAddressClone.addressId = unit.address.addressId;
 		}
@@ -336,6 +353,14 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			if (privilege.privilege.privilege===role) result= true;
 		});
 		return result;		
+	}
+	
+	$scope.isCreateOrUpdatePrivileged=function(){
+		return !($scope.isPrivileged('CREATE_CUSTOMER'));
+	}
+	
+	$scope.isViewPrivileged=function(){
+		return !($scope.isPrivileged('CREATE_CUSTOMER')) && !($scope.isPrivileged('VIEW_CUSTOMER'));
 	}
 
 } ]);

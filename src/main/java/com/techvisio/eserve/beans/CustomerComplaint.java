@@ -22,6 +22,7 @@ import org.joda.time.format.ISODateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.techvisio.eserve.util.AppConstants;
 
 @Entity
 @Table(name = "TB_CUSTOMER_COMPLAINT")
@@ -49,7 +50,7 @@ public class CustomerComplaint extends BasicEntity{
 	@JoinColumn(name="ISSUE_ID")
 	private Issue issue;
 	@Column(name="STATUS")
-	private String status;
+	private String status = AppConstants.complaintStatus.UNASSIGNED.name();
 	@Column(name="DESCRIPTION")
 	private String description;
 	@Column(name="PRIORITY")

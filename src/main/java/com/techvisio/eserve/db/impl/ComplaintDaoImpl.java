@@ -62,6 +62,14 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 		return complaints;
 	}
 
+	@Override
+	public List<CustomerComplaint> getAllComplaintsForUnit(Long unitId) {
+		String queryString="FROM CustomerComplaint cus WHERE cus.unit.unitId = "+ unitId;
+		Query query= getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<CustomerComplaint> complaints= (List<CustomerComplaint>)query.getResultList();
+		return complaints;
+	}
 	public List<CustomerComplaint> getCustomerComplaintByUnitId(Long unitId) {
 		String queryString="FROM CustomerComplaint cus WHERE cus.unit.unitId = "+ unitId;
 		Query query= getEntityManager().createQuery(queryString);
@@ -225,7 +233,7 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 	}
 
 	@Override
-	public List<SearchComplaint> getComplaintByUnitId(Long unitId){
+	public List<SearchComplaint> getComplaintSearchByUnitId(Long unitId){
 
 		List<SearchComplaint> searchComplaints = new ArrayList<SearchComplaint>();
 

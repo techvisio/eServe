@@ -1,5 +1,5 @@
 <form name='USER' id="USER">
-	<div ng-init="init(); toggleReadOnly('USER')">
+	<div ng-init="init()">
 		<div>
 			<h3 class="custom-page-header">CREATE USER</h3>
 		</div>
@@ -160,16 +160,16 @@
 
 			<div class="col-sm-2" ng-show="!isEdit">
 				<button type="button" class="btn btn-primary"
-					ng-click="toggleReadOnly('USER')" ng-disabled="(isEdit && !isPrivileged('UPDATE_USER'))">Edit</button>
+					ng-click="toggleReadOnly('USER')" ng-disabled="isCreateOrUpdatePrivileged()">Edit</button>
 			</div>
 			<div class="col-sm-1" ng-show="!isNew && isEdit">
 				<button type="button" class="btn btn-primary"
 					ng-click="toggleReadOnly('USER')">Cancel</button>
 			</div>
 
-			<div class="col-sm-2" ng-show="isEdit">
+			<div class="col-sm-2 child-right" ng-show="isEdit">
 				<button type="button" class="btn btn-primary"
-					ng-click="saveAndUpdateUser()">Save User</button>
+					ng-click="saveAndUpdateUser()" ng-disabled="isCreateOrUpdatePrivileged()">Save User</button>
 			</div>
 
 		</div>

@@ -66,6 +66,6 @@ public class ExceptionHandlerController {
 
 		response.setError(message);
 		return new ResponseEntity<Response>(response,
-				HttpStatus.INTERNAL_SERVER_ERROR);
+				HttpStatus.NOT_ACCEPTABLE);
 	}
 }

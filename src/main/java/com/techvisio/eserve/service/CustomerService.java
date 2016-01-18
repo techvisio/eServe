@@ -28,5 +28,7 @@ public interface CustomerService {
 	public void saveUnit(Unit unit);
 	public List<Unit> getUnits(Long customerId);
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
+	public Map<String, Object> checkCustomerExistOrNot(
+			CustomerComplaint customerComplaint);
 
 }

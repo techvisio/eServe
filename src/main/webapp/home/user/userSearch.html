@@ -32,7 +32,7 @@
 				class="form-control"
 				ng-options="item.designationId as item.designation  for item in serverModelData.DESIGNATION">
 			</select></td>
-            <th><button class="btn-primary" ng-click="getUserByCriteria()">Search</button></a></th>
+            <th><button class="btn-primary" ng-click="getUserByCriteria()" ng-disabled="isViewPrivileged()">Search</button></a></th>
         </tr>
     </thead>
     
@@ -45,7 +45,7 @@
         <td>{{user.emailId}}</td>
         <td>{{user.department.department}}</td>
         <td>{{user.designation.designation}}</td>
-        <td><a><button class="btn-primary" ng-click="resetPassword(user)">Reset</button></a></td>
+        <td><a><button class="btn-primary" ng-click="resetPassword(user)" ng-hide="!isPrivileged('USER_ADMINISTRATION')">Reset</button></a></td>
         </tr>
     </tbody>
 </table>

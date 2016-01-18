@@ -44,17 +44,17 @@
 			id="inputlg" type="text">
 	</div>
 	<div class="col-sm-2">
-		<button class="btn-primary" ng-click="getComplaintByCriteria()">Search</button>
+		<button class="btn-primary" ng-click="getComplaintByCriteria()" ng-disabled="isViewPrivileged()">Search</button>
 		</a>
 	</div>
 </div>
 
 <div ng-repeat="customer in complaintCustomers">
 	<div class="row"
-		ng-click="isUnitCollapsed = !isUnitCollapsed; getSearchUnitByCustomerId(customer,customer.customerId)">
+		ng-click="getSearchUnitByCustomerId(customer,customer.customerId)">
 		
 		<div class="col-sm-2">
-			<i class="glyphicon glyphicon-plus"></i>
+			<i class="glyphicon glyphicon-plus" ng-click="isUnitCollapsed = !isUnitCollapsed"></i>
 			<a herf="#"
 				ng-click="redirectToCustomerDtlScreen(customer.customerId)">{{customer.customerCode}}
 			</a>
@@ -87,18 +87,18 @@
 	</div>
 
 	<div ng-repeat="unit in customer.units"
-		ng-click="isComplaintCollapsed = !isComplaintCollapsed; getComplaintByUnitId(unit,unit.unitId)"
+		ng-click="getComplaintByUnitId(unit,unit.unitId)"
 		collapse="isUnitCollapsed">
 
 		<div class="row">
-			<div class="col-sm-2"><i class="glyphicon glyphicon-plus"></i>{{unit.unitCode}}</div>
+			<div class="col-sm-2"><i class="glyphicon glyphicon-plus" ng-click="isComplaintCollapsed = !isComplaintCollapsed"></i>{{unit.unitCode}}</div>
 			<div class="col-sm-2">{{unit.serviceCategory}}</div>
 			<div class="col-sm-2">{{unit.serviceParty}}</div>
 			<div class="col-sm-2">{{unit.unitCategory}}</div>
 			<div class="col-sm-2">{{unit.externalId}}</div>
 			<div class="col-sm-2 child-right">
 				<button type="button" class="btn btn-primary btn-sm"
-					ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)" ng-disabled= "(!isEdit && !isPrivileged('CREATE_COMPLAINT'))">Create
+					ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)" ng-disabled= "(!isPrivileged('CREATE_COMPLAINT'))">Create
 					Complaint</button>
 				</label>
 			</div>

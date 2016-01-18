@@ -1,5 +1,6 @@
 package com.techvisio.eserve.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -68,4 +69,34 @@ public class CustomerServiceImpl implements CustomerService{
 		return customers;
 	}
 
+	@Override
+	public Map<String, Object> checkCustomerExistOrNot(CustomerComplaint customerComplaint) {
+		
+		Map<String, Object> result;
+		Customer customer = createCustomerfromComplaint(customerComplaint);
+		
+		result = customerManager.saveCustomer(customer);
+
+		if(!(boolean) result.get("success")){
+			return result;
+		}
+
+		Customer customerFromDB = customerManager.getCustomer(customer.getCustomerId());
+		customerComplaint.setCustomerCode(customerFromDB.getCustomerCode());
+		customerComplaint.setCustomerId(customerFromDB.getCustomerId());
+		return result;
+	}
+	
+	private Customer createCustomerfromComplaint(
+			CustomerComplaint customerComplaint) {
+		Customer customer = new Customer();
+		customer.setCustomerName(customerComplaint.getCustomerName());
+		customer.setContactNo(customerComplaint.getContactNo());
+		customer.setEmailId(customerComplaint.getEmailId());
+		List<Unit> units = new ArrayList<Unit>();
+		units.add(customerComplaint.getUnit());
+
+		customer.setUnits(units);
+		return customer;
+	}
 }

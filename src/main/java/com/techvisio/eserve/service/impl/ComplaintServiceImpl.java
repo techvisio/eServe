@@ -97,8 +97,14 @@ public class ComplaintServiceImpl implements ComplaintService{
 	}
 
 	@Override
-	public List<SearchComplaint> getComplaintByUnitId(Long unitId) {
-		List<SearchComplaint> complaints = complaintManager.getComplaintByUnitId(unitId);
+	public List<SearchComplaint> getComplaintSearchByUnitId(Long unitId) {
+		List<SearchComplaint> complaints = complaintManager.getComplaintSearchByUnitId(unitId);
+		return complaints;
+	}
+	
+	@Override
+	public List<CustomerComplaint> getAllComplaintsForUnit(Long unitId) {
+		List<CustomerComplaint> complaints= complaintManager.getAllComplaintsForUnit(unitId);
 		return complaints;
 	}
 

@@ -18,7 +18,7 @@ public class ComplaintAssignment extends BasicEntity{
 
 	@OneToOne
 	@JoinColumn(name="USER_ID")
-	private User User;
+	private User user;
 	
 	@Column(name="COMPLAINT_ID")
 	@Id
@@ -31,11 +31,11 @@ public class ComplaintAssignment extends BasicEntity{
 	private CustomerComplaint customerComplaint;
 
 	public User getUser() {
-		return User;
+		return user;
 	}
 
 	public void setUser(User user) {
-		User = user;
+		this.user = user;
 	}
 
 	public Long getComplaintId() {

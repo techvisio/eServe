@@ -33,6 +33,7 @@ public interface ComplaintService {
 	public List<SearchComplaintCustomer> getCustomerForComplaintByCriteria(
 			SearchCriteria searchCriteria);
 	public List<SearchComplaintUnit> getSearchUnitByCustomerId(Long customerId);
-	public List<SearchComplaint> getComplaintByUnitId(Long unitId);
+	public List<SearchComplaint> getComplaintSearchByUnitId(Long unitId);
+	List<CustomerComplaint> getAllComplaintsForUnit(Long unitId);
 
 }

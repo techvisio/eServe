@@ -70,7 +70,7 @@ userModule
 				 }
 			 }
 
-			 if($rootScope.user.securityQuestion.customQuestion){
+			 if($rootScope.user.securityQuestion && $rootScope.user.securityQuestion.customQuestion){
 				 $scope.chkStatus = true;
 				 $scope.customQuestion = true;
 			 }
@@ -356,7 +356,6 @@ userModule
 								 if(success){
 									 $scope.user = response.user;
 									 $scope.isEdit = false;
-									 $scope.toggleReadOnly('USER');
 									 $scope.alerts=[];
 									 alert("User Updated Successfully");
 								 }
@@ -400,6 +399,7 @@ userModule
 //			 }
 //			 })
 //			 }
+			 
 
 				$scope.toggleReadOnly = function(form) {
 
@@ -428,6 +428,8 @@ userModule
 					}
 				};
 
+				$scope.toggleReadOnly('USER');
+				
 				$scope.isPrivileged = function(role){
 
 					var userPrivilege = $rootScope.user.privileges;
@@ -438,5 +440,11 @@ userModule
 					return result;		
 				}
 
-				
+				$scope.isCreateOrUpdatePrivileged=function(){
+					return !($scope.isPrivileged('CREATE_USER'));
+				}
+
+				$scope.isViewPrivileged=function(){
+					return !($scope.isPrivileged('CREATE_USER')) && !($scope.isPrivileged('VIEW_USER')) && !($scope.isPrivileged('USER_ADMINISTRATION'));
+				}
 		 } ]);

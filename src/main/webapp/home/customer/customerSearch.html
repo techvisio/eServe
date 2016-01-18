@@ -27,7 +27,7 @@
 				id="inputlg" type="text"></td>
             <td><input class="form-control input-sm" ng-model="searchCriteria.emailId"
 				id="inputlg" type="text"></td>
-            <th><button class="btn-primary" ng-click="getCustomerByCriteria()" ng-disabled="!isPrivileged('VIEW_CUSTOMER')">Search</button></a></th>
+            <th><button class="btn-primary" ng-click="getCustomerByCriteria()" ng-disabled="isViewPrivileged()">Search</button></a></th>
         </tr>
     </thead>
     <tbody>

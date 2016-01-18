@@ -1,7 +1,7 @@
 var complaintModule = angular.module('complaintModule', []);
 
 complaintModule.controller('complaintController', ['$scope','$window','$rootScope','complaintService','$state','$filter','unitComplaint','complaint','masterdataService','userService',
-                                                 function($scope,$window,$rootScope,complaintService,$state,filter,unitComplaint,complaint,masterdataService,userService) {
+                                                   function($scope,$window,$rootScope,complaintService,$state,filter,unitComplaint,complaint,masterdataService,userService) {
 
 
 	$scope.form={};
@@ -148,11 +148,22 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	$scope.getComplaintByUnitId = function(unit,unitId){
 		complaintService.getComplaintByUnitId(unitId)
 		.then(function(response) {
-			console.log('get Complaints by unitId in controller : ');
+			console.log('get SearchComplaint by unitId in controller : ');
 			console.log(response);
 			if (response) {
 				$scope.customerComplaints = response;
 				unit.complaints = $scope.customerComplaints;
+			} 
+		})
+	}
+
+	$scope.getAllComplaintsForUnit = function(unitId){
+		complaintService.getAllComplaintsForUnit(unitId)
+		.then(function(response) {
+			console.log('getting all Complaint for single unit in controller : ');
+			console.log(response);
+			if (response) {
+				$scope.customerComplaints = response;
 			} 
 		})
 	}
@@ -167,11 +178,10 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			} 
 		})
 	}
-	
+
 	$scope.saveComplaint = function() {
 
 		if(!$scope.COMPLAINT.$valid){
-
 			$scope.alerts=[];
 			$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
 			return;
@@ -201,7 +211,6 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 					$scope.alerts.push({msg: 'This Contact No Or Email Id Already Exists!! Enter Different Contact No Or Email Id'});
 					return;
 				}
-				
 			} 
 		})
 	};
@@ -216,7 +225,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			if (response) {
 				$scope.customerComplaint = response;
 				$scope.showStatus = true;
-				alert("Your Records Saved Successfully");
+				alert("Complaint Updated Successfully");
 				$scope.redirectToComplaintScreen($scope.customerComplaint.complaintId);
 			} 
 		})
@@ -231,7 +240,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			$scope.updateComplaint();
 		}
 	}
-	
+
 	$scope.saveComplaintResolution = function() {
 		console.log('save complaintResolution called in controller');
 		complaintService.saveComplaintResolution($scope.customerComplaint.complaintId,$scope.customerComplaint.complaintResolution)
@@ -240,7 +249,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			console.log(response);
 			if (response) {
 				$scope.customerComplaint = response;
-				alert("Your Records Saved Successfully")
+				alert("Complaint Resolution Saved Successfully")
 			} 
 		})
 	};
@@ -254,7 +263,8 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			if (response) {
 				$scope.customerComplaint = response;
 				$scope.newComplaint=false;
-				alert("Your Records Saved Successfully")
+				var name = $scope.customerComplaint.complaintAssignment.user.firstName +" "+ $scope.customerComplaint.complaintAssignment.user.lastName;
+				alert('Complaint Assign To : ' + name);
 			} 
 		})
 	};
@@ -294,6 +304,14 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			if (privilege.privilege.privilege===role) result= true;
 		});
 		return result;		
+	}
+
+	$scope.isCreateOrUpdatePrivileged=function(){
+		return !($scope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !($scope.isPrivileged('CREATE_COMPLAINT'));
+	}
+	
+	$scope.isViewPrivileged=function(){
+		return !($scope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !($scope.isPrivileged('CREATE_COMPLAINT')) && !($scope.isPrivileged('VIEW_COMPLAINT'));
 	}
 
 } ]);
