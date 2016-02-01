@@ -1,0 +1,19 @@
+<div>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Service Type</th>
+				<th>Service Start Date</th>
+				<th>Service Expire Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="history in serviceHistories">
+				<td>{{history.serviceType}}</td>
+				<td>{{history.startDateString}}</td>
+				<td>{{history.endDateString}}</td>
+				<!--         <td><a ui-sref="resetpassword"><button class="btn-primary">Reset Password</button></a></td> -->
+			</tr>
+		</tbody>
+	</table>
+</div>

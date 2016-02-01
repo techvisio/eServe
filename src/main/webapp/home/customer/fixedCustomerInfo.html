@@ -1,4 +1,4 @@
-	<div ng-init="init(); toggleReadOnly('CUSTOMER')">
+	<div ng-init="init()">
 		<div ng show="alerts..length>0 || !$scope.CUSTOMER.$valid || !$scope.UNIT.$valid">
 			<alert ng-repeat="alert in alerts" type="{{alert.type}}"
 				close="closeAlert($index)">{{alert.msg}}</alert>
@@ -52,13 +52,9 @@
 					<label for="radiogroup">Customer Type</label>
 				</div>
 				<div class="col-sm-4">
-					<select class="form-control" required="required"
-						ng-model="customer.customerType">
-						<option></option>
-						<option>NAD</option>
-						<option>VIP</option>
-						<option>CORPORATE</option>
-						<option>INDIVIDUAL</option>
+					<select ng-model="customer.customerType.customerTypeId"
+						class="form-control"
+						ng-options="item.customerTypeId*1 as item.customerType  for item in serverModelData.CUSTOMER_TYPE" required>
 					</select>
 				</div>
 			</div>
@@ -70,7 +66,7 @@
 			<!-- <div class="jumbotron"> -->
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="new-event-subtitle"> <i class="glyphicon glyphicon-plus" ng-click="isCollapsed=!isCollapsed"></i> &nbsp BILLING ADDRESS</h3>
+					<h3 class="new-event-subtitle"> <i ng-class= "{'glyphicon glyphicon-plus':isCollapsed ,'glyphicon glyphicon-minus':!isCollapsed}" ng-click="isCollapsed=!isCollapsed"></i> &nbsp BILLING ADDRESS</h3>
 				</div>
 			</div>
 			<hr>

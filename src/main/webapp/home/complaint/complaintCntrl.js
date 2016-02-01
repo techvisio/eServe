@@ -21,6 +21,18 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	$scope.complaintResolution={};
 	$scope.complaintAssignment={};
 
+	
+	$scope.isPrivileged = function(role){
+
+		var userPrivilege = $rootScope.user.privileges;
+		var result=false;
+		angular.forEach(userPrivilege, function(privilege) {
+			if (privilege.privilege.privilege===role) result= true;
+		});
+		return result;		
+	}
+
+	
 	$scope.getCustomerForComplaint = function(){
 		complaintService.getCustomerForComplaint(unitComplaint.customerId)
 		.then(function(response) {
@@ -89,10 +101,22 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 				})
 	};
 
-
+	$scope.resetAlert = function(){
+		 $scope.alerts=[];	 
+	 }
+	
+	if($scope.isPrivileged("VIEW_CUSTOMER") || $scope.isPrivileged("CREATE_CUSTOMER")){
+	$scope.redirectToCustomerDtlScreen=function(currentCustomerId){
+		$scope.alerts=[];
+		$state.go('customer',{customerId:currentCustomerId});
+	}
+	}
+	
+	if($scope.isPrivileged("VIEW_COMPLAINT") || $scope.isPrivileged("CREATE_COMPLAINT")){
 	$scope.redirectToComplaintScreen=function(currentComplaintId ){
 
 		$state.go('complaintScreen',{complaintId:currentComplaintId});
+	}
 	}
 
 	$scope.redirectToComplaint=function(){
@@ -274,6 +298,8 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		if($scope.isEdit){
 			$('#' + form + ' *').attr('readonly',
 					true);
+			$('#' + form + ' select')
+			 .attr('disabled', true);
 			$('#' + form + ' input[type="radio"]')
 			.attr('disabled', true);
 			$('#' + form + ' input[type="checkbox"]')
@@ -286,6 +312,8 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		else{
 			$('#' + form + ' *').attr('readonly',
 					false);
+			$('#' + form + ' select')
+			 .attr('disabled', false);
 			$('#' + form + ' input[type="radio"]')
 			.attr('disabled', false);
 			$('#' + form + ' input[type="checkbox"]')
@@ -296,18 +324,8 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		}
 	};
 
-	$scope.isPrivileged = function(role){
-
-		var userPrivilege = $rootScope.user.privileges;
-		var result=false;
-		angular.forEach(userPrivilege, function(privilege) {
-			if (privilege.privilege.privilege===role) result= true;
-		});
-		return result;		
-	}
-
 	$scope.isCreateOrUpdatePrivileged=function(){
-		return !($scope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !($scope.isPrivileged('CREATE_COMPLAINT'));
+		return !($scope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !(!$scope.isNew && $scope.isPrivileged('CREATE_COMPLAINT'));
 	}
 	
 	$scope.isViewPrivileged=function(){

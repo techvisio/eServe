@@ -55,11 +55,7 @@ public class Unit extends BasicEntity{
 	private String contractExpireOnString;
 	
 	@Column(name="SERVICE_CATEGORY")
-	private String serviceCategory;
-	@Column(name="SERVICE_PARTY")
-	private String serviceParty;
-	@Column(name="UNIT_CATEGORY")
-	private String unitCategory;
+	private String serviceCategory = "Paid";
 	@Column(name="EXTERNAL_ID")
 	private String externalId;
 	@Column(name="LENGTH")
@@ -68,6 +64,17 @@ public class Unit extends BasicEntity{
 	private Long width;
 	@Column(name="HEIGHT")
 	private Long height;
+	@Column(name="IS_AGREEMENT_APPROVED")
+	private boolean agreementApproval;
+	
+	@OneToOne
+	@JoinColumn(name="UNIT_CATEGORY_ID")
+	private UnitCategory unitCategory;
+
+	@OneToOne
+	@JoinColumn(name="SERVICE_PROVIDER_ID")
+	private ServiceProvider serviceProvider;
+	
 	@OneToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="ADDRESS_ID")
 	private Address address;
@@ -81,17 +88,12 @@ public class Unit extends BasicEntity{
 	public void setServiceCategory(String serviceCategory) {
 		this.serviceCategory = serviceCategory;
 	}
-	public String getServiceParty() {
-		return serviceParty;
+	
+	public ServiceProvider getServiceProvider() {
+		return serviceProvider;
 	}
-	public void setServiceParty(String serviceParty) {
-		this.serviceParty = serviceParty;
-	}
-	public String getUnitCategory() {
-		return unitCategory;
-	}
-	public void setUnitCategory(String unitCategory) {
-		this.unitCategory = unitCategory;
+	public void setServiceProvider(ServiceProvider serviceProvider) {
+		this.serviceProvider = serviceProvider;
 	}
 	public String getExternalId() {
 		return externalId;
@@ -125,6 +127,12 @@ public class Unit extends BasicEntity{
 		this.unitId = unitId;
 	}
 	
+	public UnitCategory getUnitCategory() {
+		return unitCategory;
+	}
+	public void setUnitCategory(UnitCategory unitCategory) {
+		this.unitCategory = unitCategory;
+	}
 	public List<EquipmentDetail> getEquipmentDetails() {
 		return equipmentDetails;
 	}
@@ -204,7 +212,11 @@ public class Unit extends BasicEntity{
 		this.contractExpireOn = parser2.parseDateTime(contractExpireOnString).toDate();
 		}
 	}
-	
-	
+	public boolean isAgreementApproval() {
+		return agreementApproval;
+	}
+	public void setAgreementApproval(boolean agreementApproval) {
+		this.agreementApproval = agreementApproval;
+	}
 	
 }

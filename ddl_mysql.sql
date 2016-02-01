@@ -7,6 +7,10 @@
         drop 
         foreign key FK_im3tux72fl67al6v1h9uatcl3;
 
+    alter table TB_AGREEMENT_DURATION 
+        drop 
+        foreign key FK_ar2h6nye7rlkto1n333dh674e;
+
     alter table TB_COMPLAINT_ASSIGNMENT 
         drop 
         foreign key FK_efy1rj6xyhvfpslvetcmak7cv;
@@ -54,6 +58,14 @@
     alter table TB_CUSTOMER_DETAIL 
         drop 
         foreign key FK_apd6c41p5jgd3v12ifa3q5won;
+
+    alter table TB_CUSTOMER_DETAIL 
+        drop 
+        foreign key FK_5s4leif6kow13ds6vb2pjhmkd;
+
+    alter table TB_CUSTOMER_TYPE_MASTER 
+        drop 
+        foreign key FK_5ksv834xwlq6e7qyf2d7e9le;
 
     alter table TB_DEPARTMENT_MASTER 
         drop 
@@ -107,9 +119,21 @@
         drop 
         foreign key FK_c35mkkq60ro92y0p6n6l7kyp5;
 
+    alter table TB_SERVICE_AGREEMENT_HISTORY 
+        drop 
+        foreign key FK_dsq2ugbic94xrodhqaogxebs3;
+
+    alter table TB_SERVICE_PROVIDER_MASTER 
+        drop 
+        foreign key FK_oxu1huihusb1j3d7bebvn3mpi;
+
     alter table TB_STATE_MASTER 
         drop 
         foreign key FK_4rry69rrjrqbsk9ty7imwwm95;
+
+    alter table TB_UNIT_CATEGORY_MASTER 
+        drop 
+        foreign key FK_h28aii5mk5j8d70c2pu0ecsnr;
 
     alter table TB_UNIT_DETAIL 
         drop 
@@ -118,6 +142,14 @@
     alter table TB_UNIT_DETAIL 
         drop 
         foreign key FK_t1kal148ybl9hd9qoj9l0p6ay;
+
+    alter table TB_UNIT_DETAIL 
+        drop 
+        foreign key FK_af1v53edjwdlpsevqculc89rv;
+
+    alter table TB_UNIT_DETAIL 
+        drop 
+        foreign key FK_jxxphk8q9d91rnhqn9cnmd3tv;
 
     alter table TB_UNIT_DETAIL 
         drop 
@@ -157,6 +189,8 @@
 
     drop table if exists TB_ADDRESS_DETAIL;
 
+    drop table if exists TB_AGREEMENT_DURATION;
+
     drop table if exists TB_CLIENT_MASTER;
 
     drop table if exists TB_COMPLAINT_ASSIGNMENT;
@@ -168,6 +202,8 @@
     drop table if exists TB_CUSTOMER_COMPLAINT;
 
     drop table if exists TB_CUSTOMER_DETAIL;
+
+    drop table if exists TB_CUSTOMER_TYPE_MASTER;
 
     drop table if exists TB_DEPARTMENT_MASTER;
 
@@ -191,7 +227,13 @@
 
     drop table if exists TB_SECURITY_QUESTION;
 
+    drop table if exists TB_SERVICE_AGREEMENT_HISTORY;
+
+    drop table if exists TB_SERVICE_PROVIDER_MASTER;
+
     drop table if exists TB_STATE_MASTER;
+
+    drop table if exists TB_UNIT_CATEGORY_MASTER;
 
     drop table if exists TB_UNIT_DETAIL;
 
@@ -214,6 +256,18 @@
         Client_Id bigint,
         STATE_ID bigint,
         primary key (ADDRESS_ID)
+    );
+
+    create table TB_AGREEMENT_DURATION (
+        AGREEMENT_DURATION_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        DISPLAY_VALUE varchar(255),
+        DURATION integer,
+        Client_Id bigint,
+        primary key (AGREEMENT_DURATION_ID)
     );
 
     create table TB_CLIENT_MASTER (
@@ -290,11 +344,22 @@
         CONTACT_NO varchar(255),
         CUSTOMER_CODE varchar(255),
         CUSTOMER_NAME varchar(255),
-        CUSTOMER_TYPE varchar(255),
         EMAIL_ID varchar(255),
         Client_Id bigint,
         ADDRESS_ID bigint,
+        CUSTOMER_TYPE_ID bigint,
         primary key (CUSTOMER_ID)
+    );
+
+    create table TB_CUSTOMER_TYPE_MASTER (
+        CUSTOMER_TYPE_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        CUSTOMER_TYPE varchar(255),
+        Client_Id bigint,
+        primary key (CUSTOMER_TYPE_ID)
     );
 
     create table TB_DEPARTMENT_MASTER (
@@ -437,6 +502,32 @@
         primary key (USER_ID)
     );
 
+    create table TB_SERVICE_AGREEMENT_HISTORY (
+        AGREEMENT_HISTORY_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        UNIT_ID bigint,
+        END_DATE datetime,
+        SERVICE_TYPE varchar(255),
+        START_DATE datetime,
+        Client_Id bigint,
+        primary key (AGREEMENT_HISTORY_ID)
+    );
+
+    create table TB_SERVICE_PROVIDER_MASTER (
+        SERVICE_PROVIDER_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        SERVICE_PROVIDER varchar(255),
+        IS_THIRD_PARTY bit,
+        Client_Id bigint,
+        primary key (SERVICE_PROVIDER_ID)
+    );
+
     create table TB_STATE_MASTER (
         STATE_ID bigint not null auto_increment,
         CREATED_BY varchar(255),
@@ -448,12 +539,24 @@
         primary key (STATE_ID)
     );
 
+    create table TB_UNIT_CATEGORY_MASTER (
+        UNIT_CATEGORY_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        UNIT_TYPE varchar(255),
+        Client_Id bigint,
+        primary key (UNIT_CATEGORY_ID)
+    );
+
     create table TB_UNIT_DETAIL (
         UNIT_ID bigint not null auto_increment,
         CREATED_BY varchar(255),
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
+        IS_AGREEMENT_APPROVED bit,
         CONTRACT_EXPIRE_ON date,
         CONTRACT_START_ON date,
         CUSTOMER_ID bigint,
@@ -461,12 +564,12 @@
         HEIGHT bigint,
         LENGTH bigint,
         SERVICE_CATEGORY varchar(255),
-        SERVICE_PARTY varchar(255),
-        UNIT_CATEGORY varchar(255),
         UNIT_CODE varchar(255),
         WIDTH bigint,
         Client_Id bigint,
         ADDRESS_ID bigint,
+        SERVICE_PROVIDER_ID bigint,
+        UNIT_CATEGORY_ID bigint,
         primary key (UNIT_ID)
     );
 
@@ -516,6 +619,11 @@
         add constraint FK_im3tux72fl67al6v1h9uatcl3 
         foreign key (STATE_ID) 
         references TB_STATE_MASTER (STATE_ID);
+
+    alter table TB_AGREEMENT_DURATION 
+        add constraint FK_ar2h6nye7rlkto1n333dh674e 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
 
     alter table TB_COMPLAINT_ASSIGNMENT 
         add constraint FK_efy1rj6xyhvfpslvetcmak7cv 
@@ -576,6 +684,16 @@
         add constraint FK_apd6c41p5jgd3v12ifa3q5won 
         foreign key (ADDRESS_ID) 
         references TB_ADDRESS_DETAIL (ADDRESS_ID);
+
+    alter table TB_CUSTOMER_DETAIL 
+        add constraint FK_5s4leif6kow13ds6vb2pjhmkd 
+        foreign key (CUSTOMER_TYPE_ID) 
+        references TB_CUSTOMER_TYPE_MASTER (CUSTOMER_TYPE_ID);
+
+    alter table TB_CUSTOMER_TYPE_MASTER 
+        add constraint FK_5ksv834xwlq6e7qyf2d7e9le 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
 
     alter table TB_DEPARTMENT_MASTER 
         add constraint FK_jlqewk2d5mjj5th8lhjnhkt31 
@@ -642,8 +760,23 @@
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 
+    alter table TB_SERVICE_AGREEMENT_HISTORY 
+        add constraint FK_dsq2ugbic94xrodhqaogxebs3 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_SERVICE_PROVIDER_MASTER 
+        add constraint FK_oxu1huihusb1j3d7bebvn3mpi 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
     alter table TB_STATE_MASTER 
         add constraint FK_4rry69rrjrqbsk9ty7imwwm95 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_UNIT_CATEGORY_MASTER 
+        add constraint FK_h28aii5mk5j8d70c2pu0ecsnr 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 
@@ -656,6 +789,16 @@
         add constraint FK_t1kal148ybl9hd9qoj9l0p6ay 
         foreign key (ADDRESS_ID) 
         references TB_ADDRESS_DETAIL (ADDRESS_ID);
+
+    alter table TB_UNIT_DETAIL 
+        add constraint FK_af1v53edjwdlpsevqculc89rv 
+        foreign key (SERVICE_PROVIDER_ID) 
+        references TB_SERVICE_PROVIDER_MASTER (SERVICE_PROVIDER_ID);
+
+    alter table TB_UNIT_DETAIL 
+        add constraint FK_jxxphk8q9d91rnhqn9cnmd3tv 
+        foreign key (UNIT_CATEGORY_ID) 
+        references TB_UNIT_CATEGORY_MASTER (UNIT_CATEGORY_ID);
 
     alter table TB_UNIT_DETAIL 
         add constraint FK_gbe6skygwysmueutotfpdfu5m 

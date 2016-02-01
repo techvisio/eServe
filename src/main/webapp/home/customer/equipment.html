@@ -45,11 +45,11 @@
 			</div>
 			<div class="col-sm-2">
 				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="equip.serialNo" required>
+					ng-model="equip.serialNo">
 			</div>
 			<div class="col-sm-2">
 				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="equip.invoiceNo" required>
+					ng-model="equip.invoiceNo">
 			</div>
 			<div class="col-sm-2">
 				<select class="form-control" ng-model="equip.warrantyUnder">
@@ -63,7 +63,7 @@
 			</div>
 			<div class="col-sm-2">
 				<button type="button" class="btn btn-default btn-sm"
-					ng-click="removeMachine(unit,$index)" ng-show="$index>0">
+					ng-click="removeMachine(unit,$index)" ng-show="$index=>0">
 					<span class="glyphicon glyphicon-remove"></span>
 				</button>
 			</div>

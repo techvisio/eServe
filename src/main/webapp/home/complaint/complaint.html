@@ -34,6 +34,7 @@
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
 					ng-model="customerComplaint.contactNo" required="required"
+					ng-click="resetAlert()"
 					ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/">
 			</div>
 
@@ -43,6 +44,7 @@
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
 					ng-model="customerComplaint.emailId" required="required"
+					ng-click="resetAlert()"
 					ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i">
 			</div>
 
@@ -66,13 +68,8 @@
 				<label for="inputlg">Service Category</label>
 			</div>
 			<div class="col-sm-4">
-				<select class="form-control"
-					ng-model="customerComplaint.unit.serviceCategory" required>
-					<option></option>
-					<option>Warranty</option>
-					<option>AMC</option>
-					<option>Paid</option>
-				</select>
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="customerComplaint.unit.serviceCategory" disabled>
 			</div>
 		</div>
 		<div class="row">
@@ -80,11 +77,10 @@
 				<label for="inputlg">Service Party</label>
 			</div>
 			<div class="col-sm-4">
-				<select class="form-control"
-					ng-model="customerComplaint.unit.serviceParty" required>
-					<option></option>
-					<option>ANS</option>
-					<option>BLS</option>
+				<select ng-model="customerComplaint.unit.serviceProvider.serviceProviderId"
+					class="form-control"
+					ng-options="item.serviceProviderId*1 as item.serviceProvider for item in serverModelData.SERVICE_PROVIDER"
+					required>
 				</select>
 			</div>
 
@@ -92,12 +88,10 @@
 				<label for="inputlg">Unit Category</label>
 			</div>
 			<div class="col-sm-4">
-				<select class="form-control"
-					ng-model="customerComplaint.unit.unitCategory" required>
-					<option></option>
-					<option>Icecream</option>
-					<option>Blood</option>
-					<option>Medicine</option>
+				<select ng-model="customerComplaint.unit.unitCategory.unitCategoryId"
+					class="form-control"
+					ng-options="item.unitCategoryId*1 as item.unitType for item in serverModelData.UNIT_CATEGORY"
+					required>
 				</select>
 			</div>
 		</div>

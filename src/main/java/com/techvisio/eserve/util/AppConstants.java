@@ -8,6 +8,10 @@ public interface AppConstants {
 	public static final String DEPARTMENT = "DEPARTMENT";
 	public static final String RESOLUTION = "RESOLUTION";
 	public static final String ISSUE = "ISSUE";
+	public static final String AGREEMENT_DURATION = "AGREEMENT_DURATION";
+	public static final String UNIT_CATEGORY = "UNIT_CATEGORY";
+	public static final String CUSTOMER_TYPE = "CUSTOMER_TYPE";
+	public static final String SERVICE_PROVIDER = "SERVICE_PROVIDER";
 	public enum DefaultValues{DEFAULT_PASSWORD, SLA_DAYS_HIGH, SLA_DAYS_LOW, SLA_DAYS_CRITICAL, SLA_DAYS_MEDIUM};
 	public enum complaintStatus{ASSIGNED, UNASSIGNED, CLOSED};
 }

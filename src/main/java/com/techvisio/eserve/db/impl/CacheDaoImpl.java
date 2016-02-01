@@ -7,14 +7,18 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.AgreementDuration;
 import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
 import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
 import com.techvisio.eserve.beans.Resolution;
+import com.techvisio.eserve.beans.ServiceProvider;
 import com.techvisio.eserve.beans.State;
+import com.techvisio.eserve.beans.UnitCategory;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.util.CustomLogger;
 
@@ -62,6 +66,37 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 		return result;
 	}
 	
+	@Override
+	public List<AgreementDuration> getAgreementDuration() {
+		String queryString="FROM AgreementDuration";
+		Query query=getEntityManager().createQuery(queryString);
+		List<AgreementDuration> result= query.getResultList();
+		return result;
+	}
+	
+	@Override
+	public List<UnitCategory> getUnitCategories() {
+		String queryString="FROM UnitCategory";
+		Query query=getEntityManager().createQuery(queryString);
+		List<UnitCategory> result= query.getResultList();
+		return result;
+	}
+	
+	@Override
+	public List<CustomerType> getCustomerTypes() {
+		String queryString="FROM CustomerType";
+		Query query=getEntityManager().createQuery(queryString);
+		List<CustomerType> result= query.getResultList();
+		return result;
+	}
+	
+	@Override
+	public List<ServiceProvider> getServiceProviders() {
+		String queryString="FROM ServiceProvider";
+		Query query=getEntityManager().createQuery(queryString);
+		List<ServiceProvider> result= query.getResultList();
+		return result;
+	}
 	
 	@Override
 	public List<Resolution> getResolution(){

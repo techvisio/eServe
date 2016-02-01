@@ -59,7 +59,7 @@
 			<div class="col-sm-3">
 				<input class="form-control input-sm"
 					ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
-					ng-model="user.emailId" id="inputlg" type="email" ng-click="reserAlert()"
+					ng-model="user.emailId" id="inputlg" type="email" ng-click="resetAlert()"
 					required="required">
 			</div>
 
@@ -73,7 +73,7 @@
 			<div class="col-sm-3">
 				<input class="form-control input-sm"
 					ng-pattern="/^[a-zA-_-Z0-9]+$/i" ng-model="user.userName"
-					id="inputlg" type="text" required="required" ng-click="reserAlert()">
+					id="inputlg" type="text" required="required" ng-click="resetAlert()">
 			</div>
 
 			<div class="col-sm-2">

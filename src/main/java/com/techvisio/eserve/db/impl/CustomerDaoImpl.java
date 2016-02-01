@@ -4,12 +4,16 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.Query;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +26,8 @@ import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.ServiceAgreementHistory;
+import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.factory.UniqueIdentifierGenerator;
@@ -191,4 +197,70 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		return false;
 	}
 
+	public Unit getUnit(Long unitId) {
+		String queryString="FROM Unit u WHERE u.unitId = "+unitId;
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<Unit> units= (List<Unit>)query.getResultList();
+		if(units != null && units.size()>0){
+			return units.get(0);
+		}
+		return null;
+	}
+
+	public void saveServiceAgreementHistory(ServiceAgreementHistory history) {
+		if(history.getAgreementHistoryId()==null){
+			getEntityManager().persist(history);
+		}
+	}	
+
+	@Override
+	public Unit renewService(Long unitId, ServiceRenewalBean renewalBean){
+
+		Unit unit = getUnit(unitId);
+		unit.setServiceCategory(renewalBean.getSeriviceType());
+		unit.setContractStartOnString(renewalBean.getStartDateString());
+
+
+		String startDateString = renewalBean.getStartDateString();
+		Date startDate = null;
+		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
+		if(!StringUtils.isEmpty(startDateString)){
+			startDate = parser2.parseDateTime(startDateString).toDate();
+		}
+
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(startDate); 
+		c.add(Calendar.MONTH, renewalBean.getDuration());
+		Date date = c.getTime();
+
+		c.setTime(date);
+		c.add(Calendar.DATE, -1);
+		Date contractExpireDate = c.getTime();
+		
+		
+		unit.setContractExpireOn(contractExpireDate);
+		saveUnit(unit);
+
+		ServiceAgreementHistory history = new ServiceAgreementHistory();
+		history.setClient(unit.getClient());
+		history.setEndDate(contractExpireDate);
+		history.setServiceType(renewalBean.getSeriviceType());
+		history.setStartDateString(renewalBean.getStartDateString());
+		history.setUnitId(unitId);
+		saveServiceAgreementHistory(history);
+		
+		Unit unitFromDB = getUnit(unitId);
+		return unitFromDB;
+
+	} 
+
+	@Override
+	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId) {
+		String queryString="FROM ServiceAgreementHistory sah WHERE sah.UnitId = "+ unitId;
+		Query query= getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<ServiceAgreementHistory> agreementHistories= (List<ServiceAgreementHistory>)query.getResultList();
+		return agreementHistories;
+	}
 }

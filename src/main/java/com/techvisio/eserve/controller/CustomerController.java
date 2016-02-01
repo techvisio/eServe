@@ -22,6 +22,8 @@ import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.ServiceAgreementHistory;
+import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
@@ -100,4 +102,22 @@ public class CustomerController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
+	@RequestMapping(value ="/renewService/{unitId}", method = RequestMethod.PUT)
+	public ResponseEntity<Response> renewService(@PathVariable Long unitId, @RequestBody ServiceRenewalBean renewalBean) {
+		Response response=new Response();
+		Unit unit = customerService.renewService(unitId, renewalBean);
+		response.setResponseBody(unit);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value ="/servicehistory/{unitId}", method = RequestMethod.GET)
+	public ResponseEntity<Response> getServiceAgreementHistoryForUnit(@PathVariable Long unitId) {
+		Response response=new Response();
+		List<ServiceAgreementHistory> agreementHistories = customerService.getServiceAgreementHistoryForUnit(unitId);
+		response.setResponseBody(agreementHistories);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
 }

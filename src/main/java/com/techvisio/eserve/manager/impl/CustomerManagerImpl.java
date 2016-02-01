@@ -21,6 +21,8 @@ import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.ServiceAgreementHistory;
+import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
@@ -95,5 +97,17 @@ public class CustomerManagerImpl implements CustomerManager {
 		List<Customer> customers = customerDao.getCustomers();
 		return customers;
 	}
-	
+
+	@Override
+	public Unit renewService(Long unitId, ServiceRenewalBean renewalBean) {
+		Unit unit = customerDao.renewService(unitId, renewalBean);
+		return unit;
+	}
+
+	@Override
+	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId) {
+		List<ServiceAgreementHistory> agreementHistories = customerDao.getServiceAgreementHistoryForUnit(unitId);
+		return agreementHistories;
+	}
+
 }

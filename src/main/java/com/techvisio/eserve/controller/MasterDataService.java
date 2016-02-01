@@ -39,7 +39,11 @@ public class MasterDataService {
 		String[] masterEntity=new String[]{
 				AppConstants.STATE,
 				AppConstants.RESOLUTION,
-				AppConstants.ISSUE
+				AppConstants.ISSUE,
+				AppConstants.AGREEMENT_DURATION,
+				AppConstants.UNIT_CATEGORY,
+				AppConstants.CUSTOMER_TYPE,
+				AppConstants.SERVICE_PROVIDER
 		};
 
 		try{

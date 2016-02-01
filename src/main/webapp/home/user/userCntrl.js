@@ -12,7 +12,7 @@ userModule
 		 'masterdataService',
 		 function($scope, $state, $rootScope,userService,user,masterdataService) {
 			 $scope.form={};
-             $scope.isEdit = false;
+			 $scope.isEdit = false;
 			 $scope.customQuestion = false;
 			 $scope.wrongNewPass = false;
 			 $scope.wrongCurrntPass = false;
@@ -31,6 +31,16 @@ userModule
 			 $scope.verifiedUser = {};
 
 			 $scope.allUserRoles=[];
+
+			 $scope.isPrivileged = function(role){
+
+				 var userPrivilege = $rootScope.user.privileges;
+				 var result=false;
+				 angular.forEach(userPrivilege, function(privilege) {
+					 if (privilege.privilege.privilege===role) result= true;
+				 });
+				 return result;		
+			 }
 
 			 if(!user){
 				 userService.getUserprivileges()
@@ -55,9 +65,10 @@ userModule
 				 userService.authenticateUser($scope.form);
 			 }
 
-
-			 $scope.redirectToUser=function(currentUserId){
-				 $state.go('user',{userId:currentUserId});
+			 if($scope.isPrivileged('VIEW_USER') || $scope.isPrivileged('CREATE_USER')){
+				 $scope.redirectToUser=function(currentUserId){
+					 $state.go('user',{userId:currentUserId});
+				 }
 			 }
 
 			 $scope.addAndRemoveRoleFromUser = function(object){
@@ -74,7 +85,7 @@ userModule
 				 $scope.chkStatus = true;
 				 $scope.customQuestion = true;
 			 }
-			 
+
 			 $scope.showCustom = function() {
 
 				 if ($scope.chkStatus) {
@@ -289,6 +300,11 @@ userModule
 
 					 $scope.user.securityQuestion.customQuestion = true;
 				 }
+				 
+				 if(!$scope.chkStatus){
+
+					 $scope.user.securityQuestion.customQuestion = false;
+				 }
 				 userService.saveQuestion($scope.user)
 				 .then(
 						 function(response) {
@@ -342,10 +358,10 @@ userModule
 						 })
 			 };
 
-			 $scope.reserAlert = function(){
+			 $scope.resetAlert = function(){
 				 $scope.alerts=[];	 
 			 }
-			 
+
 			 $scope.updateUser=function(){
 
 				 userService.updateUser($scope.user)
@@ -364,7 +380,7 @@ userModule
 			 }
 
 			 $scope.saveAndUpdateUser = function(){
-				 
+
 				 if(!$scope.user.userId){
 					 $scope.saveUser();
 				 }
@@ -399,52 +415,46 @@ userModule
 //			 }
 //			 })
 //			 }
-			 
 
-				$scope.toggleReadOnly = function(form) {
 
-					if($scope.isEdit){
-						$('#' + form + ' *').attr('readonly',
-								true);
-						$('#' + form + ' input[type="radio"]')
-						.attr('disabled', true);
-						$('#' + form + ' input[type="checkbox"]')
-						.attr('disabled', true);
-						$('#' + form + ' input[type="button"]')
-						.attr('disabled', true);
-						$scope.isEdit = !$scope.isEdit;
-					}
+			 $scope.toggleReadOnly = function(form) {
 
-					else{
-						$('#' + form + ' *').attr('readonly',
-								false);
-						$('#' + form + ' input[type="radio"]')
-						.attr('disabled', false);
-						$('#' + form + ' input[type="checkbox"]')
-						.attr('disabled', false);
-						$('#' + form + ' input[type="button"]')
-						.attr('disabled', false);
-						$scope.isEdit = !$scope.isEdit;
-					}
-				};
+				 if($scope.isEdit){
+					 $('#' + form + ' *').attr('readonly',
+							 true);
+					 $('#' + form + ' select')
+					 .attr('disabled', true);
+					 $('#' + form + ' input[type="radio"]')
+					 .attr('disabled', true);
+					 $('#' + form + ' input[type="checkbox"]')
+					 .attr('disabled', true);
+					 $('#' + form + ' input[type="button"]')
+					 .attr('disabled', true);
+					 $scope.isEdit = !$scope.isEdit;
+				 }
 
-				$scope.toggleReadOnly('USER');
-				
-				$scope.isPrivileged = function(role){
+				 else{
+					 $('#' + form + ' *').attr('readonly',
+							 false);
+					 $('#' + form + ' select')
+					 .attr('disabled', false);
+					 $('#' + form + ' input[type="radio"]')
+					 .attr('disabled', false);
+					 $('#' + form + ' input[type="checkbox"]')
+					 .attr('disabled', false);
+					 $('#' + form + ' input[type="button"]')
+					 .attr('disabled', false);
+					 $scope.isEdit = !$scope.isEdit;
+				 }
+			 };
 
-					var userPrivilege = $rootScope.user.privileges;
-					var result=false;
-					angular.forEach(userPrivilege, function(privilege) {
-						if (privilege.privilege.privilege===role) result= true;
-					});
-					return result;		
-				}
+			 $scope.toggleReadOnly('USER');
 
-				$scope.isCreateOrUpdatePrivileged=function(){
-					return !($scope.isPrivileged('CREATE_USER'));
-				}
+			 $scope.isCreateOrUpdatePrivileged=function(){
+				 return !($scope.isPrivileged('CREATE_USER'));
+			 }
 
-				$scope.isViewPrivileged=function(){
-					return !($scope.isPrivileged('CREATE_USER')) && !($scope.isPrivileged('VIEW_USER')) && !($scope.isPrivileged('USER_ADMINISTRATION'));
-				}
+			 $scope.isViewPrivileged=function(){
+				 return !($scope.isPrivileged('CREATE_USER')) && !($scope.isPrivileged('VIEW_USER')) && !($scope.isPrivileged('USER_ADMINISTRATION'));
+			 }
 		 } ]);

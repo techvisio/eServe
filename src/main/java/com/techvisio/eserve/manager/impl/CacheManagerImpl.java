@@ -10,13 +10,17 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.AgreementDuration;
+import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
 import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
 import com.techvisio.eserve.beans.Resolution;
+import com.techvisio.eserve.beans.ServiceProvider;
 import com.techvisio.eserve.beans.State;
+import com.techvisio.eserve.beans.UnitCategory;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.impl.CacheDaoImpl;
 import com.techvisio.eserve.manager.CacheManager;
@@ -52,6 +56,10 @@ public class CacheManagerImpl implements CacheManager {
 	private static Map<Long, Designation> designationMap = new HashMap<Long, Designation>();
 	private static Map<Long, Resolution> resolutionMap = new HashMap<Long, Resolution>();
 	private static Map<Long, Issue> issueMap = new HashMap<Long, Issue>();
+	private static Map<Long, AgreementDuration> agreementDurationMap = new HashMap<Long, AgreementDuration>();
+	private static Map<Long, UnitCategory> unitCategoryMap = new HashMap<Long, UnitCategory>();
+	private static Map<Long, CustomerType> customerTypeMap = new HashMap<Long, CustomerType>();
+	private static Map<Long, ServiceProvider> serviceProviderMap  = new HashMap<Long, ServiceProvider>();
 	
 	public  List<State> getStates(Long clientId) {
 		Map<String, List> clientMap = clientEntityListMap.get(clientId);
@@ -128,6 +136,50 @@ public class CacheManagerImpl implements CacheManager {
 		return new ArrayList<Issue>();
 	}
 	
+	public  List<AgreementDuration> getAgreementDurations(Long clientId) {
+		Map<String, List> clientMap = clientEntityListMap.get(clientId);
+		if (clientMap != null){
+			List data = clientMap.get(AppConstants.AGREEMENT_DURATION); 
+			if(data != null){
+				return (List<AgreementDuration>)data;
+			}
+		}
+		return new ArrayList<AgreementDuration>();
+	}
+
+	public  List<UnitCategory> getUnitCategories(Long clientId) {
+		Map<String, List> clientMap = clientEntityListMap.get(clientId);
+		if (clientMap != null){
+			List data = clientMap.get(AppConstants.UNIT_CATEGORY); 
+			if(data != null){
+				return (List<UnitCategory>)data;
+			}
+		}
+		return new ArrayList<UnitCategory>();
+	}
+
+	public  List<CustomerType> getCustomerTypes(Long clientId) {
+		Map<String, List> clientMap = clientEntityListMap.get(clientId);
+		if (clientMap != null){
+			List data = clientMap.get(AppConstants.CUSTOMER_TYPE); 
+			if(data != null){
+				return (List<CustomerType>)data;
+			}
+		}
+		return new ArrayList<CustomerType>();
+	}
+
+	public  List<ServiceProvider> getServiceProviders(Long clientId) {
+		Map<String, List> clientMap = clientEntityListMap.get(clientId);
+		if (clientMap != null){
+			List data = clientMap.get(AppConstants.SERVICE_PROVIDER); 
+			if(data != null){
+				return (List<ServiceProvider>)data;
+			}
+		}
+		return new ArrayList<ServiceProvider>();
+	}
+	
 	public void builtEntityListCache(){
 		List<State> states=new ArrayList<State>();
 		logger.info("{} : built entity list cache work for get state ",this.getClass().getName());
@@ -153,6 +205,22 @@ public class CacheManagerImpl implements CacheManager {
 		List<Issue> issues =new ArrayList<Issue>();
 		issues=cacheDao.getIssues();
 		entityListMap.put(AppConstants.ISSUE, issues);
+		
+		List<AgreementDuration> agreementDurations =new ArrayList<AgreementDuration>();
+		agreementDurations=cacheDao.getAgreementDuration();
+		entityListMap.put(AppConstants.AGREEMENT_DURATION, agreementDurations);
+
+		List<UnitCategory> unitCategories =new ArrayList<UnitCategory>();
+		unitCategories=cacheDao.getUnitCategories();
+		entityListMap.put(AppConstants.UNIT_CATEGORY, unitCategories);
+
+		List<CustomerType> customerTypes =new ArrayList<CustomerType>();
+		customerTypes=cacheDao.getCustomerTypes();
+		entityListMap.put(AppConstants.CUSTOMER_TYPE, customerTypes);
+		
+		List<ServiceProvider> serviceProviders =new ArrayList<ServiceProvider>();
+		serviceProviders=cacheDao.getServiceProviders();
+		entityListMap.put(AppConstants.SERVICE_PROVIDER, serviceProviders);
 
 		buildEntityMap();
 
@@ -199,6 +267,31 @@ public class CacheManagerImpl implements CacheManager {
 			issues=cacheDao.getIssues();
 			entityListMap.put(AppConstants.ISSUE, issues);
 			break;
+			
+		case AppConstants.AGREEMENT_DURATION:
+			List<AgreementDuration> agreementDurations =new ArrayList<AgreementDuration>();
+			agreementDurations=cacheDao.getAgreementDuration();
+			entityListMap.put(AppConstants.AGREEMENT_DURATION, agreementDurations);
+			break;
+			
+		case AppConstants.UNIT_CATEGORY:
+			List<UnitCategory> unitCategories =new ArrayList<UnitCategory>();
+			unitCategories=cacheDao.getUnitCategories();
+			entityListMap.put(AppConstants.UNIT_CATEGORY, unitCategories);
+			break;
+			
+		case AppConstants.CUSTOMER_TYPE:
+			List<CustomerType> customerTypes =new ArrayList<CustomerType>();
+			customerTypes=cacheDao.getCustomerTypes();
+			entityListMap.put(AppConstants.CUSTOMER_TYPE, customerTypes);
+			break;
+			
+		case AppConstants.SERVICE_PROVIDER:
+			List<ServiceProvider> serviceProviders =new ArrayList<ServiceProvider>();
+			serviceProviders=cacheDao.getServiceProviders();
+			entityListMap.put(AppConstants.SERVICE_PROVIDER, serviceProviders);
+			break;
+			
 		default:
 
 		}
@@ -352,6 +445,99 @@ public class CacheManagerImpl implements CacheManager {
 				data.add(issue);
 			}
 		}
+
+		List<AgreementDuration> agreementDurations = cacheDao.getAgreementDuration();
+		if(agreementDurations!=null){
+			for(AgreementDuration duration : agreementDurations){
+
+				Long clientId = duration.getClient().getClientId();
+
+				Map<String, List> subMap = clientEntityListMap.get(clientId);
+				if(subMap==null){
+
+					subMap = new HashMap<String, List>();
+					clientEntityListMap.put(clientId, subMap);
+				}
+
+				List data = subMap.get(AppConstants.AGREEMENT_DURATION);
+
+				if(data==null){
+					data = new ArrayList<Issue>();
+					subMap.put(AppConstants.AGREEMENT_DURATION,data);
+				}
+				data.add(duration);
+			}
+		}
+
+		List<UnitCategory> unitCategories = cacheDao.getUnitCategories();
+		if(unitCategories!=null){
+			for(UnitCategory unitCategory : unitCategories){
+
+				Long clientId = unitCategory.getClient().getClientId();
+
+				Map<String, List> subMap = clientEntityListMap.get(clientId);
+				if(subMap==null){
+
+					subMap = new HashMap<String, List>();
+					clientEntityListMap.put(clientId, subMap);
+				}
+
+				List data = subMap.get(AppConstants.UNIT_CATEGORY);
+
+				if(data==null){
+					data = new ArrayList<UnitCategory>();
+					subMap.put(AppConstants.UNIT_CATEGORY,data);
+				}
+				data.add(unitCategory);
+			}
+		}
+		
+		List<CustomerType> customerTypes = cacheDao.getCustomerTypes();
+		if(customerTypes!=null){
+			for(CustomerType customerType: customerTypes){
+
+				Long clientId = customerType.getClient().getClientId();
+
+				Map<String, List> subMap = clientEntityListMap.get(clientId);
+				if(subMap==null){
+
+					subMap = new HashMap<String, List>();
+					clientEntityListMap.put(clientId, subMap);
+				}
+
+				List data = subMap.get(AppConstants.CUSTOMER_TYPE);
+
+				if(data==null){
+					data = new ArrayList<CustomerType>();
+					subMap.put(AppConstants.CUSTOMER_TYPE,data);
+				}
+				data.add(customerType);
+			}
+		}
+		
+		List<ServiceProvider> serviceProviders = cacheDao.getServiceProviders();
+		if(serviceProviders!=null){
+			for(ServiceProvider serviceProvider: serviceProviders){
+
+				Long clientId = serviceProvider.getClient().getClientId();
+
+				Map<String, List> subMap = clientEntityListMap.get(clientId);
+				if(subMap==null){
+
+					subMap = new HashMap<String, List>();
+					clientEntityListMap.put(clientId, subMap);
+				}
+
+				List data = subMap.get(AppConstants.SERVICE_PROVIDER);
+
+				if(data==null){
+					data = new ArrayList<ServiceProvider>();
+					subMap.put(AppConstants.SERVICE_PROVIDER,data);
+				}
+				data.add(serviceProvider);
+			}
+		}
+		
 	}
 
 	@Override

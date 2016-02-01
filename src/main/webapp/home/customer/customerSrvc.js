@@ -10,7 +10,24 @@ customerModule.service('customerService', function($http, $q) {
 		getUnit : getUnit,
 		getCustomerByCriteria : getCustomerByCriteria,
 		getAllComplaints : getAllComplaints,
+		renewService : renewService,
+		getServiceAgreementHistoryForUnit : getServiceAgreementHistoryForUnit
 	});
+
+	
+	
+	function getServiceAgreementHistoryForUnit(unitId){
+		console.log('get Agreement History Data in service');
+
+		var request = $http({
+			method : "get",
+			url : "../service/customer/servicehistory/" + unitId,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}
 
 	
 	function getCustomers(){
@@ -88,6 +105,18 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
+	function renewService(unitId, serviceRenewalBean){
+		console.log('renewService called in service');
+		var request = $http({
+			method : "put",
+			url : "../service/customer/renewService/"+unitId,
+			params : "",
+			data: serviceRenewalBean
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+	
 	function getCustomerByCriteria(searchCriteria){
 
 		console.log('getting customer by search criteria');

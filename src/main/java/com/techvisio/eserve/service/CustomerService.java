@@ -15,6 +15,8 @@ import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.ServiceAgreementHistory;
+import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
 
 @Component
@@ -30,5 +32,6 @@ public interface CustomerService {
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
 	public Map<String, Object> checkCustomerExistOrNot(
 			CustomerComplaint customerComplaint);
-
+	public Unit renewService(Long unitId, ServiceRenewalBean renewalBean);
+	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
 }

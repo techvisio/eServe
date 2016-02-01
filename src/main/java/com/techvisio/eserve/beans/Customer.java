@@ -33,11 +33,12 @@ public class Customer extends BasicEntity{
 	private String customerCode;
 	@Column(name="EMAIL_ID")
 	private String emailId;
-	@Column(name="CUSTOMER_TYPE")
-	private String customerType;
 	@OneToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="ADDRESS_ID")
 	private Address address = new Address();
+	@OneToOne
+	@JoinColumn(name="CUSTOMER_TYPE_ID")
+	private CustomerType customerType;
 	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER )
 	@JoinColumn(name="CUSTOMER_ID")
 	private List<Unit> units=new ArrayList<Unit>();
@@ -73,10 +74,11 @@ public class Customer extends BasicEntity{
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
-	public String getCustomerType() {
+	
+	public CustomerType getCustomerType() {
 		return customerType;
 	}
-	public void setCustomerType(String customerType) {
+	public void setCustomerType(CustomerType customerType) {
 		this.customerType = customerType;
 	}
 	public Address getAddress() {

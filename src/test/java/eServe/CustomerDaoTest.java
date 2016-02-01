@@ -19,18 +19,18 @@ public class CustomerDaoTest {
 	@Autowired
 	CustomerDao dao;	
 
-	@Test
-	public void getCustomer(){
-
-		Customer customer = dao.getCustomerBasicInfo(1L);
-		System.out.println("Data is :"+customer);
-	}
+//	@Test
+//	public void getCustomer(){
+//
+//		Customer customer = dao.getCustomerBasicInfo(1L);
+//		System.out.println("Data is :"+customer);
+//	}
 	
-	@Test
-	public void getUnit(){
-
-		Unit unit = dao.getUnitBasicInfo(1L);
-		System.out.println("Data is :"+unit);
-	}
+//	@Test
+//	public void getUnit(){
+//
+//		Unit unit = dao.getUnitBasicInfo(1L);
+//		System.out.println("Data is :"+unit);
+//	}
 
 }

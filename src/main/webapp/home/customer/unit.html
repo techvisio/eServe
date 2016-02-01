@@ -1,164 +1,166 @@
-
-
-<div ng-init="init(); toggleReadOnly('UNIT')">
+<div ng-init="init()">
 	<div>
 		<h3 class="new-event-subtitle">UNIT INFORMATION</h3>
 	</div>
 	</br>
 	<div ng-repeat="unit in customer.units">
 
-		<accordion><accordion-group heading="Unit {{$index+1}}">
-		<accordion-heading>
-
-		<div class="row">
-			<div class="col-sm-4">
-				<label> Unit {{$index+1}} 
-			</div>
-			<div class="child-right">
-				<button type="button" class="btn btn-primary btn-sm"
-					ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)"
-					ng-show="unit.unitId"
-					ng-disabled="(!isPrivileged('CREATE_COMPLAINT'))">Create
-					Complaint</button>
-				</label>
-			</div>
-			<div class="child-right">
-				<button type="button" class="btn btn-primary btn-sm"
-					ng-click="addUnit()" ng-disabled="isCreateOrUpdatePrivileged()">Add
-					Unit</button>
-			</div>
+		<div>
+			<h3 class="custom-page-header">
+				<i ng-class="{' glyphicon glyphicon-plus ':isCollapsed ,' glyphicon glyphicon-minus ':!isCollapsed}" 	
+				ng-click="isCollapsed=!isCollapsed"></i> Unit {{$index+1}}
+				<div class="child-right">
+					<button type="button" class="btn btn-primary btn-sm"
+						ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)"
+						ng-show="unit.unitId"
+						ng-disabled="(!isPrivileged('CREATE_COMPLAINT'))">Create
+						Complaint</button>
+					</label>
+				</div>
+				<div class="child-right">
+					<button type="button" class="btn btn-primary btn-sm"
+						ng-click="addUnit()" ng-disabled="isCreateOrUpdatePrivileged()">Add
+						Unit</button>
+				</div>
+			</h3>
 		</div>
-		</accordion-heading>
 
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Unit Code</label>
+		<div collapse="isCollapsed">
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">Unit Code</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" id="inputlg" type="text"
+						ng-model="unit.unitCode" disabled>
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Service Category</label>
+				</div>
+				<div class="col-sm-4">
+					<select class="form-control" ng-model="unit.serviceCategory"
+						disabled>
+						<option>Warranty</option>
+						<option>AMC</option>
+						<option>Paid</option>
+					</select>
+				</div>
 			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.unitCode" disabled>
+			<div class="row">
+
+				<div class="col-sm-2">
+					<label for="inputlg">Service Party</label>
+				</div>
+				<div class="col-sm-4">
+					<select ng-model="unit.serviceProvider.serviceProviderId"
+						class="form-control"
+						ng-options="item.serviceProviderId*1 as item.serviceProvider for item in serverModelData.SERVICE_PROVIDER"
+						required>
+					</select>
+				</div>
+				<div class="col-sm-2">
+					<label for="inputlg">Unit Category</label>
+				</div>
+				<div class="col-sm-4">
+					<select ng-model="unit.unitCategory.unitCategoryId"
+						class="form-control"
+						ng-options="item.unitCategoryId*1 as item.unitType for item in serverModelData.UNIT_CATEGORY"
+						required>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="col-sm-2">
+					<label for="inputlg">External Id</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" id="inputlg" type="text"
+						required ng-model="unit.externalId">
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg"> Contract Start On</label>
+				</div>
+				<div class="col-sm-4">
+					<div class="date-input">
+						<input type="text" class="form-control datepicker"
+							name="requestDueDate" ng-model="unit.contractStartOnString"
+							datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate" disabled
+							ng-click="startDate = !startDate; $event.stopPropagation();"
+							show-button-bar="false">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="col-sm-2">
+					<label for="inputlg"> Contract Expire On</label>
+				</div>
+				<div class="col-sm-4">
+					<div class="date-input">
+						<input type="text" class="form-control datepicker"
+							name="requestDueDate" ng-model="unit.contractExpireOnString"
+							datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate"
+							disabled
+							ng-click="expireDate = !expireDate; $event.stopPropagation();"
+							show-button-bar="false">
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="tab-separator">
+				<tabset justified="true"> <tab heading="SITE ADDRESS">
+				<div ng-include src="'../home/customer/siteAddress.html'"></div>
+				</tab> <tab heading="EQUIPMENTS">
+				<div ng-include src="'../home/customer/equipment.html'"></div>
+				</tab> <tab heading="SERVICE HISTORY"
+					ng-click="getServiceAgreementHistoryForUnit(unit.unitId)"
+					disabled="!unit.unitId">
+				<div ng-include src="'../home/customer/serviceHistory.html'"></div>
+				</tab> <tab heading="COMPLAINTS"
+					ng-click="getAllComplaintsForUnit(unit.unitId)" disabled="!unit.unitId">
+				<div ng-include src="'../home/customer/customerComplaint.html'"></div>
+				</tab> <tab heading="PMS" disabled="!unit.unitId">
+				<div ng-include src=" "></div>
+				</tab> <tab heading="CALL" disabled="!unit.unitId">
+				<div ng-include src=" "></div>
+				</tab> </tabset>
 			</div>
 
-			<div class="col-sm-2">
-				<label for="inputlg">Service Category</label>
-			</div>
-			<div class="col-sm-4">
-				<select class="form-control" ng-model="unit.serviceCategory"
-					required>
-					<option>Warranty</option>
-					<option>AMC</option>
-					<option>Paid</option>
-				</select>
-			</div>
-		</div>
-		<div class="row">
 
-			<div class="col-sm-2">
-				<label for="inputlg">Service Party</label>
-			</div>
-			<div class="col-sm-4">
-				<select class="form-control" ng-model="unit.serviceParty" required>
-					<option>ANS</option>
-					<option>BLS</option>
-				</select>
-			</div>
-			<div class="col-sm-2">
-				<label for="inputlg">Unit Category</label>
-			</div>
-			<div class="col-sm-4">
-				<select class="form-control" ng-model="unit.unitCategory" required>
-					<option>Icecream</option>
-					<option>Blood</option>
-					<option>Medicine</option>
-				</select>
-			</div>
-		</div>
-		<div class="row">
+			<div class="row">
 
-			<div class="col-sm-2">
-				<label for="inputlg">External Id</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					required ng-model="unit.externalId">
-			</div>
+				<div class="col-sm-7"></div>
+				<div class="col-sm-2 child-right">
+					<button type="button" class="btn btn-primary"
+						ng-click="showUnitExpireModal(unit)" ng-show="unit.unitId"
+						ng-disabled="isCreateOrUpdatePrivileged()">Renew Service</button>
+				</div>
+				<div class="col-sm-1">
+					<button type="button" class="btn btn-primary"
+						ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && isEdit"
+						ng-disabled="isCreateOrUpdatePrivileged()">Edit</button>
+				</div>
+				<div class="col-sm-1">
+					<button type="button" class="btn btn-primary"
+						ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && !isEdit">Cancel</button>
+				</div>
+				<div class="col-sm-1 child-right">
+					<button type="button" class="btn btn-primary"
+						ng-click="saveUnit(unit)" ng-show="!isNew"
+						ng-disabled="isCreateOrUpdatePrivileged()">Save Unit</button>
+				</div>
 
-			<div class="col-sm-2">
-				<label for="inputlg"> Contract Start On</label>
 			</div>
-			<div class="col-sm-4">
-				<div class="date-input">
-					<input type="text" class="form-control datepicker"
-						name="requestDueDate" ng-model="unit.contractStartOnString"
-						datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate" required
-						ng-click="startDate = !startDate; $event.stopPropagation();"
-						show-button-bar="false">
+			<div class="row">
+				<div class="col-sm-2">
+					<button class="btn btn-primary" ng-click="removeUnit($index)"
+						ng-show="$index>0" ng-disabled="isCreateOrUpdatePrivileged()">Remove
+						Unit</button>
 				</div>
 			</div>
 		</div>
-		<div class="row">
-
-			<div class="col-sm-2">
-				<label for="inputlg"> Contract Expire On</label>
-			</div>
-			<div class="col-sm-4">
-				<div class="date-input">
-					<input type="text" class="form-control datepicker"
-						name="requestDueDate" ng-model="unit.contractExpireOnString"
-						datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate" required
-						ng-click="expireDate = !expireDate; $event.stopPropagation();"
-						show-button-bar="false">
-				</div>
-			</div>
-		</div>
-		<hr>
-		<div class="tab-separator">
-			<tabset justified="true">
-			<tab heading="SITE ADDRESS">
-			<div ng-include src="'../home/customer/siteAddress.html'"></div>
-			</tab>
-			<tab heading="EQUIPMENTS">
-			<div ng-include src="'../home/customer/equipment.html'"></div>
-			</tab>
-			<tab heading="COMPLAINTS" ng-click="getAllComplaintsForUnit(unit.unitId)" disabled="isNew">
-			<div ng-include src="'../home/customer/customerComplaint.html'"></div>
-			</tab> <tab heading="AMC HISTORY" disabled="isNew">
-			<div ng-include src=" "></div>
-			</tab> <tab heading="PMS" disabled="isNew">
-			<div ng-include src=" "></div>
-			</tab> <tab heading="CALL" disabled="isNew">
-			<div ng-include src=" "></div>
-			</tab> </tabset>
-		</div>
-
-		
-		<div class="row">
-
-			<div class="col-sm-8"></div>
-
-			<div class="col-sm-1">
-				<button type="button" class="btn btn-primary"
-					ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && isEdit"
-					ng-disabled="isCreateOrUpdatePrivileged()">Edit</button>
-			</div>
-			<div class="col-sm-1">
-				<button type="button" class="btn btn-primary"
-					ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && !isEdit">Cancel</button>
-			</div>
-			<div class="col-sm-2 child-right">
-				<button type="button" class="btn btn-primary"
-					ng-click="saveUnit(unit)" ng-show="!isNew"
-					ng-disabled="isCreateOrUpdatePrivileged()">Save Unit</button>
-			</div>
-
-		</div>
-		<div class="row">
-			<div class="col-sm-2">
-				<button class="btn btn-primary" ng-click="removeUnit($index)"
-					ng-show="$index>0" ng-disabled="isCreateOrUpdatePrivileged()">Remove
-					Unit</button>
-			</div>
-		</div>
-		</accordion-group> </accordion>
-</div>
+	</div>
 </div>
