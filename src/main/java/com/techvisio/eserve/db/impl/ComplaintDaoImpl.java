@@ -103,7 +103,7 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 
 	@Override
 	public Unit getUnitBasicInfo(Long unitId) {
-		String queryString="SELECT UNIT_ID, CREATED_BY, CREATED_ON, UPDATED_BY, UPDATED_ON, IS_AGREEMENT_APPROVED, CUSTOMER_ID, EXTERNAL_ID, HEIGHT, LENGTH, SERVICE_CATEGORY, UNIT_CATEGORY_ID, SERVICE_PROVIDER_ID, WIDTH, Client_Id, ADDRESS_ID, UNIT_CODE, CONTRACT_START_ON, CONTRACT_EXPIRE_ON FROM tb_unit_detail where UNIT_ID = "+unitId ;
+		String queryString="SELECT UNIT_ID, CREATED_BY, CREATED_ON, UPDATED_BY, UPDATED_ON, CUSTOMER_ID, ASSET_NO, MACHINE_SERIAL_NO,MODEL_NO, SERVICE_CATEGORY, SERVICE_AGREEMENT_ID, VERSION_ID, UNIT_CATEGORY_ID, SERVICE_PROVIDER_ID, Client_Id, ADDRESS_ID, UNIT_CODE FROM tb_unit_detail where UNIT_ID = "+unitId ;
 		Query query=getEntityManager().createNativeQuery(queryString, Unit.class);
 		List<Unit> units= (List<Unit>)query.getResultList();
 		if(units != null && units.size()>0){
@@ -221,7 +221,7 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 			for(Unit unit : units ){
 
 				SearchComplaintUnit complaintUnit = new SearchComplaintUnit();
-				complaintUnit.setExternalId(unit.getExternalId());
+				complaintUnit.setExternalId(unit.getAssetNo());
 				complaintUnit.setServiceCategory(unit.getServiceCategory());
 				complaintUnit.setServiceParty(unit.getServiceProvider().getServiceProvider());
 				complaintUnit.setUnitCategory(unit.getUnitCategory().getUnitType());
@@ -303,7 +303,7 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 			for(Unit unit : customer.getUnits()){
 
 				SearchComplaintUnit complaintUnit = new SearchComplaintUnit();
-				complaintUnit.setExternalId(unit.getExternalId());
+				complaintUnit.setExternalId(unit.getAssetNo());
 				complaintUnit.setServiceCategory(unit.getServiceCategory());
 				complaintUnit.setServiceParty(unit.getServiceProvider().getServiceProvider());
 				complaintUnit.setUnitCategory(unit.getUnitCategory().getUnitType());

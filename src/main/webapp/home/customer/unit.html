@@ -7,8 +7,8 @@
 
 		<div>
 			<h3 class="custom-page-header">
-				<i ng-class="{' glyphicon glyphicon-plus ':isCollapsed ,' glyphicon glyphicon-minus ':!isCollapsed}" 	
-				ng-click="isCollapsed=!isCollapsed"></i> Unit {{$index+1}}
+				<i class="fa fa-plus" ng-class="{'fa-minus':!isCollapsed}"
+					ng-click="isCollapsed=!isCollapsed"></i> Unit {{$index+1}}
 				<div class="child-right">
 					<button type="button" class="btn btn-primary btn-sm"
 						ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)"
@@ -36,7 +36,7 @@
 				</div>
 
 				<div class="col-sm-2">
-					<label for="inputlg">Service Category</label>
+					<label for="inputlg">Service Type</label>
 				</div>
 				<div class="col-sm-4">
 					<select class="form-control" ng-model="unit.serviceCategory"
@@ -73,12 +73,44 @@
 			<div class="row">
 
 				<div class="col-sm-2">
-					<label for="inputlg">External Id</label>
+					<label for="inputlg">model No</label>
 				</div>
 				<div class="col-sm-4">
 					<input class="form-control input-sm" id="inputlg" type="text"
-						required ng-model="unit.externalId">
+						required ng-model="unit.modelNo">
 				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Machine Serial No</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" id="inputlg" type="text"
+						required ng-model="unit.machineSerialNo">
+				</div>
+			</div>
+
+			<div class="row">
+
+				<div class="col-sm-2">
+					<label for="inputlg">Asset No</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" id="inputlg" type="text"
+						required ng-model="unit.assetNo">
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Agreement Duration</label>
+				</div>
+				<div class="col-sm-4">
+					<select ng-model="unit.serviceAgreement.agreementDuration.agreementDurationId"
+					    class="form-control"
+						ng-options="item.agreementDurationId*1 as item.displayValue for item in serverModelData.AGREEMENT_DURATION">
+					</select>
+				</div>
+
+			</div>
+			<div class="row">
 
 				<div class="col-sm-2">
 					<label for="inputlg"> Contract Start On</label>
@@ -86,14 +118,13 @@
 				<div class="col-sm-4">
 					<div class="date-input">
 						<input type="text" class="form-control datepicker"
-							name="requestDueDate" ng-model="unit.contractStartOnString"
-							datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate" disabled
-							ng-click="startDate = !startDate; $event.stopPropagation();"
+							name="requestDueDate"
+							ng-model="unit.serviceAgreement.contractStartOnString"
+							datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate" ng-click="startDate = !startDate; $event.stopPropagation();"
 							show-button-bar="false">
 					</div>
 				</div>
-			</div>
-			<div class="row">
+
 
 				<div class="col-sm-2">
 					<label for="inputlg"> Contract Expire On</label>
@@ -101,7 +132,8 @@
 				<div class="col-sm-4">
 					<div class="date-input">
 						<input type="text" class="form-control datepicker"
-							name="requestDueDate" ng-model="unit.contractExpireOnString"
+							name="requestDueDate"
+							ng-model="unit.serviceAgreement.contractExpireOnString"
 							datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate"
 							disabled
 							ng-click="expireDate = !expireDate; $event.stopPropagation();"
@@ -120,7 +152,8 @@
 					disabled="!unit.unitId">
 				<div ng-include src="'../home/customer/serviceHistory.html'"></div>
 				</tab> <tab heading="COMPLAINTS"
-					ng-click="getAllComplaintsForUnit(unit.unitId)" disabled="!unit.unitId">
+					ng-click="getAllComplaintsForUnit(unit.unitId)"
+					disabled="!unit.unitId">
 				<div ng-include src="'../home/customer/customerComplaint.html'"></div>
 				</tab> <tab heading="PMS" disabled="!unit.unitId">
 				<div ng-include src=" "></div>

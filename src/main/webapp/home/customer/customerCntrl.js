@@ -405,7 +405,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			templateUrl: 'customer/unitExpiration.html',
 			controller: function ($scope, customerService, masterdataService) {
 
-				var unitForServiceRenewal = unit
+				$scope.serviceRenewalBean = unit
 
 				$scope.getCustomer = function(){
 					customerService.getCustomer(unit.customerId)
@@ -419,7 +419,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				}
 
 				$scope.renewService = function(){
-					customerService.renewService(unit.unitId,$scope.serviceRenewalBean)
+					customerService.renewService($scope.serviceRenewalBean)
 					.then(function(response) {
 						console.log('service renewed in controller : ');
 						console.log(response);

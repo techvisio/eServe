@@ -45,6 +45,11 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
 		id="entityManagerFactory">
 		<property name="dataSource" ref="dataSource" />
+		<property name="jpaVendorAdapter">
+        <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" >
+            <property name="showSql" value="true"/>
+        </bean>
+    </property>
 	</bean>
  
 <!-- 	<bean id="entityManager" -->

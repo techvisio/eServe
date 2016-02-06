@@ -227,7 +227,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 					$scope.alerts=[];
 					$scope.customerComplaint = response.complaint;
 					alert("Complaint Saved Successfully");
-					$scope.redirectToComplaintScreen($scope.customerComplaint.complaintId);
+					$state.go('complaintScreen',{complaintId:$scope.customerComplaint.complaintId});
 				}
 
 				if(!success){

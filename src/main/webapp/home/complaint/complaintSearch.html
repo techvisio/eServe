@@ -54,7 +54,7 @@
 		ng-click="getSearchUnitByCustomerId(customer,customer.customerId)">
 		
 		<div class="col-sm-2">
-			<i ng-class="{' glyphicon glyphicon-plus ':isUnitCollapsed ,' glyphicon glyphicon-minus ':!isUnitCollapsed}" ng-click="isUnitCollapsed = !isUnitCollapsed"></i>
+			<i class="fa fa-plus" ng-class="{'fa-minus':!isUnitCollapsed}" ng-click="isUnitCollapsed = !isUnitCollapsed"></i>
 			<a herf="#"
 				ng-click="redirectToCustomerDtlScreen(customer.customerId)">{{customer.customerCode}}
 			</a>
@@ -64,7 +64,7 @@
 		<div class="col-sm-2">{{customer.emailId}}</div>
 	</div>
 
-	<div class="row" ng-show="!isUnitCollapsed">
+	<div class="row padding-unitrow" ng-show="!isUnitCollapsed">
 		<div class="col-sm-2">
 			<label for="inputlg">Unit Code</label>
 		</div>
@@ -90,8 +90,8 @@
 		ng-click="getComplaintByUnitId(unit,unit.unitId)"
 		collapse="isUnitCollapsed">
 
-		<div class="row">
-			<div class="col-sm-2"><i ng-class= "{'glyphicon glyphicon-plus':isComplaintCollapsed ,'glyphicon glyphicon-minus':!isComplaintCollapsed}" ng-click="isComplaintCollapsed = !isComplaintCollapsed"></i>{{unit.unitCode}}</div>
+		<div class="row padding-unitrow">
+			<div class="col-sm-2"><i class="fa fa-plus" ng-class= "{'fa-minus':!isComplaintCollapsed}" ng-click="isComplaintCollapsed = !isComplaintCollapsed"></i>{{unit.unitCode}}</div>
 			<div class="col-sm-2">{{unit.serviceCategory}}</div>
 			<div class="col-sm-2">{{unit.serviceParty}}</div>
 			<div class="col-sm-2">{{unit.unitCategory}}</div>
@@ -103,7 +103,7 @@
 				</label>
 			</div>
 		</div>
-		<div class="row" ng-show="!isComplaintCollapsed && unit.complaints.length>0">
+		<div class="row padding-complaintrow" ng-show="!isComplaintCollapsed && unit.complaints.length>0">
 			<div class="col-sm-2">
 				<label for="inputlg">Complaint Code</label>
 			</div>
@@ -125,7 +125,7 @@
 			</div>
 		</div>
 
-		<div class="row" ng-repeat="complaint in unit.complaints"
+		<div class="row padding-complaintrow" ng-repeat="complaint in unit.complaints"
 			collapse="isComplaintCollapsed">
 			<div class="col-sm-2"><a herf="#"
 				ng-click="redirectToComplaintScreen(complaint.complaintId)">{{complaint.complaintCode}}

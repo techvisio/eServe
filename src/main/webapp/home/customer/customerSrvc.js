@@ -105,13 +105,13 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function renewService(unitId, serviceRenewalBean){
+	function renewService(unit){
 		console.log('renewService called in service');
 		var request = $http({
 			method : "put",
-			url : "../service/customer/renewService/"+unitId,
+			url : "../service/customer/renewService",
 			params : "",
-			data: serviceRenewalBean
+			data: unit
 
 		});
 		return (request.then(handleSuccess, handleError));

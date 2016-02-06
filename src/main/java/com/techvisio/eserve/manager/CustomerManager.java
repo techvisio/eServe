@@ -28,6 +28,7 @@ public interface CustomerManager {
 	public void saveUnit(Unit unit);
 	public List<Unit> getUnits(Long customerId);
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
-	public Unit renewService(Long unitId, ServiceRenewalBean renewalBean);
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
+	void renewService(Unit unit);
+	Unit getUnit(Long unitId);
 }

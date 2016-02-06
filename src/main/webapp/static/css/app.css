@@ -13118,6 +13118,16 @@ input.ng-invalid{
 	border-color : red;
 }
 
+.padding-unitrow
+{
+	padding-left:15px;
+}
+
+.padding-complaintrow
+{
+	padding-left:30px;
+}
+
 /* Base for label styling */
 [type="checkbox"]:not(:checked),
 [type="checkbox"]:checked {

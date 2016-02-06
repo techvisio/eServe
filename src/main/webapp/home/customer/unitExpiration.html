@@ -9,7 +9,7 @@
 			<label for="inputlg">Service Category</label>
 		</div>
 		<div class="col-sm-4">
-			<select class="form-control" ng-model="serviceRenewalBean.seriviceType" required>
+			<select class="form-control" ng-model="serviceRenewalBean.serviceCategory" required>
 				<option>Warranty</option>
 				<option>AMC</option>
 				<option>Paid</option>
@@ -20,9 +20,9 @@
 		</div>
 		<div class="col-sm-4">
 		
-		<select ng-model="serviceRenewalBean.duration"
+		<select ng-model="serviceRenewalBean.serviceAgreement.agreementDuration.agreementDurationId"
 						class="form-control"
-						ng-options="item.duration*1 as item.displayValue  for item in serverModelData.AGREEMENT_DURATION" required>
+						ng-options="item.agreementDurationId*1 as item.displayValue  for item in serverModelData.AGREEMENT_DURATION" required>
 					</select>
 		</div>
 	</div>
@@ -33,15 +33,19 @@
 				<div class="col-sm-4">
 					<div class="date-input">
 						<input type="text" class="form-control datepicker"
-							name="requestDueDate" ng-model="serviceRenewalBean.startDateString"
+							name="requestDueDate" ng-model="serviceRenewalBean.serviceAgreement.contractStartOnString"
 							datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
 							ng-click="startDate = !startDate; $event.stopPropagation();"
 							show-button-bar="false">
 					</div>
 					</div>
-					
-					<div class="col-sm-4"> </div>
-	<div class="col-sm-2">
-	<button class="btn btn-primary" ng-click="renewService(); getCustomer();">Save</button>
+					<div class="col-sm-2">
+					<label for="inputlg">Agreement Amount</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" id="inputlg" type="text"
+						ng-model="serviceRenewalBean.serviceAgreement.serviceAgreementFinance.agreementAmount">
+				</div>
+	<button class="btn btn-primary child-right" ng-click="renewService(); getCustomer();">Save</button>
 	</div>
 </div>

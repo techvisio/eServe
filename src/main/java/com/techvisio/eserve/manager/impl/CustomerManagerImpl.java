@@ -99,15 +99,20 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 
 	@Override
-	public Unit renewService(Long unitId, ServiceRenewalBean renewalBean) {
-		Unit unit = customerDao.renewService(unitId, renewalBean);
-		return unit;
+	public void renewService(Unit unit){
+		 customerDao.renewService(unit);
 	}
 
 	@Override
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId) {
 		List<ServiceAgreementHistory> agreementHistories = customerDao.getServiceAgreementHistoryForUnit(unitId);
 		return agreementHistories;
+	}
+
+	@Override
+	public Unit getUnit(Long unitId) {
+		Unit unit = customerDao.getUnit(unitId);
+		return unit;
 	}
 
 }

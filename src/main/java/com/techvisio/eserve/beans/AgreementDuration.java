@@ -19,11 +19,13 @@ public class AgreementDuration extends BasicEntity{
 	private int duration;
 	@Column(name="DISPLAY_VALUE")
 	private String displayValue;
-	public Long getAgreementDuration() {
+
+
+	public Long getAgreementDurationId() {
 		return agreementDurationId;
 	}
-	public void setAgreementDuration(Long agreementDuration) {
-		this.agreementDurationId = agreementDuration;
+	public void setAgreementDurationId(Long agreementDurationId) {
+		this.agreementDurationId = agreementDurationId;
 	}
 	public int getDuration() {
 		return duration;

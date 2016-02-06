@@ -26,6 +26,7 @@ import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
@@ -197,6 +198,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		return false;
 	}
 
+	@Override
 	public Unit getUnit(Long unitId) {
 		String queryString="FROM Unit u WHERE u.unitId = "+unitId;
 		Query query=getEntityManager().createQuery(queryString);
@@ -215,14 +217,14 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}	
 
 	@Override
-	public Unit renewService(Long unitId, ServiceRenewalBean renewalBean){
+	public void renewService(Unit unit){
 
-		Unit unit = getUnit(unitId);
-		unit.setServiceCategory(renewalBean.getSeriviceType());
-		unit.setContractStartOnString(renewalBean.getStartDateString());
+//		Unit unit = getUnit(unitId);
+//		unit.setServiceCategory(renewalBean.getSeriviceType());
+//		unit.getServiceAgreement().setContractStartOnString(renewalBean.getStartDateString());
 
 
-		String startDateString = renewalBean.getStartDateString();
+		String startDateString = unit.getServiceAgreement().getContractStartOnString();
 		Date startDate = null;
 		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
 		if(!StringUtils.isEmpty(startDateString)){
@@ -231,7 +233,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(startDate); 
-		c.add(Calendar.MONTH, renewalBean.getDuration());
+		c.add(Calendar.MONTH, unit.getServiceAgreement().getAgreementDuration().getDuration());
 		Date date = c.getTime();
 
 		c.setTime(date);
@@ -239,20 +241,16 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		Date contractExpireDate = c.getTime();
 		
 		
-		unit.setContractExpireOn(contractExpireDate);
+		unit.getServiceAgreement().setContractExpireOn(contractExpireDate);
 		saveUnit(unit);
 
 		ServiceAgreementHistory history = new ServiceAgreementHistory();
 		history.setClient(unit.getClient());
 		history.setEndDate(contractExpireDate);
-		history.setServiceType(renewalBean.getSeriviceType());
-		history.setStartDateString(renewalBean.getStartDateString());
-		history.setUnitId(unitId);
+		history.setServiceType(unit.getServiceCategory());
+		history.setStartDateString(unit.getServiceAgreement().getContractStartOnString());
+		history.setUnitId(unit.getUnitId());
 		saveServiceAgreementHistory(history);
-		
-		Unit unitFromDB = getUnit(unitId);
-		return unitFromDB;
-
 	} 
 
 	@Override
@@ -263,4 +261,5 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		List<ServiceAgreementHistory> agreementHistories= (List<ServiceAgreementHistory>)query.getResultList();
 		return agreementHistories;
 	}
+	
 }

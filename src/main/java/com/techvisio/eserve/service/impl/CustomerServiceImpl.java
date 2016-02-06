@@ -103,14 +103,19 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Unit renewService(Long unitId, ServiceRenewalBean renewalBean) {
-		Unit unit = customerManager.renewService(unitId, renewalBean);
-		return unit;
+	public void renewService(Unit unit) {
+		customerManager.renewService(unit);
 	}
 
 	@Override
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId) {
 		List<ServiceAgreementHistory> agreementHistories = customerManager.getServiceAgreementHistoryForUnit(unitId);
 		return agreementHistories;
+	}
+
+	@Override
+	public Unit getUnit(Long unitId) {
+		Unit unit = customerManager.getUnit(unitId);
+		return unit;
 	}
 }

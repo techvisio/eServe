@@ -102,11 +102,12 @@ public class CustomerController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
-	@RequestMapping(value ="/renewService/{unitId}", method = RequestMethod.PUT)
-	public ResponseEntity<Response> renewService(@PathVariable Long unitId, @RequestBody ServiceRenewalBean renewalBean) {
+	@RequestMapping(value ="/renewService", method = RequestMethod.PUT)
+	public ResponseEntity<Response> renewService(@RequestBody Unit unit) {
 		Response response=new Response();
-		Unit unit = customerService.renewService(unitId, renewalBean);
-		response.setResponseBody(unit);
+		customerService.renewService(unit);
+		Unit unitFromDB = customerService.getUnit(unit.getUnitId());
+		response.setResponseBody(unitFromDB);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

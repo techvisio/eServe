@@ -261,9 +261,21 @@ erp.controller('ApplicationController',
 				);
 			});
 
+			$scope.isPrivileged = function(role){
+
+				var userPrivilege = $rootScope.user.privileges;
+				var result=false;
+				angular.forEach(userPrivilege, function(privilege) {
+					if (privilege.privilege.privilege===role) result= true;
+				});
+				return result;		
+			}
+
 			$scope.newCustomer = function(){
 				$state.go("newcustomer");
 			}
+			
+			
 		}]);
 
 erp.config(['$httpProvider', '$sceProvider',

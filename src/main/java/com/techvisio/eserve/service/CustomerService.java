@@ -32,6 +32,7 @@ public interface CustomerService {
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
 	public Map<String, Object> checkCustomerExistOrNot(
 			CustomerComplaint customerComplaint);
-	public Unit renewService(Long unitId, ServiceRenewalBean renewalBean);
+	void renewService(Unit unit);
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
+	public Unit getUnit(Long unitId);
 }

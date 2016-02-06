@@ -2,7 +2,7 @@
 <div class="row">
 			<div class="col-sm-10">
 			</div>
-<div class="col-sm-2"><a ui-sref="createUser"><button class="btn-primary" ng-disabled="isCreateOrUpdatePrivileged()"><i class="glyphicon glyphicon-plus"></i> Create User</button></a></div>
+<div class="col-sm-2" popover-placement="bottom" popover="you don't have permission to create users. please contact your administration!!" popover-trigger="mouseenter"><a ui-sref="createUser"><button class="fa fa-plus btn btn-primary" ng-disabled="isCreateOrUpdatePrivileged()" > Create User</button></a></div>
 </div>
 
 <table class="table table-striped">

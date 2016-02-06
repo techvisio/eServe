@@ -39,6 +39,10 @@
         drop 
         foreign key FK_bu8i693dhiy4sbl9tucpiwfht;
 
+    alter table TB_CONTACT 
+        drop 
+        foreign key FK_l20ivw566rigcc8o90gloybi0;
+
     alter table TB_CUSTOMER_COMPLAINT 
         drop 
         foreign key FK_n124pnn94fdds0dcr8faj05aw;
@@ -118,6 +122,26 @@
     alter table TB_SECURITY_QUESTION 
         drop 
         foreign key FK_c35mkkq60ro92y0p6n6l7kyp5;
+
+    alter table TB_SERVICE_AGREEMENT 
+        drop 
+        foreign key FK_qef1klu2etubklaganw4i7c33;
+
+    alter table TB_SERVICE_AGREEMENT 
+        drop 
+        foreign key FK_q2nhgthyc0uha40s3effvabfk;
+
+    alter table TB_SERVICE_AGREEMENT 
+        drop 
+        foreign key FK_mr3p2aq53l3ddxj3c9btm51gh;
+
+    alter table TB_SERVICE_AGREEMENT_FINANCE 
+        drop 
+        foreign key FK_6siao3eeb1chobyxrviq3pmlh;
+
+    alter table TB_SERVICE_AGREEMENT_FINANCE_HISTORY 
+        drop 
+        foreign key FK_362v48ntpq2sodby3a3h076eu;
 
     alter table TB_SERVICE_AGREEMENT_HISTORY 
         drop 
@@ -199,6 +223,8 @@
 
     drop table if exists TB_CONFIG;
 
+    drop table if exists TB_CONTACT;
+
     drop table if exists TB_CUSTOMER_COMPLAINT;
 
     drop table if exists TB_CUSTOMER_DETAIL;
@@ -226,6 +252,12 @@
     drop table if exists TB_ROLE_MASTER;
 
     drop table if exists TB_SECURITY_QUESTION;
+
+    drop table if exists TB_SERVICE_AGREEMENT;
+
+    drop table if exists TB_SERVICE_AGREEMENT_FINANCE;
+
+    drop table if exists TB_SERVICE_AGREEMENT_FINANCE_HISTORY;
 
     drop table if exists TB_SERVICE_AGREEMENT_HISTORY;
 
@@ -310,6 +342,19 @@
         VALUE varchar(255),
         Client_Id bigint,
         primary key (CONFIG_TB_ID)
+    );
+
+    create table TB_CONTACT (
+        CONTACT_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        CONTACT_NAME varchar(255),
+        CONTACT_NO varchar(255),
+        EMAIL_ID varchar(255),
+        Client_Id bigint,
+        primary key (CONTACT_ID)
     );
 
     create table TB_CUSTOMER_COMPLAINT (
@@ -502,6 +547,48 @@
         primary key (USER_ID)
     );
 
+    create table TB_SERVICE_AGREEMENT (
+        SERVICE_AGREEMENT_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        IS_APPROVED bit,
+        APPROVED_BY bigint,
+        CONTRACT_EXPIRE_ON date,
+        CONTRACT_START_ON date,
+        SERVICE_TYPE varchar(255),
+        UNIT_ID bigint,
+        Client_Id bigint,
+        AGREEMENT_DURATION_ID bigint,
+        SERVICE_AGREEMENT_FINANCE_ID bigint,
+        primary key (SERVICE_AGREEMENT_ID)
+    );
+
+    create table TB_SERVICE_AGREEMENT_FINANCE (
+        SERVICE_AGREEMENT_FINANCE_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        AGREEMENT_AMOUNT bigint,
+        UNIT_ID bigint,
+        Client_Id bigint,
+        primary key (SERVICE_AGREEMENT_FINANCE_ID)
+    );
+
+    create table TB_SERVICE_AGREEMENT_FINANCE_HISTORY (
+        SRVC_AGRMNT_FINANC_HSTORY_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        AGREEMENT_AMOUNT bigint,
+        UNIT_ID bigint,
+        Client_Id bigint,
+        primary key (SRVC_AGRMNT_FINANC_HSTORY_ID)
+    );
+
     create table TB_SERVICE_AGREEMENT_HISTORY (
         AGREEMENT_HISTORY_ID bigint not null auto_increment,
         CREATED_BY varchar(255),
@@ -556,16 +643,13 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
-        IS_AGREEMENT_APPROVED bit,
-        CONTRACT_EXPIRE_ON date,
-        CONTRACT_START_ON date,
+        ASSET_NO varchar(255),
         CUSTOMER_ID bigint,
-        EXTERNAL_ID varchar(255),
-        HEIGHT bigint,
-        LENGTH bigint,
+        MACHINE_SERIAL_NO varchar(255),
+        MODEL_NO varchar(255),
         SERVICE_CATEGORY varchar(255),
         UNIT_CODE varchar(255),
-        WIDTH bigint,
+        VERSION_ID double precision,
         Client_Id bigint,
         ADDRESS_ID bigint,
         SERVICE_PROVIDER_ID bigint,
@@ -657,6 +741,11 @@
 
     alter table TB_CONFIG 
         add constraint FK_bu8i693dhiy4sbl9tucpiwfht 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_CONTACT 
+        add constraint FK_l20ivw566rigcc8o90gloybi0 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 
@@ -757,6 +846,31 @@
 
     alter table TB_SECURITY_QUESTION 
         add constraint FK_c35mkkq60ro92y0p6n6l7kyp5 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_SERVICE_AGREEMENT 
+        add constraint FK_qef1klu2etubklaganw4i7c33 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_SERVICE_AGREEMENT 
+        add constraint FK_q2nhgthyc0uha40s3effvabfk 
+        foreign key (AGREEMENT_DURATION_ID) 
+        references TB_AGREEMENT_DURATION (AGREEMENT_DURATION_ID);
+
+    alter table TB_SERVICE_AGREEMENT 
+        add constraint FK_mr3p2aq53l3ddxj3c9btm51gh 
+        foreign key (SERVICE_AGREEMENT_FINANCE_ID) 
+        references TB_SERVICE_AGREEMENT_FINANCE (SERVICE_AGREEMENT_FINANCE_ID);
+
+    alter table TB_SERVICE_AGREEMENT_FINANCE 
+        add constraint FK_6siao3eeb1chobyxrviq3pmlh 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_SERVICE_AGREEMENT_FINANCE_HISTORY 
+        add constraint FK_362v48ntpq2sodby3a3h076eu 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 
