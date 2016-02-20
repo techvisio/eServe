@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.ComplaintAssignment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.Customer;
@@ -22,6 +23,7 @@ import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
@@ -56,20 +58,20 @@ public class CustomerController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> saveCustomer(@RequestBody Customer customer) {  
-		Map<String, Object> result = customerService.saveCustomer(customer);
-		customer = (Customer) result.get("customer");
+		Long customerId = customerService.saveCustomer(customer);
+		Customer customerFromDB = customerService.getCustomer(customerId);
 		Response response=new Response();
-		response.setResponseBody(result);
+		response.setResponseBody(customerFromDB);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT)
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> updateCustomer(@RequestBody Customer customer) {  
-		Map<String, Object> result = customerService.saveCustomer(customer);
-		customer = (Customer) result.get("customer");
+		customerService.saveCustomer(customer);
+		Customer customerFromDB = customerService.getCustomer(customer.getCustomerId());
 		Response response=new Response();
-		response.setResponseBody(result);
+		response.setResponseBody(customerFromDB);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
@@ -103,15 +105,15 @@ public class CustomerController {
 	}
 
 	@RequestMapping(value ="/renewService", method = RequestMethod.PUT)
-	public ResponseEntity<Response> renewService(@RequestBody Unit unit) {
+	public ResponseEntity<Response> renewService(@RequestBody ServiceAgreement agreement) {
 		Response response=new Response();
-		customerService.renewService(unit);
-		Unit unitFromDB = customerService.getUnit(unit.getUnitId());
+		customerService.renewService(agreement);
+		Unit unitFromDB = customerService.getUnit(agreement.getUnitId());
 		response.setResponseBody(unitFromDB);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value ="/servicehistory/{unitId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getServiceAgreementHistoryForUnit(@PathVariable Long unitId) {
 		Response response=new Response();
@@ -120,5 +122,21 @@ public class CustomerController {
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
+	@RequestMapping(value ="/approveunit/", method = RequestMethod.PUT)
+	public ResponseEntity<Response> getServiceAgreementHistoryForUnit(@RequestBody Unit unit) {
+		Response response=new Response();
+		Unit unitFromDB = customerService.approveUnit(unit);
+		response.setResponseBody(unitFromDB);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+
+	@RequestMapping(value="/unitapproval/{unitId}",method = RequestMethod.GET)
+	public ResponseEntity<Response> getUnitForApproval(@PathVariable Long unitId) {  
+		Response response=new Response();
+		ApproveUnitDtl unitDtl = customerService.getUnitForApproval(unitId);
+		response.setResponseBody(unitDtl);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
 }

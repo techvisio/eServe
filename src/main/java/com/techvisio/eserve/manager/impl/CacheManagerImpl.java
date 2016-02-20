@@ -5,12 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javassist.expr.NewArray;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.AgreementDuration;
+import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
@@ -25,6 +28,7 @@ import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.impl.CacheDaoImpl;
 import com.techvisio.eserve.manager.CacheManager;
 import com.techvisio.eserve.util.AppConstants;
+import com.techvisio.eserve.util.CommonUtil;
 import com.techvisio.eserve.util.CustomLogger;
 
 @Transactional
@@ -60,6 +64,27 @@ public class CacheManagerImpl implements CacheManager {
 	private static Map<Long, UnitCategory> unitCategoryMap = new HashMap<Long, UnitCategory>();
 	private static Map<Long, CustomerType> customerTypeMap = new HashMap<Long, CustomerType>();
 	private static Map<Long, ServiceProvider> serviceProviderMap  = new HashMap<Long, ServiceProvider>();
+	
+	
+	@Override
+	public Map<Long, Map<String,Object>> getConfigMap(Long clientId){
+		
+		Map<Long, Map<String,Object>> configMap = new HashMap<Long, Map<String,Object>>();
+		Map<String,Object> subMap = new HashMap<String, Object>();
+		
+		clientId = CommonUtil.getCurrentClient().getClientId();
+		List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
+		for(Config config : defaultValues){
+			subMap.put(config.getProperty(), config);
+		}
+
+		configMap.put(clientId, subMap);
+
+		return configMap;
+	}
+	
+	
+	
 	
 	public  List<State> getStates(Long clientId) {
 		Map<String, List> clientMap = clientEntityListMap.get(clientId);
@@ -540,6 +565,9 @@ public class CacheManagerImpl implements CacheManager {
 		
 	}
 
+	
+	
+	
 	@Override
 	public State getStateId(Long id){
 		return stateMap.get(id);

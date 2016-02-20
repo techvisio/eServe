@@ -18,7 +18,7 @@ import com.techvisio.eserve.beans.Unit;
 @Component
 public interface ComplaintManager {
 
-	public Map<String, Object> saveComplaint(CustomerComplaint customerComplaint);
+	public Long saveComplaint(CustomerComplaint customerComplaint);
 	public CustomerComplaint getCustomerComplaint(Long complaintId);
 	public Customer getCustomerBasicInfo(Long customerId);
 	public Unit getUnitBasicInfo(Long unitId);

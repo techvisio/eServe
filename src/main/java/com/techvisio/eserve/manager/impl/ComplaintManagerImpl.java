@@ -40,76 +40,57 @@ public class ComplaintManagerImpl implements ComplaintManager{
 	@Autowired
 	CustomerService customerService;
 
+	@Autowired 
+	ConfigPreferences configPreferences;
+
 	@Override
 	public CustomerComplaint getCustomerComplaint(Long complaintId) {
 		CustomerComplaint complaint = complaintDao.getCustomerComplaint(complaintId);
 		return complaint;
 	}
 	@Override
-	public Map<String, Object> saveComplaint(CustomerComplaint customerComplaint){
+	public Long saveComplaint(CustomerComplaint customerComplaint){
 
-		getSlaDateByPriority(customerComplaint);
-		Map<String, Object> result = new HashMap<String, Object>();
-
+		Date slaDate = getSlaDateByPriority(customerComplaint.getPriority());
+		customerComplaint.setSlaDate(slaDate);
 		if(customerComplaint.getCustomerId()==null){
-			result = customerService.checkCustomerExistOrNot(customerComplaint);
-		
-			if(!(boolean) result.get("success")){
-				return result;
-			}
+			Customer customer = customerService.createCustomerfromComplaint(customerComplaint);
+			Long customerId = customerService.saveCustomer(customer);
+			Customer customerFromDB = customerService.getCustomer(customerId);
+
+			customerComplaint.setCustomerCode(customerFromDB.getCustomerCode());
+			customerComplaint.setCustomerId(customerFromDB.getCustomerId());
 		}
 
-		complaintDao.saveComplaint(customerComplaint);
-		
-		Long customerId = complaintDao.saveComplaint(customerComplaint);	
+		Long complaintId = complaintDao.saveComplaint(customerComplaint);	
 
-		CustomerComplaint complaintFromDB = complaintDao.getCustomerComplaint(customerId);
-		result.put("complaint", complaintFromDB);
-		result.put("success", true);
-		return result;
+		CustomerComplaint complaintFromDB = complaintDao.getCustomerComplaint(complaintId);
+		return complaintId;
 	}
-	
-	private void getSlaDateByPriority(CustomerComplaint customerComplaint) {
 
-		List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
-		for(Config config : defaultValues){
+	private Date getSlaDateByPriority(String priority) {
 
-			if(customerComplaint.getPriority().equalsIgnoreCase("C") && config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.SLA_DAYS_CRITICAL.name())){
-				Date date = new Date();
-				Calendar c = Calendar.getInstance(); 
-				c.setTime(date); 
-				c.add(Calendar.DATE, Integer.parseInt(config.getValue()));
-				date = c.getTime();
-				customerComplaint.setSlaDate(date);
-			}
 
-			if(customerComplaint.getPriority().equalsIgnoreCase("H") && config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.SLA_DAYS_HIGH.name())){
-				Date date = new Date();
-				Calendar c = Calendar.getInstance(); 
-				c.setTime(date); 
-				c.add(Calendar.DATE, Integer.parseInt(config.getValue()));
-				date = c.getTime();
-				customerComplaint.setSlaDate(date);
-			}
-
-			if(customerComplaint.getPriority().equalsIgnoreCase("M") && config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.SLA_DAYS_MEDIUM.name())){
-				Date date = new Date();
-				Calendar c = Calendar.getInstance(); 
-				c.setTime(date); 
-				c.add(Calendar.DATE, Integer.parseInt(config.getValue()));
-				date = c.getTime();
-				customerComplaint.setSlaDate(date);
-			}
-
-			if(customerComplaint.getPriority().equalsIgnoreCase("L") && config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.SLA_DAYS_LOW.name())){
-				Date date = new Date();
-				Calendar c = Calendar.getInstance(); 
-				c.setTime(date); 
-				c.add(Calendar.DATE, Integer.parseInt(config.getValue()));
-				date = c.getTime();
-				customerComplaint.setSlaDate(date);
-			}
+		if(priority.equalsIgnoreCase(AppConstants.CRITICAL)){
+			Date date = configPreferences.getSlaDateForCriticalIssue(CommonUtil.getCurrentClient().getClientId());		
+			return date;
 		}
+
+		if(priority.equalsIgnoreCase(AppConstants.HIGH)){
+			Date date = configPreferences.getSlaDateForHighIssue(CommonUtil.getCurrentClient().getClientId());
+			return date;
+		}
+
+		if(priority.equalsIgnoreCase(AppConstants.MEDIUM)){
+			Date date = configPreferences.getSlaDateForMediumIssue(CommonUtil.getCurrentClient().getClientId());
+			return date;
+		}
+
+		if(priority.equalsIgnoreCase(AppConstants.LOW)){
+			Date date = configPreferences.getSlaDateForLowIssue(CommonUtil.getCurrentClient().getClientId());
+			return date;
+		}
+		return null;
 	}
 
 	@Override
@@ -174,7 +155,7 @@ public class ComplaintManagerImpl implements ComplaintManager{
 		List<SearchComplaint> complaints = complaintDao.getComplaintSearchByUnitId(unitId);
 		return complaints;
 	}
-	
+
 	@Override
 	public List<CustomerComplaint> getAllComplaintsForUnit(Long unitId) {
 		List<CustomerComplaint> complaints= complaintDao.getAllComplaintsForUnit(unitId);

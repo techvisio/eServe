@@ -11,7 +11,9 @@ customerModule.service('customerService', function($http, $q) {
 		getCustomerByCriteria : getCustomerByCriteria,
 		getAllComplaints : getAllComplaints,
 		renewService : renewService,
-		getServiceAgreementHistoryForUnit : getServiceAgreementHistoryForUnit
+		getServiceAgreementHistoryForUnit : getServiceAgreementHistoryForUnit,
+		approveUnit : approveUnit,
+		getUnitForApproval : getUnitForApproval
 	});
 
 	
@@ -80,6 +82,18 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
+	function approveUnit(unit){
+		console.log('approve unit called in service');
+		var request = $http({
+			method : "put",
+			url : "../service/customer/approveunit/",
+			params : "",
+			data: unit
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+	
 	function getUnit(unitId){
 		console.log('get unit');
 
@@ -105,13 +119,13 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function renewService(unit){
+	function renewService(serviceAgreement){
 		console.log('renewService called in service');
 		var request = $http({
 			method : "put",
 			url : "../service/customer/renewService",
 			params : "",
-			data: unit
+			data: serviceAgreement
 
 		});
 		return (request.then(handleSuccess, handleError));
@@ -142,6 +156,20 @@ customerModule.service('customerService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
+	
+	function getUnitForApproval(unitId){
+		console.log('getUnitForApproval in service');
+
+		var request = $http({
+			method : "get",
+			url : "../service/customer/unitapproval/"+unitId,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+	
 	
 	function handleError(response) {
 		console.log('Error occured while calling service');

@@ -62,7 +62,11 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			customer: ['$stateParams', function($stateParams){
 				return null;
-			}]
+			}],
+		
+		unitApproval: ['$stateParams', function($stateParams){
+			return null;
+		}]
 		}
 	})
 	
@@ -72,6 +76,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		controller:"customerController",
 		resolve:{
 			customer: ['$stateParams', function($stateParams){
+				return null;
+			}],
+			unitApproval: ['$stateParams', function($stateParams){
 				return null;
 			}]
 		}
@@ -112,6 +119,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			customer: ['$stateParams','customerService', function($stateParams){
 				return null;
+			}],
+			unitApproval: ['$stateParams', function($stateParams){
+				return null;
 			}]
 		}
 	})
@@ -137,10 +147,28 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			customer: ['$stateParams','customerService', function($stateParams,customerService){
 				return customerService.getCustomer($stateParams.customerId);
+			}],
+			unitApproval: ['$stateParams', function($stateParams){
+				return null;
 			}]
 		}
 	})
 
+	.state('unitApproval', {
+		url: "/unit/{unitId:[0-9]{1,8}}",
+		templateUrl: 'customer/unitApproval.html',
+		controller: "customerController",
+		resolve:{
+			unitApproval: ['$stateParams','customerService', function($stateParams,customerService){
+				return customerService.getUnitForApproval($stateParams.unitId);
+			}],
+			customer: ['$stateParams', function($stateParams){
+				return null;
+			}]
+		}
+	})
+
+	
 	.state('searchUser', {
 		url: "/user",
 		templateUrl: 'user/userSearch.html',

@@ -1,9 +1,11 @@
 package com.techvisio.eserve.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.AgreementDuration;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
 import com.techvisio.eserve.beans.Issue;
@@ -27,4 +29,5 @@ public interface CacheManager {
 	List<Privilege> getPrivileges(Long clientId);
 	Resolution getResolutionMasters(Long resolutionId);
 	Issue getIssue(Long issueId);
+	public Map<Long, Map<String, Object>> getConfigMap(Long clientId);
 }

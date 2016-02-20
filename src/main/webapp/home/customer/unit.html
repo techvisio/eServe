@@ -22,6 +22,10 @@
 						ng-click="addUnit()" ng-disabled="isCreateOrUpdatePrivileged()">Add
 						Unit</button>
 				</div>
+				<div class="child-right">
+					<button type="button" class="btn btn-primary btn-sm"
+						ng-click="approveUnit(unit)">Approve Unit</button>
+				</div>
 			</h3>
 		</div>
 
@@ -39,7 +43,7 @@
 					<label for="inputlg">Service Type</label>
 				</div>
 				<div class="col-sm-4">
-					<select class="form-control" ng-model="unit.serviceCategory"
+					<select class="form-control" ng-model="unit.serviceAgreement.serviceCategory"
 						disabled>
 						<option>Warranty</option>
 						<option>AMC</option>
@@ -53,7 +57,7 @@
 					<label for="inputlg">Service Party</label>
 				</div>
 				<div class="col-sm-4">
-					<select ng-model="unit.serviceProvider.serviceProviderId"
+					<select ng-model="unit.serviceAgreement.serviceProvider.serviceProviderId"
 						class="form-control"
 						ng-options="item.serviceProviderId*1 as item.serviceProvider for item in serverModelData.SERVICE_PROVIDER"
 						required>

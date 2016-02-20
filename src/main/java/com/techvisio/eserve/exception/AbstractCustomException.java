@@ -1,6 +1,6 @@
 package com.techvisio.eserve.exception;
 
-public abstract class AbstractCustomException extends Exception {
+public abstract class AbstractCustomException extends RuntimeException {
 
 	public AbstractCustomException(Exception e) {
 		super(e);

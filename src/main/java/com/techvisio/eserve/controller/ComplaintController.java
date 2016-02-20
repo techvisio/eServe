@@ -34,9 +34,10 @@ public class ComplaintController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Response> saveCustomerComplaint(@RequestBody CustomerComplaint complaint) {
-		Map<String, Object> result = complaintService.saveComplaint(complaint);
+		Long complaintId = complaintService.saveComplaint(complaint);
+		CustomerComplaint coplaintFromDB = complaintService.getCustomerComplaint(complaintId);
 		Response response=new Response();
-		response.setResponseBody(result);
+		response.setResponseBody(coplaintFromDB);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 

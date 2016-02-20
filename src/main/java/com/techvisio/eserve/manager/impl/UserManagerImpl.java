@@ -32,6 +32,10 @@ public class UserManagerImpl implements UserManager{
 	@Autowired
 	CacheDao cacheDao;
 
+	@Autowired
+	ConfigPreferences configPreferences;
+
+	
 	@Override
 	public User getUser(Long userId) {
 		User user = userDao.getUser(userId);
@@ -109,8 +113,8 @@ public class UserManagerImpl implements UserManager{
 
 		List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
 		for(Config config : defaultValues){
-			if(config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.DEFAULT_PASSWORD.name())){
-			user.setPassword(config.getValue().toCharArray());
+			if(config.getProperty().equalsIgnoreCase(AppConstants.DEFAULT_PASSWORD)){
+				user.setPassword(config.getValue().toCharArray());
 			}
 		}
 		user.setForcePasswordChange(true);
@@ -139,12 +143,8 @@ public class UserManagerImpl implements UserManager{
 		user.setClient(CommonUtil.getCurrentClient());		
 
 		if(user.getUserId()==null){
-			List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
-			for(Config config : defaultValues){
-				if(config.getProperty().equalsIgnoreCase(AppConstants.DefaultValues.DEFAULT_PASSWORD.name())){
-					user.setPassword(config.getValue().toCharArray());
-				}
-			}
+		
+			user.setPassword(configPreferences.getDefaultPassword(CommonUtil.getCurrentClient().getClientId()).toCharArray());
 		}
 		Iterator<UserPrivilege> itr = user.getPrivileges().iterator();
 

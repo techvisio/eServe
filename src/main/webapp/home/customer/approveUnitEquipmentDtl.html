@@ -1,0 +1,59 @@
+<div class="row">
+			<div class="col-sm-4">
+				<h3 class="new-event-subtitle">Equipment Details</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">type</label>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Model No</label>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Serial No</label>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Invoice No</label>
+			</div>
+
+
+			<div class="col-sm-2">
+				<label for="inputlg">Warranty Under</label>
+			</div>
+		</div>
+
+		<div class="row" ng-repeat="equip in unitApproval.unit.equipmentDetails">
+			<div class="col-sm-2">
+				<select class="form-control" ng-model="equip.type">
+					<option></option>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<select class="form-control" ng-model="equip.equipment.model">
+					<option></option>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="equip.serialNo">
+			</div>
+			<div class="col-sm-2">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="equip.invoiceNo">
+			</div>
+			<div class="col-sm-2">
+				<select class="form-control" ng-model="equip.warrantyUnder">
+					<option></option>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<input type="checkbox" id="chk_act_{{$id}}"
+					ng-model="equip.underWarranty" /> <label for="chk_act_{{$id}}">Under
+					Warranty</label>
+			</div>
+		</div>

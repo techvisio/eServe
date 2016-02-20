@@ -29,9 +29,9 @@ public class ComplaintServiceImpl implements ComplaintService{
 	ComplaintManager complaintManager;
 
 	@Override
-	public Map<String, Object> saveComplaint(CustomerComplaint customerComplaint) {
-		Map<String, Object> result = complaintManager.saveComplaint(customerComplaint);		
-		return result;
+	public Long saveComplaint(CustomerComplaint customerComplaint) {
+		Long complaintId = complaintManager.saveComplaint(customerComplaint);		
+		return complaintId;
 	}
 
 	@Override

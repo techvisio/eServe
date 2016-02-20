@@ -37,4 +37,6 @@ public interface CacheDao {
 	List<UnitCategory> getUnitCategories();
 	List<CustomerType> getCustomerTypes();
 	List<ServiceProvider> getServiceProviders();
+	AgreementDuration getAgreementDuration(Long durationId);
+	Config getConfig(String property);
 }

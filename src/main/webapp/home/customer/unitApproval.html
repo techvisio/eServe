@@ -1,0 +1,209 @@
+<div ng-init="init()">
+
+	<div>
+		<h3 class="new-event-subtitle">CUSTOMER INFORMATION</h3>
+	</div>
+	</br>
+	<div class="row">
+		<div class="col-sm-2">
+			<label for="inputlg">Customer Code</label>
+		</div>
+		<div class="col-sm-4">
+			<input class="form-control input-sm"
+				ng-model="unitApproval.customerCode" id="inputlg" type="text"
+				disabled>
+		</div>
+
+		<div class="col-sm-2">
+			<label for="inputlg">Customer Name</label>
+		</div>
+		<div class="col-sm-4">
+			<input class="form-control input-sm" disabled
+				ng-model="unitApproval.customerName" id="inputlg" type="text">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2">
+			<label for="inputlg">Contact No</label>
+		</div>
+		<div class="col-sm-4">
+			<input class="form-control input-sm" disabled
+				ng-model="unitApproval.contactNo" id="inputlg" type="text"
+				ng-click="resetAleart()">
+		</div>
+
+		<div class="col-sm-2">
+			<label for="inputlg">Email Id</label>
+		</div>
+		<div class="col-sm-4">
+			<input class="form-control input-sm" ng-model="unitApproval.emailId"
+				disabled id="inputlg" type="email" ng-click="resetAleart()">
+		</div>
+	</div>
+
+	<div>
+		<h3 class="new-event-subtitle">UNIT INFORMATION</h3>
+	</div>
+	</br>
+
+	<div>
+		<h3 class="custom-page-header">
+			<i class="fa fa-plus" ng-class="{'fa-minus':!isCollapsed}"
+				ng-click="isCollapsed=!isCollapsed"></i> Unit {{$index+1}}
+			<div class="child-right">
+				<button type="button" class="btn btn-primary btn-sm"
+					ng-click="approveUnit(unitApproval.unit)">Approve Unit</button>
+			</div>
+		</h3>
+	</div>
+
+	<div collapse="isCollapsed">
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">Unit Code</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="unitApproval.unit.unitCode" disabled>
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Service Type</label>
+			</div>
+			<div class="col-sm-4">
+				<select class="form-control"
+					ng-model="unitApproval.unit.serviceAgreement.serviceCategory"
+					disabled>
+					<option>Warranty</option>
+					<option>AMC</option>
+					<option>Paid</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+
+			<div class="col-sm-2">
+				<label for="inputlg">Service Party</label>
+			</div>
+			<div class="col-sm-4">
+				<select
+					ng-model="unitApproval.unit.serviceAgreement.serviceProvider.serviceProviderId"
+					class="form-control"
+					ng-options="item.serviceProviderId*1 as item.serviceProvider for item in serverModelData.SERVICE_PROVIDER"
+					required>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<label for="inputlg">Unit Category</label>
+			</div>
+			<div class="col-sm-4">
+				<select ng-model="unitApproval.unit.unitCategory.unitCategoryId"
+					class="form-control"
+					ng-options="item.unitCategoryId*1 as item.unitType for item in serverModelData.UNIT_CATEGORY"
+					required>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+
+			<div class="col-sm-2">
+				<label for="inputlg">model No</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					required ng-model="unitApproval.unit.modelNo">
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Machine Serial No</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					required ng-model="unitApproval.unit.machineSerialNo">
+			</div>
+		</div>
+
+		<div class="row">
+
+			<div class="col-sm-2">
+				<label for="inputlg">Asset No</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					required ng-model="unitApproval.unit.assetNo">
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Agreement Duration</label>
+			</div>
+			<div class="col-sm-4">
+				<select
+					ng-model="unitApproval.unit.serviceAgreement.agreementDuration.agreementDurationId"
+					class="form-control"
+					ng-options="item.agreementDurationId*1 as item.displayValue for item in serverModelData.AGREEMENT_DURATION">
+				</select>
+			</div>
+
+		</div>
+		<div class="row">
+
+			<div class="col-sm-2">
+				<label for="inputlg"> Contract Start On</label>
+			</div>
+			<div class="col-sm-4">
+				<div class="date-input">
+					<input type="text" class="form-control datepicker"
+						name="requestDueDate"
+						ng-model="unitApproval.unit.serviceAgreement.contractStartOnString"
+						datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
+						ng-click="startDate = !startDate; $event.stopPropagation();"
+						show-button-bar="false">
+				</div>
+			</div>
+
+
+			<div class="col-sm-2">
+				<label for="inputlg"> Contract Expire On</label>
+			</div>
+			<div class="col-sm-4">
+				<div class="date-input">
+					<input type="text" class="form-control datepicker"
+						name="requestDueDate"
+						ng-model="unitApproval.unit.serviceAgreement.contractExpireOnString"
+						datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate" disabled
+						ng-click="expireDate = !expireDate; $event.stopPropagation();"
+						show-button-bar="false">
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="tab-separator">
+			<tabset justified="true"> <tab heading="SITE ADDRESS">
+			<div ng-include src="'../home/customer/approveUnitSiteAddress.html'"></div>
+			</tab> <tab heading="EQUIPMENTS">
+			<div ng-include src="'../home/customer/approveUnitEquipmentDtl.html'"></div>
+			</tab> <tab heading="SERVICE HISTORY"
+				ng-click="getServiceAgreementHistoryForUnit(unit.unitId)"
+				disabled="!unit.unitId">
+			<div ng-include src="'../home/customer/serviceHistory.html'"></div>
+			</tab> <tab heading="COMPLAINTS"
+				ng-click="getAllComplaintsForUnit(unit.unitId)"
+				disabled="!unit.unitId">
+			<div ng-include src="'../home/customer/customerComplaint.html'"></div>
+			</tab> </tabset>
+		</div>
+
+
+		<div class="row">
+
+			<div class="col-sm-7"></div>
+			<div class="col-sm-2 child-right">
+				<button type="button" class="btn btn-primary"
+					ng-click="showUnitExpireModal(unit)" ng-show="unit.unitId"
+					ng-disabled="isCreateOrUpdatePrivileged()">Service
+					Agreement</button>
+			</div>
+		</div>
+	</div>
+</div>

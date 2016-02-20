@@ -20,7 +20,7 @@
 		</div>
 		<div class="col-sm-4">
 		
-		<select ng-model="serviceRenewalBean.serviceAgreement.agreementDuration.agreementDurationId"
+		<select ng-model="serviceRenewalBean.agreementDuration.agreementDurationId"
 						class="form-control"
 						ng-options="item.agreementDurationId*1 as item.displayValue  for item in serverModelData.AGREEMENT_DURATION" required>
 					</select>
@@ -33,7 +33,7 @@
 				<div class="col-sm-4">
 					<div class="date-input">
 						<input type="text" class="form-control datepicker"
-							name="requestDueDate" ng-model="serviceRenewalBean.serviceAgreement.contractStartOnString"
+							name="requestDueDate" ng-model="serviceRenewalBean.contractStartOnString"
 							datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
 							ng-click="startDate = !startDate; $event.stopPropagation();"
 							show-button-bar="false">
@@ -44,8 +44,8 @@
 				</div>
 				<div class="col-sm-4">
 					<input class="form-control input-sm" id="inputlg" type="text"
-						ng-model="serviceRenewalBean.serviceAgreement.serviceAgreementFinance.agreementAmount">
+						ng-model="serviceRenewalBean.serviceAgreementFinance.agreementAmount">
 				</div>
-	<button class="btn btn-primary child-right" ng-click="renewService(); getCustomer();">Save</button>
+	<button class="btn btn-primary child-right" ng-click="renewService()">Save</button>
 	</div>
 </div>

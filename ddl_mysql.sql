@@ -135,6 +135,10 @@
         drop 
         foreign key FK_mr3p2aq53l3ddxj3c9btm51gh;
 
+    alter table TB_SERVICE_AGREEMENT 
+        drop 
+        foreign key FK_59m75g9ssxmd7nx95785h9y5y;
+
     alter table TB_SERVICE_AGREEMENT_FINANCE 
         drop 
         foreign key FK_6siao3eeb1chobyxrviq3pmlh;
@@ -166,10 +170,6 @@
     alter table TB_UNIT_DETAIL 
         drop 
         foreign key FK_t1kal148ybl9hd9qoj9l0p6ay;
-
-    alter table TB_UNIT_DETAIL 
-        drop 
-        foreign key FK_af1v53edjwdlpsevqculc89rv;
 
     alter table TB_UNIT_DETAIL 
         drop 
@@ -210,6 +210,10 @@
     alter table TB_USER_ROLE 
         drop 
         foreign key FK_6eiqgtui5tbfbpyfgl667x22h;
+
+    alter table TB_WORK_ITEM 
+        drop 
+        foreign key FK_nmbk6k9titb9n861bcpl602i8;
 
     drop table if exists TB_ADDRESS_DETAIL;
 
@@ -274,6 +278,8 @@
     drop table if exists TB_USER_PRIVILEGE;
 
     drop table if exists TB_USER_ROLE;
+
+    drop table if exists TB_WORK_ITEM;
 
     create table TB_ADDRESS_DETAIL (
         ADDRESS_ID bigint not null auto_increment,
@@ -553,15 +559,15 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
-        IS_APPROVED bit,
         APPROVED_BY bigint,
         CONTRACT_EXPIRE_ON date,
         CONTRACT_START_ON date,
-        SERVICE_TYPE varchar(255),
+        SERVICE_CATEGORY varchar(255),
         UNIT_ID bigint,
         Client_Id bigint,
         AGREEMENT_DURATION_ID bigint,
         SERVICE_AGREEMENT_FINANCE_ID bigint,
+        SERVICE_PROVIDER_ID bigint,
         primary key (SERVICE_AGREEMENT_ID)
     );
 
@@ -643,16 +649,15 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
+        APPROVAL_STATUS char(1),
         ASSET_NO varchar(255),
         CUSTOMER_ID bigint,
         MACHINE_SERIAL_NO varchar(255),
         MODEL_NO varchar(255),
-        SERVICE_CATEGORY varchar(255),
         UNIT_CODE varchar(255),
         VERSION_ID double precision,
         Client_Id bigint,
         ADDRESS_ID bigint,
-        SERVICE_PROVIDER_ID bigint,
         UNIT_CATEGORY_ID bigint,
         primary key (UNIT_ID)
     );
@@ -692,6 +697,21 @@
     create table TB_USER_ROLE (
         USER_ID bigint not null,
         ROLE_ID bigint not null
+    );
+
+    create table TB_WORK_ITEM (
+        WORKITEM_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        ASSIGNEE_ID bigint,
+        ENTITY_ID bigint,
+        ENTITY_TYPE varchar(255),
+        PRIVILEGE_ID bigint,
+        WORKTYPE varchar(255),
+        Client_Id bigint,
+        primary key (WORKITEM_ID)
     );
 
     alter table TB_ADDRESS_DETAIL 
@@ -864,6 +884,11 @@
         foreign key (SERVICE_AGREEMENT_FINANCE_ID) 
         references TB_SERVICE_AGREEMENT_FINANCE (SERVICE_AGREEMENT_FINANCE_ID);
 
+    alter table TB_SERVICE_AGREEMENT 
+        add constraint FK_59m75g9ssxmd7nx95785h9y5y 
+        foreign key (SERVICE_PROVIDER_ID) 
+        references TB_SERVICE_PROVIDER_MASTER (SERVICE_PROVIDER_ID);
+
     alter table TB_SERVICE_AGREEMENT_FINANCE 
         add constraint FK_6siao3eeb1chobyxrviq3pmlh 
         foreign key (Client_Id) 
@@ -903,11 +928,6 @@
         add constraint FK_t1kal148ybl9hd9qoj9l0p6ay 
         foreign key (ADDRESS_ID) 
         references TB_ADDRESS_DETAIL (ADDRESS_ID);
-
-    alter table TB_UNIT_DETAIL 
-        add constraint FK_af1v53edjwdlpsevqculc89rv 
-        foreign key (SERVICE_PROVIDER_ID) 
-        references TB_SERVICE_PROVIDER_MASTER (SERVICE_PROVIDER_ID);
 
     alter table TB_UNIT_DETAIL 
         add constraint FK_jxxphk8q9d91rnhqn9cnmd3tv 
@@ -958,3 +978,8 @@
         add constraint FK_6eiqgtui5tbfbpyfgl667x22h 
         foreign key (USER_ID) 
         references TB_USER (USER_ID);
+
+    alter table TB_WORK_ITEM 
+        add constraint FK_nmbk6k9titb9n861bcpl602i8 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);

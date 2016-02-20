@@ -221,20 +221,9 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			console.log('complaint Data received from service : ');
 			console.log(response);
 			if (response) {
-				var success=response.success;
-
-				if(success){
-					$scope.alerts=[];
-					$scope.customerComplaint = response.complaint;
+					$scope.customerComplaint = response;
 					alert("Complaint Saved Successfully");
 					$state.go('complaintScreen',{complaintId:$scope.customerComplaint.complaintId});
-				}
-
-				if(!success){
-					$scope.alerts=[];
-					$scope.alerts.push({msg: 'This Contact No Or Email Id Already Exists!! Enter Different Contact No Or Email Id'});
-					return;
-				}
 			} 
 		})
 	};

@@ -1,7 +1,7 @@
 var customerModule = angular.module('customerModule', []);
 
-customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','masterdataService','userService','complaintService','$modal',
-                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,masterdataService,userService,complaintService,$modal) {
+customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','unitApproval','masterdataService','userService','complaintService','$modal',
+                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,unitApproval,masterdataService,userService,complaintService,$modal) {
 
 
 	$scope.form={};
@@ -12,6 +12,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.expireDate=false;
 	$scope.showStatus=false;
 //	$scope.getAllComplaints=false;
+	$scope.unitApproval = {};
 	$scope.customer={};
 	$scope.customers=[];
 	$scope.searchCriteria = {};
@@ -49,7 +50,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			$('#' + form + ' *').attr('readonly',
 					true);
 			$('#' + form + ' select')
-			 .attr('disabled', true);
+			.attr('disabled', true);
 			$('#' + form + ' input[type="radio"]')
 			.attr('disabled', true);
 			$('#' + form + ' input[type="checkbox"]')
@@ -63,7 +64,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			$('#' + form + ' *').attr('readonly',
 					false);
 			$('#' + form + ' select')
-			 .attr('disabled', false);
+			.attr('disabled', false);
 			$('#' + form + ' input[type="radio"]')
 			.attr('disabled', false);
 			$('#' + form + ' input[type="checkbox"]')
@@ -91,6 +92,9 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	}
 
 
+	if(unitApproval){
+		$scope.unitApproval = unitApproval;
+	}
 	$scope.init = function() {
 		console
 		.log('getting masterdata for customer');
@@ -263,20 +267,11 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			console.log('customer Data received from service : ');
 			console.log(response);
 			if (response) {
-				var success=response.success;
-				if(success){
-					$scope.customer = response.customer;
-					$scope.alerts=[];
-					alert("Customer Saved Successfully");
-					$scope.redirectToCustomerDtlScreen($scope.customer.customerId);
-				}
-
-				if(!success){
-					$scope.alerts=[];
-					$scope.alerts.push({msg: 'This Contact No Or Email Id Already Exists!! Enter Different Contact No Or Email Id'});
-					return;
-				}
-			} 
+				$scope.customer = response;
+				$scope.alerts=[];
+				alert("Customer Saved Successfully");
+				$scope.redirectToCustomerDtlScreen($scope.customer.customerId);
+			}
 		})
 	};
 
@@ -297,13 +292,24 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			console.log('customer Data received from service : ');
 			console.log(response);
 			if (response) {
-				var success=response.success;
-				if(success){
-					$scope.customer = response.customer;
-					$scope.alerts=[];
-					alert("Customer Updated Successfully");
-					$scope.redirectToCustomerDtlScreen($scope.customer.customerId);
-				}
+				$scope.customer = response;
+				$scope.alerts=[];
+				alert("Customer Updated Successfully");
+				$scope.redirectToCustomerDtlScreen($scope.customer.customerId);
+			}
+		})
+	};
+
+
+	$scope.approveUnit = function(unit) {
+
+		customerService.approveUnit(unit)
+		.then(function(response) {
+			console.log('update unit called in controller: ');
+			console.log(response);
+			if (response) {
+				unit= response;
+				$scope.redirectToCustomerDtlScreen(unit.customerId);
 			} 
 		})
 	};
@@ -405,18 +411,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			templateUrl: 'customer/unitExpiration.html',
 			controller: function ($scope, customerService, masterdataService) {
 
-				$scope.serviceRenewalBean = unit
-
-				$scope.getCustomer = function(){
-					customerService.getCustomer(unit.customerId)
-					.then(function(response) {
-						console.log('customer Data received in controller : ');
-						console.log(response);
-						if (response) {
-							$scope.customer = response;
-						} 
-					})
-				}
+				$scope.serviceRenewalBean = unit.serviceAgreement;
 
 				$scope.renewService = function(){
 					customerService.renewService($scope.serviceRenewalBean)

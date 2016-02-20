@@ -1,13 +1,9 @@
 package com.techvisio.eserve.db.impl;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.persistence.Query;
 
@@ -17,28 +13,28 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.ComplaintAssignment;
-import com.techvisio.eserve.beans.ComplaintResolution;
+import com.techvisio.eserve.beans.AgreementDuration;
+import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.EquipmentDetail;
-import com.techvisio.eserve.beans.SearchComplaint;
-import com.techvisio.eserve.beans.SearchComplaintCustomer;
-import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.ServiceAgreement;
+import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
-import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
+import com.techvisio.eserve.exception.NoEntityFoundException;
 import com.techvisio.eserve.factory.UniqueIdentifierGenerator;
-import com.techvisio.eserve.util.AppConstants;
 
 @Component
 public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 
 	@Autowired
 	UniqueIdentifierGenerator identifierGenerator;
+
+	@Autowired
+	CacheDao cacheDao;
 
 	@Override
 	public Customer getCustomer(Long customerId) {
@@ -95,10 +91,26 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 					if(unit.getUnitCode()==null){
 						unit.setUnitCode(identifierGenerator.getUniqueIdentifierForUnit(unit));
 					}
+
+					if(unit.getServiceAgreement().getContractStartOnString()!= null && unit.getServiceAgreement().getAgreementDuration() != null && unit.getServiceAgreement().getContractExpireOn()==null){
+						Long durationId = unit.getServiceAgreement().getAgreementDuration().getAgreementDurationId();
+						Date contractExpireDate = getDurationValue(unit.getServiceAgreement().getContractStartOnString(), durationId);
+						unit.getServiceAgreement().setContractExpireOn(contractExpireDate);
+					}
 				}
 			}
 
 			getEntityManager().persist(customer);
+			getEntityManager().flush();
+			List<Unit> units= customer.getUnits();
+			for(Unit unit : units){
+
+				unit = getUnit(unit.getUnitId());
+				if(unit.getServiceAgreement().getUnitId()==null){
+					unit.getServiceAgreement().setUnitId(unit.getUnitId());
+				}
+				saveUnit(unit);			
+			}
 		}
 
 		else{
@@ -128,6 +140,11 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 				unitCode=identifierGenerator.getUniqueIdentifierForUnit(unit);
 				unit.setUnitCode(unitCode);
 			}
+			if(unit.getServiceAgreement().getContractStartOnString()!= null && unit.getServiceAgreement().getAgreementDuration() != null && unit.getServiceAgreement().getContractExpireOn()==null){
+				Long durationId = unit.getServiceAgreement().getAgreementDuration().getAgreementDurationId();
+				Date contractExpireDate = getDurationValue(unit.getServiceAgreement().getContractStartOnString(), durationId);
+				unit.getServiceAgreement().setContractExpireOn(contractExpireDate);
+			}
 			getEntityManager().persist(unit);
 		}
 		else{
@@ -155,9 +172,11 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 
 		List<Long> equipmentDtlId = new ArrayList<Long>();
 		if (equipmentDtlId != null) {
-			for (EquipmentDetail equipmentDetail : equipmentDetails) {
-				if(equipmentDetail.getEquipmentDtlId() != null){
-					equipmentDtlId.add(equipmentDetail.getEquipmentDtlId());
+			if(equipmentDetails!=null){
+				for (EquipmentDetail equipmentDetail : equipmentDetails) {
+					if(equipmentDetail.getEquipmentDtlId() != null){
+						equipmentDtlId.add(equipmentDetail.getEquipmentDtlId());
+					}
 				}
 			}
 
@@ -210,21 +229,46 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		return null;
 	}
 
+	public void saveServiceAgreement(ServiceAgreement agreement) {
+
+		if(agreement.getServiceAgreementId() == null){
+			getEntityManager().persist(agreement);
+		}
+		else{
+			getEntityManager().merge(agreement);
+		}
+		getEntityManager().flush();
+	}
+
+	@Override
 	public void saveServiceAgreementHistory(ServiceAgreementHistory history) {
 		if(history.getAgreementHistoryId()==null){
 			getEntityManager().persist(history);
 		}
 	}	
+	
+	@Override
+	public void saveServiceAgreementFinanceHistory(ServiceAgreementFinanceHistory financeHistory) {
+		if(financeHistory.getSrvcAgrmntFinancHstoryId()==null){
+			getEntityManager().persist(financeHistory);
+		}
+	}	
+	
 
 	@Override
-	public void renewService(Unit unit){
+	public void renewService(ServiceAgreement agreement){
 
-//		Unit unit = getUnit(unitId);
-//		unit.setServiceCategory(renewalBean.getSeriviceType());
-//		unit.getServiceAgreement().setContractStartOnString(renewalBean.getStartDateString());
+		Date contractExpireDate = getDurationValue(agreement.getContractStartOnString(), agreement.getAgreementDuration().getAgreementDurationId());
+		agreement.setContractExpireOn(contractExpireDate);
+		if(agreement.getServiceAgreementFinance() != null){
+		agreement.getServiceAgreementFinance().setUnitId(agreement.getUnitId());
+		}
+		saveServiceAgreement(agreement);
 
+	}
 
-		String startDateString = unit.getServiceAgreement().getContractStartOnString();
+	private Date getDurationValue(String contractStartDate, Long durationId) {
+		String startDateString = contractStartDate;
 		Date startDate = null;
 		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
 		if(!StringUtils.isEmpty(startDateString)){
@@ -232,25 +276,15 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		}
 
 		Calendar c = Calendar.getInstance(); 
-		c.setTime(startDate); 
-		c.add(Calendar.MONTH, unit.getServiceAgreement().getAgreementDuration().getDuration());
-		Date date = c.getTime();
+		c.setTime(startDate);
+		AgreementDuration agreementDuration = cacheDao.getAgreementDuration(durationId); 
+		c.add(Calendar.MONTH, agreementDuration.getDuration());
 
+		Date date = c.getTime();
 		c.setTime(date);
 		c.add(Calendar.DATE, -1);
 		Date contractExpireDate = c.getTime();
-		
-		
-		unit.getServiceAgreement().setContractExpireOn(contractExpireDate);
-		saveUnit(unit);
-
-		ServiceAgreementHistory history = new ServiceAgreementHistory();
-		history.setClient(unit.getClient());
-		history.setEndDate(contractExpireDate);
-		history.setServiceType(unit.getServiceCategory());
-		history.setStartDateString(unit.getServiceAgreement().getContractStartOnString());
-		history.setUnitId(unit.getUnitId());
-		saveServiceAgreementHistory(history);
+		return contractExpireDate;
 	} 
 
 	@Override
@@ -261,5 +295,28 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		List<ServiceAgreementHistory> agreementHistories= (List<ServiceAgreementHistory>)query.getResultList();
 		return agreementHistories;
 	}
-	
+
+	@Override
+	public ApproveUnitDtl getUnitForApproval(Long unitId){
+
+		
+		Unit unit = getUnit(unitId);
+		
+		if(unit==null){
+			throw new NoEntityFoundException("No Unit found with id : "+unitId);
+		}
+		Customer customer = getCustomer(unit.getCustomerId());
+
+		ApproveUnitDtl unitDtl = new ApproveUnitDtl();
+
+		unitDtl.setUnit(unit);
+		unitDtl.setCustomerCode(customer.getCustomerCode());
+		unitDtl.setCustomerName(customer.getCustomerName());
+		unitDtl.setContactNo(customer.getContactNo());
+		unitDtl.setEmailId(customer.getEmailId());
+
+		return unitDtl;
+
+	}
+
 }

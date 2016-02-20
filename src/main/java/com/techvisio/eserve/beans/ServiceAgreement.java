@@ -22,6 +22,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "TB_SERVICE_AGREEMENT")
@@ -33,8 +34,8 @@ public class ServiceAgreement extends BasicEntity{
 	private Long serviceAgreementId;
 	@Column(name="UNIT_ID")
 	private Long unitId;
-	@Column(name="SERVICE_TYPE")
-	private String serviceType;
+	@Column(name="SERVICE_CATEGORY")
+	private String serviceCategory = "Paid";
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="CONTRACT_START_ON")
@@ -56,16 +57,30 @@ public class ServiceAgreement extends BasicEntity{
 	@JoinColumn(name="AGREEMENT_DURATION_ID")
 	private AgreementDuration agreementDuration;
 	
-	@Column(name="IS_APPROVED")
-	private boolean approved;
 	@Column(name="APPROVED_BY")
 	private Long approvedBy;
 	
-	@JsonIgnore
-	@OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.LAZY)
+	@OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
 	@JoinColumn(name="SERVICE_AGREEMENT_FINANCE_ID")
 	private ServiceAgreementFinance serviceAgreementFinance;
 	
+	@OneToOne
+	@JoinColumn(name="SERVICE_PROVIDER_ID")
+	private ServiceProvider serviceProvider;
+	
+	
+	public ServiceProvider getServiceProvider() {
+		return serviceProvider;
+	}
+	public void setServiceProvider(ServiceProvider serviceProvider) {
+		this.serviceProvider = serviceProvider;
+	}
+	public String getServiceCategory() {
+		return serviceCategory;
+	}
+	public void setServiceCategory(String serviceCategory) {
+		this.serviceCategory = serviceCategory;
+	}
 	public Long getServiceAgreementId() {
 		return serviceAgreementId;
 	}
@@ -79,23 +94,11 @@ public class ServiceAgreement extends BasicEntity{
 		this.unitId = unitId;
 	}
 	
-	public String getServiceType() {
-		return serviceType;
-	}
-	public void setServiceType(String serviceType) {
-		this.serviceType = serviceType;
-	}
 	public AgreementDuration getAgreementDuration() {
 		return agreementDuration;
 	}
 	public void setAgreementDuration(AgreementDuration agreementDuration) {
 		this.agreementDuration = agreementDuration;
-	}
-	public boolean isApproved() {
-		return approved;
-	}
-	public void setApproved(boolean approved) {
-		this.approved = approved;
 	}
 	public Long getApprovedBy() {
 		return approvedBy;

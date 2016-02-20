@@ -38,9 +38,11 @@ public class Unit extends BasicEntity{
 	@Column(name="UNIT_CODE")
 	private String unitCode;
 	@Column(name="VERSION_ID")
-	private Double versionId;
-	@Column(name="SERVICE_CATEGORY")
-	private String serviceCategory = "Paid";
+	private Double versionId = 0.0;
+	@Column(name="APPROVAL_STATUS")
+	private char approvalStatus;
+	
+	
 	@Column(name="ASSET_NO")
 	private String assetNo;
 	
@@ -55,10 +57,6 @@ public class Unit extends BasicEntity{
 	@JoinColumn(name="UNIT_CATEGORY_ID")
 	private UnitCategory unitCategory;
 
-	@OneToOne
-	@JoinColumn(name="SERVICE_PROVIDER_ID")
-	private ServiceProvider serviceProvider;
-	
 	@OneToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="ADDRESS_ID")
 	private Address address;
@@ -71,19 +69,6 @@ public class Unit extends BasicEntity{
 	@JoinColumn(name="UNIT_ID")
 	private List<EquipmentDetail> equipmentDetails;
 	
-	public String getServiceCategory() {
-		return serviceCategory;
-	}
-	public void setServiceCategory(String serviceCategory) {
-		this.serviceCategory = serviceCategory;
-	}
-	
-	public ServiceProvider getServiceProvider() {
-		return serviceProvider;
-	}
-	public void setServiceProvider(ServiceProvider serviceProvider) {
-		this.serviceProvider = serviceProvider;
-	}
 	public String getAssetNo() {
 		return assetNo;
 	}
@@ -151,6 +136,12 @@ public class Unit extends BasicEntity{
 	}
 	public void setVersionId(Double versionId) {
 		this.versionId = versionId;
+	}
+	public char getApprovalStatus() {
+		return approvalStatus;
+	}
+	public void setApprovalStatus(char approvalStatus) {
+		this.approvalStatus = approvalStatus;
 	}
 
 }

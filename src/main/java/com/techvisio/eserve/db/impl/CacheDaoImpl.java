@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.AgreementDuration;
 import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
@@ -160,5 +161,30 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 		Query query=getEntityManager().createQuery(queryString);
 		List<Issue> result= query.getResultList();
 		return result;
+	}
+	
+	@Override
+	public AgreementDuration getAgreementDuration(Long durationId){
+		String queryString="FROM AgreementDuration ad WHERE ad.agreementDurationId = "+durationId;
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<AgreementDuration> agreementDurations= (List<AgreementDuration>)query.getResultList();
+		if(agreementDurations != null && agreementDurations.size()>0){
+			return agreementDurations.get(0);
+		}
+		return null;
+		}
+	
+	
+	@Override
+	public Config getConfig(String property) {
+		String queryString="FROM Config c WHERE c.property = "+property;
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<Config> configs= (List<Config>)query.getResultList();
+		if(configs != null && configs.size()>0){
+			return configs.get(0);
+		}
+		return null;
 	}
 }
