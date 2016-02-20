@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techvisio.eserve.beans.Response;
+import com.techvisio.eserve.exception.AuthorizationException;
+import com.techvisio.eserve.exception.DuplicateEntityException;
 import com.techvisio.eserve.util.CustomLogger;
 import com.techvisio.eserve.util.EISystemException;
 
@@ -50,22 +53,35 @@ public class ExceptionHandlerController {
 
 	}
 
-	@ExceptionHandler(EISystemException.class)
+	@ExceptionHandler(DuplicateEntityException.class)
 	@ResponseBody
-	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-	public ResponseEntity<Response> handleException(EISystemException exp) {
+	@ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
+	public ResponseEntity<Response> handleException(DuplicateEntityException exp) {
 		// System.out.println(((UnexpectedRollbackException)e).getRootCause());
 		Response response = new Response();
 
-		String currentTime = new SimpleDateFormat("yyyyMMddHHmmssSSS")
-				.format(new Date());
-		String message = "We're sorry, but we are unable to perform your request at the moment. Error Code : "
-				+ currentTime;
-		message = message + "." + exp.getMessage();
+		String message = exp.getMessage();
+		message = "Record Already Found" + "\n" + exp.getMessage();
 		logger.error(message, exp);
 
 		response.setError(message);
 		return new ResponseEntity<Response>(response,
 				HttpStatus.NOT_ACCEPTABLE);
+	}
+	
+	@ExceptionHandler(AuthorizationException.class)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	public ResponseEntity<Response> handleException(AuthorizationException exp) {
+		// System.out.println(((UnexpectedRollbackException)e).getRootCause());
+		Response response = new Response();
+
+		String message = exp.getMessage();
+		message = "Not Authorized" + "\n" + exp.getMessage();
+		logger.error(message, exp);
+
+		response.setError(message);
+		return new ResponseEntity<Response>(response,
+				HttpStatus.FORBIDDEN);
 	}
 }

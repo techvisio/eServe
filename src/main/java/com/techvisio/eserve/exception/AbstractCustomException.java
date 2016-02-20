@@ -6,4 +6,26 @@ public abstract class AbstractCustomException extends Exception {
 		super(e);
 	}
 
+	public AbstractCustomException() {
+		super();
+	}
+
+	public AbstractCustomException(String message, Throwable cause,
+			boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+	}
+
+	public AbstractCustomException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public AbstractCustomException(String message) {
+		super(message);
+	}
+
+	public AbstractCustomException(Throwable cause) {
+		super(cause);
+	}
+
+	
 }
