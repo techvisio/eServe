@@ -26,6 +26,7 @@ import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.exception.NoEntityFoundException;
 import com.techvisio.eserve.factory.UniqueIdentifierGenerator;
+import com.techvisio.eserve.util.AppConstants;
 
 @Component
 public class CustomerDaoImpl extends BaseDao implements CustomerDao{
@@ -114,6 +115,13 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		}
 
 		else{
+			for(Unit unit : customer.getUnits()){
+				if(unit.getServiceAgreement().getContractStartOnString()!= null && unit.getServiceAgreement().getAgreementDuration() != null && unit.getServiceAgreement().getContractExpireOn()==null){
+					Long durationId = unit.getServiceAgreement().getAgreementDuration().getAgreementDurationId();
+					Date contractExpireDate = getDurationValue(unit.getServiceAgreement().getContractStartOnString(), durationId);
+					unit.getServiceAgreement().setContractExpireOn(contractExpireDate);
+				}
+			}
 			getEntityManager().merge(customer);
 		}
 		return customer.getCustomerId();
@@ -131,7 +139,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public void saveUnit(Unit unit) {
+	public Long saveUnit(Unit unit) {
 
 		String unitCode = unit.getUnitCode();
 		if(unit.getUnitId() == null){
@@ -152,10 +160,16 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 				unitCode=identifierGenerator.getUniqueIdentifierForUnit(unit);
 				unit.setUnitCode(unitCode);
 			}
+			if(unit.getServiceAgreement().getContractStartOnString()!= null && unit.getServiceAgreement().getAgreementDuration() != null && unit.getServiceAgreement().getContractExpireOn()==null){
+				Long durationId = unit.getServiceAgreement().getAgreementDuration().getAgreementDurationId();
+				Date contractExpireDate = getDurationValue(unit.getServiceAgreement().getContractStartOnString(), durationId);
+				unit.getServiceAgreement().setContractExpireOn(contractExpireDate);
+			}
 			deleteEquipmentDtlExclusion(unit.getEquipmentDetails(), unit.getUnitId());
 			getEntityManager().merge(unit);
 		}
 		getEntityManager().flush();
+		return unit.getUnitId();
 	}	
 
 	@Override
@@ -246,14 +260,14 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 			getEntityManager().persist(history);
 		}
 	}	
-	
+
 	@Override
 	public void saveServiceAgreementFinanceHistory(ServiceAgreementFinanceHistory financeHistory) {
 		if(financeHistory.getSrvcAgrmntFinancHstoryId()==null){
 			getEntityManager().persist(financeHistory);
 		}
 	}	
-	
+
 
 	@Override
 	public void renewService(ServiceAgreement agreement){
@@ -261,8 +275,11 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		Date contractExpireDate = getDurationValue(agreement.getContractStartOnString(), agreement.getAgreementDuration().getAgreementDurationId());
 		agreement.setContractExpireOn(contractExpireDate);
 		if(agreement.getServiceAgreementFinance() != null){
-		agreement.getServiceAgreementFinance().setUnitId(agreement.getUnitId());
+			agreement.getServiceAgreementFinance().setUnitId(agreement.getUnitId());
 		}
+		Unit unit = getUnit(agreement.getUnitId());
+		unit.setApprovalStatus(AppConstants.PENDING.charAt(0));
+		saveUnit(unit);
 		saveServiceAgreement(agreement);
 
 	}
@@ -299,9 +316,9 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	@Override
 	public ApproveUnitDtl getUnitForApproval(Long unitId){
 
-		
+
 		Unit unit = getUnit(unitId);
-		
+
 		if(unit==null){
 			throw new NoEntityFoundException("No Unit found with id : "+unitId);
 		}

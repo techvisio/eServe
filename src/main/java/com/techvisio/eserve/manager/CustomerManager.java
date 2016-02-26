@@ -25,9 +25,9 @@ public interface CustomerManager {
 
 	public List<Customer> getCustomers();
 	public Customer getCustomer(Long customerId);
-	public Long saveCustomer(Customer customer);
+	public Long saveCustomer(Customer customer, String context);
 	public void saveUnit(List<Unit> units,  Long customerId);
-	public void saveUnit(Unit unit);
+	public Long saveUnit(Unit unit);
 	public List<Unit> getUnits(Long customerId);
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
@@ -35,4 +35,5 @@ public interface CustomerManager {
 	Unit approveUnit(Unit unit);
 	void renewService(ServiceAgreement agreement);
 	ApproveUnitDtl getUnitForApproval(Long unitId);
+	Long saveCustomer(Customer customer);
 }

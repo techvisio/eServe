@@ -58,11 +58,11 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function saveCustomer(customer){
+	function saveCustomer(customer, context){
 		console.log('add new customer');
 		var request = $http({
 			method : "post",
-			url : "../service/customer/",
+			url : "../service/customer/"+ context,
 			params : "",
 			data: customer
 
@@ -107,11 +107,11 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function saveUnit(units, customerId){
+	function saveUnit(units, customerId, context){
 		console.log('save units');
 		var request = $http({
 			method : "put",
-			url : "../service/customer/unit/" + customerId,
+			url : "../service/customer/unit/" + customerId + "/"+context,
 			params : "",
 			data: units
 

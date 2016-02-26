@@ -29,6 +29,7 @@ import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
+import com.techvisio.eserve.factory.WorkItemFactory;
 import com.techvisio.eserve.manager.CustomerManager;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
@@ -54,106 +55,125 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 
 	@Override
-	public Long saveCustomer(Customer customer) {
-//		Map<String,Object> result=new HashMap<String, Object>();
-//
-//		if(customer.getCustomerId()==null){
-//
-//			boolean isCustomerExists = customerDao.isCustomerExists(customer);
-//			if(isCustomerExists){
-//				result.put("existingCustomer", null);
-//				result.put("success", false);
-//				return result;
-//			}
-//		}
+	public Long saveCustomer(Customer customer, String context) {
+		//		Map<String,Object> result=new HashMap<String, Object>();
+		//
+		//		if(customer.getCustomerId()==null){
+		//
+		//			boolean isCustomerExists = customerDao.isCustomerExists(customer);
+		//			if(isCustomerExists){
+		//				result.put("existingCustomer", null);
+		//				result.put("success", false);
+		//				return result;
+		//			}
+		//		}
 
-		customer.setClient(CommonUtil.getCurrentClient());		
+		List<Unit> units = customer.getUnits();
 
-		Long customerId = customerDao.saveCustomer(customer);	
+		for(Unit unit : units){
 
-//		Customer customerFromDB = customerDao.getCustomer(customerId);
-//		result.put("customer", customerFromDB);
-//		result.put("success", true);
-		return customerId;
-	}
+			if(context.equalsIgnoreCase(AppConstants.DRAFT)){
+				unit.setApprovalStatus(AppConstants.DRAFTSTATUS.charAt(0));
+			}
 
-
-	@Override
-	public void saveUnit(List<Unit> units, Long customerId) {
-		customerDao.saveUnit(units, customerId);
-	}
-
-	@Override
-	public void saveUnit(Unit unit) {
-		customerDao.saveUnit(unit);
-
-	}
-
-	@Override
-	public List<Unit> getUnits(Long customerId) {
-		List<Unit> units = customerDao.getUnits(customerId);
-		return units;
-	}
-
-	@Override
-	public List<Customer> getCustomers() {
-		List<Customer> customers = customerDao.getCustomers();
-		return customers;
-	}
-
-	@Override
-	public void renewService(ServiceAgreement agreement){
-		customerDao.renewService(agreement);
-	}
-
-	@Override
-	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId) {
-		List<ServiceAgreementHistory> agreementHistories = customerDao.getServiceAgreementHistoryForUnit(unitId);
-		return agreementHistories;
-	}
-
-	@Override
-	public Unit getUnit(Long unitId) {
-		Unit unit = customerDao.getUnit(unitId);
-		return unit;
-	}
-
-	@Override
-	public Unit approveUnit(Unit unit){
-
-		Unit unitFromDB = null;
-
-		if(unit.getApprovalStatus()!=AppConstants.APPROVED.charAt(0)){
-
-			unit.setApprovalStatus(AppConstants.APPROVED.charAt(0));
-			unit.setVersionId(unit.getVersionId()+1);
-			customerDao.saveUnit(unit);
-
-			ServiceAgreementHistory history = new ServiceAgreementHistory();
-			history.setClient(unit.getClient());
-			history.setEndDate(unit.getServiceAgreement().getContractExpireOn());
-			history.setServiceType(unit.getServiceAgreement().getServiceCategory());
-			history.setStartDateString(unit.getServiceAgreement().getContractStartOnString());
-			history.setUnitId(unit.getServiceAgreement().getUnitId());
-			customerDao.saveServiceAgreementHistory(history);
-
-			if(unit.getServiceAgreement().getServiceAgreementFinance() != null){
-				ServiceAgreementFinanceHistory financeHistory = new ServiceAgreementFinanceHistory();
-				financeHistory.setAgreementAmount(unit.getServiceAgreement().getServiceAgreementFinance().getAgreementAmount());
-				financeHistory.setClient(unit.getClient());
-				financeHistory.setUnitId(unit.getUnitId());
-				customerDao.saveServiceAgreementFinanceHistory(financeHistory);
+			if(context.equalsIgnoreCase(AppConstants.PUBLISH)){
+				unit.setApprovalStatus(AppConstants.PENDING.charAt(0));
 			}
 		}
 
-		unitFromDB = customerDao.getUnit(unit.getUnitId());
-		return unitFromDB;
-	}
+			customer.setClient(CommonUtil.getCurrentClient());		
 
-	@Override
-	public ApproveUnitDtl getUnitForApproval(Long unitId) {
-		ApproveUnitDtl approveUnitDtl = customerDao.getUnitForApproval(unitId);
-		return approveUnitDtl;
-	}
+			Long customerId = customerDao.saveCustomer(customer);	
 
-}
+			//		Customer customerFromDB = customerDao.getCustomer(customerId);
+			//		result.put("customer", customerFromDB);
+			//		result.put("success", true);
+			return customerId;
+		}
+
+
+		@Override
+		public void saveUnit(List<Unit> units, Long customerId) {
+			customerDao.saveUnit(units, customerId);
+		}
+
+		@Override
+		public Long saveUnit(Unit unit) {
+			Long unitId = customerDao.saveUnit(unit);
+			return unitId;
+
+		}
+
+		@Override
+		public List<Unit> getUnits(Long customerId) {
+			List<Unit> units = customerDao.getUnits(customerId);
+			return units;
+		}
+
+		@Override
+		public List<Customer> getCustomers() {
+			List<Customer> customers = customerDao.getCustomers();
+			return customers;
+		}
+
+		@Override
+		public void renewService(ServiceAgreement agreement){
+			customerDao.renewService(agreement);
+		}
+
+		@Override
+		public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId) {
+			List<ServiceAgreementHistory> agreementHistories = customerDao.getServiceAgreementHistoryForUnit(unitId);
+			return agreementHistories;
+		}
+
+		@Override
+		public Unit getUnit(Long unitId) {
+			Unit unit = customerDao.getUnit(unitId);
+			return unit;
+		}
+
+		@Override
+		public Unit approveUnit(Unit unit){
+
+			Unit unitFromDB = null;
+
+			if(unit.getApprovalStatus()!=AppConstants.APPROVED.charAt(0)){
+
+				unit.setApprovalStatus(AppConstants.APPROVED.charAt(0));
+				unit.setVersionId(unit.getVersionId()+1);
+				customerDao.saveUnit(unit);
+
+				ServiceAgreementHistory history = new ServiceAgreementHistory();
+				history.setClient(unit.getClient());
+				history.setEndDate(unit.getServiceAgreement().getContractExpireOn());
+				history.setServiceType(unit.getServiceAgreement().getServiceCategory());
+				history.setStartDateString(unit.getServiceAgreement().getContractStartOnString());
+				history.setUnitId(unit.getServiceAgreement().getUnitId());
+				customerDao.saveServiceAgreementHistory(history);
+
+				if(unit.getServiceAgreement().getServiceAgreementFinance() != null){
+					ServiceAgreementFinanceHistory financeHistory = new ServiceAgreementFinanceHistory();
+					financeHistory.setAgreementAmount(unit.getServiceAgreement().getServiceAgreementFinance().getAgreementAmount());
+					financeHistory.setClient(unit.getClient());
+					financeHistory.setUnitId(unit.getUnitId());
+					customerDao.saveServiceAgreementFinanceHistory(financeHistory);
+				}
+			}
+
+			unitFromDB = customerDao.getUnit(unit.getUnitId());
+			return unitFromDB;
+		}
+
+		@Override
+		public ApproveUnitDtl getUnitForApproval(Long unitId) {
+			ApproveUnitDtl approveUnitDtl = customerDao.getUnitForApproval(unitId);
+			return approveUnitDtl;
+		}
+
+		@Override
+		public Long saveCustomer(Customer customer) {
+			Long customerId = customerDao.saveCustomer(customer);
+			return customerId;
+		}
+	}

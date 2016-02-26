@@ -55,10 +55,10 @@ public class CustomerController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value="/{context}",method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity<Response> saveCustomer(@RequestBody Customer customer) {  
-		Long customerId = customerService.saveCustomer(customer);
+	public ResponseEntity<Response> saveCustomer(@RequestBody Customer customer, @PathVariable String context) {  
+		Long customerId = customerService.saveCustomer(customer, context);
 		Customer customerFromDB = customerService.getCustomer(customerId);
 		Response response=new Response();
 		response.setResponseBody(customerFromDB);
@@ -75,11 +75,11 @@ public class CustomerController {
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
-	@RequestMapping(value="/unit/{customerId}", method = RequestMethod.PUT)
-	public ResponseEntity<Response> saveUnit(@RequestBody Unit unit, @PathVariable Long customerId) {  
+	@RequestMapping(value="/unit/{customerId}/{context}", method = RequestMethod.PUT)
+	public ResponseEntity<Response> saveUnit(@RequestBody Unit unit, @PathVariable Long customerId, @PathVariable String context) {  
 		Response response=new Response();
 		unit.setCustomerId(customerId);
-		customerService.saveUnit(unit);
+		customerService.saveUnit(unit,context);
 		List<Unit> unitsFromDB = customerService.getUnits(customerId);
 		response.setResponseBody(unitsFromDB);
 

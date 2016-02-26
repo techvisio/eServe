@@ -248,7 +248,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		})
 	}
 
-	$scope.saveCustomer = function() {
+	$scope.saveCustomer = function(context) {
 
 		if(!$scope.CUSTOMER.$valid || !$scope.UNIT.$valid){
 
@@ -262,7 +262,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		}
 
 		console.log('save customer called');
-		customerService.saveCustomer($scope.customer)
+		customerService.saveCustomer($scope.customer, context)
 		.then(function(response) {
 			console.log('customer Data received from service : ');
 			console.log(response);
@@ -275,10 +275,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		})
 	};
 
-	$scope.saveAndUpdateCustomer = function(){
+	$scope.saveAndUpdateCustomer = function(context){
 
 		if(!$scope.customer.customerId){
-			$scope.saveCustomer();			
+			$scope.saveCustomer(context);			
 		}
 		else{
 			$scope.updateCustomer();
@@ -334,7 +334,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		})
 	}
 
-	$scope.saveUnit = function(object) {
+	$scope.saveUnit = function(object, context) {
 		console.log('save unit called');
 
 		if(!$scope.UNIT.$valid){
@@ -348,7 +348,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			$scope.alerts=[];
 		}
 
-		customerService.saveUnit(object, $scope.customer.customerId)
+		customerService.saveUnit(object, $scope.customer.customerId, context)
 		.then(function(response) {
 			console.log('unit Data received from service : ');
 			console.log(response);

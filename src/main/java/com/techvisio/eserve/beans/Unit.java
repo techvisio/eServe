@@ -23,6 +23,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 
 @Entity
@@ -40,7 +41,7 @@ public class Unit extends BasicEntity{
 	@Column(name="VERSION_ID")
 	private Double versionId = 0.0;
 	@Column(name="APPROVAL_STATUS")
-	private char approvalStatus;
+	private char approvalStatus = AppConstants.PENDING.charAt(0);
 	
 	
 	@Column(name="ASSET_NO")

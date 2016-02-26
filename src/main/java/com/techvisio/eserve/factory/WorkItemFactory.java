@@ -11,13 +11,13 @@ public class WorkItemFactory {
 		WorkItem workItem = null;
 		
 		switch (workType) {
-		case AppConstants.PENDINGWORK:
+		case AppConstants.DRAFT:
 			
 		workItem = new WorkItem();
 		workItem.setWorkType(AppConstants.PENDINGWORK);
 		break;
 		
-		case AppConstants.APPROVALWORK:
+		case AppConstants.PUBLISH:
 			
 			workItem = new WorkItem();
 			workItem.setWorkType(AppConstants.APPROVALWORK);

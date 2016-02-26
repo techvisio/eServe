@@ -45,14 +45,28 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Long saveCustomer(Customer customer) {
-		Long customerId = customerManager.saveCustomer(customer);
+	public Long saveCustomer(Customer customer, String context) {
 
-		WorkItemFactory factory = new WorkItemFactory();
+		Long customerId = customerManager.saveCustomer(customer, context);
+		WorkItem workItem = new WorkItem();
 
-		WorkItem workItem = factory.getWorkItem(AppConstants.PENDINGWORK);
+		if(context.equalsIgnoreCase(AppConstants.DRAFT)){
+			WorkItemFactory factory = new WorkItemFactory();
 
-		workItem.setEntityId(customerId);
+			workItem = factory.getWorkItem(context);
+
+			workItem.setEntityType("CUSTOMER");
+			workItem.setEntityId(customerId);
+
+		}
+
+		if(context.equalsIgnoreCase(AppConstants.PUBLISH)){
+			WorkItemFactory factory = new WorkItemFactory();
+			workItem = factory.getWorkItem(context);
+
+			workItem.setEntityType("CUSTOMER");
+			workItem.setEntityId(customerId);
+		}
 		workItemService.saveWorkItem(workItem);
 		return customerId;
 	}
@@ -63,8 +77,28 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public void saveUnit(Unit unit) {
-		customerManager.saveUnit(unit);
+	public Long saveUnit(Unit unit, String context) {
+		Long unitId = customerManager.saveUnit(unit);
+
+		WorkItem workItem = new WorkItem();
+
+		if(context.equalsIgnoreCase(AppConstants.DRAFT)){
+			WorkItemFactory factory = new WorkItemFactory();
+
+			workItem = factory.getWorkItem(context);
+			workItem.setEntityType("UNIT");
+			workItem.setEntityId(unitId);
+		}
+
+		if(context.equalsIgnoreCase(AppConstants.PUBLISH)){
+			WorkItemFactory factory = new WorkItemFactory();
+
+			workItem = factory.getWorkItem(context);
+			workItem.setEntityType("UNIT");
+			workItem.setEntityId(unitId);
+		}
+		workItemService.saveWorkItem(workItem);		
+		return unitId;
 	}
 
 	@Override
@@ -139,5 +173,11 @@ public class CustomerServiceImpl implements CustomerService{
 	public ApproveUnitDtl getUnitForApproval(Long unitId) {
 		ApproveUnitDtl approveUnitDtl = customerManager.getUnitForApproval(unitId);
 		return approveUnitDtl;
+	}
+
+	@Override
+	public Long saveCustomer(Customer customer) {
+		Long customerId = customerManager.saveCustomer(customer);
+		return customerId;
 	}
 }

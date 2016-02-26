@@ -27,9 +27,10 @@ public interface CustomerService {
 
 	public List<Customer> getCustomers();
 	public Customer getCustomer(Long customerId);
+	public Long saveCustomer(Customer customer, String context);
 	public Long saveCustomer(Customer customer);
 	public void saveUnit(List<Unit> units,  Long customerId);
-	public void saveUnit(Unit unit);
+	public Long saveUnit(Unit unit, String context);
 	public List<Unit> getUnits(Long customerId);
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
 //	public Map<String, Object> checkCustomerExistOrNot(

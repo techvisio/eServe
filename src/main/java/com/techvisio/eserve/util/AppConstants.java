@@ -15,6 +15,7 @@ public interface AppConstants {
 	public static final String APPROVED = "A";
 	public static final String REJECTED = "R";
 	public static final String PENDING = "P";
+	public static final String DRAFTSTATUS = "D";
 	
 	public static final String CRITICAL = "C";
 	public static final String MEDIUM = "M";
@@ -27,6 +28,9 @@ public interface AppConstants {
 	public static final String SLA_DAYS_MEDIUM = "SLA_DAYS_MEDIUM";
 	public static final String CONFIG = "CONFIG";
 	
+	
+	public static final String DRAFT = "DRAFT";
+	public static final String PUBLISH = "PUBLISH";
 	public static final String APPROVALWORK = "APPROVAL";
 	public static final String PENDINGWORK = "PENDING";
 	
