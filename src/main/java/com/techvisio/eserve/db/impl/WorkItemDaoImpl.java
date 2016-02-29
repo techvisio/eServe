@@ -60,4 +60,19 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		}
 	}
 
+	@Override
+	public List<WorkItem> getWorkItembyUserandType(Long userId, String type) {
+		
+		String queryString="Select wi.* from  TB_WORK_ITEM wi join TB_PRIVILEGE prv "
+				+ "on wi.PRIVILEGE_ID=prv.PRIVILEGE_ID join TB_USER_PRIVILEGE usrpr on usrpr.PRIVILEGE_ID=prv.PRIVILEGE_ID "
+				+ "where wi.WORKTYPE = coalesce(:type, WORKTYPE) and usrpr.USER_ID=:userId" ;
+		Query query=getEntityManager().createNativeQuery(queryString,WorkItem.class);
+		query.setParameter("type", type);
+		query.setParameter("userId", userId);
+		@SuppressWarnings("unchecked")
+		List<WorkItem> workItems= (List<WorkItem>)query.getResultList();
+		return workItems;
+	}
+
+
 }

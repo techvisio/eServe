@@ -1,5 +1,7 @@
 package com.techvisio.eserve.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,5 +37,11 @@ public class WorkItemServiceImpl implements WorkItemService{
 		WorkItem workItem = workItemManager.getWorkItemByWorkType(workType);
 		return workItem;
 	}
+
+	@Override
+	public List<WorkItem> getWorkItembyUserandType(Long userId, String type) {
+		return workItemManager.getWorkItembyUserandType(userId, type);
+	}
+
 
 }
