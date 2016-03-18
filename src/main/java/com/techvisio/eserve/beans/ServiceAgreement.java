@@ -42,6 +42,9 @@ public class ServiceAgreement extends BasicEntity{
 	@JsonIgnore
 	private Date contractStartOn;
 	
+	@Column(name="VERSION_ID")
+	private Double versionId;
+	
 	@Transient
 	private String contractStartOnString;
 	
@@ -169,4 +172,12 @@ public class ServiceAgreement extends BasicEntity{
 		this.contractExpireOn = parser2.parseDateTime(contractExpireOnString).toDate();
 		}
 	}
+	public Double getVersionId() {
+		return versionId;
+	}
+	public void setVersionId(Double versionId) {
+		this.versionId = versionId;
+	}
+	
+	
 }

@@ -1,0 +1,31 @@
+<div>
+	<div class="row">
+		<div class="col-sm-3">
+			<label for="inputlg">Select Work Item Type</label>
+		</div>
+		<div class="col-sm-3">
+			<select class="form-control" ng-model="workItem.workType">
+				<option>DRAFT AGREEMENT</option>
+				<option>AGREEMENT APPROVAL</option>
+			</select>
+		</div>
+		
+		<div class="col-sm-3">
+			<label for="inputlg">Select Work Item Status</label>
+		</div>
+		<div class="col-sm-3">
+			<select class="form-control" ng-model="workItem.status">
+				<option>Open</option>
+				<option>Close</option>
+			</select>
+		</div>
+	</div>
+	<hr>
+	<div class="tab-separator">
+		<tabset justified="true"> <tab heading="MY QUEUE">
+		<div ng-include src="'../home/customer/myQueue.html'"></div>
+		</tab> <tab heading="MY ROLE" ng-click="getWorkItemByUserIdAndWorkType()">
+		<div ng-include src="'../home/customer/myRole.html'"></div>
+		</tab> </tabset>
+	</div>
+</div>

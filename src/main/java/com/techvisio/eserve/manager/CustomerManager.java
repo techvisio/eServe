@@ -27,13 +27,15 @@ public interface CustomerManager {
 	public Customer getCustomer(Long customerId);
 	public Long saveCustomer(Customer customer, String context);
 	public void saveUnit(List<Unit> units,  Long customerId);
-	public Long saveUnit(Unit unit);
+	public Long saveUnit(Unit unit, String context);
 	public List<Unit> getUnits(Long customerId);
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
-	Unit getUnit(Long unitId);
-	Unit approveUnit(Unit unit);
-	void renewService(ServiceAgreement agreement);
-	ApproveUnitDtl getUnitForApproval(Long unitId);
-	Long saveCustomer(Customer customer);
+	public Unit getUnit(Long unitId);
+	public Unit approveUnit(Unit unit);
+	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
+	public ApproveUnitDtl getUnitForApproval(Long unitId);
+	public Long saveCustomer(Customer customer);
+	public List<Customer> getEmailId(String EmailId);
+	public List<Customer> getContactNo(String ContactNo);
 }

@@ -1,22 +1,28 @@
-var customerModule = angular.module('customerModule', []);
+var customerModule = angular.module('customerModule', ['ngAnimate']);
 
-customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','unitApproval','masterdataService','userService','complaintService','$modal',
-                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,unitApproval,masterdataService,userService,complaintService,$modal) {
+customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','unit','masterdataService','userService','complaintService','$modal',
+                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,unit,masterdataService,userService,complaintService,$modal) {
 
 
 	$scope.form={};
 	$scope.isCollapsed = true;
+	$scope.workItem = {}
 	$scope.isNew=true;
 	$scope.isEdit=false;
 	$scope.startDate=false;
 	$scope.expireDate=false;
 	$scope.showStatus=false;
-//	$scope.getAllComplaints=false;
+	$scope.previewContext = false;
+	//	$scope.getAllComplaints=false;
 	$scope.unitApproval = {};
 	$scope.customer={};
 	$scope.customers=[];
 	$scope.searchCriteria = {};
 	$scope.dummyEquipmentDetails ={};
+	$scope.unit = {
+			"equipmentDetails" : [ {} ]
+	};
+
 	$scope.dummyUnit ={
 			"equipmentDetails" : [ {} ]
 	};
@@ -27,12 +33,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.serviceRenewalBean = {};
 
-	$scope.unit={};
 	$scope.customer.units=[];
-
-	$scope.customer.units.push(angular
-			.copy($scope.dummyUnit));
-
 
 	$scope.isPrivileged = function(role){
 
@@ -92,8 +93,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	}
 
 
-	if(unitApproval){
-		$scope.unitApproval = unitApproval;
+	if(unit){
+		$scope.unitApproval = unit;
 	}
 	$scope.init = function() {
 		console
@@ -192,13 +193,17 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.redirectToCustomerDtlScreen=function(currentCustomerId){
 		$scope.alerts=[];
-		$state.go('customer',{customerId:currentCustomerId});
+		$state.go('customer',{entityId:currentCustomerId});
+	}
+
+	$scope.redirectfromWorkItemtoEntity=function(url,entityId){
+		$state.go(url,{entityId:entityId});
 	}
 
 	if($scope.isPrivileged("VIEW_COMPLAINT") || $scope.isPrivileged("CREATE_COMPLAINT")){
 		$scope.redirectToComplaintScreen=function(currentComplaintId ){
 
-			$state.go('complaintScreen',{complaintId:currentComplaintId});
+			$state.go('complaintScreen',{entityId:currentComplaintId});
 		}
 	}
 
@@ -209,7 +214,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			$scope.alerts.push({msg: 'Non Of Details Are Saved For This Unit'})
 			return;
 		}
-		$state.go('customerToComplaint',{unitId:currentUnitId});
+		$state.go('customerToComplaint',{entityId:currentUnitId});
 	}
 
 	$scope.getCustomerByCriteria=function(){
@@ -250,16 +255,18 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.saveCustomer = function(context) {
 
-		if(!$scope.CUSTOMER.$valid || !$scope.UNIT.$valid){
+//		if(!$scope.CUSTOMER.$valid || !$scope.UNIT.$valid){
 
-			$scope.alerts=[];
-			$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
-			return;
-		}
+//		$scope.alerts=[];
+//		$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
+//		return;
+//		}
 
-		$scope.resetAleart = function(){
-			$scope.alerts=[];
-		}
+//		$scope.resetAleart = function(){
+//		$scope.alerts=[];
+//		}
+
+		$scope.addcurrentUnittoCustomer();
 
 		console.log('save customer called');
 		customerService.saveCustomer($scope.customer, context)
@@ -372,6 +379,24 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 //	})
 //	}
 //	}
+	$scope.getWorkItemByUserIdAndWorkType = function(){
+		console.log('getting work Item');
+		if(angular.isUndefined($scope.workItem.workType)){
+			$scope.workItem.workType = "";
+		}
+		if(angular.isUndefined($scope.workItem.status)){
+			$scope.workItem.status = "";
+		}
+
+		customerService.getWorkItemByUserIdAndWorkType($rootScope.user.userId, $scope.workItem.workType, $scope.workItem.status)
+		.then(function(response) {
+			console.log(response);
+			if (response) {
+				$scope.workItem = response;
+			} 
+		})	
+	};
+
 	$scope.copyCustomerAddress = function(unit,sameAsAbove) {
 		console.log('same as above');
 		console.log(sameAsAbove);
@@ -401,50 +426,137 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	}
 
 	$scope.isViewPrivileged=function(){
-		return !($scope.isPrivileged('CREATE_CUSTOMER')) && !($scope.isPrivileged('VIEW_CUSTOMER')) && !($scope.isPrivileged('CREATE_COMPLAINT'));
+		return !($scope.isPrivileged('CREATE_CUSTOMER')) && !($scope.isPrivileged('VIEW_CUSTOMER'));
 	}
 
+	$scope.navigationContextNext = {'customer':'unitDtl', 
+			'unitDtl': 'equipmntDtl'};
+
+	$scope.navigationContextPrevious = {'equipmntDtl':'unitDtl', 
+			'unitDtl':'customer'};
+
+	$scope.selection="customer";
+	$scope.switchToNextPage = function(){
+
+		$scope.selection = $scope.navigationContextNext[$scope.selection];
+	};
+
+	$scope.switchToPreviousPage = function(){
+
+		$scope.selection = $scope.navigationContextPrevious[$scope.selection];
+	};
+
+	$scope.getEmailId = function(){
+		customerService.getEmailId($scope.customer.emailId)
+		.then(function(response) {
+			console.log('all customers Data received in controller : ');
+			console.log(response);
+			if (response) {
+				$scope.customers = response;
+
+				if($scope.customers.length>0){	
+					$scope.emailError=true;
+				}
+				else{
+					$scope.emailError=false;
+				}
+			} 
+		})
+	}
+
+	$scope.getContactNo = function(){
+		customerService.getContactNo($scope.customer.contactNo)
+		.then(function(response) {
+			console.log('all customers Data received in controller : ');
+			console.log(response);
+			if (response) {
+				$scope.customers = response;
+
+				if($scope.customers.length>0){
+					$scope.contactNoError=true;
+				}
+				else{
+					$scope.contactNoError=false;
+				}
+			} 
+		})
+	}
 
 	$scope.showUnitExpireModal = function(unit) {
 
 		$rootScope.curModal = $modal.open({
 			templateUrl: 'customer/unitExpiration.html',
-			controller: function ($scope, customerService, masterdataService) {
-
+			controller: function (customerService, masterdataService) {
 				$scope.serviceRenewalBean = unit.serviceAgreement;
-
-				$scope.renewService = function(){
-					customerService.renewService($scope.serviceRenewalBean)
-					.then(function(response) {
-						console.log('service renewed in controller : ');
-						console.log(response);
-						if (response) {
-							unit = response;
-							$rootScope.curModal.close();
-						} 
-					})
-				};
-
-				$scope.init = function() {
-					console
-					.log('getting masterdata for customer');
-
-					masterdataService
-					.getCustomerMasterData()
-					.then(
-							function(data) {
-								console.log(data);
-								if (data) {
-									$scope.serverModelData = data.responseBody;
-								} else {
-									console.log('error');
-								}
-							})
-				};
-
-			}
-
+			},
+			scope:$scope,
 		});
+
+		$scope.updateServiceAgreement = function(){
+			customerService.updateServiceAgreement($scope.serviceRenewalBean, unit.unitId)
+			.then(function(response) {
+				console.log('service renewed in controller : ');
+				console.log(response);
+				if (response) {
+					unit = response;
+					$rootScope.curModal.close();
+				} 
+			})
+		};
+
+	};
+
+	$scope.addcurrentUnittoCustomer = function(){
+
+		$scope.previewContext =true;
+		var units = $scope.customer.units;
+		var currentUnit=$scope.unit;
+		for (var i = 0; i < units.length; i++)
+		{
+			if (units[i].machineSerialNo === currentUnit.machineSerialNo){
+				units.splice(i, 1);
+			}
+		}
+		$scope.customer.units.push(angular.copy(currentUnit));
+	};
+
+	$scope.addMoreUnit = function(){
+
+		$scope.addcurrentUnittoCustomer();
+
+		$scope.unit = {
+				"equipmentDetails" : [ {} ]
+		};
+	};
+
+	$scope.closePreview = function(){
+
+		$scope.previewContext=false;
+	};
+
+
+	$scope.showAndHidePreview = function(){
+
+		var result=false;
+		if($scope.previewContext){
+			result = true;
+			return result;
+		}
+		return result;
+	};
+
+	$scope.validateForm = function(form){
+
+		if(!$scope.form.$valid){
+
+			$scope.alerts=[];
+			$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
+			return;
+		}
+
+		$scope.resetAleart = function(){
+			$scope.alerts=[];
+		}
 	};
 
 } ]);

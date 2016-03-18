@@ -1,0 +1,60 @@
+<div class="well" ng-switch on="selection">
+
+	<div class="animate-switch" ng-animate="animate" ng-switch-default>
+		<div ng-include src="'../home/customer/fixedCustomerInfo.html'">
+		</div>
+	</div>
+
+	<div class="animate-switch" ng-switch-when="unitDtl"
+		ng-animate="animate">
+		<div ng-include src="'../home/customer/individualUnit.html'"></div>
+	</div>
+<!-- 	<div class="animate-switch" ng-switch-when="siteAdd" -->
+<!-- 		ng-animate="animate"> -->
+<!-- 		<div ng-include src="'../home/customer/siteAddress.html'"></div> -->
+<!-- 	</div> -->
+	<div class="animate-switch" ng-switch-when="equipmntDtl"
+		ng-animate="animate">
+		<div ng-include src="'../home/customer/equipment.html'"></div>
+	</div>
+	<div class="animate-switch"	ng-switch-when="preview" ng-animate="animate">
+		<div ng-include src="'../home/customer/amcMain.html'"></div>
+	</div>
+</div>
+</div>
+
+<div class="fix-button">
+		<button type="button" class="btn btn-primary button child-left"
+			ng-click="switchToPreviousPage()" ng-hide="selection==='customer' || selection==='preview'">
+			<i class="fa fa-arrow-left" style="font-size: 13px"></i>&nbsp
+			Previous
+		</button>
+
+		<button type="button" class="btn btn-primary button child-right" ng-click = "selection = 'equipmntDtl'" ng-show="selection==='preview'">
+			Close
+		</button>
+	
+	<button type="button" class="btn btn-primary button" ng-click = "addMoreUnit(); selection = 'unitDtl'" ng-show="selection==='equipmntDtl'">
+			Add More Unit
+		</button>
+		<button type="button" class="btn btn-primary button" ng-click = "addcurrentUnittoCustomer();selection='preview'" ng-show="selection==='equipmntDtl'">
+			<i class="fa fa-eye" style="font-size: 13px"></i> Preview
+		</button>
+		<button type="button" class="btn btn-primary button child-right"
+			ng-click="saveAndUpdateCustomer('CUSTOMER_DRAFT')"
+			ng-disabled="isCreateOrUpdatePrivileged() || isProcessing" ng-show="selection==='equipmntDtl'|| selection==='preview'">
+			<i class="fa fa-floppy-o" style="font-size: 13px"></i>&nbsp Save As
+			Draft
+		</button>
+		<button type="button" class="btn btn-success button child-right"
+			ng-show="selection==='equipmntDtl' || selection==='preview'" ng-click="saveAndUpdateCustomer('PUBLISH')"
+			ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">
+			<i class="fa fa-paper-plane" style="font-size: 12px"></i>&nbsp Publish
+		</button>
+
+		<button type="button" class="btn btn-primary button child-right"
+			ng-click="switchToNextPage()" ng-hide="selection==='equipmntDtl' || selection==='preview'">
+			Next &nbsp<i class="fa fa-arrow-right" style="font-size: 13px"></i>
+		</button>
+</div>
+

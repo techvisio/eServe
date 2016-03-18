@@ -16,9 +16,11 @@ public class ServiceAgreementFinanceHistory extends BasicEntity{
 	@Column(name="SRVC_AGRMNT_FINANC_HSTORY_ID")
 	private Long SrvcAgrmntFinancHstoryId;
 	@Column(name="AGREEMENT_AMOUNT")
-	private Long agreementAmount;
+	private Double agreementAmount;
 	@Column(name="UNIT_ID")
 	private Long unitId;
+	@Column(name="VERSION_ID")
+	private Double versionId;
 	
 	public Long getUnitId() {
 		return unitId;
@@ -32,11 +34,17 @@ public class ServiceAgreementFinanceHistory extends BasicEntity{
 	public void setSrvcAgrmntFinancHstoryId(Long srvcAgrmntFinancHstoryId) {
 		SrvcAgrmntFinancHstoryId = srvcAgrmntFinancHstoryId;
 	}
-	public Long getAgreementAmount() {
+	public Double getAgreementAmount() {
 		return agreementAmount;
 	}
-	public void setAgreementAmount(Long agreementAmount) {
+	public void setAgreementAmount(Double agreementAmount) {
 		this.agreementAmount = agreementAmount;
+	}
+	public Double getVersionId() {
+		return versionId;
+	}
+	public void setVersionId(Double versionId) {
+		this.versionId = versionId;
 	}
 	
 }

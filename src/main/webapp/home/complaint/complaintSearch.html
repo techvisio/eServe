@@ -15,8 +15,8 @@
 	<div class="col-sm-2">
 		<label for="inputlg">Email Id</label>
 	</div>
-	
-		<div class="col-sm-2">
+
+	<div class="col-sm-2">
 		<label for="inputlg">Complaint Code</label>
 	</div>
 </div>
@@ -38,13 +38,14 @@
 		<input class="form-control input-sm" ng-model="searchCriteria.emailId"
 			id="inputlg" type="text">
 	</div>
-	
+
 	<div class="col-sm-2">
-		<input class="form-control input-sm" ng-model="searchCriteria.complaintCode"
-			id="inputlg" type="text">
+		<input class="form-control input-sm"
+			ng-model="searchCriteria.complaintCode" id="inputlg" type="text">
 	</div>
 	<div class="col-sm-2">
-		<button class="btn-primary" ng-click="getComplaintByCriteria()" ng-disabled="isViewPrivileged()">Search</button>
+		<button class="btn-primary" ng-click="getComplaintByCriteria()"
+			ng-disabled="isViewPrivileged() || isProcessing">Search</button>
 		</a>
 	</div>
 </div>
@@ -52,10 +53,10 @@
 <div ng-repeat="customer in complaintCustomers">
 	<div class="row"
 		ng-click="getSearchUnitByCustomerId(customer,customer.customerId)">
-		
+
 		<div class="col-sm-2">
-			<i class="fa fa-plus" ng-class="{'fa-minus':!isUnitCollapsed}" ng-click="isUnitCollapsed = !isUnitCollapsed"></i>
-			<a herf="#"
+			<i class="fa fa-plus" ng-class="{'fa-minus':!isUnitCollapsed}"
+				ng-click="isUnitCollapsed = !isUnitCollapsed"></i> <a herf="#"
 				ng-click="redirectToCustomerDtlScreen(customer.customerId)">{{customer.customerCode}}
 			</a>
 		</div>
@@ -82,7 +83,7 @@
 		</div>
 
 		<div class="col-sm-2">
-			<label for="inputlg">External Id</label>
+			<label for="inputlg">Asset No</label>
 		</div>
 	</div>
 
@@ -91,19 +92,23 @@
 		collapse="isUnitCollapsed">
 
 		<div class="row padding-unitrow">
-			<div class="col-sm-2"><i class="fa fa-plus" ng-class= "{'fa-minus':!isComplaintCollapsed}" ng-click="isComplaintCollapsed = !isComplaintCollapsed"></i>{{unit.unitCode}}</div>
+			<div class="col-sm-2">
+				<i class="fa fa-plus" ng-class="{'fa-minus':!isComplaintCollapsed}"
+					ng-click="isComplaintCollapsed = !isComplaintCollapsed"></i>{{unit.unitCode}}
+			</div>
 			<div class="col-sm-2">{{unit.serviceCategory}}</div>
 			<div class="col-sm-2">{{unit.serviceParty}}</div>
 			<div class="col-sm-2">{{unit.unitCategory}}</div>
 			<div class="col-sm-2">{{unit.externalId}}</div>
 			<div class="col-sm-2 child-right">
-				<button type="button" class="btn btn-primary btn-sm"
-					ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)" ng-disabled= "(!isPrivileged('CREATE_COMPLAINT'))">Create
-					Complaint</button>
-				</label>
+				<a herf="#"
+					ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)"
+					ng-disabled="(!isPrivileged('CREATE_COMPLAINT')) || isProcessing">Create
+					Complaint</a> </label>
 			</div>
 		</div>
-		<div class="row padding-complaintrow" ng-show="!isComplaintCollapsed && unit.complaints.length>0">
+		<div class="row padding-complaintrow"
+			ng-show="!isComplaintCollapsed && unit.complaints.length>0">
 			<div class="col-sm-2">
 				<label for="inputlg">Complaint Code</label>
 			</div>
@@ -125,12 +130,14 @@
 			</div>
 		</div>
 
-		<div class="row padding-complaintrow" ng-repeat="complaint in unit.complaints"
+		<div class="row padding-complaintrow"
+			ng-repeat="complaint in unit.complaints"
 			collapse="isComplaintCollapsed">
-			<div class="col-sm-2"><a herf="#"
-				ng-click="redirectToComplaintScreen(complaint.complaintId)">{{complaint.complaintCode}}
-			</a>
-	</div>
+			<div class="col-sm-2">
+				<a herf="#"
+					ng-click="redirectToComplaintScreen(complaint.complaintId)">{{complaint.complaintCode}}
+				</a>
+			</div>
 			<div class="col-sm-2">{{complaint.priority}}</div>
 			<div class="col-sm-2">{{complaint.assignTo}}</div>
 			<div class="col-sm-2">{{complaint.slaDate}}</div>

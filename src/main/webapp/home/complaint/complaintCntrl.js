@@ -108,14 +108,14 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	if($scope.isPrivileged("VIEW_CUSTOMER") || $scope.isPrivileged("CREATE_CUSTOMER")){
 	$scope.redirectToCustomerDtlScreen=function(currentCustomerId){
 		$scope.alerts=[];
-		$state.go('customer',{customerId:currentCustomerId});
+		$state.go('customer',{entityId:currentCustomerId});
 	}
 	}
 	
 	if($scope.isPrivileged("VIEW_COMPLAINT") || $scope.isPrivileged("CREATE_COMPLAINT")){
 	$scope.redirectToComplaintScreen=function(currentComplaintId ){
 
-		$state.go('complaintScreen',{complaintId:currentComplaintId});
+		$state.go('complaintScreen',{entityId:currentComplaintId});
 	}
 	}
 
@@ -130,7 +130,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			$scope.alerts.push({msg: 'Non Of Details Are Saved For This Unit'})
 			return;
 		}
-		$state.go('customerToComplaint',{unitId:currentUnitId});
+		$state.go('customerToComplaint',{entityId:currentUnitId});
 	}
 
 	$scope.showconfirmboxComplaint = function () {
@@ -223,7 +223,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			if (response) {
 					$scope.customerComplaint = response;
 					alert("Complaint Saved Successfully");
-					$state.go('complaintScreen',{complaintId:$scope.customerComplaint.complaintId});
+					$state.go('complaintScreen',{entityId:$scope.customerComplaint.complaintId});
 			} 
 		})
 	};

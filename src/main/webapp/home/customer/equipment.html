@@ -11,7 +11,7 @@
 
 		<div class="row">
 			<div class="col-sm-2">
-				<label for="inputlg">type</label>
+				<label for="inputlg">Type</label>
 			</div>
 
 			<div class="col-sm-2">
@@ -56,12 +56,11 @@
 					<option></option>
 				</select>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-1">
 				<input type="checkbox" id="chk_act_{{$id}}"
-					ng-model="equip.underWarranty" /> <label for="chk_act_{{$id}}">Under
-					Warranty</label>
+					ng-model="equip.underWarranty" /> <label for="chk_act_{{$id}}">UW</label>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-1">
 				<button type="button" class="btn btn-default btn-sm"
 					ng-click="removeMachine(unit,$index)" ng-show="$index=>0">
 					<span class="glyphicon glyphicon-remove"></span>

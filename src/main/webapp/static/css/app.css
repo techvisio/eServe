@@ -13196,3 +13196,32 @@ input.ng-invalid{
 label:hover:before {
   border: 1px solid #4778d9!important;
 }
+
+.processing {
+		float: left;
+		margin-left:10px;
+		position: fixed;
+		color: white;
+		font-size: 20px;
+}
+
+.button {
+		padding-left: 10px;
+		padding-right: 10px;
+}
+
+.fix-button{
+	position: absolute;
+	bottom:80px;
+    width: 75%;
+}
+
+/*icon css*/
+
+.right-inner-addon i {
+  position: absolute;
+  right: 10px;
+  padding: 4px 12px;
+  font-size: 17px;
+  color:#E00000 ;
+}

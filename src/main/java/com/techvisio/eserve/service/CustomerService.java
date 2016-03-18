@@ -35,10 +35,12 @@ public interface CustomerService {
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
 //	public Map<String, Object> checkCustomerExistOrNot(
 //			CustomerComplaint customerComplaint);
-	void renewService(ServiceAgreement agreement);
+	public void updateServiceAgreement(ServiceAgreement agreement,Long unitId);
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
 	public Unit getUnit(Long unitId);
 	public Unit approveUnit(Unit unit);
-	ApproveUnitDtl getUnitForApproval(Long unitId);
-	Customer createCustomerfromComplaint(CustomerComplaint customerComplaint);
+	public ApproveUnitDtl getUnitForApproval(Long unitId);
+	public Customer createCustomerfromComplaint(CustomerComplaint customerComplaint);
+	public List<Customer> getEmailId(String emailId);
+	public List<Customer> getContactNo(String contactNo);
 }

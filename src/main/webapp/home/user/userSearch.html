@@ -2,7 +2,7 @@
 <div class="row">
 			<div class="col-sm-10">
 			</div>
-<div class="col-sm-2" popover-placement="bottom" popover="you don't have permission to create users. please contact your administration!!" popover-trigger="mouseenter"><a ui-sref="createUser"><button class="fa fa-plus btn btn-primary" ng-disabled="isCreateOrUpdatePrivileged()" > Create User</button></a></div>
+<div class="col-sm-2" popover-placement="bottom" popover="you don't have permission to create users. please contact your administration!!" popover-trigger="mouseenter"><a ui-sref="createUser"><button class="	fa fa-user-plus btn btn-primary" ng-disabled="isCreateOrUpdatePrivileged()" > Create User</button></a></div>
 </div>
 
 <table class="table table-striped">
@@ -32,7 +32,7 @@
 				class="form-control"
 				ng-options="item.designationId as item.designation  for item in serverModelData.DESIGNATION">
 			</select></td>
-            <th><button class="btn-primary" ng-click="getUserByCriteria()" ng-disabled="isViewPrivileged()">Search</button></a></th>
+            <th><button class="btn-primary" ng-click="getUserByCriteria()" ng-disabled="isViewPrivileged()"><i class="fa fa-search"></i></button></a></th>
         </tr>
     </thead>
     

@@ -1,7 +1,6 @@
 package com.techvisio.eserve.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,26 +9,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techvisio.eserve.beans.ApproveUnitDtl;
-import com.techvisio.eserve.beans.ComplaintAssignment;
-import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.Response;
-import com.techvisio.eserve.beans.SearchComplaint;
-import com.techvisio.eserve.beans.SearchComplaintCustomer;
-import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
-import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
-import com.techvisio.eserve.beans.User;
-import com.techvisio.eserve.beans.UserPrivilege;
-import com.techvisio.eserve.manager.CustomerManager;
 import com.techvisio.eserve.service.CustomerService;
 
 @RestController
@@ -104,11 +94,11 @@ public class CustomerController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
-	@RequestMapping(value ="/renewService", method = RequestMethod.PUT)
-	public ResponseEntity<Response> renewService(@RequestBody ServiceAgreement agreement) {
+	@RequestMapping(value ="/renewService/{unitId}", method = RequestMethod.PUT)
+	public ResponseEntity<Response> renewService(@PathVariable Long unitId, @RequestBody ServiceAgreement agreement) {
 		Response response=new Response();
-		customerService.renewService(agreement);
-		Unit unitFromDB = customerService.getUnit(agreement.getUnitId());
+		customerService.updateServiceAgreement(agreement, unitId);
+		Unit unitFromDB = customerService.getUnit(unitId);
 		response.setResponseBody(unitFromDB);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -137,6 +127,22 @@ public class CustomerController {
 		Response response=new Response();
 		ApproveUnitDtl unitDtl = customerService.getUnitForApproval(unitId);
 		response.setResponseBody(unitDtl);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/emailId",method = RequestMethod.GET)
+	public ResponseEntity<Response> getEmailId(@RequestParam(value="emailId", defaultValue="")String emailId) {  
+		Response response=new Response();
+		List<Customer> customers = customerService.getEmailId(emailId);
+		response.setResponseBody(customers);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/contactNo",method = RequestMethod.GET)
+	public ResponseEntity<Response> getContactNo(@RequestParam(value="contactNo", defaultValue="")String contactNo) {  
+		Response response=new Response();
+		List<Customer> customers = customerService.getContactNo(contactNo);
+		response.setResponseBody(customers);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 }

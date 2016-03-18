@@ -41,7 +41,7 @@ public class Unit extends BasicEntity{
 	@Column(name="VERSION_ID")
 	private Double versionId = 0.0;
 	@Column(name="APPROVAL_STATUS")
-	private char approvalStatus = AppConstants.PENDING.charAt(0);
+	private char approvalStatus;
 	
 	
 	@Column(name="ASSET_NO")

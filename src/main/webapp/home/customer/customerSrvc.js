@@ -10,14 +10,33 @@ customerModule.service('customerService', function($http, $q) {
 		getUnit : getUnit,
 		getCustomerByCriteria : getCustomerByCriteria,
 		getAllComplaints : getAllComplaints,
-		renewService : renewService,
+		updateServiceAgreement : updateServiceAgreement,
 		getServiceAgreementHistoryForUnit : getServiceAgreementHistoryForUnit,
 		approveUnit : approveUnit,
-		getUnitForApproval : getUnitForApproval
+		getUnitForApproval : getUnitForApproval,
+		getWorkItemByUserIdAndWorkType : getWorkItemByUserIdAndWorkType,
+		getEmailId : getEmailId,
+		getContactNo : getContactNo
 	});
 
-	
-	
+
+
+	function getWorkItemByUserIdAndWorkType(userId, type, status){
+		console.log('get work Item by user Id and type in service');
+
+		var request = $http({
+			method : "get",
+			url : "../service/workitem/user/" + userId+"?type="+type+"&status="+status,
+			params : {
+				action : "get"
+			},
+
+
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
 	function getServiceAgreementHistoryForUnit(unitId){
 		console.log('get Agreement History Data in service');
 
@@ -31,7 +50,7 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	
+
 	function getCustomers(){
 		console.log('get all customers data');
 
@@ -44,7 +63,7 @@ customerModule.service('customerService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
-	
+
 	function getCustomer(customerId){
 		console.log('get customer');
 
@@ -93,7 +112,7 @@ customerModule.service('customerService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
-	
+
 	function getUnit(unitId){
 		console.log('get unit');
 
@@ -119,18 +138,18 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function renewService(serviceAgreement){
+	function updateServiceAgreement(serviceAgreement, unitId){
 		console.log('renewService called in service');
 		var request = $http({
 			method : "put",
-			url : "../service/customer/renewService",
+			url : "../service/customer/renewService/" + unitId,
 			params : "",
 			data: serviceAgreement
 
 		});
 		return (request.then(handleSuccess, handleError));
 	}
-	
+
 	function getCustomerByCriteria(searchCriteria){
 
 		console.log('getting customer by search criteria');
@@ -156,7 +175,7 @@ customerModule.service('customerService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
-	
+
 	function getUnitForApproval(unitId){
 		console.log('getUnitForApproval in service');
 
@@ -169,8 +188,33 @@ customerModule.service('customerService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
-	
-	
+
+	function getEmailId(emailId){
+		console.log('get all customers data');
+
+		var request = $http({
+			method : "get",
+			url : "../service/customer/emailId?emailId="+emailId,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
+	function getContactNo(contactNo){
+		console.log('get all customers data');
+
+		var request = $http({
+			method : "get",
+			url : "../service/customer/contactNo?contactNo="+contactNo,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
 	function handleError(response) {
 		console.log('Error occured while calling service');
 		console.log(response);
@@ -182,7 +226,7 @@ customerModule.service('customerService', function($http, $q) {
 		// Otherwise, use expected error message.
 		return ($q.reject(response.data.message));
 	}
-	
+
 	// I transform the successful response, unwrapping the application data
 	// from the API response payload.
 	function handleSuccess(response) {

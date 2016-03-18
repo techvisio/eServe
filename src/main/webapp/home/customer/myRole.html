@@ -1,0 +1,25 @@
+<div>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Entity Id</th>
+				<th>Entity Type</th>
+				<th>Work Type</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat = "workItem in workItem">
+			<td><a herf="#"
+					ng-click="redirectfromWorkItemtoEntity(workItem.entityUrl,workItem.entityId)">{{workItem.entityId}}
+				</a></td>
+				<td>{{workItem.entityType}}</td>
+				<td>{{workItem.workType}}
+				</td>
+				<td>{{workItem.status}}</td>
+				
+				<!--         <td><a ui-sref="resetpassword"><button class="btn-primary">Reset Password</button></a></td> -->
+			</tr>
+		</tbody>
+	</table>
+</div>

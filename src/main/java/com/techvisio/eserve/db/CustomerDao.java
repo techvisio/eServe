@@ -31,11 +31,13 @@ public interface CustomerDao {
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
 	public boolean isCustomerExists(Customer customer);
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
-	void renewService(ServiceAgreement agreement);
-	Unit getUnit(Long unitId);
-	ApproveUnitDtl getUnitForApproval(Long unitId);
-	void saveServiceAgreementHistory(ServiceAgreementHistory history);
-	void saveServiceAgreementFinanceHistory(
+	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
+	public Unit getUnit(Long unitId);
+	public ApproveUnitDtl getUnitForApproval(Long unitId);
+	public void saveServiceAgreementHistory(ServiceAgreementHistory history);
+	public void saveServiceAgreementFinanceHistory(
 			ServiceAgreementFinanceHistory financeHistory);
-	
+	public List<Customer> getEmailId(String EmailId);
+	public List<Customer> getContactNo(String ContactNo);
+
 }

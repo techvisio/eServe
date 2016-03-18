@@ -1,6 +1,7 @@
 var erp = angular
 .module('erp', [
                 'ngRoute',
+                'ngAnimate',
                 'ui.bootstrap',
                 'ui.router',
                 'erp.services',
@@ -33,6 +34,16 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 	.state('home', {
 		// Use a url of "/" to set a state as the "index".
 		url: "/home",
+		templateUrl: 'customer/workItem.html',
+		controller:"customerController",
+		resolve:{
+			customer: ['$stateParams', function($stateParams){
+				return null;
+			}],
+			unit: ['$stateParams', function($stateParams){
+				return null;
+			}]
+		}
 	})
 
 //		.state('logout', {
@@ -55,42 +66,42 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		}
 	})
 
-		.state('amcMain', {
-		url: "/customer/new",
-		templateUrl: 'customer/amcMain.html',
-		controller:"customerController",
-		resolve:{
-			customer: ['$stateParams', function($stateParams){
-				return null;
-			}],
-		
-		unitApproval: ['$stateParams', function($stateParams){
-			return null;
-		}]
-		}
-	})
+//		.state('amcMain', {
+//		url: "/customer/new",
+//		templateUrl: 'customer/amcMain.html',
+//		controller:"customerController",
+//		resolve:{
+//			customer: ['$stateParams', function($stateParams){
+//				return null;
+//			}],
+//		
+//		unitApproval: ['$stateParams', function($stateParams){
+//			return null;
+//		}]
+//		}
+//	})
 	
 	.state('newcustomer', {
 		url: "/customer/new",
-		templateUrl: 'customer/amc.html',
+		templateUrl: 'customer/slideScreenCustomer.html',
 		controller:"customerController",
 		resolve:{
 			customer: ['$stateParams', function($stateParams){
 				return null;
 			}],
-			unitApproval: ['$stateParams', function($stateParams){
+			unit: ['$stateParams', function($stateParams){
 				return null;
 			}]
 		}
 	})
 
 	.state('customerToComplaint', {
-		url: "/complaint/unit/{unitId:[0-9]{1,8}}",
+		url: "/complaint/unit/{entityId:[0-9]{1,8}}",
 		templateUrl: 'complaint/complaint.html',
 		controller: "complaintController",
 		resolve:{
 			unitComplaint: ['$stateParams','complaintService', function($stateParams,complaintService){
-				return complaintService.getUnitForComplaint($stateParams.unitId);
+				return complaintService.getUnitForComplaint($stateParams.entityId);
 			}],
 			complaint: ['$stateParams', function($stateParams){
 				return null;
@@ -99,12 +110,12 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 	})
 
 	.state('complaintScreen', {
-		url: "/complaint/{complaintId:[0-9]{1,8}}",
+		url: "/complaint/{entityId:[0-9]{1,8}}",
 		templateUrl: 'complaint/complaint.html',
 		controller: "complaintController",
 		resolve:{
 			complaint: ['$stateParams','complaintService', function($stateParams,complaintService){
-				return complaintService.getCustomerComplaint($stateParams.complaintId);
+				return complaintService.getCustomerComplaint($stateParams.entityId);
 			}],
 			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
@@ -120,7 +131,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			customer: ['$stateParams','customerService', function($stateParams){
 				return null;
 			}],
-			unitApproval: ['$stateParams', function($stateParams){
+			unit: ['$stateParams', function($stateParams){
 				return null;
 			}]
 		}
@@ -141,26 +152,26 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 	})
 
 	.state('customer', {
-		url: "/customer/{customerId:[0-9]{1,8}}",
+		url: "/customer/{entityId:[0-9]{1,8}}",
 		templateUrl: 'customer/amcMain.html',
 		controller: "customerController",
 		resolve:{
 			customer: ['$stateParams','customerService', function($stateParams,customerService){
-				return customerService.getCustomer($stateParams.customerId);
+				return customerService.getCustomer($stateParams.entityId);
 			}],
-			unitApproval: ['$stateParams', function($stateParams){
+			unit: ['$stateParams', function($stateParams){
 				return null;
 			}]
 		}
 	})
 
-	.state('unitApproval', {
-		url: "/unit/{unitId:[0-9]{1,8}}",
+	.state('unit', {
+		url: "/unit/{entityId:[0-9]{1,8}}",
 		templateUrl: 'customer/unitApproval.html',
 		controller: "customerController",
 		resolve:{
-			unitApproval: ['$stateParams','customerService', function($stateParams,customerService){
-				return customerService.getUnitForApproval($stateParams.unitId);
+			unit: ['$stateParams','customerService', function($stateParams,customerService){
+				return customerService.getUnitForApproval($stateParams.entityId);
 			}],
 			customer: ['$stateParams', function($stateParams){
 				return null;
@@ -181,12 +192,12 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 	})
 
 	.state('user', {
-		url: "/user/{userId:[0-9]{1,8}}",
+		url: "/user/{entityId:[0-9]{1,8}}",
 		templateUrl: 'user/user.html',
 		controller: "userController",
 		resolve:{
 			user: ['$stateParams','userService', function($stateParams,userService){
-				return userService.getUserwithprivileges($stateParams.userId);
+				return userService.getUserwithprivileges($stateParams.entityId);
 			}]
 		}
 	})
@@ -258,6 +269,8 @@ erp.controller('ApplicationController',
 			}			
 
 			$rootScope.enableSidebar = true;
+			$rootScope.processingCount = 0;
+			$rootScope.isProcessing = false;
 
 			$rootScope.$on('showError', function (o, e, type) {
 				$rootScope.curModal = $modal.open({
@@ -314,12 +327,16 @@ erp.config(['$httpProvider', '$sceProvider',
 			 function ($q, $location, $rootScope, deferredManager) {
 				return {
 					request: function (config) {
+						$rootScope.processingCount=$rootScope.processingCount+1;
+						$rootScope.isProcessing = true;
 						if(config.url.search('/service/') > -1) {
 							config.timeout = deferredManager.deferService(config.url);
 						}
 						return config;
 					},
 					response: function (response) {
+						$rootScope.processingCount=$rootScope.processingCount-1;
+						$rootScope.isProcessing = false;
 						if(response.data) {
 							if (response.data.error) {
 								$rootScope.$broadcast('showError', response.data.error || 'Error '+response.status, response.status);
@@ -332,6 +349,8 @@ erp.config(['$httpProvider', '$sceProvider',
 						return response;
 					},
 					responseError: function (response) {
+						$rootScope.processingCount=$rootScope.processingCount-1;
+						$rootScope.isProcessing = false;
 						if(response.status == 401) {
 							$rootScope.$broadcast('unauthorized',null, response.status);
 							return $q.reject(response);

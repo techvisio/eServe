@@ -14,11 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.techvisio.eserve.util.CommonUtil;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "TB_CUSTOMER_DETAIL")    
+@Table(name = "TB_CUSTOMER_DETAIL",  uniqueConstraints = @UniqueConstraint(columnNames = {"CONTACT_NO", "EMAIL_ID"}))    
 public class Customer extends BasicEntity{
 
 	@Id

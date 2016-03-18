@@ -564,6 +564,7 @@
         CONTRACT_START_ON date,
         SERVICE_CATEGORY varchar(255),
         UNIT_ID bigint,
+        VERSION_ID double precision,
         Client_Id bigint,
         AGREEMENT_DURATION_ID bigint,
         SERVICE_AGREEMENT_FINANCE_ID bigint,
@@ -577,8 +578,9 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
-        AGREEMENT_AMOUNT bigint,
+        AGREEMENT_AMOUNT double precision,
         UNIT_ID bigint,
+        VERSION_ID double precision,
         Client_Id bigint,
         primary key (SERVICE_AGREEMENT_FINANCE_ID)
     );
@@ -589,8 +591,9 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
-        AGREEMENT_AMOUNT bigint,
+        AGREEMENT_AMOUNT double precision,
         UNIT_ID bigint,
+        VERSION_ID double precision,
         Client_Id bigint,
         primary key (SRVC_AGRMNT_FINANC_HSTORY_ID)
     );
@@ -605,6 +608,7 @@
         END_DATE datetime,
         SERVICE_TYPE varchar(255),
         START_DATE datetime,
+        VERSION_ID double precision,
         Client_Id bigint,
         primary key (AGREEMENT_HISTORY_ID)
     );
@@ -719,6 +723,9 @@
         Client_Id bigint,
         primary key (WORKITEM_ID)
     );
+
+    alter table TB_CUSTOMER_DETAIL 
+        add constraint UK_dm4qmvg9y85yey4796hr6sflt  unique (CONTACT_NO, EMAIL_ID);
 
     alter table TB_ADDRESS_DETAIL 
         add constraint FK_a96hlh8586s53ujx0mwpp2pno 

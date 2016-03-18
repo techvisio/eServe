@@ -45,32 +45,22 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Long saveCustomer(Customer customer, String context) {
-
-		Long customerId = customerManager.saveCustomer(customer, context);
-		WorkItem workItem = new WorkItem();
-
-		if(context.equalsIgnoreCase(AppConstants.DRAFT)){
-			WorkItemFactory factory = new WorkItemFactory();
-
-			workItem = factory.getWorkItem(context);
-
-			workItem.setEntityType("CUSTOMER");
-			workItem.setEntityId(customerId);
-
-		}
-
-		if(context.equalsIgnoreCase(AppConstants.PUBLISH)){
-			WorkItemFactory factory = new WorkItemFactory();
-			workItem = factory.getWorkItem(context);
-
-			workItem.setEntityType("CUSTOMER");
-			workItem.setEntityId(customerId);
-		}
-		workItemService.saveWorkItem(workItem);
+	public Long saveCustomer(Customer customer) {
+		Long customerId = customerManager.saveCustomer(customer);
 		return customerId;
 	}
 
+	@Override
+	public Long saveCustomer(Customer customer, String context) {
+
+		Long customerId = customerManager.saveCustomer(customer, context);
+
+		workItemService.createWorkItemForCustomer(customer, context, customerId);
+
+		return customerId;
+	}
+
+	
 	@Override
 	public void saveUnit(List<Unit> units, Long customerId) {
 		customerManager.saveUnit(units, customerId);
@@ -78,29 +68,15 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public Long saveUnit(Unit unit, String context) {
-		Long unitId = customerManager.saveUnit(unit);
 
-		WorkItem workItem = new WorkItem();
+		Long unitId = customerManager.saveUnit(unit,context);
 
-		if(context.equalsIgnoreCase(AppConstants.DRAFT)){
-			WorkItemFactory factory = new WorkItemFactory();
+		workItemService.createWorkItemForUnit(context, unitId);
 
-			workItem = factory.getWorkItem(context);
-			workItem.setEntityType("UNIT");
-			workItem.setEntityId(unitId);
-		}
-
-		if(context.equalsIgnoreCase(AppConstants.PUBLISH)){
-			WorkItemFactory factory = new WorkItemFactory();
-
-			workItem = factory.getWorkItem(context);
-			workItem.setEntityType("UNIT");
-			workItem.setEntityId(unitId);
-		}
-		workItemService.saveWorkItem(workItem);		
 		return unitId;
 	}
 
+	
 	@Override
 	public List<Unit> getUnits(Long customerId) {
 		List<Unit> units = customerManager.getUnits(customerId);
@@ -146,8 +122,19 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public void renewService(ServiceAgreement agreement) {
-		customerManager.renewService(agreement);
+	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId) {
+		customerManager.updateServiceAgreement(agreement, unitId);
+	    Unit unit = getUnit(agreement.getUnitId());
+	    createWorkItemWithRenewService(unit);
+	}
+
+	private void createWorkItemWithRenewService(Unit unit) {
+		
+	    if(unit.getApprovalStatus() == AppConstants.APPROVED){
+
+	    	workItemService.updateWorkItemStatus(unit.getUnitId(), AppConstants.WORK_ITEM_CLOSE_STATUS);
+            workItemService.createWorkItemForUnit(AppConstants.PUBLISH, unit.getUnitId());
+	    }
 	}
 
 	@Override
@@ -166,6 +153,7 @@ public class CustomerServiceImpl implements CustomerService{
 	public Unit approveUnit(Unit unit) {
 
 		Unit unitFromDB = customerManager.approveUnit(unit);
+		workItemService.updateWorkItemStatus(unitFromDB.getUnitId(), AppConstants.WORK_ITEM_CLOSE_STATUS);
 		return unitFromDB;
 	}
 
@@ -176,8 +164,15 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Long saveCustomer(Customer customer) {
-		Long customerId = customerManager.saveCustomer(customer);
-		return customerId;
+	public List<Customer> getEmailId(String emailId) {
+		List<Customer> customers = customerManager.getEmailId(emailId);
+		return customers;
 	}
+	
+	@Override
+	public List<Customer> getContactNo(String contactNo)  {
+		List<Customer> customers = customerManager.getContactNo(contactNo);
+		return customers;
+	}
+
 }

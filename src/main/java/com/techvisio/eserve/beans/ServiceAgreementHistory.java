@@ -33,6 +33,8 @@ public class ServiceAgreementHistory extends BasicEntity{
 	@Column(name="END_DATE")
 	private Date endDate;
 
+	@Column(name="VERSION_ID")
+	private Double versionId;
 	@Transient
 	private String startDateString;
 	@Transient
@@ -111,6 +113,11 @@ public class ServiceAgreementHistory extends BasicEntity{
 	public void setServiceType(String serviceType) {
 		this.serviceType = serviceType;
 	}
-	
+	public Double getVersionId() {
+		return versionId;
+	}
+	public void setVersionId(Double versionId) {
+		this.versionId = versionId;
+	}
 	
 }

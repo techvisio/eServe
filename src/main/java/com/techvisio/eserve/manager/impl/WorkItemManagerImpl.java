@@ -14,33 +14,53 @@ public class WorkItemManagerImpl implements WorkItemManager{
 
 	@Autowired
 	WorkItemDao workItemDao;
-	
+
 	@Override
 	public void saveWorkItem(WorkItem workItem) {
 		workItemDao.saveWorkItem(workItem);
 	}
 
 	@Override
-	public WorkItem getWorkItemByUserId(Long userId) {
-		WorkItem workItem = workItemDao.getWorkItemByUserId(userId);
-		return workItem;
+	public List<WorkItem> getWorkItemByUserId(Long userId) {
+		List<WorkItem> workItems = workItemDao.getWorkItemByUserId(userId);
+		return workItems;
 	}
 
 	@Override
-	public WorkItem getWorkItemByPrivilege(Long privilegeId) {
-		WorkItem workItem = workItemDao.getWorkItemByPrivilege(privilegeId);
-		return workItem;
+	public List<WorkItem> getWorkItemByPrivilege(Long privilegeId) {
+		List<WorkItem> workItems = workItemDao.getWorkItemByPrivilege(privilegeId);
+		return workItems;
 	}
 
 	@Override
-	public WorkItem getWorkItemByWorkType(String workType) {
-		WorkItem workItem = workItemDao.getWorkItemByWorkType(workType);
-		return workItem;
+	public List<WorkItem> getWorkItemByWorkType(String workType) {
+		List<WorkItem> workItems = workItemDao.getWorkItemByWorkType(workType);
+		return workItems;
 	}
 
 	@Override
-	public List<WorkItem> getWorkItembyUserandType(Long userId, String type) {
-		return workItemDao.getWorkItembyUserandType(userId, type);
+	public List<WorkItem> getWorkItembyUserandType(Long userId, String type, String status) {
+
+		if(type.equalsIgnoreCase("")){
+			type = null;
+		}
+		if(status.equalsIgnoreCase("")){
+			status = null;
+		}
+
+		return workItemDao.getWorkItembyUserandType(userId, type,status);
+	}
+
+	@Override
+	public void updateWorkItemStatus(Long entityId, String status) {
+	workItemDao.updateWorkItemStatus(entityId, status);
+		
+	}
+
+	@Override
+	public List<WorkItem> getWorkItemsByEntityId(Long entityId) {
+		List<WorkItem> workItems = workItemDao.getWorkItemsByEntityId(entityId);
+		return workItems;
 	}
 
 }

@@ -67,7 +67,7 @@ userModule
 
 			 if($scope.isPrivileged('VIEW_USER') || $scope.isPrivileged('CREATE_USER')){
 				 $scope.redirectToUser=function(currentUserId){
-					 $state.go('user',{userId:currentUserId});
+					 $state.go('user',{entityId:currentUserId});
 				 }
 			 }
 

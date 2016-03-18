@@ -85,21 +85,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		if(customer.getCustomerId()==null){
 
 			String customerCode = customer.getCustomerCode();
-			if(customerCode==null){
-				customerCode=identifierGenerator.getUniqueIdentifierForCustomer(customer);
-				customer.setCustomerCode(customerCode);
-				for(Unit unit : customer.getUnits()){
-					if(unit.getUnitCode()==null){
-						unit.setUnitCode(identifierGenerator.getUniqueIdentifierForUnit(unit));
-					}
-
-					if(unit.getServiceAgreement().getContractStartOnString()!= null && unit.getServiceAgreement().getAgreementDuration() != null && unit.getServiceAgreement().getContractExpireOn()==null){
-						Long durationId = unit.getServiceAgreement().getAgreementDuration().getAgreementDurationId();
-						Date contractExpireDate = getDurationValue(unit.getServiceAgreement().getContractStartOnString(), durationId);
-						unit.getServiceAgreement().setContractExpireOn(contractExpireDate);
-					}
-				}
-			}
+			populateUniqueIdentifierInCustomerAndUnit(customer, customerCode);
 
 			getEntityManager().persist(customer);
 			getEntityManager().flush();
@@ -116,15 +102,26 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 
 		else{
 			for(Unit unit : customer.getUnits()){
-				if(unit.getServiceAgreement().getContractStartOnString()!= null && unit.getServiceAgreement().getAgreementDuration() != null && unit.getServiceAgreement().getContractExpireOn()==null){
-					Long durationId = unit.getServiceAgreement().getAgreementDuration().getAgreementDurationId();
-					Date contractExpireDate = getDurationValue(unit.getServiceAgreement().getContractStartOnString(), durationId);
-					unit.getServiceAgreement().setContractExpireOn(contractExpireDate);
-				}
+				insertServiceExpirationDateInServiceAgreement(unit);
 			}
 			getEntityManager().merge(customer);
 		}
 		return customer.getCustomerId();
+	}
+
+	private void populateUniqueIdentifierInCustomerAndUnit(Customer customer,
+			String customerCode) {
+		if(customerCode==null){
+			customerCode=identifierGenerator.getUniqueIdentifierForCustomer(customer);
+			customer.setCustomerCode(customerCode);
+			for(Unit unit : customer.getUnits()){
+				if(unit.getUnitCode()==null){
+					unit.setUnitCode(identifierGenerator.getUniqueIdentifierForUnit(unit));
+				}
+
+				insertServiceExpirationDateInServiceAgreement(unit);
+			}
+		}
 	}
 
 	@Override
@@ -148,11 +145,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 				unitCode=identifierGenerator.getUniqueIdentifierForUnit(unit);
 				unit.setUnitCode(unitCode);
 			}
-			if(unit.getServiceAgreement().getContractStartOnString()!= null && unit.getServiceAgreement().getAgreementDuration() != null && unit.getServiceAgreement().getContractExpireOn()==null){
-				Long durationId = unit.getServiceAgreement().getAgreementDuration().getAgreementDurationId();
-				Date contractExpireDate = getDurationValue(unit.getServiceAgreement().getContractStartOnString(), durationId);
-				unit.getServiceAgreement().setContractExpireOn(contractExpireDate);
-			}
+			insertServiceExpirationDateInServiceAgreement(unit);
 			getEntityManager().persist(unit);
 		}
 		else{
@@ -160,16 +153,20 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 				unitCode=identifierGenerator.getUniqueIdentifierForUnit(unit);
 				unit.setUnitCode(unitCode);
 			}
-			if(unit.getServiceAgreement().getContractStartOnString()!= null && unit.getServiceAgreement().getAgreementDuration() != null && unit.getServiceAgreement().getContractExpireOn()==null){
-				Long durationId = unit.getServiceAgreement().getAgreementDuration().getAgreementDurationId();
-				Date contractExpireDate = getDurationValue(unit.getServiceAgreement().getContractStartOnString(), durationId);
-				unit.getServiceAgreement().setContractExpireOn(contractExpireDate);
-			}
+			insertServiceExpirationDateInServiceAgreement(unit);
 			deleteEquipmentDtlExclusion(unit.getEquipmentDetails(), unit.getUnitId());
 			getEntityManager().merge(unit);
 		}
 		getEntityManager().flush();
 		return unit.getUnitId();
+	}
+
+	private void insertServiceExpirationDateInServiceAgreement(Unit unit) {
+		if(unit.getServiceAgreement().getContractStartOnString()!= null && unit.getServiceAgreement().getAgreementDuration() != null && unit.getServiceAgreement().getContractExpireOn()==null){
+			Long durationId = unit.getServiceAgreement().getAgreementDuration().getAgreementDurationId();
+			Date contractExpireDate = getDurationValue(unit.getServiceAgreement().getContractStartOnString(), durationId);
+			unit.getServiceAgreement().setContractExpireOn(contractExpireDate);
+		}
 	}	
 
 	@Override
@@ -270,15 +267,15 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 
 
 	@Override
-	public void renewService(ServiceAgreement agreement){
+	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId){
 
 		Date contractExpireDate = getDurationValue(agreement.getContractStartOnString(), agreement.getAgreementDuration().getAgreementDurationId());
 		agreement.setContractExpireOn(contractExpireDate);
 		if(agreement.getServiceAgreementFinance() != null){
-			agreement.getServiceAgreementFinance().setUnitId(agreement.getUnitId());
+			agreement.getServiceAgreementFinance().setUnitId(unitId);
 		}
-		Unit unit = getUnit(agreement.getUnitId());
-		unit.setApprovalStatus(AppConstants.PENDING.charAt(0));
+		Unit unit = getUnit(unitId);
+		
 		saveUnit(unit);
 		saveServiceAgreement(agreement);
 
@@ -334,6 +331,24 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 
 		return unitDtl;
 
+	}
+
+	@Override
+	public List<Customer> getEmailId(String EmailId) {
+		String queryString="FROM Customer cus WHERE cus.emailId = "+" '" + EmailId +" ' ";
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<Customer> customers= (List<Customer>)query.getResultList();
+		return customers;
+	}
+	
+	@Override
+	public List<Customer> getContactNo(String ContactNo) {
+		String queryString="FROM Customer cus WHERE cus.contactNo = "+" '" + ContactNo +" ' ";
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<Customer> customers= (List<Customer>)query.getResultList();
+		return customers;
 	}
 
 }

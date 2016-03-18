@@ -16,9 +16,11 @@ public class ServiceAgreementFinance extends BasicEntity{
 	@Column(name="SERVICE_AGREEMENT_FINANCE_ID")
 	private Long serviceAgreementFinanceId;
 	@Column(name="AGREEMENT_AMOUNT")
-	private Long agreementAmount;
+	private Double agreementAmount;
 	@Column(name="UNIT_ID")
     private Long unitId;
+	@Column(name="VERSION_ID")
+	private Double versionId;
 	
 	public Long getUnitId() {
 		return unitId;
@@ -36,12 +38,20 @@ public class ServiceAgreementFinance extends BasicEntity{
 		this.serviceAgreementFinanceId = serviceAgreementFinanceId;
 	}
 
-	public Long getAgreementAmount() {
+	public Double getAgreementAmount() {
 		return agreementAmount;
 	}
 
-	public void setAgreementAmount(Long agreementAmount) {
+	public void setAgreementAmount(Double agreementAmount) {
 		this.agreementAmount = agreementAmount;
 	}
-	
+
+	public Double getVersionId() {
+		return versionId;
+	}
+
+	public void setVersionId(Double versionId) {
+		this.versionId = versionId;
+	}
+
 }
