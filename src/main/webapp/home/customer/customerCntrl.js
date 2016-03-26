@@ -437,7 +437,17 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.selection="customer";
 	$scope.switchToNextPage = function(){
-
+		if($scope.selection="customer"){
+			if(!$scope.form.CUSTOMER.$valid || $scope.emailError || $scope.contactNoError){
+				return;
+			}
+		}
+		
+		if($scope.selection="unitDtl"){
+			if(!$scope.form.UNIT.$valid){
+				return;
+			}
+		}
 		$scope.selection = $scope.navigationContextNext[$scope.selection];
 	};
 

@@ -1,13 +1,17 @@
 <div class="well" ng-switch on="selection">
 
 	<div class="animate-switch" ng-animate="animate" ng-switch-default>
+	<form name="form.CUSTOMER" id="CUSTOMER">
 		<div ng-include src="'../home/customer/fixedCustomerInfo.html'">
 		</div>
+		</form>
 	</div>
 
 	<div class="animate-switch" ng-switch-when="unitDtl"
 		ng-animate="animate">
+		<form name="form.UNIT" id="UNIT">
 		<div ng-include src="'../home/customer/individualUnit.html'"></div>
+		</form>
 	</div>
 <!-- 	<div class="animate-switch" ng-switch-when="siteAdd" -->
 <!-- 		ng-animate="animate"> -->
@@ -25,19 +29,20 @@
 
 <div class="fix-button">
 		<button type="button" class="btn btn-primary button child-left"
-			ng-click="switchToPreviousPage()" ng-hide="selection==='customer' || selection==='preview'">
+			ng-click="switchToPreviousPage()" ng-hide="selection==='customer' || selection==='preview'" ng-disabled="isProcessing">
+			
 			<i class="fa fa-arrow-left" style="font-size: 13px"></i>&nbsp
 			Previous
 		</button>
 
-		<button type="button" class="btn btn-primary button child-right" ng-click = "selection = 'equipmntDtl'" ng-show="selection==='preview'">
+		<button type="button" class="btn btn-primary button child-right" ng-click = "selection = 'equipmntDtl'" ng-show="selection==='preview'" ng-disabled="isProcessing">
 			Close
 		</button>
 	
-	<button type="button" class="btn btn-primary button" ng-click = "addMoreUnit(); selection = 'unitDtl'" ng-show="selection==='equipmntDtl'">
+	<button type="button" class="btn btn-primary button" ng-click = "addMoreUnit(); selection = 'unitDtl'" ng-show="selection==='equipmntDtl'" ng-disabled="isProcessing">
 			Add More Unit
 		</button>
-		<button type="button" class="btn btn-primary button" ng-click = "addcurrentUnittoCustomer();selection='preview'" ng-show="selection==='equipmntDtl'">
+		<button type="button" class="btn btn-primary button" ng-click = "addcurrentUnittoCustomer();selection='preview'" ng-show="selection==='equipmntDtl'" ng-disabled="isProcessing">
 			<i class="fa fa-eye" style="font-size: 13px"></i> Preview
 		</button>
 		<button type="button" class="btn btn-primary button child-right"
@@ -57,4 +62,3 @@
 			Next &nbsp<i class="fa fa-arrow-right" style="font-size: 13px"></i>
 		</button>
 </div>
-

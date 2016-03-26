@@ -9,6 +9,7 @@ import com.techvisio.eserve.beans.ComplaintAssignment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.EquipmentHistory;
 import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
@@ -18,6 +19,7 @@ import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitHistory;
 
 @Component
 public interface CustomerDao {
@@ -39,5 +41,7 @@ public interface CustomerDao {
 			ServiceAgreementFinanceHistory financeHistory);
 	public List<Customer> getEmailId(String EmailId);
 	public List<Customer> getContactNo(String ContactNo);
+	public void saveUnitHistory(UnitHistory unitHistory);
+	public void saveEquipmentHistory(EquipmentHistory equipmentHistory);
 
 }

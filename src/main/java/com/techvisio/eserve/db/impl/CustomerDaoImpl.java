@@ -17,11 +17,13 @@ import com.techvisio.eserve.beans.AgreementDuration;
 import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.EquipmentDetail;
+import com.techvisio.eserve.beans.EquipmentHistory;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitHistory;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.exception.NoEntityFoundException;
@@ -96,6 +98,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 				if(unit.getServiceAgreement().getUnitId()==null){
 					unit.getServiceAgreement().setUnitId(unit.getUnitId());
 				}
+				unit.getServiceAgreement().setVersionId(unit.getVersionId());
 				saveUnit(unit);			
 			}
 		}
@@ -265,6 +268,15 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		}
 	}	
 
+	@Override
+	public void saveUnitHistory(UnitHistory unitHistory) {
+			getEntityManager().persist(unitHistory);
+	}
+	
+	@Override
+	public void saveEquipmentHistory(EquipmentHistory equipmentHistory) {
+			getEntityManager().persist(equipmentHistory);
+	}
 
 	@Override
 	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId){
@@ -274,6 +286,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		if(agreement.getServiceAgreementFinance() != null){
 			agreement.getServiceAgreementFinance().setUnitId(unitId);
 		}
+		agreement.getServiceAgreementFinance().setVersionId(agreement.getVersionId());
 		Unit unit = getUnit(unitId);
 		
 		saveUnit(unit);

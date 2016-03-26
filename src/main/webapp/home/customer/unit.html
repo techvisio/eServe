@@ -4,9 +4,13 @@
 			UNIT INFORMATION
 
 			<div class="child-right" ng-show="!showAndHidePreview()">
-				<button type="button" class="btn btn-primary btn-sm"
-					ng-click="addUnit()" ng-disabled="isCreateOrUpdatePrivileged()">Add
-					Unit</button>
+
+				<i class="fa fa-plus-circle button" style="font-size: 27px"
+					ng-click="addUnit()" ng-disabled="isCreateOrUpdatePrivileged()"></i>
+
+				<!-- 				<button type="button" class="btn btn-primary btn-sm" -->
+				<!-- 					ng-click="addUnit()" ng-disabled="isCreateOrUpdatePrivileged()">Add -->
+				<!-- 					Unit</button> -->
 			</div>
 		</h3>
 	</div>
@@ -21,7 +25,11 @@
 				<div class="child-right"
 					ng-show="!showAndHidePreview() || unit.unitId">
 
-					<img src="../static/images/complaint.png" height="35" width="35"
+					<i class="fa fa-trash-o button"
+						style="color: #336699; font-size: 25px"
+						ng-click="removeUnit($index)" ng-show="$index>0"
+						ng-disabled="isCreateOrUpdatePrivileged()"></i> <img
+						src="../static/images/complaint.png" height="35" width="35"
 						ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)"
 						ng-disabled="(!isPrivileged('CREATE_COMPLAINT')) || isProcessing" />
 					<!-- 					<button type="button" class="btn btn-primary btn-sm" -->
@@ -212,13 +220,13 @@
 					</button>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-sm-2">
-					<button class="btn btn-primary" ng-click="removeUnit($index)"
-						ng-show="$index>0" ng-disabled="isCreateOrUpdatePrivileged()">Remove
-						Unit</button>
-				</div>
-			</div>
+			<!-- 			<div class="row"> -->
+			<!-- 				<div class="col-sm-2"> -->
+			<!-- 					<button class="btn btn-primary" ng-click="removeUnit($index)" -->
+			<!-- 						ng-show="$index>0" ng-disabled="isCreateOrUpdatePrivileged()">Remove -->
+			<!-- 						Unit</button> -->
+			<!-- 				</div> -->
+			<!-- 			</div> -->
 		</div>
 	</div>
 </div>

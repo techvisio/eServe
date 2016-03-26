@@ -1,35 +1,25 @@
 package com.techvisio.eserve.manager.impl;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ApproveUnitDtl;
-import com.techvisio.eserve.beans.ComplaintAssignment;
-import com.techvisio.eserve.beans.ComplaintResolution;
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.CompositeKeyEquipmentHistory;
+import com.techvisio.eserve.beans.CompositeKeyUnitHistory;
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerComplaint;
-import com.techvisio.eserve.beans.SearchComplaint;
-import com.techvisio.eserve.beans.SearchComplaintCustomer;
-import com.techvisio.eserve.beans.SearchComplaintUnit;
+import com.techvisio.eserve.beans.EquipmentDetail;
+import com.techvisio.eserve.beans.EquipmentHistory;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
-import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitHistory;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
-import com.techvisio.eserve.factory.WorkItemFactory;
 import com.techvisio.eserve.manager.CustomerManager;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
@@ -155,21 +145,69 @@ public class CustomerManagerImpl implements CustomerManager {
 		if(unit.getApprovalStatus()==AppConstants.PENDING){
 
 			unit.setApprovalStatus(AppConstants.APPROVED);
+
+			saveServiceAgreementHistory(unit);
+			saveServiceAgreementFinanceHistory(unit);
+			saveUnitHistory(unit);
+			
 			unit.setVersionId(unit.getVersionId()+1);
 			customerDao.saveUnit(unit);
 
-			saveServiceAgreementHistory(unit);
-
-			saveServiceAgreementFinanceHistory(unit);
 		}
 
 		unitFromDB = customerDao.getUnit(unit.getUnitId());
 		return unitFromDB;
 	}
 
+	private List<EquipmentHistory> saveEquipmentHistory(Unit unit) {
+		List<EquipmentHistory> equipmentHistories = new ArrayList<EquipmentHistory>();
+		
+		for(EquipmentDetail equipmentDetail : unit.getEquipmentDetails()){
+			
+			EquipmentHistory equipmentHistory = new EquipmentHistory();
+			CompositeKeyEquipmentHistory keyEquipmentHistory = new CompositeKeyEquipmentHistory();
+			keyEquipmentHistory.setEquipmentDtlId(equipmentDetail.getEquipmentDtlId());
+			keyEquipmentHistory.setUnitId(equipmentDetail.getUnitId());
+			keyEquipmentHistory.setVersion(unit.getVersionId());
+			equipmentHistory.setCompositeKeyEquipmentHistory(keyEquipmentHistory);
+			equipmentHistory.setEquipment(equipmentDetail.getEquipment());
+			equipmentHistory.setInvoiceNo(equipmentDetail.getInvoiceNo());
+			equipmentHistory.setSerialNo(equipmentDetail.getSerialNo());
+			equipmentHistory.setType(equipmentDetail.getType());
+			equipmentHistory.setWarrantyUnder(equipmentDetail.getWarrantyUnder());
+			equipmentHistory.setUnderWarranty(equipmentDetail.isUnderWarranty());
+			customerDao.saveEquipmentHistory(equipmentHistory);
+			
+			equipmentHistories.add(equipmentHistory);
+		}
+		
+		return equipmentHistories;
+	}
+
+	private void saveUnitHistory(Unit unit) {
+		UnitHistory unitHistory = new UnitHistory();
+		CompositeKeyUnitHistory compositeKey = new CompositeKeyUnitHistory();
+		compositeKey.setUnitId(unit.getUnitId());
+		compositeKey.setVersion(unit.getVersionId());
+		unitHistory.setAddress(unit.getAddress());
+		unitHistory.setCompositeKey(compositeKey);
+		unitHistory.setApprovalStatus(unit.getApprovalStatus());
+		unitHistory.setAssetNo(unit.getAssetNo());
+		unitHistory.setCustomerId(unit.getCustomerId());
+		unitHistory.setMachineSerialNo(unit.getMachineSerialNo());
+		unitHistory.setModelNo(unit.getModelNo());
+		unitHistory.setUnitCategory(unit.getUnitCategory());
+		unitHistory.setUnitCode(unit.getUnitCode());
+		
+		List<EquipmentHistory> equipmentHistories=saveEquipmentHistory(unit);
+		
+		customerDao.saveUnitHistory(unitHistory);
+	}
+
 	private void saveServiceAgreementHistory(Unit unit) {
 		ServiceAgreementHistory history = new ServiceAgreementHistory();
 		history.setClient(unit.getClient());
+		history.setVersionId(unit.getVersionId());
 		history.setEndDate(unit.getServiceAgreement().getContractExpireOn());
 		history.setServiceType(unit.getServiceAgreement().getServiceCategory());
 		history.setStartDateString(unit.getServiceAgreement().getContractStartOnString());
@@ -180,6 +218,7 @@ public class CustomerManagerImpl implements CustomerManager {
 	private void saveServiceAgreementFinanceHistory(Unit unit) {
 		if(unit.getServiceAgreement().getServiceAgreementFinance() != null){
 			ServiceAgreementFinanceHistory financeHistory = new ServiceAgreementFinanceHistory();
+			financeHistory.setVersionId(unit.getVersionId());
 			financeHistory.setAgreementAmount(unit.getServiceAgreement().getServiceAgreementFinance().getAgreementAmount());
 			financeHistory.setClient(unit.getClient());
 			financeHistory.setUnitId(unit.getUnitId());

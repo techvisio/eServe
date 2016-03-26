@@ -8,8 +8,17 @@
 		<h3 class="custom-page-header">
 			CUSTOMER INFORMATION
 			<div class="child-right">
-				<i class="fa fa-pencil-square-o button"
-					style="color: darkBlue; font-size: 25px"
+
+				<i class="fa fa-times " style="color: #336699; font-size: 27px"
+					ng-show="!isNew && isEdit" ng-click="toggleReadOnly('CUSTOMER')"></i>
+
+				<i class="fa fa-floppy-o button"
+					style="color: #336699; font-size: 23px"
+					ng-show="(isNew && !isEdit && !showAndHidePreview()) || (!isNew && isEdit && !showAndHidePreview())"
+					ng-click="saveAndUpdateCustomer('PUBLISH')"
+					ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i> 
+				<i	class="fa fa-pencil-square-o button" ng-show="isNew || !isEdit"
+					style="color: #336699; font-size: 25px"
 					ng-click="toggleReadOnly('CUSTOMER')" popover-placement="bottom"
 					popover="Click To Edit" popover-trigger="mouseenter"
 					ng-disabled="isCreateOrUpdatePrivileged()"></i>
@@ -145,22 +154,22 @@
 			</div>
 		</div>
 
-		<div class="row">
+		<!-- 		<div class="row"> -->
 
-			<div class="col-sm-9"></div>
+		<!-- 			<div class="col-sm-9"></div> -->
 
-			<div class="col-sm-1" ng-show="!isNew && isEdit">
-				<button type="button" class="btn btn-primary"
-					ng-click="toggleReadOnly('CUSTOMER')">Cancel</button>
-			</div>
+		<!-- 			<div class="col-sm-1" ng-show="!isNew && isEdit"> -->
+		<!-- 				<button type="button" class="btn btn-primary" -->
+		<!-- 					ng-click="toggleReadOnly('CUSTOMER')">Cancel</button> -->
+		<!-- 			</div> -->
 
-			<div class="col-sm-2 child-right"
-				ng-show="(isNew && !isEdit && !showAndHidePreview()) || (!isNew && isEdit && !showAndHidePreview())">
-				<button type="button" class="btn btn-primary"
-					ng-click="saveAndUpdateCustomer('PUBLISH')"
-					ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">
-					Save Customer</button>
-			</div>
-		</div>
+		<!-- 			<div class="col-sm-2 child-right" -->
+		<!-- 				ng-show="(isNew && !isEdit && !showAndHidePreview()) || (!isNew && isEdit && !showAndHidePreview())"> -->
+		<!-- 				<button type="button" class="btn btn-primary" -->
+		<!-- 					ng-click="saveAndUpdateCustomer('PUBLISH')" -->
+		<!-- 					ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"> -->
+		<!-- 					Save Customer</button> -->
+		<!-- 			</div> -->
+		<!-- 		</div> -->
 	</div>
 </div>

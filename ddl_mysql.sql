@@ -91,6 +91,10 @@
         drop 
         foreign key FK_mpnueniqq8mq7w53mgsbg12fe;
 
+    alter table TB_EQUIPMENT_HISTORY 
+        drop 
+        foreign key FK_op2ujhdw2ikw9ywpweenqei0d;
+
     alter table TB_EQUIPMENT_MASTER 
         drop 
         foreign key FK_g2knoota7mm923vp006iw706l;
@@ -179,6 +183,14 @@
         drop 
         foreign key FK_gbe6skygwysmueutotfpdfu5m;
 
+    alter table TB_UNIT_HISTORY 
+        drop 
+        foreign key FK_8q3hde1svo5cv9o6mfihgyldv;
+
+    alter table TB_UNIT_HISTORY 
+        drop 
+        foreign key FK_1tvu8si964k8i3xbquvabj44g;
+
     alter table TB_USER 
         drop 
         foreign key FK_gu03pv7i6qh7ghnfa0qpx1hc2;
@@ -241,6 +253,8 @@
 
     drop table if exists TB_EQUIPMENT_DETAIL;
 
+    drop table if exists TB_EQUIPMENT_HISTORY;
+
     drop table if exists TB_EQUIPMENT_MASTER;
 
     drop table if exists TB_ISSUE_MASTER;
@@ -272,6 +286,8 @@
     drop table if exists TB_UNIT_CATEGORY_MASTER;
 
     drop table if exists TB_UNIT_DETAIL;
+
+    drop table if exists TB_UNIT_HISTORY;
 
     drop table if exists TB_USER;
 
@@ -450,6 +466,19 @@
         Client_Id bigint,
         EQUIPMENT_ID bigint,
         primary key (EQUIPMENT_DTL_ID)
+    );
+
+    create table TB_EQUIPMENT_HISTORY (
+        EQUIPMENT_DTL_ID bigint not null,
+        UNIT_ID bigint not null,
+        VERSION double precision not null,
+        INVOICE_NO bigint,
+        SERIAL_NO varchar(255),
+        TYPE varchar(255),
+        IS_UNDER_WARRANTY bit,
+        WARRANTY_UNDER varchar(255),
+        EQUIPMENT_ID bigint,
+        primary key (EQUIPMENT_DTL_ID, UNIT_ID, VERSION)
     );
 
     create table TB_EQUIPMENT_MASTER (
@@ -666,6 +695,20 @@
         primary key (UNIT_ID)
     );
 
+    create table TB_UNIT_HISTORY (
+        UNITID bigint not null,
+        VERSION double precision not null,
+        APPROVAL_STATUS char(1),
+        ASSET_NO varchar(255),
+        CUSTOMER_ID bigint,
+        MACHINE_SERIAL_NO varchar(255),
+        MODEL_NO varchar(255),
+        UNIT_CODE varchar(255),
+        ADDRESS_ID bigint,
+        UNIT_CATEGORY_ID bigint,
+        primary key (UNITID, VERSION)
+    );
+
     create table TB_USER (
         USER_ID bigint not null auto_increment,
         CREATED_BY varchar(255),
@@ -842,6 +885,11 @@
         foreign key (UNIT_ID) 
         references TB_UNIT_DETAIL (UNIT_ID);
 
+    alter table TB_EQUIPMENT_HISTORY 
+        add constraint FK_op2ujhdw2ikw9ywpweenqei0d 
+        foreign key (EQUIPMENT_ID) 
+        references TB_EQUIPMENT_MASTER (EQUIPMENT_ID);
+
     alter table TB_EQUIPMENT_MASTER 
         add constraint FK_g2knoota7mm923vp006iw706l 
         foreign key (Client_Id) 
@@ -951,6 +999,16 @@
         add constraint FK_gbe6skygwysmueutotfpdfu5m 
         foreign key (CUSTOMER_ID) 
         references TB_CUSTOMER_DETAIL (CUSTOMER_ID);
+
+    alter table TB_UNIT_HISTORY 
+        add constraint FK_8q3hde1svo5cv9o6mfihgyldv 
+        foreign key (ADDRESS_ID) 
+        references TB_ADDRESS_DETAIL (ADDRESS_ID);
+
+    alter table TB_UNIT_HISTORY 
+        add constraint FK_1tvu8si964k8i3xbquvabj44g 
+        foreign key (UNIT_CATEGORY_ID) 
+        references TB_UNIT_CATEGORY_MASTER (UNIT_CATEGORY_ID);
 
     alter table TB_USER 
         add constraint FK_gu03pv7i6qh7ghnfa0qpx1hc2 
