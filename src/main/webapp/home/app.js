@@ -34,7 +34,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 	.state('home', {
 		// Use a url of "/" to set a state as the "index".
 		url: "/home",
-		templateUrl: 'customer/workItem.html',
+		templateUrl: 'dashboard/dashboard.html',
 		controller:"customerController",
 		resolve:{
 			customer: ['$stateParams', function($stateParams){

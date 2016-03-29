@@ -1,19 +1,47 @@
-<a href ng-click="" class="toggler">
+<a href ng-click="" >
     <i></i>
 </a>
 <div class="side-header">
     <div class="filter-dropdown">
     </div>
-    Welcome Back, <br/>
-    <h2><a class="user" ></a></h2>
+  
 </div>
 
 <div class="block">
-    <div class="block-head">
-        <div class="filter-dropdown">
-            <ul>
-            </ul>
-        </div>
-        <h3>Priority Tasks <i class="fa fa-spinner fa-pulse" ></i></h3>
+   <div class="sidebar-nav navbar-collapse">
+        <ul class="nav in" id="side-menu">
+            <sidebar-search></sidebar-search>
+            <li ui-sref-active="active">
+                <a ui-sref="dashboard.home"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+            </li>
+            <li ng-class="{active: collapseVar==1}">
+                <a href="" ng-click="check(1)"><i class="fa fa-wrench fa-fw"></i> Customer<span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" collapse="collapseVar!=1">
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.panels-wells">Search Customer</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="dashboard.buttons">New Customer</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li ng-class="{active: collapseVar==2}">
+                <a href="" ng-click="check(2)"><i class="fa fa-sitemap fa-fw"></i> Service<span
+                        class="fa arrow"></span></a>
+                <ul class="nav nav-second-level" collapse="collapseVar!=2">
+                    <li>
+                        <a href="">Create Complaint</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li ng-class="{active:collapseVar==4}">
+                <a href="" ng-click="check(4)"><i class="fa fa-files-o fa-fw"></i> Sales<span
+                        class="fa arrow"></span></a>
+                <!-- /.nav-second-level -->
+            </li>
+        </ul>
     </div>
 </div>

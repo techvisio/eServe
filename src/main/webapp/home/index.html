@@ -22,6 +22,7 @@
 <script src="shared/masterdata.js"></script>
 <script src="user/userCntrl.js"></script>
 <script src="user/userSrvc.js"></script>
+<script src="dashboard/stats.js"></script>
 <script src="app.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
 
@@ -80,10 +81,10 @@
 	<div class="wrapper">
 		<div class="container">
 
+			<div class="sidebar" ng-include="'sidebar/sidebar.html'"></div>
 			<div class="module-container">
 				<div ui-view></div>
 			</div>
-			<div class="sidebar" ng-include="'sidebar/sidebar.html'"></div>
 
 		</div>
 	</div>
