@@ -347,21 +347,28 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public List<Customer> getEmailId(String EmailId) {
+	public Customer getEmailId(String EmailId) {
 		String queryString="FROM Customer cus WHERE cus.emailId = "+" '" + EmailId +" ' ";
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<Customer> customers= (List<Customer>)query.getResultList();
-		return customers;
+
+		if(customers != null && customers.size()>0){
+			return customers.get(0);
+		}
+		return null;
 	}
 	
 	@Override
-	public List<Customer> getContactNo(String ContactNo) {
+	public Customer getContactNo(String ContactNo) {
 		String queryString="FROM Customer cus WHERE cus.contactNo = "+" '" + ContactNo +" ' ";
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<Customer> customers= (List<Customer>)query.getResultList();
-		return customers;
+		if(customers != null && customers.size()>0){
+			return customers.get(0);
+		}
+		return null;
 	}
 
 }

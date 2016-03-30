@@ -39,8 +39,9 @@ public interface CustomerService {
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
 	public Unit getUnit(Long unitId);
 	public Unit approveUnit(Unit unit);
+	public Unit rejectUnitApproval(Unit unit);
 	public ApproveUnitDtl getUnitForApproval(Long unitId);
 	public Customer createCustomerfromComplaint(CustomerComplaint customerComplaint);
-	public List<Customer> getEmailId(String emailId);
-	public List<Customer> getContactNo(String contactNo);
+	public Customer getEmailId(String emailId);
+	public Customer getContactNo(String contactNo);
 }

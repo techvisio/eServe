@@ -164,15 +164,21 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public List<Customer> getEmailId(String emailId) {
-		List<Customer> customers = customerManager.getEmailId(emailId);
-		return customers;
+	public Customer getEmailId(String emailId) {
+		Customer customer = customerManager.getEmailId(emailId);
+		return customer;
 	}
 	
 	@Override
-	public List<Customer> getContactNo(String contactNo)  {
-		List<Customer> customers = customerManager.getContactNo(contactNo);
-		return customers;
+	public Customer getContactNo(String contactNo)  {
+		Customer customer = customerManager.getContactNo(contactNo);
+		return customer;
+	}
+
+	@Override
+	public Unit rejectUnitApproval(Unit unit) {
+		Unit unitFromDB = customerManager.rejectUnitApproval(unit);
+		return unitFromDB;
 	}
 
 }

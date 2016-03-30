@@ -16,11 +16,24 @@ customerModule.service('customerService', function($http, $q) {
 		getUnitForApproval : getUnitForApproval,
 		getWorkItemByUserIdAndWorkType : getWorkItemByUserIdAndWorkType,
 		getEmailId : getEmailId,
-		getContactNo : getContactNo
+		getContactNo : getContactNo,
+		rejectUnitApprovalUnit : rejectUnitApprovalUnit
 	});
 
 
+	
+	function rejectUnitApprovalUnit(unit){
+		console.log('rejecting unit approval in service');
+		var request = $http({
+			method : "put",
+			url : "../service/customer/rejectunit",
+			params : "",
+			data: unit
 
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+	
 	function getWorkItemByUserIdAndWorkType(userId, type, status){
 		console.log('get work Item by user Id and type in service');
 
@@ -30,8 +43,6 @@ customerModule.service('customerService', function($http, $q) {
 			params : {
 				action : "get"
 			},
-
-
 
 		});
 		return (request.then(handleSuccess, handleError));

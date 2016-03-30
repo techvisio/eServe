@@ -11,6 +11,10 @@
         drop 
         foreign key FK_ar2h6nye7rlkto1n333dh674e;
 
+    alter table TB_COMMENT 
+        drop 
+        foreign key FK_193ur7v6ywx2dyejbaei0kygs;
+
     alter table TB_COMPLAINT_ASSIGNMENT 
         drop 
         foreign key FK_efy1rj6xyhvfpslvetcmak7cv;
@@ -233,6 +237,8 @@
 
     drop table if exists TB_CLIENT_MASTER;
 
+    drop table if exists TB_COMMENT;
+
     drop table if exists TB_COMPLAINT_ASSIGNMENT;
 
     drop table if exists TB_COMPLAINT_RESOLUTION;
@@ -329,6 +335,14 @@
         CLIENT varchar(255),
         CLIENT_CODE varchar(255),
         primary key (CLIENT_ID)
+    );
+
+    create table TB_COMMENT (
+        COMMENT_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        COMMENT varchar(255),
+        primary key (COMMENT_ID)
     );
 
     create table TB_COMPLAINT_ASSIGNMENT (
@@ -753,7 +767,7 @@
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
         ASSIGNEE_ID bigint,
-        COMMENT varchar(255),
+        COMMENT_ID bigint,
         DESCRIPTION varchar(255),
         DUE_DATE datetime,
         ENTITY_ID bigint,
@@ -784,6 +798,11 @@
         add constraint FK_ar2h6nye7rlkto1n333dh674e 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_COMMENT 
+        add constraint FK_193ur7v6ywx2dyejbaei0kygs 
+        foreign key (COMMENT_ID) 
+        references TB_WORK_ITEM (WORKITEM_ID);
 
     alter table TB_COMPLAINT_ASSIGNMENT 
         add constraint FK_efy1rj6xyhvfpslvetcmak7cv 

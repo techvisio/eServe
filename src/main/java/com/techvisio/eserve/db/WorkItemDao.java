@@ -16,6 +16,8 @@ public interface WorkItemDao {
 			String status);
 	public void updateWorkItemStatus(Long entityId,String status);
 	public List<WorkItem> getWorkItemsByEntityId(Long entityId);
+	public WorkItem getWorkItemsByEntityIdAndEntityType(Long entityId,
+			String entityType);
 	
 	
 }

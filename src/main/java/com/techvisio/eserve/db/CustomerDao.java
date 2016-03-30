@@ -39,8 +39,8 @@ public interface CustomerDao {
 	public void saveServiceAgreementHistory(ServiceAgreementHistory history);
 	public void saveServiceAgreementFinanceHistory(
 			ServiceAgreementFinanceHistory financeHistory);
-	public List<Customer> getEmailId(String EmailId);
-	public List<Customer> getContactNo(String ContactNo);
+	public Customer getEmailId(String EmailId);
+	public Customer getContactNo(String ContactNo);
 	public void saveUnitHistory(UnitHistory unitHistory);
 	public void saveEquipmentHistory(EquipmentHistory equipmentHistory);
 

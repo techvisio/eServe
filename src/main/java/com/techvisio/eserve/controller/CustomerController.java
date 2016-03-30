@@ -121,6 +121,15 @@ public class CustomerController {
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
+	
+	@RequestMapping(value ="/rejectunit/", method = RequestMethod.PUT)
+	public ResponseEntity<Response> rejectUnitApprovalUnit(@RequestBody Unit unit) {
+		Response response=new Response();
+		Unit unitFromDB = customerService.rejectUnitApproval(unit);
+		response.setResponseBody(unitFromDB);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
 
 	@RequestMapping(value="/unitapproval/{unitId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getUnitForApproval(@PathVariable Long unitId) {  
@@ -133,16 +142,16 @@ public class CustomerController {
 	@RequestMapping(value="/emailId",method = RequestMethod.GET)
 	public ResponseEntity<Response> getEmailId(@RequestParam(value="emailId", defaultValue="")String emailId) {  
 		Response response=new Response();
-		List<Customer> customers = customerService.getEmailId(emailId);
-		response.setResponseBody(customers);
+		Customer customer = customerService.getEmailId(emailId);
+		response.setResponseBody(customer);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/contactNo",method = RequestMethod.GET)
 	public ResponseEntity<Response> getContactNo(@RequestParam(value="contactNo", defaultValue="")String contactNo) {  
 		Response response=new Response();
-		List<Customer> customers = customerService.getContactNo(contactNo);
-		response.setResponseBody(customers);
+		Customer customer = customerService.getContactNo(contactNo);
+		response.setResponseBody(customer);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 }

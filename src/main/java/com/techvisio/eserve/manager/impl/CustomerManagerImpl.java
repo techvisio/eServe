@@ -233,14 +233,31 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 
 	@Override
-	public List<Customer> getEmailId(String EmailId) {
-		List<Customer> customer = customerDao.getEmailId(EmailId);
+	public Customer getEmailId(String EmailId) {
+		Customer customer = customerDao.getEmailId(EmailId);
 		return customer;
 	}
 	
 	@Override
-	public List<Customer> getContactNo(String ContactNo) {
-		List<Customer> customer = customerDao.getContactNo(ContactNo);
+	public Customer getContactNo(String ContactNo) {
+		Customer customer = customerDao.getContactNo(ContactNo);
 		return customer;
+	}
+	
+	@Override
+	public Unit rejectUnitApproval(Unit unit){
+
+		Unit unitFromDB = null;
+
+		if(unit.getApprovalStatus()==AppConstants.PENDING){
+
+			unit.setApprovalStatus(AppConstants.REJECTED);
+			customerDao.saveUnit(unit);
+
+		}
+
+		unitFromDB = customerDao.getUnit(unit.getUnitId());
+		return unitFromDB;
+		
 	}
 }

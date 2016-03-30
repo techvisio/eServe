@@ -321,6 +321,19 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		})
 	};
 
+	$scope.rejectUnitApprovalUnit = function(){
+
+		customerService.rejectUnitApprovalUnit(unit)
+		.then(function(response) {
+			console.log('reject unit called in controller ');
+			console.log(response);
+			if (response) {
+				unit= response;
+				$scope.redirectToCustomerDtlScreen(unit.customerId);
+			} 
+		})
+	}
+
 	$scope.countUnit = function(customer) {
 		var count = 0;
 		for(var i = 0; i <customer.units.length; i++){
@@ -439,10 +452,12 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.switchToNextPage = function(){
 		if($scope.selection="customer"){
 			if(!$scope.form.CUSTOMER.$valid || $scope.emailError || $scope.contactNoError){
+				$scope.alerts=[];
+				$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
 				return;
 			}
 		}
-		
+
 		if($scope.selection="unitDtl"){
 			if(!$scope.form.UNIT.$valid){
 				return;
@@ -459,18 +474,19 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.getEmailId = function(){
 		customerService.getEmailId($scope.customer.emailId)
 		.then(function(response) {
-			console.log('all customers Data received in controller : ');
+			console.log('getting customer by emailId in controller : ');
 			console.log(response);
 			if (response) {
-				$scope.customers = response;
+				$scope.customerForEmail = response;
 
-				if($scope.customers.length>0){	
+				if(angular.isUndefined($scope.customer.customerId) || $scope.customerForEmail.customerId != $scope.customer.customerId){
 					$scope.emailError=true;
 				}
-				else{
-					$scope.emailError=false;
-				}
 			} 
+
+			else{
+				$scope.emailError=false;
+			}
 		})
 	}
 
@@ -480,17 +496,38 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			console.log('all customers Data received in controller : ');
 			console.log(response);
 			if (response) {
-				$scope.customers = response;
+				$scope.customerForContactNo = response;
 
-				if($scope.customers.length>0){
+				if(angular.isUndefined($scope.customer.customerId) || $scope.customerForContactNo.customerId != $scope.customer.customerId){
 					$scope.contactNoError=true;
 				}
-				else{
-					$scope.contactNoError=false;
-				}
 			} 
+			else{
+				$scope.contactNoError=false;
+			}
+
 		})
 	}
+
+
+	$scope.showCommentBox = function() {
+
+		$rootScope.curModal = $modal.open({
+			templateUrl: 'customer/CommentBox.html',
+			controller: 'customerController',
+			scope:$scope,
+			
+			resolve:{
+				customer: ['$stateParams', function($stateParams){
+					return null;
+				}],
+				unit: ['$stateParams', function($stateParams){
+					return null;
+				}]
+			}
+			
+		});
+	};
 
 	$scope.showUnitExpireModal = function(unit) {
 

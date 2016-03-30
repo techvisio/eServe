@@ -36,6 +36,7 @@ public interface CustomerManager {
 	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
 	public ApproveUnitDtl getUnitForApproval(Long unitId);
 	public Long saveCustomer(Customer customer);
-	public List<Customer> getEmailId(String EmailId);
-	public List<Customer> getContactNo(String ContactNo);
+	public Customer getEmailId(String EmailId);
+	public Customer getContactNo(String ContactNo);
+	public Unit rejectUnitApproval(Unit unit);
 }

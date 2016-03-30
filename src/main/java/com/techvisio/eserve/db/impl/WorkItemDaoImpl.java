@@ -89,5 +89,19 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 	
 	return workItems;
 }
+
+	@Override
+	public WorkItem getWorkItemsByEntityIdAndEntityType(Long entityId, String entityType){ 
+
+	String queryString="FROM WorkItem wi WHERE wi.entityId = "+entityId +"and wi.entityType = " + " '" + entityType +" ' ";
+	Query query=getEntityManager().createQuery(queryString);
+	@SuppressWarnings("unchecked")
+	List<WorkItem> workItems= (List<WorkItem>)query.getResultList();
+	
+	if(workItems != null && workItems.size()>0){
+		return workItems.get(0);
+	}	
+	return null;
+}
 	
 }

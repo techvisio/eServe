@@ -63,4 +63,12 @@ public class WorkItemManagerImpl implements WorkItemManager{
 		return workItems;
 	}
 
+	@Override
+	public WorkItem getWorkItemsByEntityIdAndEntityType(Long entityId,
+			String entityType) {
+		WorkItem workItem = workItemDao.getWorkItemsByEntityIdAndEntityType(entityId, entityType);
+		
+		return workItem;
+	}
+
 }

@@ -1,12 +1,17 @@
 package com.techvisio.eserve.beans;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -31,8 +36,11 @@ public class WorkItem extends BasicEntity{
 	private String entityUrl;
 	@Column(name="DESCRIPTION")
 	private String description;
-	@Column(name="COMMENT")
-	private String comment;
+	@Column(name="COMMENT_ID")
+	private Long commentId;
+	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, orphanRemoval=false)
+	@JoinColumn(name="COMMENT_ID")
+	private List<Comment> comments;
 	@Column(name="PRIORITY")
 	private String priority;
 	@Column(name="DUE_DATE")
@@ -88,12 +96,7 @@ public class WorkItem extends BasicEntity{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getComment() {
-		return comment;
-	}
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+	
 	public String getPriority() {
 		return priority;
 	}

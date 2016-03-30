@@ -22,7 +22,7 @@ public class WorkItemServiceImpl implements WorkItemService{
 
 	@Autowired
 	CustomerService customerService;
-	
+
 	@Override
 	public void saveWorkItem(WorkItem workItem) {
 		workItemManager.saveWorkItem(workItem);
@@ -63,93 +63,110 @@ public class WorkItemServiceImpl implements WorkItemService{
 		return workItems;
 	}
 
-    @Override
+	@Override
 	public void createWorkItemForCustomer(Customer customer, String context,
 			Long customerId) {
-		List<WorkItem> workItems = workItemManager.getWorkItemsByEntityId(customerId);
 
-		for(WorkItem workItem : workItems){
-			if(workItem.getStatus().equalsIgnoreCase(AppConstants.WORK_ITEM_OPEN_STATUS)){
-				workItemManager.updateWorkItemStatus(customerId, AppConstants.WORK_ITEM_CLOSE_STATUS);
-			}
-		}
+
 
 		if(context.equalsIgnoreCase(AppConstants.CUSTOMER_DRAFT)){
-			WorkItemFactory factory = new WorkItemFactory();
+			WorkItem workItemFromDB = workItemManager.getWorkItemsByEntityIdAndEntityType(customerId, "CUSTOMER");
 
-			WorkItem workItem = factory.getWorkItem(context);
-			workItem.setEntityId(customerId);
-			workItemManager.saveWorkItem(workItem);
+			if(workItemFromDB !=null){
 
+				workItemFromDB.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
+				workItemManager.saveWorkItem(workItemFromDB);
+			}
+
+			else{
+				WorkItemFactory factory = new WorkItemFactory();
+
+				WorkItem workItem = factory.getWorkItem(context);
+				workItem.setEntityId(customerId);
+				workItemManager.saveWorkItem(workItem);
+			}
 		}
 
 		if(context.equalsIgnoreCase(AppConstants.PUBLISH)){
 			for(Unit unit:customer.getUnits()){
+				WorkItem workItemFromDB = workItemManager.getWorkItemsByEntityIdAndEntityType(unit.getUnitId(), "UNIT");
+				if(workItemFromDB !=null){
+
+					workItemFromDB.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
+					workItemManager.saveWorkItem(workItemFromDB);
+				}
+
+				else{
+					WorkItemFactory factory = new WorkItemFactory();
+					WorkItem workItem = factory.getWorkItem(context);
+					workItem.setEntityId(unit.getUnitId());
+					workItemManager.saveWorkItem(workItem);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void createWorkItemForUnit(String context, Long unitId) {
+		Unit unitFromDB = customerService.getUnit(unitId);
+
+		if(context.equalsIgnoreCase(AppConstants.CUSTOMER_DRAFT)){
+
+			WorkItem workItemFromDB = workItemManager.getWorkItemsByEntityIdAndEntityType(unitId, "UNIT");
+
+			if(workItemFromDB!=null){
+				workItemFromDB.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
+				workItemManager.saveWorkItem(workItemFromDB);
+			}
+			else{
 				WorkItemFactory factory = new WorkItemFactory();
 				WorkItem workItem = factory.getWorkItem(context);
-				workItem.setEntityId(unit.getUnitId());
+				workItem.setEntityId(unitFromDB.getCustomerId());
+				workItemManager.saveWorkItem(workItem);
+			}
+		}
+
+		if(context.equalsIgnoreCase(AppConstants.PUBLISH)){
+			WorkItem workItemFromDB = workItemManager.getWorkItemsByEntityIdAndEntityType(unitId, "UNIT");
+
+			if(workItemFromDB!=null){
+				workItemFromDB.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
+				workItemManager.saveWorkItem(workItemFromDB);
+			}
+			else{
+				WorkItemFactory factory = new WorkItemFactory();
+				WorkItem workItem = factory.getWorkItem(context);
+				workItem.setEntityId(unitId);
 				workItemManager.saveWorkItem(workItem);
 			}
 		}
 	}
 
-    @Override
-    public void createWorkItemForUnit(String context, Long unitId) {
-		Unit unitFromDB = customerService.getUnit(unitId);
 
-		List<WorkItem> workItems = workItemManager.getWorkItemsByEntityId(unitId);
-
-		for(WorkItem workItem : workItems){
-			if(workItem.getStatus().equalsIgnoreCase(AppConstants.WORK_ITEM_OPEN_STATUS)){
-				workItemManager.updateWorkItemStatus(unitId, AppConstants.WORK_ITEM_CLOSE_STATUS);
-			}
-		}
-
-		if(context.equalsIgnoreCase(AppConstants.CUSTOMER_DRAFT)){
-			workItems = workItemManager.getWorkItemsByEntityId(unitFromDB.getCustomerId());
-			for(WorkItem workItem : workItems){
-				if(workItem.getStatus().equalsIgnoreCase(AppConstants.WORK_ITEM_OPEN_STATUS)){
-					workItemManager.updateWorkItemStatus(unitFromDB.getCustomerId(), AppConstants.WORK_ITEM_CLOSE_STATUS);
-				}
-			}
-		}
+	@Override
+	public void createWorkItemForUnitDraft(String context,
+			Long customerId) {
 
 		if(context.equalsIgnoreCase(AppConstants.CUSTOMER_DRAFT)){
 
-			WorkItemFactory factory = new WorkItemFactory();
-			WorkItem workItem = factory.getWorkItem(context);
-			workItem.setEntityId(unitFromDB.getCustomerId());
-			workItemManager.saveWorkItem(workItem);
-		}
+			WorkItem workItemFromDB = workItemManager.getWorkItemsByEntityIdAndEntityType(customerId, "CUSTOMER");
 
-		if(context.equalsIgnoreCase(AppConstants.PUBLISH)){
-			WorkItemFactory factory = new WorkItemFactory();
-			WorkItem workItem = factory.getWorkItem(context);
-			workItem.setEntityId(unitId);
-			workItemManager.saveWorkItem(workItem);
+			if(workItemFromDB!=null){
+				workItemFromDB.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
+				workItemManager.saveWorkItem(workItemFromDB);
+			}
+			else{
+				WorkItemFactory factory = new WorkItemFactory();
+
+				WorkItem workItem = factory.getWorkItem(context);
+				workItem.setEntityId(customerId);
+				workItemManager.saveWorkItem(workItem);
+			}
 		}
 	}
 
-    
-    @Override
-	public void createWorkItemForUnitDraft(String context,
-			Long customerId) {
-		List<WorkItem> workItems = workItemManager.getWorkItemsByEntityId(customerId);
 
-		for(WorkItem workItem : workItems){
-			if(workItem.getStatus().equalsIgnoreCase(AppConstants.WORK_ITEM_OPEN_STATUS)){
-				workItemManager.updateWorkItemStatus(customerId, AppConstants.WORK_ITEM_CLOSE_STATUS);
-			}
-		}
 
-		if(context.equalsIgnoreCase(AppConstants.CUSTOMER_DRAFT)){
-			WorkItemFactory factory = new WorkItemFactory();
 
-			WorkItem workItem = factory.getWorkItem(context);
-			workItem.setEntityId(customerId);
-			workItemManager.saveWorkItem(workItem);
 
-		}
-		}
-    
 }
