@@ -9,6 +9,7 @@ var erp = angular
                 'complaintModule',
                 'userModule',
                 'masterdataModule',
+                'dashboardModule'
                 ]);
 
 erp.run(['$rootScope', '$location',
@@ -35,7 +36,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		// Use a url of "/" to set a state as the "index".
 		url: "/home",
 		templateUrl: 'dashboard/dashboard.html',
-		controller:"customerController",
+		//controller:"dashboardModule",
 		resolve:{
 			customer: ['$stateParams', function($stateParams){
 				return null;
@@ -304,11 +305,13 @@ erp.controller('ApplicationController',
 
 			$scope.isPrivileged = function(role){
 
-				var userPrivilege = $rootScope.user.privileges;
 				var result=false;
+				if($rootScope.user && $rootScope.user.privileges){
+				var userPrivilege = $rootScope.user.privileges;
 				angular.forEach(userPrivilege, function(privilege) {
 					if (privilege.privilege.privilege===role) result= true;
 				});
+			}
 				return result;		
 			}
 
