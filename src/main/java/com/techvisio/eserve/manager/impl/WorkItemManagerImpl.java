@@ -1,13 +1,20 @@
 package com.techvisio.eserve.manager.impl;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.WorkItem;
 import com.techvisio.eserve.db.WorkItemDao;
+import com.techvisio.eserve.manager.CacheManager;
 import com.techvisio.eserve.manager.WorkItemManager;
+import com.techvisio.eserve.util.AppConstants;
+import com.techvisio.eserve.util.CommonUtil;
 
 @Component
 public class WorkItemManagerImpl implements WorkItemManager{
@@ -15,6 +22,9 @@ public class WorkItemManagerImpl implements WorkItemManager{
 	@Autowired
 	WorkItemDao workItemDao;
 
+	@Autowired
+	CacheManager cacheManager;
+	
 	@Override
 	public void saveWorkItem(WorkItem workItem) {
 		workItemDao.saveWorkItem(workItem);
@@ -64,11 +74,30 @@ public class WorkItemManagerImpl implements WorkItemManager{
 	}
 
 	@Override
-	public WorkItem getWorkItemsByEntityIdAndEntityType(Long entityId,
-			String entityType) {
-		WorkItem workItem = workItemDao.getWorkItemsByEntityIdAndEntityType(entityId, entityType);
-		
+	public WorkItem getWorkItemsByEntityIdAndEntityTypeAndWorkType(Long entityId,
+			String entityType, String workType) {
+		WorkItem workItem = workItemDao.getWorkItemsByEntityIdAndEntityTypeAndWorkType(entityId, entityType, workType);
+
 		return workItem;
+	}
+	@Override
+	public void createWorkItemForServiceRenewal(Unit unit) {
+		WorkItem workItem = workItemDao.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unit.getUnitId(),"UNIT", "AGREEMENT APPROVAL");
+
+		Map<Long, Map<String, Object>> configMap = cacheManager.getConfigMap(unit.getClient().getClientId());
+
+		Map<String, Object> defaultMap = configMap.get(unit.getClient().getClientId());
+
+		Config config = (Config) defaultMap.get(AppConstants.SERVICE_REMINDER);
+		int countDays = Integer.parseInt(config.getValue());
+
+		Date dueDate = CommonUtil.getDate(unit.getServiceAgreement().getContractExpireOn(),  countDays, false, false);
+		
+		workItem.setDueDate(dueDate);
+		workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
+		workItem.setWorkType(AppConstants.RENEW_SERVICE_CALL);
+		workItemDao.saveWorkItem(workItem);
+
 	}
 
 }

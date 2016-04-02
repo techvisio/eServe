@@ -184,11 +184,15 @@
 	</div>
 
 	<div class="row">
-		<div class="col-sm-8"></div>
+		<div class="col-sm-6"></div>
 		<div class="col-sm-2 child-right">
 			<button type="button" class="btn btn-success btn-sm"
 				ng-click="approveUnit(unitApproval.unit)" ng-disabled="isProcessing">Approve
 				Unit</button>
+		</div>
+		<div class="col-sm-2 child-right">
+			<button type="button" class="btn btn-success btn-sm"
+				ng-click="showRejectionCommentBox()" ng-disabled="isProcessing">Reject Changes </button>
 		</div>
 		<div class="col-sm-2 child-right">
 			<button type="button" class="btn btn-primary"

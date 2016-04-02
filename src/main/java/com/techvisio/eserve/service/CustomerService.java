@@ -12,6 +12,7 @@ import com.techvisio.eserve.beans.ComplaintAssignment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
@@ -27,10 +28,10 @@ public interface CustomerService {
 
 	public List<Customer> getCustomers();
 	public Customer getCustomer(Long customerId);
-	public Long saveCustomer(Customer customer, String context);
+	public Long saveCustomer(GenericRequest<Customer> request, String context);
 	public Long saveCustomer(Customer customer);
 	public void saveUnit(List<Unit> units,  Long customerId);
-	public Long saveUnit(Unit unit, String context);
+	public Long saveUnit(GenericRequest<Unit> request, String context);
 	public List<Unit> getUnits(Long customerId);
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
 //	public Map<String, Object> checkCustomerExistOrNot(

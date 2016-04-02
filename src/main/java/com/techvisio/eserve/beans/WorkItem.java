@@ -1,5 +1,6 @@
 package com.techvisio.eserve.beans;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,18 +37,16 @@ public class WorkItem extends BasicEntity{
 	private String entityUrl;
 	@Column(name="DESCRIPTION")
 	private String description;
-	@Column(name="COMMENT_ID")
-	private Long commentId;
 	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, orphanRemoval=false)
-	@JoinColumn(name="COMMENT_ID")
-	private List<Comment> comments;
+	@JoinColumn(name="WORKITEM_ID")
+	private List<Comment> comments=new ArrayList<Comment>();
 	@Column(name="PRIORITY")
 	private String priority;
 	@Column(name="DUE_DATE")
 	private  Date dueDate;
 	@Column(name="STATUS")
 	private String status;
-	
+
 	public Long getWorkItemId() {
 		return workItemId;
 	}
@@ -96,7 +95,7 @@ public class WorkItem extends BasicEntity{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public String getPriority() {
 		return priority;
 	}
@@ -114,6 +113,12 @@ public class WorkItem extends BasicEntity{
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public List<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	} 
-	
+
 }

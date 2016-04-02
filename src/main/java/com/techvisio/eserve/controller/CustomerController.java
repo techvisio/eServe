@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Customer;
+import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.Response;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.ServiceAgreement;
@@ -45,10 +46,11 @@ public class CustomerController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
+	//TODO:customer will take generic request and comments will be copied to all unit if it for publish
 	@RequestMapping(value="/{context}",method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity<Response> saveCustomer(@RequestBody Customer customer, @PathVariable String context) {  
-		Long customerId = customerService.saveCustomer(customer, context);
+	public ResponseEntity<Response> saveCustomer(@RequestBody GenericRequest<Customer> request, @PathVariable String context) {  
+		Long customerId = customerService.saveCustomer(request, context);
 		Customer customerFromDB = customerService.getCustomer(customerId);
 		Response response=new Response();
 		response.setResponseBody(customerFromDB);
@@ -66,10 +68,11 @@ public class CustomerController {
 	}
 
 	@RequestMapping(value="/unit/{customerId}/{context}", method = RequestMethod.PUT)
-	public ResponseEntity<Response> saveUnit(@RequestBody Unit unit, @PathVariable Long customerId, @PathVariable String context) {  
+	public ResponseEntity<Response> saveUnit(@RequestBody GenericRequest<Unit> request, @PathVariable Long customerId, @PathVariable String context) {  
 		Response response=new Response();
+		Unit unit=request.getBussinessObject();
 		unit.setCustomerId(customerId);
-		customerService.saveUnit(unit,context);
+		customerService.saveUnit(request,context);
 		List<Unit> unitsFromDB = customerService.getUnits(customerId);
 		response.setResponseBody(unitsFromDB);
 

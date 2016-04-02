@@ -13,7 +13,7 @@
 
     alter table TB_COMMENT 
         drop 
-        foreign key FK_193ur7v6ywx2dyejbaei0kygs;
+        foreign key FK_i5onl4rqdykxqkef27t8ybhya;
 
     alter table TB_COMPLAINT_ASSIGNMENT 
         drop 
@@ -342,6 +342,7 @@
         CREATED_BY varchar(255),
         CREATED_ON datetime,
         COMMENT varchar(255),
+        WORKITEM_ID bigint,
         primary key (COMMENT_ID)
     );
 
@@ -767,7 +768,6 @@
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
         ASSIGNEE_ID bigint,
-        COMMENT_ID bigint,
         DESCRIPTION varchar(255),
         DUE_DATE datetime,
         ENTITY_ID bigint,
@@ -800,8 +800,8 @@
         references TB_CLIENT_MASTER (CLIENT_ID);
 
     alter table TB_COMMENT 
-        add constraint FK_193ur7v6ywx2dyejbaei0kygs 
-        foreign key (COMMENT_ID) 
+        add constraint FK_i5onl4rqdykxqkef27t8ybhya 
+        foreign key (WORKITEM_ID) 
         references TB_WORK_ITEM (WORKITEM_ID);
 
     alter table TB_COMPLAINT_ASSIGNMENT 

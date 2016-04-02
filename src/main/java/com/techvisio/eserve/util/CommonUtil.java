@@ -1,5 +1,8 @@
 package com.techvisio.eserve.util;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.techvisio.eserve.beans.Client;
@@ -36,5 +39,32 @@ public class CommonUtil {
 			user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		}
 		return user.getClient();
+	}
+	
+	public static Date getDate(Date date, int countDays, boolean includeWeekendDays, boolean isIncreaseOrDecrease){
+		
+		if(includeWeekendDays)
+		{
+			
+		}
+		
+		if(isIncreaseOrDecrease)
+		{
+			Calendar c = Calendar.getInstance(); 
+			c.setTime(date); 
+			c.add(Calendar.DATE, (countDays));
+			date = c.getTime();
+
+		}
+		else
+		{
+			Calendar c = Calendar.getInstance(); 
+			c.setTime(date); 
+			c.add(Calendar.DATE, -(countDays));
+			date = c.getTime();
+		}
+		
+		return date;
+		
 	}
 }

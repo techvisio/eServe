@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
@@ -51,11 +52,14 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Long saveCustomer(Customer customer, String context) {
+	public Long saveCustomer(GenericRequest<Customer> request, String context) {
 
+		Customer customer=request.getBussinessObject();
+//		String comment = request.getContextInfo().get("comment");
+		String comment = "Published By New Customer Save";
 		Long customerId = customerManager.saveCustomer(customer, context);
 
-		workItemService.createWorkItemForCustomer(customer, context, customerId);
+		workItemService.createWorkItemForCustomer(context, customer,comment);
 
 		return customerId;
 	}
@@ -67,11 +71,13 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Long saveUnit(Unit unit, String context) {
+	public Long saveUnit(GenericRequest<Unit> request, String context) {
 
+		Unit unit=request.getBussinessObject();
+		String comment ="TEST";
 		Long unitId = customerManager.saveUnit(unit,context);
 
-		workItemService.createWorkItemForUnit(context, unitId);
+		workItemService.createWorkItemForUnit(context, unitId, comment);
 
 		return unitId;
 	}
@@ -130,11 +136,11 @@ public class CustomerServiceImpl implements CustomerService{
 
 	private void createWorkItemWithRenewService(Unit unit) {
 		
-	    if(unit.getApprovalStatus() == AppConstants.APPROVED){
-
-	    	workItemService.updateWorkItemStatus(unit.getUnitId(), AppConstants.WORK_ITEM_CLOSE_STATUS);
-            workItemService.createWorkItemForUnit(AppConstants.PUBLISH, unit.getUnitId());
-	    }
+//	    if(unit.getApprovalStatus() == AppConstants.APPROVED){
+//
+//	    	workItemService.updateWorkItemStatus(unit.getUnitId(), AppConstants.WORK_ITEM_CLOSE_STATUS);
+//            workItemService.createWorkItemForUnit(AppConstants.PUBLISH, unit.getUnitId());
+//	    }
 	}
 
 	@Override
@@ -153,7 +159,8 @@ public class CustomerServiceImpl implements CustomerService{
 	public Unit approveUnit(Unit unit) {
 
 		Unit unitFromDB = customerManager.approveUnit(unit);
-		workItemService.updateWorkItemStatus(unitFromDB.getUnitId(), AppConstants.WORK_ITEM_CLOSE_STATUS);
+		
+		workItemService.createWorkItemForServiceRenewal(unitFromDB);
 		return unitFromDB;
 	}
 

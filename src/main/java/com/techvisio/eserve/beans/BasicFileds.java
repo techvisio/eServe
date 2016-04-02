@@ -11,7 +11,7 @@ import javax.persistence.PrePersist;
 
 @MappedSuperclass
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@EntityListeners({BasicEntityCallback.class})
+@EntityListeners({BasicFieldsCallBack.class})
 public class BasicFileds {
 
 	@Column(name="CREATED_BY")

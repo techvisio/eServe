@@ -255,21 +255,16 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.saveCustomer = function(context) {
 
-//		if(!$scope.CUSTOMER.$valid || !$scope.UNIT.$valid){
-
-//		$scope.alerts=[];
-//		$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
-//		return;
-//		}
-
-//		$scope.resetAleart = function(){
-//		$scope.alerts=[];
-//		}
 
 		$scope.addcurrentUnittoCustomer();
 
 		console.log('save customer called');
-		customerService.saveCustomer($scope.customer, context)
+		
+		$scope.comment = "";
+		
+		var genericRequest={"bussinessObject":$scope.customer,"contextInfo":{"comment":$scope.comment}};
+		
+		customerService.saveCustomer(genericRequest, context)
 		.then(function(response) {
 			console.log('customer Data received from service : ');
 			console.log(response);
@@ -321,9 +316,9 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		})
 	};
 
-	$scope.rejectUnitApprovalUnit = function(){
+	$scope.rejectUnitApproval= function(unit){
 
-		customerService.rejectUnitApprovalUnit(unit)
+		customerService.rejectUnitApproval(unit)
 		.then(function(response) {
 			console.log('reject unit called in controller ');
 			console.log(response);
@@ -508,23 +503,46 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 		})
 	}
+	$scope.showRejectionCommentBox = function() {
+
+		$rootScope.curModal = $modal.open({
+			templateUrl: 'customer/RejectionComment.html',
+			controller: function (customerService, masterdataService) {
+				$scope.serviceRenewalBean = unit.serviceAgreement;
+				
+				
+			},
+			scope:$scope,
+		});
+	};
 
 
-	$scope.showCommentBox = function() {
+	$scope.showCommentBox = function(unit) {
 
 		$rootScope.curModal = $modal.open({
 			templateUrl: 'customer/CommentBox.html',
-			controller: 'customerController',
 			scope:$scope,
-			
-			resolve:{
-				customer: ['$stateParams', function($stateParams){
-					return null;
-				}],
-				unit: ['$stateParams', function($stateParams){
-					return null;
-				}]
-			}
+			controller: function (customerService,$scope) {
+
+				$scope.comment = "";
+				
+				var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
+				
+				$scope.saveUnit = function(context) {
+					console.log('save unit called');
+					customerService.saveUnit(genericRequest, $scope.customer.customerId, context)
+					.then(function(response) {
+						console.log('unit Data received from service : ');
+						console.log(response);
+						if (response) {
+							$scope.customer.units = response;
+							$rootScope.curModal.close();
+							alert("Unit Saved Successfully")
+						} 
+					})
+				};
+
+			},
 			
 		});
 	};

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.WorkItem;
 
 @Component
@@ -17,6 +18,7 @@ public interface WorkItemManager {
 			String status);
 	public void updateWorkItemStatus(Long entityId, String status);
 	public List<WorkItem> getWorkItemsByEntityId(Long entityId);
-	public WorkItem getWorkItemsByEntityIdAndEntityType(Long entityId,
-			String entityType);
+	public WorkItem getWorkItemsByEntityIdAndEntityTypeAndWorkType(Long entityId,
+			String entityType, String workType);
+	public void createWorkItemForServiceRenewal(Unit unit);
 }

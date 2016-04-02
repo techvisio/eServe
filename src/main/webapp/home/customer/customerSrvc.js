@@ -17,12 +17,12 @@ customerModule.service('customerService', function($http, $q) {
 		getWorkItemByUserIdAndWorkType : getWorkItemByUserIdAndWorkType,
 		getEmailId : getEmailId,
 		getContactNo : getContactNo,
-		rejectUnitApprovalUnit : rejectUnitApprovalUnit
+		rejectUnitApproval : rejectUnitApproval
 	});
 
 
 	
-	function rejectUnitApprovalUnit(unit){
+	function rejectUnitApproval(unit){
 		console.log('rejecting unit approval in service');
 		var request = $http({
 			method : "put",
@@ -88,13 +88,13 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function saveCustomer(customer, context){
+	function saveCustomer(genericRequest, context){
 		console.log('add new customer');
 		var request = $http({
 			method : "post",
 			url : "../service/customer/"+ context,
 			params : "",
-			data: customer
+			data: genericRequest
 
 		});
 		return (request.then(handleSuccess, handleError));
@@ -137,13 +137,13 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function saveUnit(units, customerId, context){
+	function saveUnit(genericRequest, customerId, context){
 		console.log('save units');
 		var request = $http({
 			method : "put",
 			url : "../service/customer/unit/" + customerId + "/"+context,
 			params : "",
-			data: units
+			data: genericRequest
 
 		});
 		return (request.then(handleSuccess, handleError));
