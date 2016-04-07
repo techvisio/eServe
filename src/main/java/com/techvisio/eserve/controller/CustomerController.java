@@ -125,10 +125,10 @@ public class CustomerController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
-	@RequestMapping(value ="/rejectunit/", method = RequestMethod.PUT)
-	public ResponseEntity<Response> rejectUnitApprovalUnit(@RequestBody Unit unit) {
+	@RequestMapping(value ="/rejectunit", method = RequestMethod.PUT)
+	public ResponseEntity<Response> rejectUnitApprovalUnit(@RequestBody GenericRequest<Unit> request) {
 		Response response=new Response();
-		Unit unitFromDB = customerService.rejectUnitApproval(unit);
+		Unit unitFromDB = customerService.rejectUnitApproval(request);
 		response.setResponseBody(unitFromDB);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);

@@ -138,8 +138,7 @@ public class CustomerServiceImpl implements CustomerService{
 		
 //	    if(unit.getApprovalStatus() == AppConstants.APPROVED){
 //
-//	    	workItemService.updateWorkItemStatus(unit.getUnitId(), AppConstants.WORK_ITEM_CLOSE_STATUS);
-//            workItemService.createWorkItemForUnit(AppConstants.PUBLISH, unit.getUnitId());
+//            workItemService.createWorkItemForUnit(AppConstants.PUBLISH, unit.getUnitId(),);
 //	    }
 	}
 
@@ -160,7 +159,7 @@ public class CustomerServiceImpl implements CustomerService{
 
 		Unit unitFromDB = customerManager.approveUnit(unit);
 		
-		workItemService.createWorkItemForServiceRenewal(unitFromDB);
+		workItemService.createWorkItemForServiceRenewal(unit);
 		return unitFromDB;
 	}
 
@@ -183,8 +182,13 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Unit rejectUnitApproval(Unit unit) {
+	public Unit rejectUnitApproval(GenericRequest<Unit> request) {
+		Unit unit = request.getBussinessObject();
+//		String comment = request.getContextInfo().get("comment");
+		String comment = "Changes are not valid";
 		Unit unitFromDB = customerManager.rejectUnitApproval(unit);
+		
+		workItemService.workItemWorkForRejectApprovalChanges(unitFromDB, comment);
 		return unitFromDB;
 	}
 

@@ -21,7 +21,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	$scope.complaintResolution={};
 	$scope.complaintAssignment={};
 
-	
+
 	$scope.isPrivileged = function(role){
 
 		var userPrivilege = $rootScope.user.privileges;
@@ -32,7 +32,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		return result;		
 	}
 
-	
+
 	$scope.getCustomerForComplaint = function(){
 		complaintService.getCustomerForComplaint(unitComplaint.customerId)
 		.then(function(response) {
@@ -102,35 +102,38 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	};
 
 	$scope.resetAlert = function(){
-		 $scope.alerts=[];	 
-	 }
-	
-	if($scope.isPrivileged("VIEW_CUSTOMER") || $scope.isPrivileged("CREATE_CUSTOMER")){
-	$scope.redirectToCustomerDtlScreen=function(currentCustomerId){
-		$scope.alerts=[];
-		$state.go('customer',{entityId:currentCustomerId});
+		$scope.alerts=[];	 
 	}
-	}
-	
-	if($scope.isPrivileged("VIEW_COMPLAINT") || $scope.isPrivileged("CREATE_COMPLAINT")){
-	$scope.redirectToComplaintScreen=function(currentComplaintId ){
 
-		$state.go('complaintScreen',{entityId:currentComplaintId});
+	if($scope.isPrivileged("VIEW_CUSTOMER") || $scope.isPrivileged("CREATE_CUSTOMER")){
+		$scope.redirectToCustomerDtlScreen=function(currentCustomerId){
+			$scope.alerts=[];
+			$state.go('customer',{entityId:currentCustomerId});
+		}
 	}
+
+	if($scope.isPrivileged("VIEW_COMPLAINT") || $scope.isPrivileged("CREATE_COMPLAINT")){
+		$scope.redirectToComplaintScreen=function(currentComplaintId ){
+
+			$state.go('complaintScreen',{entityId:currentComplaintId});
+		}
 	}
 
 	$scope.redirectToComplaint=function(){
 		$state.go('complaint');
 	}
 
-	$scope.redirectToComplaintScreenByUnitId=function(unit, currentUnitId ){
 
-		if(unit.unitCode==null){
-			$scope.alerts=[];
-			$scope.alerts.push({msg: 'Non Of Details Are Saved For This Unit'})
-			return;
+	if($scope.isPrivileged("CREATE_COMPLAINT")){
+		$scope.redirectToComplaintScreenByUnitId=function(unit, currentUnitId ){
+
+			if(unit.unitCode==null){
+				$scope.alerts=[];
+				$scope.alerts.push({msg: 'Non Of Details Are Saved For This Unit'})
+				return;
+			}
+			$state.go('customerToComplaint',{entityId:currentUnitId});
 		}
-		$state.go('customerToComplaint',{entityId:currentUnitId});
 	}
 
 	$scope.showconfirmboxComplaint = function () {
@@ -221,9 +224,9 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			console.log('complaint Data received from service : ');
 			console.log(response);
 			if (response) {
-					$scope.customerComplaint = response;
-					alert("Complaint Saved Successfully");
-					$state.go('complaintScreen',{entityId:$scope.customerComplaint.complaintId});
+				$scope.customerComplaint = response;
+				alert("Complaint Saved Successfully");
+				$state.go('complaintScreen',{entityId:$scope.customerComplaint.complaintId});
 			} 
 		})
 	};
@@ -288,7 +291,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			$('#' + form + ' *').attr('readonly',
 					true);
 			$('#' + form + ' select')
-			 .attr('disabled', true);
+			.attr('disabled', true);
 			$('#' + form + ' input[type="radio"]')
 			.attr('disabled', true);
 			$('#' + form + ' input[type="checkbox"]')
@@ -302,7 +305,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			$('#' + form + ' *').attr('readonly',
 					false);
 			$('#' + form + ' select')
-			 .attr('disabled', false);
+			.attr('disabled', false);
 			$('#' + form + ' input[type="radio"]')
 			.attr('disabled', false);
 			$('#' + form + ' input[type="checkbox"]')
@@ -316,7 +319,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	$scope.isCreateOrUpdatePrivileged=function(){
 		return !($scope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !(!$scope.isNew && $scope.isPrivileged('CREATE_COMPLAINT'));
 	}
-	
+
 	$scope.isViewPrivileged=function(){
 		return !($scope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !($scope.isPrivileged('CREATE_COMPLAINT')) && !($scope.isPrivileged('VIEW_COMPLAINT'));
 	}

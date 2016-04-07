@@ -23,4 +23,5 @@ public interface WorkItemService {
 	public void createWorkItemForUnit(String context, Long unitId, String comment);
 	public void createWorkItemForUnitDraft(String context, Long customerId);
 	public void createWorkItemForServiceRenewal(Unit unit);
+	public void workItemWorkForRejectApprovalChanges(Unit unit, String comment);
 }

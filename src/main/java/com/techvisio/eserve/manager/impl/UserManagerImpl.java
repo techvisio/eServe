@@ -35,7 +35,7 @@ public class UserManagerImpl implements UserManager{
 	@Autowired
 	ConfigPreferences configPreferences;
 
-	
+
 	@Override
 	public User getUser(Long userId) {
 		User user = userDao.getUser(userId);
@@ -143,7 +143,7 @@ public class UserManagerImpl implements UserManager{
 		user.setClient(CommonUtil.getCurrentClient());		
 
 		if(user.getUserId()==null){
-		
+
 			user.setPassword(configPreferences.getDefaultPassword(CommonUtil.getCurrentClient().getClientId()).toCharArray());
 		}
 		Iterator<UserPrivilege> itr = user.getPrivileges().iterator();
@@ -201,6 +201,12 @@ public class UserManagerImpl implements UserManager{
 	public List<UserPrivilege> getUserPrivilegesSet() {
 		List<UserPrivilege> userPrivileges =  userDao.getUserPrivilegesSet();
 		return userPrivileges;
+	}
+
+	@Override
+	public User getUserByUserName(String userName){
+		User user = userDao.getUserByUserName(userName); 
+		return user;
 	}
 
 }

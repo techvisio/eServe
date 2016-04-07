@@ -30,7 +30,7 @@
 						ng-click="removeUnit($index)" ng-show="$index>0"
 						ng-disabled="isCreateOrUpdatePrivileged()"></i> <img
 						src="../static/images/complaint.png" height="35" width="35"
-						ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)"
+						ng-click="(!isPrivileged('CREATE_COMPLAINT')) || redirectToComplaintScreenByUnitId(unit,unit.unitId)"
 						ng-disabled="(!isPrivileged('CREATE_COMPLAINT')) || isProcessing" />
 					<!-- 					<button type="button" class="btn btn-primary btn-sm" -->
 					<!-- 						ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)" -->

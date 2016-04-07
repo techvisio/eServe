@@ -106,4 +106,10 @@ public class UserServiceImpl implements UserService{
 		userManager.resetPassword(user);		
 	}
 
+	@Override
+	public User getUserByUserName(String userName) {
+		User user = userManager.getUserByUserName(userName);
+		return user;
+	}
+
 }

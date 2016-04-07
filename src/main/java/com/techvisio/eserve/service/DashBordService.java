@@ -2,8 +2,11 @@ package com.techvisio.eserve.service;
 
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public interface DashBordService {
 
-	Map<String, Long> getcount(Long clientId);
+	public Map<String, Long> getCount();
 
 }

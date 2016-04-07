@@ -259,11 +259,11 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.addcurrentUnittoCustomer();
 
 		console.log('save customer called');
-		
+
 		$scope.comment = "";
-		
+
 		var genericRequest={"bussinessObject":$scope.customer,"contextInfo":{"comment":$scope.comment}};
-		
+
 		customerService.saveCustomer(genericRequest, context)
 		.then(function(response) {
 			console.log('customer Data received from service : ');
@@ -503,16 +503,30 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 		})
 	}
-	$scope.showRejectionCommentBox = function() {
+	$scope.showRejectionCommentBox = function(unit) {
 
 		$rootScope.curModal = $modal.open({
 			templateUrl: 'customer/RejectionComment.html',
-			controller: function (customerService, masterdataService) {
-				$scope.serviceRenewalBean = unit.serviceAgreement;
-				
-				
-			},
 			scope:$scope,
+			controller: function (customerService,$scope) {
+
+				$scope.comment = "";
+
+				var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
+
+				$scope.rejectUnitApproval = function() {
+					customerService.rejectUnitApproval(genericRequest)
+					.then(function(response) {
+						console.log('reject approval called from service : ');
+						console.log(response);
+						if (response) {
+							unit= response;
+							$rootScope.curModal.close();
+						} 
+					})
+				};
+
+			},
 		});
 	};
 
@@ -525,9 +539,9 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			controller: function (customerService,$scope) {
 
 				$scope.comment = "";
-				
+
 				var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
-				
+
 				$scope.saveUnit = function(context) {
 					console.log('save unit called');
 					customerService.saveUnit(genericRequest, $scope.customer.customerId, context)
@@ -543,7 +557,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				};
 
 			},
-			
+
 		});
 	};
 
@@ -558,15 +572,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		});
 
 		$scope.updateServiceAgreement = function(){
-			customerService.updateServiceAgreement($scope.serviceRenewalBean, unit.unitId)
-			.then(function(response) {
-				console.log('service renewed in controller : ');
-				console.log(response);
-				if (response) {
-					unit = response;
-					$rootScope.curModal.close();
-				} 
-			})
+			$rootScope.curModal.close();
 		};
 
 	};

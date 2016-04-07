@@ -71,11 +71,12 @@ public class WorkItem extends BasicEntity{
 	public void setPrivilegeId(Long privilegeId) {
 		this.privilegeId = privilegeId;
 	}
+	
 	public Long getAssigneeId() {
 		return assigneeId;
 	}
 	public void setAssigneeId(Long assigneeId) {
-		assigneeId = assigneeId;
+		this.assigneeId = assigneeId;
 	}
 	public String getWorkType() {
 		return workType;

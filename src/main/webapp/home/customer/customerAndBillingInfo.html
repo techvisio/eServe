@@ -1,3 +1,4 @@
+<form name="CUSTOMER" id="CUSTOMER">
 <div ng-init="init()">
 	<div ng
 		show="alerts..length>0 || !$scope.CUSTOMER.$valid || !$scope.UNIT.$valid">
@@ -17,7 +18,7 @@
 					ng-show="(isNew && !isEdit && !showAndHidePreview()) || (!isNew && isEdit && !showAndHidePreview())"
 					ng-click="saveAndUpdateCustomer('PUBLISH')"
 					ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i> 
-				<i	class="fa fa-pencil-square-o button" ng-show="isNew || !isEdit"
+				<i	class="fa fa-pencil-square-o button" ng-show="!isNew || isEdit"
 					style="color: #336699; font-size: 25px"
 					ng-click="toggleReadOnly('CUSTOMER')" popover-placement="bottom"
 					popover="Click To Edit" popover-trigger="mouseenter"
@@ -173,3 +174,4 @@
 		<!-- 		</div> -->
 	</div>
 </div>
+</form>

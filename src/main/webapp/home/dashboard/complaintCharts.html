@@ -1,0 +1,38 @@
+<div class="row">
+		<div class="col-sm-4 col-sm-12" id="pie-chart">
+			<div class="panel panel-default">
+				<div class="panel-heading">Complaint by SLA</div>
+				<div class="panel-body">
+					<canvas id="pie" class="chart chart-pie"
+						chart-data="complaintsBySLA.data"
+						chart-labels="complaintsBySLA.labels"
+						chart-options="complaintsBySLA.options" chart-legend=true>
+				</canvas>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4 col-sm-12" id="pie-chart">
+			<div class="panel panel-default">
+				<div class="panel-heading">Complaint by Assignment</div>
+				<div class="panel-body">
+					<canvas id="pie" class="chart chart-pie"
+						chart-data="complaintsByAssignment.data"
+						chart-labels="complaintsByAssignment.labels"
+						chart-options="complaintsByAssignment.options" chart-legend=true>
+				</canvas>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4 col-sm-12" id="pie-chart">
+			<div class="panel panel-default">
+				<div class="panel-heading">Complaint by Priority</div>
+				<div class="panel-body">
+					<canvas id="pie" class="chart chart-pie"
+						chart-data="complaintsByPriority.data"
+						chart-labels="complaintsByPriority.labels"
+						chart-options="complaintsByPriority.options" chart-legend=true>
+				</canvas>
+				</div>
+			</div>
+		</div>
+	</div>

@@ -47,11 +47,26 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		}
 	})
 
-//		.state('logout', {
-//		url: "/loggedout",
-//		templateUrl: 'index.html',
+	.state('workItem',{
+
+		url: "/home",
+		templateUrl: 'customer/workItem.html',
+		controller:"customerController",
+		resolve:{
+			customer: ['$stateParams', function($stateParams){
+				return null;
+			}],
+			unit: ['$stateParams', function($stateParams){
+				return null;
+			}]
+		}
+	})
+
+//	.state('logout', {
+//	url: "/loggedout",
+//	templateUrl: 'index.html',
 //	})
-//	
+
 	.state('complaint', {
 		url: "/complaint",
 		templateUrl: 'complaint/complaint.html',
@@ -67,21 +82,21 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		}
 	})
 
-//		.state('amcMain', {
-//		url: "/customer/new",
-//		templateUrl: 'customer/amcMain.html',
-//		controller:"customerController",
-//		resolve:{
-//			customer: ['$stateParams', function($stateParams){
-//				return null;
-//			}],
-//		
-//		unitApproval: ['$stateParams', function($stateParams){
-//			return null;
-//		}]
-//		}
+//	.state('amcMain', {
+//	url: "/customer/new",
+//	templateUrl: 'customer/amcMain.html',
+//	controller:"customerController",
+//	resolve:{
+//	customer: ['$stateParams', function($stateParams){
+//	return null;
+//	}],
+
+//	unitApproval: ['$stateParams', function($stateParams){
+//	return null;
+//	}]
+//	}
 //	})
-	
+
 	.state('newcustomer', {
 		url: "/customer/new",
 		templateUrl: 'customer/slideScreenCustomer.html',
@@ -180,7 +195,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		}
 	})
 
-	
+
 	.state('searchUser', {
 		url: "/user",
 		templateUrl: 'user/userSearch.html',
@@ -307,19 +322,19 @@ erp.controller('ApplicationController',
 
 				var result=false;
 				if($rootScope.user && $rootScope.user.privileges){
-				var userPrivilege = $rootScope.user.privileges;
-				angular.forEach(userPrivilege, function(privilege) {
-					if (privilege.privilege.privilege===role) result= true;
-				});
-			}
+					var userPrivilege = $rootScope.user.privileges;
+					angular.forEach(userPrivilege, function(privilege) {
+						if (privilege.privilege.privilege===role) result= true;
+					});
+				}
 				return result;		
 			}
 
 			$scope.newCustomer = function(){
 				$state.go("newcustomer");
 			}
-			
-			
+
+
 		}]);
 
 erp.config(['$httpProvider', '$sceProvider',

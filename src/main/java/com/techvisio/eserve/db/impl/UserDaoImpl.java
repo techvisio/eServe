@@ -57,6 +57,18 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 		}
 		return null;
 	}
+	
+	@Override
+	public User getUserByUserName(String userName) {
+		String queryString="FROM User u WHERE u.userName = "+ "'"+userName +"'";
+		Query query= getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<User> result= (List<User>)query.getResultList();
+		if(result != null && result.size()>0){
+			return result.get(0);
+		}
+		return null;
+	}
 
 	@Override
 	public User getCurrentPassword(Long userId) {

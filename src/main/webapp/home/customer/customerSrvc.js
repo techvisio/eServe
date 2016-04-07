@@ -22,13 +22,13 @@ customerModule.service('customerService', function($http, $q) {
 
 
 	
-	function rejectUnitApproval(unit){
+	function rejectUnitApproval(genericRequest){
 		console.log('rejecting unit approval in service');
 		var request = $http({
 			method : "put",
 			url : "../service/customer/rejectunit",
 			params : "",
-			data: unit
+			data: genericRequest
 
 		});
 		return (request.then(handleSuccess, handleError));

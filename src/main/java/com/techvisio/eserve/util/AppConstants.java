@@ -32,7 +32,7 @@ public interface AppConstants {
 	public static final String WORK_ITEM_OPEN_STATUS = "OPEN";
 	public static final String WORK_ITEM_CLOSE_STATUS = "CLOSE";
 	public static final String CUSTOMER_DRAFT = "CUSTOMER_DRAFT";
-	public static final String RENEW_SERVICE_CALL = "RENEW_SERVICE_CALL";
+	public static final String RENEW_SERVICE_CALL = "RENEW SERVICE CALL";
 	public static final String UNIT_DRAFT = "UNIT_DRAFT";
 	public static final String PUBLISH = "PUBLISH";
 	public static final String APPROVALWORK = "APPROVAL";

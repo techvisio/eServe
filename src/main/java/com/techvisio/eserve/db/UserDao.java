@@ -50,4 +50,6 @@ public interface UserDao {
 
 	public List<UserPrivilege> getUserPrivilegesSet();
 
+	public User getUserByUserName(String userName);
+
 }

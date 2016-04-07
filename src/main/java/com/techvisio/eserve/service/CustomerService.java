@@ -40,7 +40,7 @@ public interface CustomerService {
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
 	public Unit getUnit(Long unitId);
 	public Unit approveUnit(Unit unit);
-	public Unit rejectUnitApproval(Unit unit);
+	public Unit rejectUnitApproval(GenericRequest<Unit> request);
 	public ApproveUnitDtl getUnitForApproval(Long unitId);
 	public Customer createCustomerfromComplaint(CustomerComplaint customerComplaint);
 	public Customer getEmailId(String emailId);

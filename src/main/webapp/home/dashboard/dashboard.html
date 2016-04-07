@@ -1,6 +1,6 @@
-<div ng-controller="dashboardController">
+<div ng-controller="dashboardController" ng-init="init()">
 	<div class="row">
-		<div class="col-lg-3 col-md-6">
+		<div class="col-lg-3 col-md-6" ng-click="updateModule('complaint')">
 			<div class="panel panel-red">
 				<div class="panel-heading">
 					<div class="row">
@@ -8,7 +8,7 @@
 							<i class="fa fa-support fa-5x"></i>
 						</div>
 						<div class="col-xs-9 text-right">
-							<div class="huge">6</div>
+							<div class="huge">{{noticeBoardCount.openComplaints}}</div>
 							<div>Total Complaints!</div>
 						</div>
 					</div>
@@ -23,7 +23,7 @@
 			</div>
 		</div>
 
-		<div class="col-lg-3 col-md-6">
+		<div class="col-lg-3 col-md-6" ng-click="updateModule('approval')">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<div class="row">
@@ -31,7 +31,7 @@
 							<i class="fa fa-user fa-5x"></i>
 						</div>
 						<div class="col-xs-9 text-right">
-							<div class="huge">6</div>
+							<div class="huge">{{noticeBoardCount.pendingApp}}</div>
 							<div>Pending Approvals!</div>
 						</div>
 					</div>
@@ -46,7 +46,7 @@
 			</div>
 		</div>
 
-		<div class="col-lg-3 col-md-6">
+		<div class="col-lg-3 col-md-6" ng-click="updateModule('sales')">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<div class="row">
@@ -54,7 +54,7 @@
 							<i class="fa fa-recycle fa-5x"></i>
 						</div>
 						<div class="col-xs-9 text-right">
-							<div class="huge">6</div>
+							<div class="huge">{{noticeBoardCount.salesRenewal}}</div>
 							<div>Renewal Follow-Ups!</div>
 						</div>
 					</div>
@@ -69,7 +69,7 @@
 			</div>
 		</div>
 
-		<div class="col-lg-3 col-md-6">
+		<div class="col-lg-3 col-md-6" ng-click="updateModule('PMS')">
 			<div class="panel panel-red">
 				<div class="panel-heading">
 					<div class="row">
@@ -77,7 +77,7 @@
 							<i class="fa fa-clock-o fa-5x"></i>
 						</div>
 						<div class="col-xs-9 text-right">
-							<div class="huge">20</div>
+							<div class="huge">{{0}}</div>
 							<div>Open PMS</div>
 						</div>
 					</div>
@@ -98,42 +98,9 @@
 
 	</div>
 
-	<div class="row">
-		<div class="col-sm-4 col-sm-12" id="pie-chart">
-			<div class="panel panel-default">
-				<div class="panel-heading">Complaint by SLA</div>
-				<div class="panel-body">
-					<canvas id="pie" class="chart chart-pie"
-						chart-data="complaintsBySLA.data"
-						chart-labels="complaintsBySLA.labels"
-						chart-options="complaintsBySLA.options" chart-legend=true>
-				</canvas>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-4 col-sm-12" id="pie-chart">
-			<div class="panel panel-default">
-				<div class="panel-heading">Complaint by Assignment</div>
-				<div class="panel-body">
-					<canvas id="pie" class="chart chart-pie"
-						chart-data="complaintsBySLA.data"
-						chart-labels="complaintsBySLA.labels"
-						chart-options="complaintsBySLA.options" chart-legend=true>
-				</canvas>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-4 col-sm-12" id="pie-chart">
-			<div class="panel panel-default">
-				<div class="panel-heading">Complaint by Priority</div>
-				<div class="panel-body">
-					<canvas id="pie" class="chart chart-pie"
-						chart-data="complaintsBySLA.data"
-						chart-labels="complaintsBySLA.labels"
-						chart-options="complaintsBySLA.options" chart-legend=true>
-				</canvas>
-				</div>
-			</div>
-		</div>
-	</div>
+	<div ng-include src="'../home/dashboard/complaintCharts.html'" ng-if="selectedModule=='complaint'"></div>
+<!-- 	<div ng-include src="'../home/dashboard/complaintCharts.html'" ng-if="selectedModule=='approval'"></div> -->
+<!-- 	<div ng-include src="'../home/dashboard/complaintCharts.html'" ng-if="selectedModule=='sales'"></div> -->
+<!-- 	<div ng-include src="'../home/dashboard/complaintCharts.html'" ng-if="selectedModule=='PMS'"></div> -->
+	
 </div>
