@@ -13,6 +13,7 @@ public class BasicFieldsCallBack {
 	public void prePersist(BasicFileds basicFileds) {
 		basicFileds.setCreatedBy(CommonUtil.getCurrentUser().getUserName());
 		basicFileds.setCreatedOn(new Date());
+		basicFileds.setClient(CommonUtil.getCurrentClient());
 	}
 
 }

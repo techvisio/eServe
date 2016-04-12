@@ -36,7 +36,7 @@ public interface CustomerService {
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
 //	public Map<String, Object> checkCustomerExistOrNot(
 //			CustomerComplaint customerComplaint);
-	public void updateServiceAgreement(ServiceAgreement agreement,Long unitId);
+//	public void updateServiceAgreement(ServiceAgreement agreement,Long unitId);
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
 	public Unit getUnit(Long unitId);
 	public Unit approveUnit(Unit unit);

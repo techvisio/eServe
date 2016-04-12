@@ -120,10 +120,10 @@ public class CustomerManagerImpl implements CustomerManager {
 		return customers;
 	}
 
-	@Override
-	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId){
-		customerDao.updateServiceAgreement(agreement, unitId);
-	}
+//	@Override
+//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId){
+//		customerDao.updateServiceAgreement(agreement, unitId);
+//	}
 
 	@Override
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId) {

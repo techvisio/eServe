@@ -37,7 +37,7 @@ public class CustomerDaoTest {
 	@Test
 	public void getUnit(){
 
-		GraphData countMap = bordDao.getComplaintBySlaDate(10L);
+		GraphData countMap = bordDao.getComplaintByPriority(10L);
 		System.out.println("Data is :"+countMap);
 	}
 

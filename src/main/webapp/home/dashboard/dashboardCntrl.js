@@ -13,7 +13,12 @@ dashboardModule
 			};
 			$scope.init=function(){
 				$scope.getNoticeBoardCount();
+				$scope.getComplaintCountByAssignment();
+				$scope.getComplaintCountByPriority();
+				$scope.getComplaintCountBySlaDate();
 			}
+
+
 			$scope.getNoticeBoardCount=function(){
 
 				dashboardService.getNoticeBoardCount()
@@ -28,21 +33,60 @@ dashboardModule
 						})
 			}
 
-			$scope.complaintsBySLA = {
-					labels : ["Past", "Today", "Due"],
-					data : [3, 6, 8],
-					options:{legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"}
-			};
 
-			$scope.complaintsByAssignment = {
-					labels : ["Assigned", "Unassigned"],
-					data : [10, 6],
-					options:{legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"}
-			};
-			$scope.complaintsByPriority = {
-					labels : ["High ","Midium", "Low"],
-					data : [3,5,6],
-					options:{legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"}
-			};
+			$scope.getComplaintCountBySlaDate=function(){
+
+				dashboardService.getComplaintCountBySlaDate()
+				.then(
+						function(data) {
+							console.log(data);
+							if (data) {
+								$scope.complaintsBySLA = data;
+								$scope.complaintsBySLA.options={legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"}
+
+							} else {
+								console.log('error');
+							}
+						})
+			}
+
+
+			$scope.getComplaintCountByPriority=function(){
+
+				dashboardService.getComplaintCountByPriority()
+				.then(
+						function(data) {
+							console.log(data);
+							if (data) {
+								$scope.complaintsByPriority = data;
+								$scope.complaintsByPriority.options={legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"}
+							} else {
+								console.log('error');
+							}
+						})
+			}
+
+
+			$scope.getComplaintCountByAssignment=function(){
+
+				dashboardService.getComplaintCountByAssignment()
+				.then(
+						function(data) {
+							console.log(data);
+							if (data) {
+								$scope.complaintsByAssignment = data;
+								$scope.complaintsByAssignment.options={legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"}
+
+							} else {
+								console.log('error');
+							}
+						})
+			}
+
+//			$scope.complaintsByPriority = {
+//			labels : ["High ","Midium", "Low"],
+//			data : [3,5,6],
+
+//			};
 
 		} ]);

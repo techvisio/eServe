@@ -6521,6 +6521,7 @@ button.close {
 	box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
 	background-clip: padding-box;
 	outline: 0;
+	padding-left:20px;
 }
 
 .modal-backdrop {
@@ -13213,9 +13214,8 @@ label:hover:before {
 }
 
 .fix-button{
-	position: absolute;
+	min-height: 140px;
 	bottom:80px;
-    width: 75%;
 }
 
 /*icon css*/

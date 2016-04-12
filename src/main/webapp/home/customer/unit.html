@@ -182,43 +182,39 @@
 			</div>
 
 
-			<div class="row">
+			<div>
 
-				<div class="col-sm-4"></div>
-				<div class="col-sm-2 child-right">
-					<button type="button" class="btn btn-primary"
-						ng-click="showUnitExpireModal(unit)" ng-show="unit.unitId"
-						ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Show
-						Agreement</button>
-				</div>
-				<div class="col-sm-1">
-					<button type="button" class="btn btn-primary"
-						ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && isEdit"
-						ng-disabled="isCreateOrUpdatePrivileged()">Edit</button>
-				</div>
-				<div class="col-sm-1">
-					<button type="button" class="btn btn-primary"
-						ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && !isEdit">Cancel</button>
-				</div>
+				<button type="button" class="btn btn-primary button child-right"
+					ng-show="!isNew"
+					ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"
+					ng-click="saveUnit(unit,'CUSTOMER_DRAFT')">
+					<i class="fa fa-floppy-o" style="font-size: 13px"></i>&nbsp Save As
+					Draft
+				</button>
 
-				<div class="col-sm-2 child-right">
-					<button type="button" class="btn btn-primary button child-right"
-						ng-show="!isNew"
-						ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"
-						ng-click="saveUnit(unit,'CUSTOMER_DRAFT')">
-						<i class="fa fa-floppy-o" style="font-size: 13px"></i>&nbsp Save
-						As Draft
-					</button>
-				</div>
-				<div class="col-sm-2 child-right">
-					<button type="button" class="btn btn-success button child-right"
-						ng-show="!isNew"
-						ng-disabled="isCreateOrUpdatePrivileged() || isProcessing || unit.approvalStatus==='P'"
-						ng-click="showCommentBox(unit)">
-						<i class="fa fa-paper-plane" style="font-size: 12px"></i>&nbsp
-						Publish
-					</button>
-				</div>
+
+				<button type="button" class="btn btn-success button child-right"
+					ng-show="!isNew"
+					ng-disabled="isCreateOrUpdatePrivileged() || isProcessing || unit.approvalStatus==='P'"
+					ng-click="showCommentBox(unit)">
+					<i class="fa fa-paper-plane" style="font-size: 12px"></i>&nbsp
+					Publish
+				</button>
+
+				<button type="button" class="btn btn-primary child-right"
+					ng-click="showUnitExpireModal(unit)" ng-show="unit.unitId"
+					ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Show
+					Agreement</button>
+
+				<button type="button" class="btn btn-primary child-right"
+					ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && isEdit"
+					ng-disabled="isCreateOrUpdatePrivileged()">Edit</button>
+
+				<button type="button" class="btn btn-primary child-right"
+					ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && !isEdit">Cancel</button>
+
+
+
 			</div>
 			<!-- 			<div class="row"> -->
 			<!-- 				<div class="col-sm-2"> -->

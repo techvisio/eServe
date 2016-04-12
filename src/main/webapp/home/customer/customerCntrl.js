@@ -58,7 +58,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			.attr('disabled', true);
 			$('#' + form + ' input[type="button"]')
 			.attr('disabled', true);
-			$scope.isEdit = !$scope.isEdit;
+//			$scope.isEdit = !$scope.isEdit;
 		}
 
 		else{
@@ -72,10 +72,9 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			.attr('disabled', false);
 			$('#' + form + ' input[type="button"]')
 			.attr('disabled', false);
-			$scope.isEdit = !$scope.isEdit;
+//			$scope.isEdit = !$scope.isEdit;
 		}
 	};
-
 
 	if(customer){
 //		$scope.getAllComplaints = true;
@@ -88,8 +87,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			}
 		});
 		$scope.customer = customer;
-		$scope.toggleReadOnly('UNIT');
-		$scope.toggleReadOnly('CUSTOMER');
+		$scope.$broadcast('dataloaded');
 	}
 
 
@@ -110,7 +108,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 					} else {
 						console.log('error');
 					}
-				})
+				});
+
+		$scope.toggleReadOnly('CUSTOMER');
+		$scope.toggleReadOnly('UNIT');
 	};
 
 	$scope.getUsers = function() {
@@ -362,8 +363,9 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.resetAleart = function(){
 			$scope.alerts=[];
 		}
-
-		customerService.saveUnit(object, $scope.customer.customerId, context)
+		$scope.comment = "";
+		var genericRequest={"bussinessObject":object,"contextInfo":{"comment":$scope.comment}};
+		customerService.saveUnit(genericRequest, $scope.customer.customerId, context)
 		.then(function(response) {
 			console.log('unit Data received from service : ');
 			console.log(response);
@@ -476,11 +478,14 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 				if(angular.isUndefined($scope.customer.customerId) || $scope.customerForEmail.customerId != $scope.customer.customerId){
 					$scope.emailError=true;
+					$scope.alerts=[];
+					$scope.alerts.push({msg: 'EMAIL ID ALREADY EXIST, TRY ANOTHER ONE!!'})
 				}
 			} 
 
 			else{
 				$scope.emailError=false;
+				$scope.alerts=[];
 			}
 		})
 	}
@@ -495,14 +500,19 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 				if(angular.isUndefined($scope.customer.customerId) || $scope.customerForContactNo.customerId != $scope.customer.customerId){
 					$scope.contactNoError=true;
+					$scope.alerts=[];
+					$scope.alerts.push({msg: 'CONTACT NUMBER EXIST, TRY ANOTHER ONE!!'})
 				}
 			} 
 			else{
 				$scope.contactNoError=false;
+				$scope.alerts=[];
 			}
 
 		})
 	}
+
+
 	$scope.showRejectionCommentBox = function(unit) {
 
 		$rootScope.curModal = $modal.open({
@@ -512,9 +522,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 				$scope.comment = "";
 
-				var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
-
 				$scope.rejectUnitApproval = function() {
+					var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
 					customerService.rejectUnitApproval(genericRequest)
 					.then(function(response) {
 						console.log('reject approval called from service : ');
@@ -525,7 +534,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						} 
 					})
 				};
-
 			},
 		});
 	};
@@ -540,9 +548,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 				$scope.comment = "";
 
-				var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
-
 				$scope.saveUnit = function(context) {
+					var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
 					console.log('save unit called');
 					customerService.saveUnit(genericRequest, $scope.customer.customerId, context)
 					.then(function(response) {
@@ -555,9 +562,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						} 
 					})
 				};
-
 			},
-
 		});
 	};
 
@@ -605,9 +610,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.previewContext=false;
 	};
 
-
 	$scope.showAndHidePreview = function(){
-
 		var result=false;
 		if($scope.previewContext){
 			result = true;
@@ -616,18 +619,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		return result;
 	};
 
-	$scope.validateForm = function(form){
-
-		if(!$scope.form.$valid){
-
-			$scope.alerts=[];
-			$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
-			return;
-		}
-
-		$scope.resetAleart = function(){
-			$scope.alerts=[];
-		}
-	};
+	$scope.resetAleart = function(){
+		$scope.alerts=[];
+	}
 
 } ]);

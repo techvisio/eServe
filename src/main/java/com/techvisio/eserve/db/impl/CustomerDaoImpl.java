@@ -28,7 +28,6 @@ import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.exception.NoEntityFoundException;
 import com.techvisio.eserve.factory.UniqueIdentifierGenerator;
-import com.techvisio.eserve.util.AppConstants;
 
 @Component
 public class CustomerDaoImpl extends BaseDao implements CustomerDao{
@@ -91,6 +90,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 
 			getEntityManager().persist(customer);
 			getEntityManager().flush();
+			
 			List<Unit> units= customer.getUnits();
 			for(Unit unit : units){
 
@@ -149,14 +149,20 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 				unit.setUnitCode(unitCode);
 			}
 			insertServiceExpirationDateInServiceAgreement(unit);
+			if(unit.getServiceAgreement().getUnitId()==null){
+				unit.getServiceAgreement().setUnitId(unit.getUnitId());
+				unit.getServiceAgreement().setVersionId(unit.getVersionId());
+			}
 			getEntityManager().persist(unit);
+			getEntityManager().flush();
+
 		}
 		else{
 			if(unitCode==null){
 				unitCode=identifierGenerator.getUniqueIdentifierForUnit(unit);
 				unit.setUnitCode(unitCode);
 			}
-			insertServiceExpirationDateInServiceAgreement(unit);
+			updateServiceAgreement(unit.getServiceAgreement(), unit.getUnitId());
 			deleteEquipmentDtlExclusion(unit.getEquipmentDetails(), unit.getUnitId());
 			getEntityManager().merge(unit);
 		}
@@ -270,27 +276,23 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 
 	@Override
 	public void saveUnitHistory(UnitHistory unitHistory) {
-			getEntityManager().persist(unitHistory);
-	}
-	
-	@Override
-	public void saveEquipmentHistory(EquipmentHistory equipmentHistory) {
-			getEntityManager().persist(equipmentHistory);
+		getEntityManager().persist(unitHistory);
 	}
 
 	@Override
-	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId){
+	public void saveEquipmentHistory(EquipmentHistory equipmentHistory) {
+		getEntityManager().persist(equipmentHistory);
+	}
+
+	private void updateServiceAgreement(ServiceAgreement agreement, Long unitId){
 
 		Date contractExpireDate = getDurationValue(agreement.getContractStartOnString(), agreement.getAgreementDuration().getAgreementDurationId());
 		agreement.setContractExpireOn(contractExpireDate);
 		if(agreement.getServiceAgreementFinance() != null){
 			agreement.getServiceAgreementFinance().setUnitId(unitId);
+			agreement.getServiceAgreementFinance().setVersionId(agreement.getVersionId());
 		}
-		agreement.getServiceAgreementFinance().setVersionId(agreement.getVersionId());
-		Unit unit = getUnit(unitId);
-		
-		saveUnit(unit);
-		saveServiceAgreement(agreement);
+
 
 	}
 
@@ -358,7 +360,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		}
 		return null;
 	}
-	
+
 	@Override
 	public Customer getContactNo(String ContactNo) {
 		String queryString="FROM Customer cus WHERE cus.contactNo = "+" '" + ContactNo +" ' ";

@@ -46,7 +46,6 @@ public class CustomerController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
-	//TODO:customer will take generic request and comments will be copied to all unit if it for publish
 	@RequestMapping(value="/{context}",method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> saveCustomer(@RequestBody GenericRequest<Customer> request, @PathVariable String context) {  
@@ -97,15 +96,15 @@ public class CustomerController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
-	@RequestMapping(value ="/renewService/{unitId}", method = RequestMethod.PUT)
-	public ResponseEntity<Response> renewService(@PathVariable Long unitId, @RequestBody ServiceAgreement agreement) {
-		Response response=new Response();
-		customerService.updateServiceAgreement(agreement, unitId);
-		Unit unitFromDB = customerService.getUnit(unitId);
-		response.setResponseBody(unitFromDB);
-
-		return new ResponseEntity<Response>(response,HttpStatus.OK);
-	}
+//	@RequestMapping(value ="/renewService/{unitId}", method = RequestMethod.PUT)
+//	public ResponseEntity<Response> renewService(@PathVariable Long unitId, @RequestBody ServiceAgreement agreement) {
+//		Response response=new Response();
+//		customerService.updateServiceAgreement(agreement, unitId);
+//		Unit unitFromDB = customerService.getUnit(unitId);
+//		response.setResponseBody(unitFromDB);
+//
+//		return new ResponseEntity<Response>(response,HttpStatus.OK);
+//	}
 
 	@RequestMapping(value ="/servicehistory/{unitId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getServiceAgreementHistoryForUnit(@PathVariable Long unitId) {

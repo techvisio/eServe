@@ -55,11 +55,10 @@ public class CustomerServiceImpl implements CustomerService{
 	public Long saveCustomer(GenericRequest<Customer> request, String context) {
 
 		Customer customer=request.getBussinessObject();
-//		String comment = request.getContextInfo().get("comment");
-		String comment = "Published By New Customer Save";
+		String comment = request.getContextInfo().get("comment");
 		Long customerId = customerManager.saveCustomer(customer, context);
 
-		workItemService.createWorkItemForCustomer(context, customer,comment);
+		workItemService.createWorkItemForCustomerSave(context, customer,comment);
 
 		return customerId;
 	}
@@ -74,7 +73,7 @@ public class CustomerServiceImpl implements CustomerService{
 	public Long saveUnit(GenericRequest<Unit> request, String context) {
 
 		Unit unit=request.getBussinessObject();
-		String comment ="TEST";
+		String comment = request.getContextInfo().get("comment");
 		Long unitId = customerManager.saveUnit(unit,context);
 
 		workItemService.createWorkItemForUnit(context, unitId, comment);
@@ -127,20 +126,20 @@ public class CustomerServiceImpl implements CustomerService{
 		return customer;
 	}
 
-	@Override
-	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId) {
-		customerManager.updateServiceAgreement(agreement, unitId);
-	    Unit unit = getUnit(agreement.getUnitId());
-	    createWorkItemWithRenewService(unit);
-	}
+//	@Override
+//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId) {
+//		customerManager.updateServiceAgreement(agreement, unitId);
+//	    Unit unit = getUnit(agreement.getUnitId());
+//	    createWorkItemWithRenewService(unit);
+//	}
 
-	private void createWorkItemWithRenewService(Unit unit) {
-		
-//	    if(unit.getApprovalStatus() == AppConstants.APPROVED){
-//
-//            workItemService.createWorkItemForUnit(AppConstants.PUBLISH, unit.getUnitId(),);
-//	    }
-	}
+//	private void createWorkItemWithRenewService(Unit unit) {
+//		
+////	    if(unit.getApprovalStatus() == AppConstants.APPROVED){
+////
+////            workItemService.createWorkItemForUnit(AppConstants.PUBLISH, unit.getUnitId(),);
+////	    }
+//	}
 
 	@Override
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId) {
@@ -158,7 +157,6 @@ public class CustomerServiceImpl implements CustomerService{
 	public Unit approveUnit(Unit unit) {
 
 		Unit unitFromDB = customerManager.approveUnit(unit);
-		
 		workItemService.createWorkItemForServiceRenewal(unit);
 		return unitFromDB;
 	}
@@ -184,8 +182,7 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public Unit rejectUnitApproval(GenericRequest<Unit> request) {
 		Unit unit = request.getBussinessObject();
-//		String comment = request.getContextInfo().get("comment");
-		String comment = "Changes are not valid";
+		String comment = request.getContextInfo().get("comment");
 		Unit unitFromDB = customerManager.rejectUnitApproval(unit);
 		
 		workItemService.workItemWorkForRejectApprovalChanges(unitFromDB, comment);

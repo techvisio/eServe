@@ -102,4 +102,35 @@ public interface AppConstants {
 
 	};
 
+	public enum RenewAgreementWorkItemType{RENEW_SERVICE_AGREEMENT("unit","RENEW_SERVICE_AGREEMENT","RENEW SERVICE AGREEMENT");
+	String url;
+	String privilege;
+	String workType;
+
+	RenewAgreementWorkItemType(String url,String privilege,String workType){
+		this.url=url;
+		this.privilege=privilege;
+		this.workType=workType;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	public String getPrivilege() {
+		return privilege;
+	}
+	public void setPrivilege(String privilege) {
+		this.privilege = privilege;
+	}
+	public String getWorkType() {
+		return workType;
+	}
+	public void setWorkType(String workType) {
+		this.workType = workType;
+	}
+
+	};
 }

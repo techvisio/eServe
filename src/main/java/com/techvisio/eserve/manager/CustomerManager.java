@@ -33,7 +33,7 @@ public interface CustomerManager {
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
 	public Unit getUnit(Long unitId);
 	public Unit approveUnit(Unit unit);
-	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
+//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
 	public ApproveUnitDtl getUnitForApproval(Long unitId);
 	public Long saveCustomer(Customer customer);
 	public Customer getEmailId(String EmailId);

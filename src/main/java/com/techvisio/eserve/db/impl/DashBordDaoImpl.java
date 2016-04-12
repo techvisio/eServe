@@ -37,7 +37,7 @@ public class DashBordDaoImpl extends BaseDao implements DashBordDao{
 		List<String> label = new LinkedList<String>();
 		List<Long> data = new LinkedList<Long>();
 
-		String queryString="select PRIORITY,Count(PRIORITY) from tb_customer_complaint where Client_Id="+clientId+"group by PRIORITY";
+		String queryString="select PRIORITY, Count(*) From (select Case when PRIORITY = 'C' then 'CRITICAL' when PRIORITY = 'H' then 'HIGH' when PRIORITY = 'M' then 'MEDIUM' else 'LOW' End PRIORITY from tb_customer_complaint where client_id = "+clientId+") as t group by t.PRIORITY";
 		Query query=getEntityManager().createNativeQuery(queryString);
 		List<Object[]> results = query.getResultList();
 		for (Object[] result : results) {
@@ -72,7 +72,26 @@ public class DashBordDaoImpl extends BaseDao implements DashBordDao{
 		return graphData;
 	}
 	
-	
+	@Override
+	@SuppressWarnings("unchecked")
+	public GraphData getComplaintByAssignment(Long clientId){
+		GraphData graphData = new GraphData();
+		List<String> label = new LinkedList<String>();
+		List<Long> data = new LinkedList<Long>();
+
+		String queryString="select STATUS, Count(STATUS) from tb_customer_complaint where Client_Id = "+clientId+" group by STATUS;";
+		Query query=getEntityManager().createNativeQuery(queryString);
+		List<Object[]> results = query.getResultList();
+		for (Object[] result : results) {
+			
+			Long count = (long) ((Number) result[1]).intValue();
+			data.add(count);
+			label.add((String) result[0]);
+			graphData.setLabel(label);
+			graphData.setData(data);
+		}
+		return graphData;
+	}	
 	
 }
 

@@ -1,124 +1,130 @@
 <form>
-<div ng-init="init()">
-<!-- 	<div ng -->
-<!-- 		show="alerts..length>0 || !$scope.CUSTOMER.$valid || !$scope.UNIT.$valid"> -->
-<!-- 		<alert ng-repeat="alert in alerts" type="{{alert.type}}" -->
-<!-- 			close="closeAlert($index)">{{alert.msg}}</alert> -->
-<!-- 	</div> -->
-	<div>
-		<h3 class="custom-page-header">CUSTOMER INFORMATION</h3>
+	<div">
+		<!-- 	<div ng -->
+		<!-- 		show="alerts..length>0 || !$scope.CUSTOMER.$valid || !$scope.UNIT.$valid"> -->
+		<!-- 		<alert ng-repeat="alert in alerts" type="{{alert.type}}" -->
+		<!-- 			close="closeAlert($index)">{{alert.msg}}</alert> -->
+		<!-- 	</div> -->
+		<div>
+			<h3 class="custom-page-header">CUSTOMER INFORMATION</h3>
+		</div>
+		<div>
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">Customer Code</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm"
+						ng-model="customer.customerCode" id="inputlg" type="text" disabled
+						ng-click="resetAleart()">
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Customer Name</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm"
+						ng-model="customer.customerName" required="required"
+						ng-pattern="/^[a-zA-Z-z&-. ]+$/i" id="inputlg" type="text"
+						ng-click="resetAleart()">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">Contact No</label>
+				</div>
+				<div class="col-sm-4 right-inner-addon">
+					<i class="fa fa-times" ng-show="contactNoError"
+						popover-placement="left" popover="Contact No. Already Exist"
+						popover-trigger="mouseenter"></i> <input
+						class="form-control input-sm" required="required"
+						ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/"
+						ng-model="customer.contactNo" id="inputlg" type="text"
+						ng-blur="getContactNo()" ng-click="resetAleart()">
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Email Id</label>
+				</div>
+				<div class="col-sm-4 right-inner-addon">
+					<i class="fa fa-times" ng-show="emailError"
+						popover-placement="left" popover="Email Id Already Exist"
+						popover-trigger="mouseenter"></i><input
+						class="form-control input-sm" ng-model="customer.emailId"
+						required="required"
+						ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
+						id="inputlg" type="email" ng-blur="getEmailId()"
+						ng-click="resetAleart()">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="radiogroup">Customer Type</label>
+				</div>
+				<div class="col-sm-4">
+					<select ng-model="customer.customerType.customerTypeId"
+						class="form-control"
+						ng-options="item.customerTypeId*1 as item.customerType  for item in serverModelData.CUSTOMER_TYPE"
+						required>
+					</select>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">Address</label>
+				</div>
+				<div class="col-sm-4">
+					<textarea rows="3" cols="30" class="form-control input-sm"
+						ng-model="customer.address.address" id="inputlg" required
+						ng-click="resetAleart()"></textarea>
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Alt. Contact No</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" required="required"
+						ng-pattern="/^[0-9--]+$/" ng-model="customer.address.contactNo"
+						id="inputlg" type="text" ng-click="resetAleart()">
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">City</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm" ng-pattern="/^[a-zA-Z]+$/i"
+						ng-model="customer.address.city" ng-click="resetAleart()"
+						id="inputlg" type="text" required>
+				</div>
+
+				<div class="col-sm-2">
+					<label for="inputlg">Pincode</label>
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control input-sm"
+						ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}$/"
+						required="required" ng-model="customer.address.pincode"
+						id="inputlg" type="text" ng-click="resetAleart()">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-2">
+					<label for="inputlg">State</label>
+				</div>
+				<div class="col-sm-4">
+					<select ng-model="customer.address.state.stateId"
+						class="form-control"
+						ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE"
+						required>
+					</select>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div>
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Customer Code</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm"
-					ng-model="customer.customerCode" id="inputlg" type="text" disabled>
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Customer Name</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm"
-					ng-model="customer.customerName" required="required"
-					ng-pattern="/^[a-zA-Z-z&-. ]+$/i" id="inputlg" type="text">
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Contact No</label>
-			</div>
-			<div class="col-sm-4 right-inner-addon">
-				<i class="fa fa-times" ng-show="contactNoError"
-					popover-placement="left" popover="Contact No. Already Exist"
-					popover-trigger="mouseenter"></i> <input
-					class="form-control input-sm" required="required"
-					ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/"
-					ng-model="customer.contactNo" id="inputlg" type="text"
-					ng-blur="getContactNo()">
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Email Id</label>
-			</div>
-			<div class="col-sm-4 right-inner-addon">
-				<i class="fa fa-times" ng-show="emailError" popover-placement="left"
-					popover="Email Id Already Exist" popover-trigger="mouseenter"></i><input
-					class="form-control input-sm" ng-model="customer.emailId"
-					required="required"
-					ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
-					id="inputlg" type="email" ng-blur="getEmailId()">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="radiogroup">Customer Type</label>
-			</div>
-			<div class="col-sm-4">
-				<select ng-model="customer.customerType.customerTypeId"
-					class="form-control"
-					ng-options="item.customerTypeId*1 as item.customerType  for item in serverModelData.CUSTOMER_TYPE"
-					required>
-				</select>
-			</div>
-		</div>
-		<hr>
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Address</label>
-			</div>
-			<div class="col-sm-4">
-				<textarea rows="3" cols="30" class="form-control input-sm"
-					ng-model="customer.address.address" id="inputlg" required></textarea>
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Alt. Contact No</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" required="required"
-					ng-pattern="/^[0-9--]+$/" ng-model="customer.address.contactNo"
-					id="inputlg" type="text">
-			</div>
-		</div>
-
-
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">City</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm" ng-pattern="/^[a-zA-Z]+$/i"
-					ng-model="customer.address.city" id="inputlg" type="text" required>
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Pincode</label>
-			</div>
-			<div class="col-sm-4">
-				<input class="form-control input-sm"
-					ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}$/"
-					required="required" ng-model="customer.address.pincode"
-					id="inputlg" type="text">
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">State</label>
-			</div>
-			<div class="col-sm-4">
-				<select ng-model="customer.address.state.stateId"
-					class="form-control"
-					ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE"
-					required>
-				</select>
-			</div>
-		</div>
-	</div>
-</div>
 </form>

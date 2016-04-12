@@ -2,7 +2,7 @@
 <form name='CUSTOMER' id="CUSTOMER">
 	<tabset> <tab active=""> <tab-heading>Customer</tab-heading>
 
-	<div ng-init="init(); toggleReadOnly('CUSTOMER')">
+	<div ng-init="init()">
 		<div ng show="alerts..length>0 || !$scope.CUSTOMER.$valid">
 			<alert ng-repeat="alert in alerts" type="{{alert.type}}"
 				close="closeAlert($index)">{{alert.msg}}</alert>

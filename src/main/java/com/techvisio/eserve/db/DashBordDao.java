@@ -14,4 +14,6 @@ public interface DashBordDao {
 	public GraphData getComplaintByPriority(Long clientId);
 
 	public GraphData getComplaintBySlaDate(Long clientId);
+
+	public GraphData getComplaintByAssignment(Long clientId);
 }

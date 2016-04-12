@@ -1,130 +1,130 @@
 <form name="form.UNIT" id="UNIT">
-<div ng-init="init()">
-	<div>
-		<h3 class="new-event-subtitle">UNIT INFORMATION</h3>
-	</div>
-	</br>
+	<div ng-init="init()">
+		<div>
+			<h3 class="new-event-subtitle">UNIT INFORMATION</h3>
+		</div>
+		</br>
 
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Unit Code</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text"
-				ng-model="unit.unitCode" disabled>
-		</div>
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">Unit Code</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="unit.unitCode" ng-click="resetAleart()" disabled>
+			</div>
 
-		<div class="col-sm-2">
-			<label for="inputlg">Service Type</label>
+			<div class="col-sm-2">
+				<label for="inputlg">Service Type</label>
+			</div>
+			<div class="col-sm-4">
+				<select class="form-control"
+					ng-model="unit.serviceAgreement.serviceCategory" disabled>
+					<option>Warranty</option>
+					<option>AMC</option>
+					<option>Paid</option>
+				</select>
+			</div>
 		</div>
-		<div class="col-sm-4">
-			<select class="form-control"
-				ng-model="unit.serviceAgreement.serviceCategory" disabled>
-				<option>Warranty</option>
-				<option>AMC</option>
-				<option>Paid</option>
-			</select>
-		</div>
-	</div>
-	<div class="row">
+		<div class="row">
 
-		<div class="col-sm-2">
-			<label for="inputlg">Service Party</label>
+			<div class="col-sm-2">
+				<label for="inputlg">Service Party</label>
+			</div>
+			<div class="col-sm-4">
+				<select
+					ng-model="unit.serviceAgreement.serviceProvider.serviceProviderId"
+					class="form-control"
+					ng-options="item.serviceProviderId*1 as item.serviceProvider for item in serverModelData.SERVICE_PROVIDER"
+					required>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<label for="inputlg">Unit Category</label>
+			</div>
+			<div class="col-sm-4">
+				<select ng-model="unit.unitCategory.unitCategoryId"
+					class="form-control"
+					ng-options="item.unitCategoryId*1 as item.unitType for item in serverModelData.UNIT_CATEGORY"
+					required>
+				</select>
+			</div>
 		</div>
-		<div class="col-sm-4">
-			<select
-				ng-model="unit.serviceAgreement.serviceProvider.serviceProviderId"
-				class="form-control"
-				ng-options="item.serviceProviderId*1 as item.serviceProvider for item in serverModelData.SERVICE_PROVIDER"
-				required>
-			</select>
-		</div>
-		<div class="col-sm-2">
-			<label for="inputlg">Unit Category</label>
-		</div>
-		<div class="col-sm-4">
-			<select ng-model="unit.unitCategory.unitCategoryId"
-				class="form-control"
-				ng-options="item.unitCategoryId*1 as item.unitType for item in serverModelData.UNIT_CATEGORY"
-				required>
-			</select>
-		</div>
-	</div>
-	<div class="row">
+		<div class="row">
 
-		<div class="col-sm-2">
-			<label for="inputlg">Model No</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text"
-				required ng-model="unit.modelNo">
-		</div>
+			<div class="col-sm-2">
+				<label for="inputlg">Model No</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					required ng-model="unit.modelNo" ng-click="resetAleart()">
+			</div>
 
-		<div class="col-sm-2">
-			<label for="inputlg">Machine Serial No</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text"
-				required ng-model="unit.machineSerialNo">
-		</div>
-	</div>
-
-	<div class="row">
-
-		<div class="col-sm-2">
-			<label for="inputlg">Asset No</label>
-		</div>
-		<div class="col-sm-4">
-			<input class="form-control input-sm" id="inputlg" type="text"
-				required ng-model="unit.assetNo">
-		</div>
-
-		<div class="col-sm-2">
-			<label for="inputlg">Agreement Duration</label>
-		</div>
-		<div class="col-sm-4">
-			<select
-				ng-model="unit.serviceAgreement.agreementDuration.agreementDurationId"
-				class="form-control"
-				ng-options="item.agreementDurationId*1 as item.displayValue for item in serverModelData.AGREEMENT_DURATION">
-			</select>
-		</div>
-
-	</div>
-	<div class="row">
-
-		<div class="col-sm-2">
-			<label for="inputlg"> Contract Start On</label>
-		</div>
-		<div class="col-sm-4">
-			<div class="date-input">
-				<input type="text" class="form-control datepicker"
-					name="requestDueDate"
-					ng-model="unit.serviceAgreement.contractStartOnString"
-					datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
-					ng-click="startDate = !startDate; $event.stopPropagation();"
-					show-button-bar="false">
+			<div class="col-sm-2">
+				<label for="inputlg">Machine Serial No</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					required ng-model="unit.machineSerialNo" ng-click="resetAleart()">
 			</div>
 		</div>
 
+		<div class="row">
 
-		<div class="col-sm-2">
-			<label for="inputlg"> Contract Expire On</label>
+			<div class="col-sm-2">
+				<label for="inputlg">Asset No</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					required ng-model="unit.assetNo" ng-click="resetAleart()">
+			</div>
+
+			<div class="col-sm-2">
+				<label for="inputlg">Agreement Duration</label>
+			</div>
+			<div class="col-sm-4">
+				<select
+					ng-model="unit.serviceAgreement.agreementDuration.agreementDurationId"
+					class="form-control"
+					ng-options="item.agreementDurationId*1 as item.displayValue for item in serverModelData.AGREEMENT_DURATION">
+				</select>
+			</div>
+
 		</div>
-		<div class="col-sm-4">
-			<div class="date-input">
-				<input type="text" class="form-control datepicker"
-					name="requestDueDate"
-					ng-model="unit.serviceAgreement.contractExpireOnString"
-					datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate" disabled
-					ng-click="expireDate = !expireDate; $event.stopPropagation();"
-					show-button-bar="false">
+		<div class="row">
+
+			<div class="col-sm-2">
+				<label for="inputlg"> Contract Start On</label>
+			</div>
+			<div class="col-sm-4">
+				<div class="date-input">
+					<input type="text" class="form-control datepicker"
+						name="requestDueDate"
+						ng-model="unit.serviceAgreement.contractStartOnString"
+						datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
+						ng-click="startDate = !startDate; $event.stopPropagation();"
+						show-button-bar="false">
+				</div>
+			</div>
+
+
+			<div class="col-sm-2">
+				<label for="inputlg"> Contract Expire On</label>
+			</div>
+			<div class="col-sm-4">
+				<div class="date-input">
+					<input type="text" class="form-control datepicker"
+						name="requestDueDate"
+						ng-model="unit.serviceAgreement.contractExpireOnString"
+						datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate" disabled
+						ng-click="expireDate = !expireDate; $event.stopPropagation();"
+						show-button-bar="false">
+				</div>
 			</div>
 		</div>
-	</div>
-	</br>
+		</br>
 
-	<div class="row">
+		<div class="row">
 			<div class="col-sm-4">
 				<h3 class="new-event-subtitle">Site Address Details</h3>
 			</div>
@@ -137,14 +137,15 @@
 					As Billing Address</label>
 			</div>
 		</div>
-	
+
 		<div class="row">
 			<div class="col-sm-2">
 				<label for="inputlg">Address</label>
 			</div>
 			<div class="col-sm-4">
 				<textarea rows="3" cols="30" class="form-control input-sm"
-					id="inputlg" ng-model="unit.address.address" required></textarea>
+					id="inputlg" ng-model="unit.address.address"
+					ng-click="resetAleart()" required></textarea>
 			</div>
 
 			<div class="col-sm-2">
@@ -153,7 +154,7 @@
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
 					ng-pattern="/^[0-9--]+$/" ng-model="unit.address.contactNo"
-					required>
+					ng-click="resetAleart()" required>
 			</div>
 		</div>
 
@@ -164,7 +165,8 @@
 			</div>
 			<div class="col-sm-4">
 				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="unit.address.city" ng-pattern="/^[a-zA-Z]+$/i" required>
+					ng-model="unit.address.city" ng-pattern="/^[a-zA-Z]+$/i"
+					ng-click="resetAleart()" required>
 			</div>
 
 			<div class="col-sm-2">
@@ -174,7 +176,7 @@
 				<input class="form-control input-sm" id="inputlg" type="text"<input
 					ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}$/"
 					class="form-control input-sm" ng-model="unit.address.pincode"
-					required>
+					ng-click="resetAleart()" required>
 			</div>
 		</div>
 
@@ -189,5 +191,5 @@
 				</select>
 			</div>
 		</div>
-</div>
-</form>	
+	</div>
+</form>

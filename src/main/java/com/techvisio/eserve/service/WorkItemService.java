@@ -18,10 +18,9 @@ public interface WorkItemService {
 	public List<WorkItem> getWorkItembyUserandType(Long userId,String type, String status);
 	public void updateWorkItemStatus(Long entityId,String status);
 	public List<WorkItem> getWorkItemsByEntityId(Long entityId);
-	public void createWorkItemForCustomer(String context,
+	public void createWorkItemForCustomerSave(String context,
 			Customer customer, String comment);
 	public void createWorkItemForUnit(String context, Long unitId, String comment);
-	public void createWorkItemForUnitDraft(String context, Long customerId);
 	public void createWorkItemForServiceRenewal(Unit unit);
 	public void workItemWorkForRejectApprovalChanges(Unit unit, String comment);
 }

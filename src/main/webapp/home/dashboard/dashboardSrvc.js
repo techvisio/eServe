@@ -2,7 +2,10 @@ dashboardModule.service('dashboardService', function($http, $q) {
 
 	// Return public API.
 	return ({
-		getNoticeBoardCount : getNoticeBoardCount		
+		getNoticeBoardCount : getNoticeBoardCount,
+		getComplaintCountByAssignment : getComplaintCountByAssignment,
+		getComplaintCountByPriority : getComplaintCountByPriority,
+		getComplaintCountBySlaDate : getComplaintCountBySlaDate
 	});
 
 	
@@ -12,6 +15,42 @@ dashboardModule.service('dashboardService', function($http, $q) {
 		var request = $http({
 			method : "get",
 			url : "../service/dashbord/totalcount/",
+			params : ""
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+	
+	function getComplaintCountByAssignment(){
+
+		console.log('getting Notice board count');
+		var request = $http({
+			method : "get",
+			url : "../service/dashbord/countbyassignment/",
+			params : ""
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+	
+	function getComplaintCountByPriority(){
+
+		console.log('getting Notice board count');
+		var request = $http({
+			method : "get",
+			url : "../service/dashbord/countbypriority/",
+			params : ""
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+	
+	function getComplaintCountBySlaDate(){
+
+		console.log('getting Notice board count');
+		var request = $http({
+			method : "get",
+			url : "../service/dashbord/countbysla/",
 			params : ""
 
 		});

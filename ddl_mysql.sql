@@ -13,6 +13,10 @@
 
     alter table TB_COMMENT 
         drop 
+        foreign key FK_2a6hdwvdyrou7hjk59lmgok04;
+
+    alter table TB_COMMENT 
+        drop 
         foreign key FK_i5onl4rqdykxqkef27t8ybhya;
 
     alter table TB_COMPLAINT_ASSIGNMENT 
@@ -343,6 +347,7 @@
         CREATED_ON datetime,
         COMMENT varchar(255),
         WORKITEM_ID bigint,
+        Client_Id bigint,
         primary key (COMMENT_ID)
     );
 
@@ -796,6 +801,11 @@
 
     alter table TB_AGREEMENT_DURATION 
         add constraint FK_ar2h6nye7rlkto1n333dh674e 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_COMMENT 
+        add constraint FK_2a6hdwvdyrou7hjk59lmgok04 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 

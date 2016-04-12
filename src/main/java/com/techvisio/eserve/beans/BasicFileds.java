@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 
@@ -18,7 +20,10 @@ public class BasicFileds {
 	private String createdBy;
 	@Column(name="CREATED_ON")
 	private Date createdOn;
-
+	@ManyToOne
+	@JoinColumn(name = "Client_Id")
+	private Client client;
+	
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -31,7 +36,13 @@ public class BasicFileds {
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
-
+	public Client getClient() {
+		return client;
+	}
+	public void setClient(Client client) {
+		this.client = client;
+	}
+	
 	@PrePersist
 	protected void onCreate() {
 		createdOn = new Date();

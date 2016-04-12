@@ -173,12 +173,12 @@
 		</tab> <tab heading="EQUIPMENTS">
 		<div ng-include src="'../home/customer/approveUnitEquipmentDtl.html'"></div>
 		</tab> <tab heading="SERVICE HISTORY"
-			ng-click="getServiceAgreementHistoryForUnit(unit.unitId)"
-			disabled="!unit.unitId">
+			ng-click="getServiceAgreementHistoryForUnit(unitApproval.unit.unitId)"
+			disabled="!unitApproval.unit.unitId">
 		<div ng-include src="'../home/customer/serviceHistory.html'"></div>
 		</tab> <tab heading="COMPLAINTS"
-			ng-click="getAllComplaintsForUnit(unit.unitId)"
-			disabled="!unit.unitId">
+			ng-click="getAllComplaintsForUnit(unitApproval.unit.unitId)"
+			disabled="!unitApproval.unit.unitId">
 		<div ng-include src="'../home/customer/customerComplaint.html'"></div>
 		</tab> </tabset>
 	</div>
