@@ -38,11 +38,6 @@ public class WorkItemServiceImpl implements WorkItemService {
 	CustomerService customerService;
 
 	@Override
-	public void saveWorkItem(WorkItem workItem) {
-		workItemManager.saveWorkItem(workItem);
-	}
-
-	@Override
 	public List<WorkItem> getWorkItemByUserId(Long userId) {
 		List<WorkItem> workItems = workItemManager.getWorkItemByUserId(userId);
 		return workItems;
@@ -86,95 +81,75 @@ public class WorkItemServiceImpl implements WorkItemService {
 			Customer customer, String comment) {
 
 		if (context.equalsIgnoreCase(AppConstants.CUSTOMER_DRAFT)) {
-			WorkItem workItem = workItemManager
-					.getWorkItemsByEntityIdAndEntityTypeAndWorkType(
-							customer.getCustomerId(),
-							"CUSTOMER",
-							AppConstants.DraftWorkItemTypeCustomer.CUSTOMER_DRAFT
-									.getWorkType());
-
-			if (workItem == null) {
-				WorkItemFactory factory = new WorkItemFactory();
-				workItem = factory.getWorkItem(context);
-			}
-			workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
-			workItem.setEntityId(customer.getCustomerId());
-			workItemManager.saveWorkItem(workItem);
-
+			createWorkItemForCustomerDraft(context, customer.getCustomerId());
 		}
 
 		if (context.equalsIgnoreCase(AppConstants.PUBLISH)) {
 			for (Unit unit : customer.getUnits()) {
-				WorkItem workItem = workItemManager
-						.getWorkItemsByEntityIdAndEntityTypeAndWorkType(
-								unit.getUnitId(),
-								"UNIT",
-								AppConstants.ApprovalWorkItemType.AGREEMENT_APPROVAL
-										.getWorkType());
-				if (workItem == null) {
-					WorkItemFactory factory = new WorkItemFactory();
-					workItem = factory.getWorkItem(context);
-
-				}
-				Comment unitPublishComment = new Comment();
-				unitPublishComment.setComment(comment);
-				List<Comment> comments = workItem.getComments();
-				comments.add(unitPublishComment);
-				workItem.setComments(comments);
-				workItem.setEntityId(unit.getUnitId());
-				workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
-				workItemManager.saveWorkItem(workItem);
+				createWorkItemForPublishingUnit(context, comment, unit);
 			}
 		}
 	}
 
 	@Override
-	public void createWorkItemForUnit(String context, Long unitId,
+	public void createWorkItemForUnitSave(String context, Long unitId,
 			String comment) {
 		Unit unitFromDB = customerService.getUnit(unitId);
 
 		if (context.equalsIgnoreCase(AppConstants.CUSTOMER_DRAFT)) {
 
-			WorkItem workItem = workItemManager
-					.getWorkItemsByEntityIdAndEntityTypeAndWorkType(
-							unitFromDB.getCustomerId(),
-							"CUSTOMER",
-							AppConstants.DraftWorkItemTypeCustomer.CUSTOMER_DRAFT
-									.getWorkType());
-
-			if (workItem == null) {
-				WorkItemFactory factory = new WorkItemFactory();
-				workItem = factory.getWorkItem(context);
-				;
-			}
-
-			workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
-			workItem.setEntityId(unitFromDB.getCustomerId());
-			workItemManager.saveWorkItem(workItem);
+			createWorkItemForCustomerDraft(context, unitFromDB.getCustomerId());
 		}
 
 		if (context.equalsIgnoreCase(AppConstants.PUBLISH)) {
-			WorkItem workItem = workItemManager
-					.getWorkItemsByEntityIdAndEntityTypeAndWorkType(
-							unitFromDB.getUnitId(),
-							"UNIT",
-							AppConstants.ApprovalWorkItemType.AGREEMENT_APPROVAL
-									.getWorkType());
-
-			if (workItem == null) {
-				WorkItemFactory factory = new WorkItemFactory();
-				workItem = factory.getWorkItem(context);
-
-			}
-			Comment unitPublishComment = new Comment();
-			unitPublishComment.setComment(comment);
-			List<Comment> comments = workItem.getComments();
-			comments.add(unitPublishComment);
-			workItem.setComments(comments);
-			workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
-			workItem.setEntityId(unitId);
-			workItemManager.saveWorkItem(workItem);
+			createWorkItemForPublishingUnit(context, comment,
+					unitFromDB);
 		}
+	}
+
+	private void createWorkItemForCustomerDraft(String context,
+			Long customerId) {
+		WorkItem workItem = workItemManager
+				.getWorkItemsByEntityIdAndEntityTypeAndWorkType(
+						customerId,
+						"CUSTOMER",
+						AppConstants.DraftWorkItemTypeCustomer.CUSTOMER_DRAFT
+						.getWorkType());
+
+		if (workItem == null) {
+			WorkItemFactory factory = new WorkItemFactory();
+			workItem = factory.getWorkItem(context);
+
+		}
+
+		workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
+		workItem.setEntityId(customerId);
+		workItemManager.saveWorkItem(workItem);
+	}
+
+	private void createWorkItemForPublishingUnit(String context,
+			String comment, Unit unitFromDB) {
+
+		WorkItem workItem = workItemManager
+				.getWorkItemsByEntityIdAndEntityTypeAndWorkType(
+						unitFromDB.getUnitId(),
+						"UNIT",
+						AppConstants.ApprovalWorkItemType.AGREEMENT_APPROVAL
+						.getWorkType());
+
+		if (workItem == null) {
+			WorkItemFactory factory = new WorkItemFactory();
+			workItem = factory.getWorkItem(context);
+
+		}
+		Comment unitPublishComment = new Comment();
+		unitPublishComment.setComment(comment);
+		List<Comment> comments = workItem.getComments();
+		comments.add(unitPublishComment);
+		workItem.setComments(comments);
+		workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
+		workItem.setEntityId(unitFromDB.getUnitId());
+		workItemManager.saveWorkItem(workItem);
 	}
 
 	@Override
@@ -214,7 +189,7 @@ public class WorkItemServiceImpl implements WorkItemService {
 				.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unit
 						.getUnitId(), "UNIT",
 						AppConstants.ApprovalWorkItemType.AGREEMENT_APPROVAL
-								.getWorkType());
+						.getWorkType());
 		User user = userService
 				.getUserByUserName(workItemFromDB.getUpdatedBy());
 		workItemFromDB.setAssigneeId(user.getUserId());
@@ -226,4 +201,15 @@ public class WorkItemServiceImpl implements WorkItemService {
 		workItemFromDB.setComments(comments);
 		workItemManager.saveWorkItem(workItemFromDB);
 	}
+
+	@Override
+	public void closeAgreementApprovalWorkItem(Long unitId){
+		WorkItem workItemFromDB = workItemManager
+				.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unitId, "UNIT",
+						AppConstants.ApprovalWorkItemType.AGREEMENT_APPROVAL
+						.getWorkType());
+		workItemFromDB.setStatus(AppConstants.WORK_ITEM_CLOSE_STATUS);
+		workItemManager.saveWorkItem(workItemFromDB);
+	}
+
 }

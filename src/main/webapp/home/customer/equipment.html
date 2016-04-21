@@ -2,7 +2,7 @@
 			<div class="col-sm-4">
 				<h3 class="new-event-subtitle">Equipment Details</h3>
 			</div>
-			<div class="col-sm-2 child-right" ng-show="!isNew || isEdit">
+			<div class="col-sm-2 child-right" ng-show="!isNew || isEdit || selection !==='preview'">
 				<button type="button" class="btn btn-primary btn-sm"
 					ng-click="addMachine(unit)"
 					ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Add Equipment</button>

@@ -9,7 +9,8 @@ var erp = angular
                 'complaintModule',
                 'userModule',
                 'masterdataModule',
-                'dashboardModule'
+                'dashboardModule',
+                'activityModule'
                 ]);
 
 erp.run(['$rootScope', '$location',
@@ -46,10 +47,23 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}]
 		}
 	})
+	
+	.state('activity',{
+
+		url: "/activity",
+		templateUrl: 'activity/Activity.html',
+		controller:"activityController",
+		resolve:{
+			
+			user: ['$stateParams', function($stateParams){
+				return null;
+			}]
+		}
+	})
 
 	.state('workItem',{
 
-		url: "/home",
+		url: "/workitem",
 		templateUrl: 'customer/workItem.html',
 		controller:"customerController",
 		resolve:{

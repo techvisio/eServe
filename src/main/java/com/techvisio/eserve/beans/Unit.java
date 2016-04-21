@@ -42,7 +42,10 @@ public class Unit extends BasicEntity{
 	private Double versionId = 0.0;
 	@Column(name="APPROVAL_STATUS")
 	private char approvalStatus;
-	
+	@Column(name="LAST_APPROVED_BY")
+	private String lastApprovedBy;
+	@Column(name="LAST_APPROVAL_DATE")
+	private Date lastApprovalDate;
 	
 	@Column(name="ASSET_NO")
 	private String assetNo;
@@ -143,6 +146,18 @@ public class Unit extends BasicEntity{
 	}
 	public void setApprovalStatus(char approvalStatus) {
 		this.approvalStatus = approvalStatus;
+	}
+	public String getLastApprovedBy() {
+		return lastApprovedBy;
+	}
+	public void setLastApprovedBy(String lastApprovedBy) {
+		this.lastApprovedBy = lastApprovedBy;
+	}
+	public Date getLastApprovalDate() {
+		return lastApprovalDate;
+	}
+	public void setLastApprovalDate(Date lastApprovalDate) {
+		this.lastApprovalDate = lastApprovalDate;
 	}
 
 }

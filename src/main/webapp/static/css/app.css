@@ -13285,3 +13285,7 @@ label:hover:before {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+
+.comment-box{
+max-width: 40%	
+}

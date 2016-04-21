@@ -14,7 +14,7 @@
 
 	<div class="animate-switch" ng-switch-when="unitDtl"
 		ng-animate="animate">
-		<form name="form.UNIT" id="UNIT">
+		<form name="form.UNIT">
 			<div ng-include src="'../home/customer/individualUnit.html'"></div>
 		</form>
 	</div>
@@ -64,7 +64,7 @@
 	</button>
 	<button type="button" class="btn btn-success button child-right"
 		ng-show="selection==='equipmntDtl' || selection==='preview'"
-		ng-click="saveAndUpdateCustomer('PUBLISH')"
+		ng-click="showCommentBoxCustomerPublish()"
 		ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">
 		<i class="fa fa-paper-plane" style="font-size: 12px"></i>&nbsp Publish
 	</button>

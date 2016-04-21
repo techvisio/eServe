@@ -1,4 +1,12 @@
 
+    alter table TB_ACTIVITY 
+        drop 
+        foreign key FK_f2uvsrbbc21ss9pj7mv62a41o;
+
+    alter table TB_ACTIVITY_PARAM 
+        drop 
+        foreign key FK_eoa01q1tg7k4locwiwfua55jm;
+
     alter table TB_ADDRESS_DETAIL 
         drop 
         foreign key FK_a96hlh8586s53ujx0mwpp2pno;
@@ -235,6 +243,10 @@
         drop 
         foreign key FK_nmbk6k9titb9n861bcpl602i8;
 
+    drop table if exists TB_ACTIVITY;
+
+    drop table if exists TB_ACTIVITY_PARAM;
+
     drop table if exists TB_ADDRESS_DETAIL;
 
     drop table if exists TB_AGREEMENT_DURATION;
@@ -306,6 +318,34 @@
     drop table if exists TB_USER_ROLE;
 
     drop table if exists TB_WORK_ITEM;
+
+    create table TB_ACTIVITY (
+        ACTIVITY_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        ACTIVITY varchar(255),
+        ACTIVITY_DATE datetime,
+        DESCRIPTION varchar(255),
+        USERNAME varchar(255),
+        Client_Id bigint,
+        primary key (ACTIVITY_ID)
+    );
+
+    create table TB_ACTIVITY_PARAM (
+        INDEX_ID bigint not null,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        ACTIVITY_ID bigint,
+        ACTIVITY_PARAM_ID bigint,
+        URL varchar(255),
+        VALUE varchar(255),
+        Client_Id bigint,
+        primary key (INDEX_ID)
+    );
 
     create table TB_ADDRESS_DETAIL (
         ADDRESS_ID bigint not null auto_increment,
@@ -705,6 +745,8 @@
         APPROVAL_STATUS char(1),
         ASSET_NO varchar(255),
         CUSTOMER_ID bigint,
+        LAST_APPROVAL_DATE datetime,
+        LAST_APPROVED_BY varchar(255),
         MACHINE_SERIAL_NO varchar(255),
         MODEL_NO varchar(255),
         UNIT_CODE varchar(255),
@@ -788,6 +830,16 @@
 
     alter table TB_CUSTOMER_DETAIL 
         add constraint UK_dm4qmvg9y85yey4796hr6sflt  unique (CONTACT_NO, EMAIL_ID);
+
+    alter table TB_ACTIVITY 
+        add constraint FK_f2uvsrbbc21ss9pj7mv62a41o 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_ACTIVITY_PARAM 
+        add constraint FK_eoa01q1tg7k4locwiwfua55jm 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
 
     alter table TB_ADDRESS_DETAIL 
         add constraint FK_a96hlh8586s53ujx0mwpp2pno 

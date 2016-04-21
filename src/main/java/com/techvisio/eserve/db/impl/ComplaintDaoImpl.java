@@ -103,7 +103,7 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 
 	@Override
 	public Unit getUnitBasicInfo(Long unitId) {
-		String queryString="SELECT UNIT_ID, CREATED_BY, CREATED_ON, UPDATED_BY, UPDATED_ON, CUSTOMER_ID, ASSET_NO, MACHINE_SERIAL_NO,MODEL_NO,APPROVAL_STATUS, VERSION_ID, UNIT_CATEGORY_ID,Client_Id, ADDRESS_ID, UNIT_CODE FROM tb_unit_detail where UNIT_ID = "+unitId ;
+		String queryString="SELECT UNIT_ID, CREATED_BY, LAST_APPROVAL_DATE, LAST_APPROVED_BY, CREATED_ON, UPDATED_BY, UPDATED_ON, CUSTOMER_ID, ASSET_NO, MACHINE_SERIAL_NO,MODEL_NO,APPROVAL_STATUS, VERSION_ID, UNIT_CATEGORY_ID,Client_Id, ADDRESS_ID, UNIT_CODE FROM tb_unit_detail where UNIT_ID = "+unitId ;
 		Query query=getEntityManager().createNativeQuery(queryString, Unit.class);
 		List<Unit> units= (List<Unit>)query.getResultList();
 		if(units != null && units.size()>0){

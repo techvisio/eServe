@@ -63,7 +63,7 @@ public class CustomerServiceImpl implements CustomerService{
 		return customerId;
 	}
 
-	
+
 	@Override
 	public void saveUnit(List<Unit> units, Long customerId) {
 		customerManager.saveUnit(units, customerId);
@@ -76,12 +76,12 @@ public class CustomerServiceImpl implements CustomerService{
 		String comment = request.getContextInfo().get("comment");
 		Long unitId = customerManager.saveUnit(unit,context);
 
-		workItemService.createWorkItemForUnit(context, unitId, comment);
+		workItemService.createWorkItemForUnitSave(context, unitId, comment);
 
 		return unitId;
 	}
 
-	
+
 	@Override
 	public List<Unit> getUnits(Long customerId) {
 		List<Unit> units = customerManager.getUnits(customerId);
@@ -126,20 +126,20 @@ public class CustomerServiceImpl implements CustomerService{
 		return customer;
 	}
 
-//	@Override
-//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId) {
-//		customerManager.updateServiceAgreement(agreement, unitId);
-//	    Unit unit = getUnit(agreement.getUnitId());
-//	    createWorkItemWithRenewService(unit);
-//	}
+	//	@Override
+	//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId) {
+	//		customerManager.updateServiceAgreement(agreement, unitId);
+	//	    Unit unit = getUnit(agreement.getUnitId());
+	//	    createWorkItemWithRenewService(unit);
+	//	}
 
-//	private void createWorkItemWithRenewService(Unit unit) {
-//		
-////	    if(unit.getApprovalStatus() == AppConstants.APPROVED){
-////
-////            workItemService.createWorkItemForUnit(AppConstants.PUBLISH, unit.getUnitId(),);
-////	    }
-//	}
+	//	private void createWorkItemWithRenewService(Unit unit) {
+	//		
+	////	    if(unit.getApprovalStatus() == AppConstants.APPROVED){
+	////
+	////            workItemService.createWorkItemForUnit(AppConstants.PUBLISH, unit.getUnitId(),);
+	////	    }
+	//	}
 
 	@Override
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId) {
@@ -157,6 +157,7 @@ public class CustomerServiceImpl implements CustomerService{
 	public Unit approveUnit(Unit unit) {
 
 		Unit unitFromDB = customerManager.approveUnit(unit);
+		workItemService.closeAgreementApprovalWorkItem(unit.getUnitId());
 		workItemService.createWorkItemForServiceRenewal(unit);
 		return unitFromDB;
 	}
@@ -172,7 +173,7 @@ public class CustomerServiceImpl implements CustomerService{
 		Customer customer = customerManager.getEmailId(emailId);
 		return customer;
 	}
-	
+
 	@Override
 	public Customer getContactNo(String contactNo)  {
 		Customer customer = customerManager.getContactNo(contactNo);
@@ -184,7 +185,7 @@ public class CustomerServiceImpl implements CustomerService{
 		Unit unit = request.getBussinessObject();
 		String comment = request.getContextInfo().get("comment");
 		Unit unitFromDB = customerManager.rejectUnitApproval(unit);
-		
+
 		workItemService.workItemWorkForRejectApprovalChanges(unitFromDB, comment);
 		return unitFromDB;
 	}

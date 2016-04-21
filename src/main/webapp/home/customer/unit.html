@@ -122,7 +122,7 @@
 				<div class="col-sm-4">
 					<select
 						ng-model="unit.serviceAgreement.agreementDuration.agreementDurationId"
-						class="form-control"
+						class="form-control" required
 						ng-options="item.agreementDurationId*1 as item.displayValue for item in serverModelData.AGREEMENT_DURATION">
 					</select>
 				</div>
@@ -181,9 +181,7 @@
 				</tab> </tabset>
 			</div>
 
-
-			<div>
-
+			<div class="row">
 				<button type="button" class="btn btn-primary button child-right"
 					ng-show="!isNew"
 					ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"
@@ -192,11 +190,10 @@
 					Draft
 				</button>
 
-
 				<button type="button" class="btn btn-success button child-right"
 					ng-show="!isNew"
 					ng-disabled="isCreateOrUpdatePrivileged() || isProcessing || unit.approvalStatus==='P'"
-					ng-click="showCommentBox(unit)">
+					ng-click="showCommentBoxUnitPublish(unit)">
 					<i class="fa fa-paper-plane" style="font-size: 12px"></i>&nbsp
 					Publish
 				</button>
@@ -212,8 +209,6 @@
 
 				<button type="button" class="btn btn-primary child-right"
 					ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && !isEdit">Cancel</button>
-
-
 
 			</div>
 			<!-- 			<div class="row"> -->

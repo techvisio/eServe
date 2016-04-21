@@ -39,15 +39,17 @@ public interface AppConstants {
 	public static final String PENDINGWORK = "AGREEMENT_APPROVAL";
 
 	public enum complaintStatus{ASSIGNED, UNASSIGNED, CLOSED};
-	public enum ApprovalWorkItemType{AGREEMENT_APPROVAL("unit","APPROVE_SERVICE_AGREEMENT","AGREEMENT APPROVAL");
+	public enum ApprovalWorkItemType{AGREEMENT_APPROVAL("unit","APPROVE_SERVICE_AGREEMENT","AGREEMENT APPROVAL","UNIT");
 	String url;
 	String privilege;
 	String workType;
+	String entityType;
 
-	ApprovalWorkItemType(String url,String privilege,String workType){
+	ApprovalWorkItemType(String url,String privilege,String workType, String entityType){
 		this.url=url;
 		this.privilege=privilege;
 		this.workType=workType;
+		this.entityType=entityType;
 	}
 
 	public String getUrl() {
