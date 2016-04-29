@@ -6,7 +6,7 @@
 					<canvas id="pie" class="chart chart-doughnut"
 						chart-data="complaintsBySLA.data"
 						chart-labels="complaintsBySLA.label"
-						chart-options="complaintsBySLA.options" chart-legend=true>
+						chart-options="complaintsBySLA.options" chart-legend=true chart-click="getComplaintBySlaCount">
 				</canvas>
 				</div>
 			</div>
@@ -18,7 +18,7 @@
 					<canvas id="pie" class="chart chart-doughnut"
 						chart-data="complaintsByAssignment.data"
 						chart-labels="complaintsByAssignment.label"
-						chart-options="complaintsByAssignment.options" chart-legend=true>
+						chart-options="complaintsByAssignment.options" chart-legend=true chart-click="getComplaintByAssignmentCount">
 				</canvas>
 				</div>
 			</div>
@@ -30,7 +30,7 @@
 					<canvas id="pie" class="chart chart-doughnut"
 						chart-data="complaintsByPriority.data"
 						chart-labels="complaintsByPriority.label"
-						chart-options="complaintsByPriority.options" chart-legend=true>
+						chart-options="complaintsByPriority.options" chart-legend=true chart-click="getComplaintByPriorityCount">
 				</canvas>
 				</div>
 			</div>

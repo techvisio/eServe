@@ -27,7 +27,7 @@ public interface CustomerDao {
 	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
 	public boolean isCustomerExists(Customer customer);
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
-//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
+	//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
 	public Unit getUnit(Long unitId);
 	public ApproveUnitDtl getUnitForApproval(Long unitId);
 	public void saveServiceAgreementHistory(ServiceAgreementHistory history);
@@ -37,7 +37,4 @@ public interface CustomerDao {
 	public Customer getContactNo(String ContactNo);
 	public void saveUnitHistory(UnitHistory unitHistory);
 	public void saveEquipmentHistory(EquipmentHistory equipmentHistory);
-	public List<CustomerReport> getCustomerReportByCriteria(
-			CustomerReportAttribute customerReportAttribute);
-
 }

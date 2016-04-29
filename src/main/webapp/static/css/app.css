@@ -13289,3 +13289,18 @@ label:hover:before {
 .comment-box{
 max-width: 40%	
 }
+
+#gridStyle {
+    border: 1px solid rgb(212,212,212);
+    cursor: pointer;
+    width: 800px;
+    height: 300px;
+}
+
+#reportGrid {
+    border: 1px solid rgb(212,212,212);
+    cursor: pointer;
+    width: 1300px; 
+    height: 500px;
+    margin: auto;
+}

@@ -1,7 +1,6 @@
 package com.techvisio.eserve.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
 import com.techvisio.eserve.beans.ComplaintResolution;
+import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.Response;
@@ -23,7 +23,6 @@ import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.service.ComplaintService;
-import com.techvisio.eserve.service.CustomerService;
 
 @RestController
 @RequestMapping("service/complaint")
@@ -137,4 +136,15 @@ public class ComplaintController {
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
+
+	@RequestMapping(value ="/dashboard/complaintdata/{type}/{code}", method = RequestMethod.GET)
+	public ResponseEntity<Response> getComplaintDataforDashboard(@PathVariable String type,@PathVariable String code) {
+		Response response=new Response();
+		List<ComplaintSearchData> complaints = complaintService.getComplaintDataforDashboard(type,code);
+		response.setResponseBody(complaints);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+
+
 }

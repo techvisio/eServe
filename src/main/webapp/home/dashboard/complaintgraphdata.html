@@ -1,0 +1,32 @@
+<div>
+	<h3 class="custom-page-header" align="center">COMPLAINT DATA</h3>
+</div>
+
+<div>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Customer Code</th>
+				<th>Unit Code</th>
+				<th>Complaint Code</th>
+				<th>Issue</th>
+				<th>Priority</th>
+				<th>Status</th>
+				<th>Assign To</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in complaintSearchData">
+				<td><a herf="#"
+					ng-click="redirectToCustomerDtlScreen(data.customerId)">{{data.customerCode}}</a></td>
+				<td>{{data.unitCode}}</td>
+				<td><a herf="#"
+					ng-click="redirectToComplaintScreen(data.complaintId)">{{data.complaintCode}}</a></td>
+				<td>{{data.issue}}</td>
+				<td>{{data.priority}}</td>
+				<td>{{data.status}}</td>
+				<td>{{data.assignTo}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

@@ -3,7 +3,7 @@ var dashboardModule=angular.module('dashboardModule',['chart.js']);
 dashboardModule
 .controller(
 		'dashboardController',
-		['dashboardService','$scope', function(dashboardService,$scope) {
+		['dashboardService','$scope','$state','complaint', function(dashboardService,$scope,$state,complaint) {
 
 			$scope.selectedModule="complaint";
 			$scope.noticeBoardCount;
@@ -11,6 +11,12 @@ dashboardModule
 			$scope.updateModule=function(module){
 				$scope.selectedModule=module;
 			};
+			
+			if(complaint){
+				$scope.complaintSearchData = complaint;
+			}
+			
+			
 			$scope.init=function(){
 				$scope.getNoticeBoardCount();
 				$scope.getComplaintCountByAssignment();
@@ -83,10 +89,42 @@ dashboardModule
 						})
 			}
 
-//			$scope.complaintsByPriority = {
-//			labels : ["High ","Midium", "Low"],
-//			data : [3,5,6],
+			$scope.redirectToComplaintGraphScreen=function(paramType, paramCode){
+				$state.go('complaintGraph',{type:paramType,code:paramCode});
+			}
+			
+			$scope.redirectToCustomerDtlScreen=function(currentCustomerId){
+				$state.go('customer',{entityId:currentCustomerId});
+			}
+			
+			$scope.redirectToComplaintScreen=function(currentComplaintId ){
 
-//			};
+				$state.go('complaintScreen',{entityId:currentComplaintId});
+			}
+			
+			$scope.getComplaintBySlaCount=function(points, evt){
+
+				console.log('Complaint data by sla type')
+				var label = points[0]["label"];
+				var type = "SLA";
+				$scope.redirectToComplaintGraphScreen(type,label);
+
+			}
+
+			$scope.getComplaintByAssignmentCount=function(points, evt){
+				console.log('Complaint data by Assignment type')
+				var label = points[0]["label"];
+				var type = "ASSIGNMENT";
+				$scope.redirectToComplaintGraphScreen(type,label);
+
+			}
+
+			$scope.getComplaintByPriorityCount=function(points, evt){
+				console.log('Complaint data by Priority type')
+				var label = points[0]["label"];
+				var type = "PRIORITY";
+				$scope.redirectToComplaintGraphScreen(type,label);
+			}
+
 
 		} ]);

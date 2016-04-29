@@ -1,7 +1,6 @@
 package com.techvisio.eserve.service;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
 import com.techvisio.eserve.beans.ComplaintResolution;
+import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.SearchComplaint;
@@ -34,6 +34,7 @@ public interface ComplaintService {
 			SearchCriteria searchCriteria);
 	public List<SearchComplaintUnit> getSearchUnitByCustomerId(Long customerId);
 	public List<SearchComplaint> getComplaintSearchByUnitId(Long unitId);
-	List<CustomerComplaint> getAllComplaintsForUnit(Long unitId);
-
+	public List<CustomerComplaint> getAllComplaintsForUnit(Long unitId);
+	public List<ComplaintSearchData> getComplaintDataforDashboard(String type,
+			String code);
 }

@@ -2,9 +2,9 @@ package com.techvisio.eserve.util;
 
 public interface AppConstants {
 
-	public static final String STATE="STATE";
+	public static final String STATE = "STATE";
 	public static final String QUESTION = "QUESTION";
-	public static final String DESIGNATION="DESIGNATION";
+	public static final String DESIGNATION = "DESIGNATION";
 	public static final String DEPARTMENT = "DEPARTMENT";
 	public static final String RESOLUTION = "RESOLUTION";
 	public static final String ISSUE = "ISSUE";
@@ -38,101 +38,63 @@ public interface AppConstants {
 	public static final String APPROVALWORK = "APPROVAL";
 	public static final String PENDINGWORK = "AGREEMENT_APPROVAL";
 
-	public enum complaintStatus{ASSIGNED, UNASSIGNED, CLOSED};
-	public enum ApprovalWorkItemType{AGREEMENT_APPROVAL("unit","APPROVE_SERVICE_AGREEMENT","AGREEMENT APPROVAL","UNIT");
-	String url;
-	String privilege;
-	String workType;
-	String entityType;
-
-	ApprovalWorkItemType(String url,String privilege,String workType, String entityType){
-		this.url=url;
-		this.privilege=privilege;
-		this.workType=workType;
-		this.entityType=entityType;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	public String getPrivilege() {
-		return privilege;
-	}
-	public void setPrivilege(String privilege) {
-		this.privilege = privilege;
-	}
-	public String getWorkType() {
-		return workType;
-	}
-	public void setWorkType(String workType) {
-		this.workType = workType;
-	}
-
+	public enum complaintStatus {
+		ASSIGNED, UNASSIGNED, CLOSED
 	};
 
-	public enum DraftWorkItemTypeCustomer{CUSTOMER_DRAFT("customer","CREATE_CUSTOMER","CUSTOMER AS DRAFT");
-	String url;
-	String privilege;
-	String workType;
+	public enum WorkItemType {
+		AGREEMENT_APPROVAL("unit", "APPROVE_SERVICE_AGREEMENT",
+				"AGREEMENT APPROVAL", "UNIT"), CUSTOMER_DRAFT("customer",
+				"CREATE_CUSTOMER", "CUSTOMER AS DRAFT", "CUSTOMER"), RENEW_SERVICE_AGREEMENT(
+				"unit", "RENEW_SERVICE_AGREEMENT", "RENEW SERVICE AGREEMENT",
+				"UNIT");
+		String url;
+		String privilege;
+		String workType;
+		String entityType;
 
-	DraftWorkItemTypeCustomer(String url,String privilege,String workType){
-		this.url=url;
-		this.privilege=privilege;
-		this.workType=workType;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	public String getPrivilege() {
-		return privilege;
-	}
-	public void setPrivilege(String privilege) {
-		this.privilege = privilege;
-	}
-	public String getWorkType() {
-		return workType;
-	}
-	public void setWorkType(String workType) {
-		this.workType = workType;
-	}
+		WorkItemType(String url, String privilege, String workType,
+				String entityType) {
+			this.url = url;
+			this.privilege = privilege;
+			this.workType = workType;
+			this.entityType = entityType;
+		}
 
+		public String getUrl() {
+			return url;
+		}
+
+		public void setUrl(String url) {
+			this.url = url;
+		}
+
+		public String getPrivilege() {
+			return privilege;
+		}
+
+		public void setPrivilege(String privilege) {
+			this.privilege = privilege;
+		}
+
+		public String getWorkType() {
+			return workType;
+		}
+
+		public void setWorkType(String workType) {
+			this.workType = workType;
+		}
 	};
+	
+	 enum DateFormat{DD_MM_YYYY("dd-MM-yyyy");
+	 String pattern;
+	 DateFormat(String pattern){
+		 this.pattern=pattern;
+	 }
+	 
+	 public String getPattern(){
+		 return this.pattern;
+	 }
+	 };
 
-	public enum RenewAgreementWorkItemType{RENEW_SERVICE_AGREEMENT("unit","RENEW_SERVICE_AGREEMENT","RENEW SERVICE AGREEMENT");
-	String url;
-	String privilege;
-	String workType;
-
-	RenewAgreementWorkItemType(String url,String privilege,String workType){
-		this.url=url;
-		this.privilege=privilege;
-		this.workType=workType;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	public String getPrivilege() {
-		return privilege;
-	}
-	public void setPrivilege(String privilege) {
-		this.privilege = privilege;
-	}
-	public String getWorkType() {
-		return workType;
-	}
-	public void setWorkType(String workType) {
-		this.workType = workType;
-	}
-
-	};
 }

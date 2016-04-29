@@ -113,7 +113,7 @@ public class WorkItemServiceImpl implements WorkItemService {
 				.getWorkItemsByEntityIdAndEntityTypeAndWorkType(
 						customerId,
 						"CUSTOMER",
-						AppConstants.DraftWorkItemTypeCustomer.CUSTOMER_DRAFT
+						AppConstants.WorkItemType.CUSTOMER_DRAFT
 						.getWorkType());
 
 		if (workItem == null) {
@@ -134,7 +134,7 @@ public class WorkItemServiceImpl implements WorkItemService {
 				.getWorkItemsByEntityIdAndEntityTypeAndWorkType(
 						unitFromDB.getUnitId(),
 						"UNIT",
-						AppConstants.ApprovalWorkItemType.AGREEMENT_APPROVAL
+						AppConstants.WorkItemType.AGREEMENT_APPROVAL
 						.getWorkType());
 
 		if (workItem == null) {
@@ -188,7 +188,7 @@ public class WorkItemServiceImpl implements WorkItemService {
 		WorkItem workItemFromDB = workItemManager
 				.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unit
 						.getUnitId(), "UNIT",
-						AppConstants.ApprovalWorkItemType.AGREEMENT_APPROVAL
+						AppConstants.WorkItemType.AGREEMENT_APPROVAL
 						.getWorkType());
 		User user = userService
 				.getUserByUserName(workItemFromDB.getUpdatedBy());
@@ -206,7 +206,7 @@ public class WorkItemServiceImpl implements WorkItemService {
 	public void closeAgreementApprovalWorkItem(Long unitId){
 		WorkItem workItemFromDB = workItemManager
 				.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unitId, "UNIT",
-						AppConstants.ApprovalWorkItemType.AGREEMENT_APPROVAL
+						AppConstants.WorkItemType.AGREEMENT_APPROVAL
 						.getWorkType());
 		workItemFromDB.setStatus(AppConstants.WORK_ITEM_CLOSE_STATUS);
 		workItemManager.saveWorkItem(workItemFromDB);

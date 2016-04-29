@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
 import com.techvisio.eserve.beans.ComplaintResolution;
+import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.SearchComplaint;
@@ -295,7 +296,7 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 			complaintCustomer.setCustomerCode(customer.getCustomerCode());
 			complaintCustomer.setCustomerName(customer.getCustomerName());
 			if(customer.getCustomerType() != null){
-			complaintCustomer.setCustomerType(customer.getCustomerType().getCustomerType());
+				complaintCustomer.setCustomerType(customer.getCustomerType().getCustomerType());
 			}
 			complaintCustomer.setEmailId(customer.getEmailId());
 			List<SearchComplaintUnit> complaintUnits = new ArrayList<SearchComplaintUnit>();
@@ -332,6 +333,165 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 			complaintCustomers.add(complaintCustomer);
 		}
 		return complaintCustomers;
+	}
+
+
+	@Override
+	public List<ComplaintSearchData> getComplaintBySLA(Long clientId,String code) {
+
+		List<ComplaintSearchData> complaints = new ArrayList<ComplaintSearchData>();		
+		String queryString=getComplaintQueryBySLACode(clientId, code);
+		Query query=getEntityManager().createNativeQuery(queryString);
+		List<Object[]> results=query.getResultList();
+		for(Object[] result :results){
+			ComplaintSearchData complaintsearchdata=new ComplaintSearchData();			
+			Long customerid = (long) ((Number) result[0]).intValue();
+			complaintsearchdata.setCustomerId(customerid);
+			complaintsearchdata.setCustomerCode((String) result[1]);
+			Long unitId = (long) ((Number) result[2]).intValue();
+			complaintsearchdata.setUnitId(unitId);
+			complaintsearchdata.setUnitCode((String) result[3]);
+			Long complaintid = (long) ((Number) result[4]).intValue();
+			complaintsearchdata.setComplaintId(complaintid);
+			complaintsearchdata.setComplaintCode((String) result[5]);
+			complaintsearchdata.setIssue((String) result[6]);
+			complaintsearchdata.setStatus((String) result[7]);
+			complaintsearchdata.setPriority((String) result[8]);
+			if(result[9] != null){
+			complaintsearchdata.setAssignTo((String) result[9]);
+			}
+			complaints.add(complaintsearchdata);	
+		}
+		return complaints;	
+	}
+
+
+
+	private String getComplaintQueryBySLACode(Long clientId,String code) {
+
+		String  queryString="SELECT CD.CUSTOMER_ID,CD.CUSTOMER_CODE,UD.UNIT_ID,UD.UNIT_CODE,CC.COMPLAINT_ID, CC.COMPLAINT_CODE, TIM.VALUE ,CC.STATUS,Case when cc.PRIORITY = 'C' then 'CRITICAL' when cc.PRIORITY = 'H' then 'HIGH' when cc.PRIORITY = 'M' then 'MEDIUM' else 'LOW' End PRIORITY,TU.USER_NAME"
+				+" From tb_customer_detail CD left join tb_unit_detail UD on UD.CUSTOMER_ID = CD.CUSTOMER_ID"
+				+" left join tb_customer_complaint CC on CC.UNIT_ID = UD.UNIT_ID"
+				+" left join tb_complaint_assignment CA on CA.COMPLAINT_ID = CC.COMPLAINT_ID "
+				+ " left join tb_issue_master TIM ON TIM.ISSUE_ID = CC.ISSUE_ID"
+				+ " left join tb_user TU ON TU.USER_ID = CA.USER_ID where cc.client_Id="+ clientId;
+
+		if(code.equalsIgnoreCase("TODAY")){
+			queryString=queryString+" AND Date(CC.SLA_DATE) = CURDATE()";
+		}
+		else if(code.equalsIgnoreCase("DUE")){
+			queryString=queryString+" AND Date(CC.SLA_DATE) > CURDATE()";
+		}
+		else {
+			queryString=queryString+" AND Date(CC.SLA_DATE) < CURDATE()";
+		}
+		return queryString;
+
+	}
+
+
+	@Override
+	public List<ComplaintSearchData> getComplaintByASSIGNMENT(Long clientId,String code) {
+
+		List<ComplaintSearchData> complaints = new ArrayList<ComplaintSearchData>();		
+		String queryString=getComplaintQueryByASSIGNMENTCode(clientId, code);
+		Query query=getEntityManager().createNativeQuery(queryString);
+		List<Object[]> results=query.getResultList();
+		for(Object[] result :results){
+			ComplaintSearchData complaintsearchdata=new ComplaintSearchData();			
+			Long customerid = (long) ((Number) result[0]).intValue();
+			complaintsearchdata.setCustomerId(customerid);
+			complaintsearchdata.setCustomerCode((String) result[1]);
+			Long unitId = (long) ((Number) result[2]).intValue();
+			complaintsearchdata.setUnitId(unitId);
+			complaintsearchdata.setUnitCode((String) result[3]);
+			Long complaintid = (long) ((Number) result[4]).intValue();
+			complaintsearchdata.setComplaintId(complaintid);
+			complaintsearchdata.setComplaintCode((String) result[5]);
+			complaintsearchdata.setIssue((String) result[6]);
+			complaintsearchdata.setStatus((String) result[7]);
+			complaintsearchdata.setPriority((String) result[8]);
+			if(result[9] != null){
+			complaintsearchdata.setAssignTo((String) result[9]);
+			}
+			complaints.add(complaintsearchdata);
+
+		}
+
+		return complaints;	
+
+	}
+	private String getComplaintQueryByASSIGNMENTCode(Long clientId,String code) {
+
+		String  queryString="SELECT CD.CUSTOMER_ID,CD.CUSTOMER_CODE,UD.UNIT_ID,UD.UNIT_CODE,CC.COMPLAINT_ID, CC.COMPLAINT_CODE, TIM.VALUE ,CC.STATUS,Case when cc.PRIORITY = 'C' then 'CRITICAL' when cc.PRIORITY = 'H' then 'HIGH' when cc.PRIORITY = 'M' then 'MEDIUM' else 'LOW' End PRIORITY,TU.USER_NAME"
+				+" From tb_customer_detail CD left join tb_unit_detail UD on UD.CUSTOMER_ID = CD.CUSTOMER_ID"
+				+" left join tb_customer_complaint CC on CC.UNIT_ID = UD.UNIT_ID"
+				+" left join tb_complaint_assignment CA on CA.COMPLAINT_ID = CC.COMPLAINT_ID"
+				+ " left join tb_issue_master TIM ON TIM.ISSUE_ID = CC.ISSUE_ID"
+				+ " left join tb_user TU ON TU.USER_ID = CA.USER_ID where cc.client_Id="+ clientId;
+
+		if(code.equalsIgnoreCase("ASSIGNED")){
+			queryString=queryString+" AND CC.STATUS = 'ASSIGNED'";
+		}
+		else
+		{
+			queryString= queryString+" AND CC.STATUS='UNASSIGNED'";
+		}
+		return queryString;
+	}
+	@Override
+	public List<ComplaintSearchData> getComplaintByPRIORITY(Long clientId,String code) {
+
+		List<ComplaintSearchData> complaints = new ArrayList<ComplaintSearchData>();		
+		String queryString=getComplaintQueryByPRIORITYcode(clientId, code);
+		Query query=getEntityManager().createNativeQuery(queryString);
+		List<Object[]> results=query.getResultList();
+		for(Object[] result :results){
+			ComplaintSearchData complaintsearchdata=new ComplaintSearchData();			
+			Long customerid = (long) ((Number) result[0]).intValue();
+			complaintsearchdata.setCustomerId(customerid);
+			complaintsearchdata.setCustomerCode((String) result[1]);
+			Long unitId = (long) ((Number) result[2]).intValue();
+			complaintsearchdata.setUnitId(unitId);
+			complaintsearchdata.setUnitCode((String) result[3]);
+			Long complaintid = (long) ((Number) result[4]).intValue();
+			complaintsearchdata.setComplaintId(complaintid);
+			complaintsearchdata.setComplaintCode((String) result[5]);
+			complaintsearchdata.setIssue((String) result[6]);
+			complaintsearchdata.setStatus((String) result[7]);
+			complaintsearchdata.setPriority((String) result[8]);
+			if(result[9] != null){
+			complaintsearchdata.setAssignTo((String) result[9]);
+			}
+			complaints.add(complaintsearchdata);
+
+		}
+
+		return complaints;	
+	}
+	private String getComplaintQueryByPRIORITYcode(Long clientId,String code) {
+
+		String  queryString="SELECT CD.CUSTOMER_ID,CD.CUSTOMER_CODE,UD.UNIT_ID,UD.UNIT_CODE,CC.COMPLAINT_ID, CC.COMPLAINT_CODE, TIM.VALUE ,CC.STATUS,Case when cc.PRIORITY = 'C' then 'CRITICAL' when cc.PRIORITY = 'H' then 'HIGH' when cc.PRIORITY = 'M' then 'MEDIUM' else 'LOW' End PRIORITY,TU.USER_NAME"
+				+" From tb_customer_detail CD left join tb_unit_detail UD on UD.CUSTOMER_ID = CD.CUSTOMER_ID"
+				+" left join tb_customer_complaint CC on CC.UNIT_ID = UD.UNIT_ID"
+				+" left join tb_complaint_assignment CA on CA.COMPLAINT_ID = CC.COMPLAINT_ID"
+				+ " left join tb_issue_master TIM ON TIM.ISSUE_ID = CC.ISSUE_ID"
+				+ " left join tb_user TU ON TU.USER_ID = CA.USER_ID where cc.client_Id="+ clientId;
+
+		if(code.equalsIgnoreCase("CRITICAL")){
+			queryString=queryString+" AND CC.PRIORITY = 'C'";
+		}
+		else if(code.equalsIgnoreCase("HIGH")){
+			queryString=queryString+" AND CC.PRIORITY = 'H'";
+		}
+		else if( code.equalsIgnoreCase("MEDIUM")){
+			queryString=queryString+" AND CC.PRIORITY = 'M'";
+		}
+		else{
+
+			queryString=queryString+"  AND CC.PRIORITY = 'L'";
+		}
+		return queryString;
 	}
 
 }

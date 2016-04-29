@@ -12,10 +12,10 @@ complaintModule.service('complaintService', function($http, $q) {
 		getComplaintByCriteria : getComplaintByCriteria,
 		getSearchUnitByCustomerId : getSearchUnitByCustomerId,
 		getComplaintByUnitId : getComplaintByUnitId,
-		getAllComplaintsForUnit : getAllComplaintsForUnit		
+		getAllComplaintsForUnit : getAllComplaintsForUnit
 	});
 
-	
+
 	function getComplaintByCriteria(searchCriteria){
 
 		console.log('getting complaint customer by search criteria');
@@ -28,7 +28,7 @@ complaintModule.service('complaintService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
-	
+
 	function saveComplaint(customerComplaint){
 		console.log('save complaint call in service');
 		var request = $http({
@@ -65,7 +65,7 @@ complaintModule.service('complaintService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
-	
+
 	function getUnitForComplaint(unitId){
 		console.log('get unit for complaint');
 
@@ -92,7 +92,7 @@ complaintModule.service('complaintService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}	
 
-	
+
 	function getSearchUnitByCustomerId(customerId){
 		console.log('getting units by customerId in service');
 
@@ -105,7 +105,7 @@ complaintModule.service('complaintService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}	
-	
+
 	function getComplaintByUnitId(unitId){
 		console.log('getting SearchComplaint by unitId in service');
 
@@ -118,8 +118,8 @@ complaintModule.service('complaintService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}	
-	
-	
+
+
 	function getAllComplaintsForUnit(unitId){
 		console.log('getting all complaints for single unit in service');
 
@@ -168,7 +168,7 @@ complaintModule.service('complaintService', function($http, $q) {
 		// Otherwise, use expected error message.
 		return ($q.reject(response.data.message));
 	}
-	
+
 	// I transform the successful response, unwrapping the application data
 	// from the API response payload.
 	function handleSuccess(response) {

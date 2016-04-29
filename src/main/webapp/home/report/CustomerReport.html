@@ -1,0 +1,13 @@
+<button ng-click="filterCustomerReport()">getData</button>
+
+
+
+<div class="searchList">
+	<span class="header">Double click a record to see Details</span>
+	<p>
+	<div class="gridStyle" ng-grid="gridOptions" id="gridStyle"></div>
+	<pagination total-items="totalItems" items-per-page="itemsPerPage"
+		ng-model="currentPage" ng-change="pageChanged()"></pagination>
+
+
+</div>

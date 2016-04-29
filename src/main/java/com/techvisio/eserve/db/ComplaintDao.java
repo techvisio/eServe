@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
 import com.techvisio.eserve.beans.ComplaintResolution;
+import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.SearchComplaint;
@@ -32,6 +33,9 @@ public interface ComplaintDao {
 	public List<SearchComplaint> getComplaintSearchByUnitId(Long unitId);
 	public List<SearchComplaintCustomer> getCustomerByComplaintCode(
 			SearchCriteria searchCriteria);
-	List<CustomerComplaint> getAllComplaintsForUnit(Long unitId);
+	public List<CustomerComplaint> getAllComplaintsForUnit(Long unitId);
 
+	public List<ComplaintSearchData> getComplaintByASSIGNMENT(Long clientId,String code);
+	public List<ComplaintSearchData> getComplaintByPRIORITY(Long clientId, String code);
+	public List<ComplaintSearchData> getComplaintBySLA(Long clientId, String code);
 }

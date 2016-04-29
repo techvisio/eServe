@@ -451,21 +451,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		if($scope.selection="customer"){
 
 			
-			if(!$scope.contactNoError){
-				$scope.getContactNo();
-				$scope.alerts=[];
-				$scope.alerts.push({msg: 'CONTACT NUMBER EXIST, TRY ANOTHER ONE!!'})
-				return;
-			}
-			
-			$scope.getEmailId();
-			if($scope.emailError){
-				$scope.alerts=[];
-				$scope.alerts.push({msg: 'EMAIL ID ALREADY EXIST, TRY ANOTHER ONE!!'})
-				return;
-			}
-			
-			if(!$scope.form.CUSTOMER.$valid){
+			if(!$scope.form.CUSTOMER.$valid || $scope.contactNoError || $scope.emailError){
 				$scope.alerts=[];
 				$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
 				return;

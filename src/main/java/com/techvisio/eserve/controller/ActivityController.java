@@ -1,5 +1,6 @@
 package com.techvisio.eserve.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,12 @@ import com.techvisio.eserve.service.ActivityService;
 public class ActivityController {
 	
 	@Autowired
-	ActivityService activitySercice;
+	ActivityService activityService;
 	
 	@RequestMapping(value="/activitybydate/",method = RequestMethod.POST)
-	public ResponseEntity<Response> searchByDate(@RequestBody ActivitySearchCriteria activitySearchCriteria) {  
+	public ResponseEntity<Response> searchByDate(@RequestBody ActivitySearchCriteria activitySearchCriteria) throws ParseException {  
 		Response response=new Response();
-		List<Activity> activity = (List<Activity>) activitySercice.searchByDate(activitySearchCriteria);
+		List<Activity> activity = (List<Activity>) activityService.searchByDate(activitySearchCriteria);
 		response.setResponseBody(activity);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

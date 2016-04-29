@@ -13,15 +13,12 @@ import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchCriteria;
-import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
-import com.techvisio.eserve.beans.WorkItem;
-import com.techvisio.eserve.factory.WorkItemFactory;
 import com.techvisio.eserve.manager.CustomerManager;
+import com.techvisio.eserve.service.ActivityService;
 import com.techvisio.eserve.service.CustomerService;
 import com.techvisio.eserve.service.WorkItemService;
-import com.techvisio.eserve.util.AppConstants;
 
 @Component
 @Transactional
@@ -33,6 +30,9 @@ public class CustomerServiceImpl implements CustomerService{
 	@Autowired
 	WorkItemService workItemService; 
 
+	@Autowired
+	ActivityService activityService;
+	
 	@Override
 	public List<Customer> getCustomers() {
 		List<Customer> customers = customerManager.getCustomers();
@@ -59,7 +59,7 @@ public class CustomerServiceImpl implements CustomerService{
 		Long customerId = customerManager.saveCustomer(customer, context);
 
 		workItemService.createWorkItemForCustomerSave(context, customer,comment);
-
+		activityService.createActivityForCustomer(customer);
 		return customerId;
 	}
 

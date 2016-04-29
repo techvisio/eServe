@@ -14,8 +14,8 @@ public class WorkItemFactory {
 		case AppConstants.CUSTOMER_DRAFT:
 
 			workItem = new WorkItem();
-			workItem.setWorkType(AppConstants.DraftWorkItemTypeCustomer.CUSTOMER_DRAFT.getWorkType());
-			workItem.setEntityUrl(AppConstants.DraftWorkItemTypeCustomer.CUSTOMER_DRAFT.getUrl());
+			workItem.setWorkType(AppConstants.WorkItemType.CUSTOMER_DRAFT.getWorkType());
+			workItem.setEntityUrl(AppConstants.WorkItemType.CUSTOMER_DRAFT.getUrl());
 			workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS); 
 			workItem.setEntityType("CUSTOMER");
 			//TODO:Change with privilege from Enum
@@ -25,8 +25,8 @@ public class WorkItemFactory {
 		case AppConstants.PUBLISH:
 
 			workItem = new WorkItem();
-			workItem.setWorkType(AppConstants.ApprovalWorkItemType.AGREEMENT_APPROVAL.getWorkType());
-			workItem.setEntityUrl(AppConstants.ApprovalWorkItemType.AGREEMENT_APPROVAL.getUrl());
+			workItem.setWorkType(AppConstants.WorkItemType.AGREEMENT_APPROVAL.getWorkType());
+			workItem.setEntityUrl(AppConstants.WorkItemType.AGREEMENT_APPROVAL.getUrl());
 			workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
 			workItem.setEntityType("UNIT");
 			//TODO:Change with privilege from Enum
@@ -36,8 +36,8 @@ public class WorkItemFactory {
 		case AppConstants.RENEW_SERVICE_CALL:
 
 			workItem = new WorkItem();
-			workItem.setWorkType(AppConstants.RenewAgreementWorkItemType.RENEW_SERVICE_AGREEMENT.getWorkType());
-			workItem.setEntityUrl(AppConstants.RenewAgreementWorkItemType.RENEW_SERVICE_AGREEMENT.getUrl());
+			workItem.setWorkType(AppConstants.WorkItemType.RENEW_SERVICE_AGREEMENT.getWorkType());
+			workItem.setEntityUrl(AppConstants.WorkItemType.RENEW_SERVICE_AGREEMENT.getUrl());
 			workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS); 
 			workItem.setEntityType("UNIT");
 			//TODO:Change with privilege from Enum

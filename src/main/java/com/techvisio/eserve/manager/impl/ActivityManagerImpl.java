@@ -1,5 +1,6 @@
 package com.techvisio.eserve.manager.impl;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -25,9 +26,9 @@ public class ActivityManagerImpl implements ActivityManager {
 		Activity activity =new Activity();
 		ActivityParam activityParam=new ActivityParam();
 		activity.setActivityId(customer.getCustomerId());
-		activity.setActivity("create user");
+		activity.setActivity("create customer");
 		activity.setActivityDate(new Date());
-		activity.setUsername("ash");
+		activity.setUsername("avinash giri");
 		activity.setDescription("customer");
 		activityParam.setIndexId(1L);
 		activityParam.setValue(customer.getCustomerName());
@@ -36,8 +37,16 @@ public class ActivityManagerImpl implements ActivityManager {
 		activityDao.SaveActivity(activity);
 	}
 	
+	/*@SuppressWarnings("unused")
+	private Long  indexValue(){
+		ActivityParam activityParam=new ActivityParam();
+		long index=1;
+		long index1 = activityParam.getIndexId()+index;
+		return index1;
+	}*/
+	
 	@Override
-	public List<Activity> searchByDate(ActivitySearchCriteria activitySearchCriteria, Long ClientId) {
+	public List<Activity> searchByDate(ActivitySearchCriteria activitySearchCriteria, Long ClientId){
 		List<Activity> Date = activityDao.searchByDate(activitySearchCriteria,ClientId);
 		return Date;
 	}

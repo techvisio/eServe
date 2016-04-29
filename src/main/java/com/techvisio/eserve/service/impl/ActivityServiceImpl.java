@@ -1,5 +1,6 @@
 package com.techvisio.eserve.service.impl;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 	
 	@Override
-	public List<Activity> searchByDate(ActivitySearchCriteria activitySearchCriteria) {
+	public List<Activity> searchByDate(ActivitySearchCriteria activitySearchCriteria){
 		
 		Client client = CommonUtil.getCurrentClient();
 		List<Activity> date = activityManager.searchByDate(activitySearchCriteria,client.getClientId());

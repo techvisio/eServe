@@ -2,25 +2,24 @@ package com.techvisio.eserve.beans;
 
 public class ActivitySearchCriteria {
 	
-	private String fromdate;
+	private String fromDate;
 	
-	private String todate;
+	private String toDate;
 
-	public String getFromdate() {
-		return fromdate;
+	public String getFromDate() {
+		return fromDate;
 	}
 
-	public void setFromdate(String fromdate) {
-		this.fromdate = fromdate;
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
 	}
 
-	public String getTodate() {
-		return todate;
+	public String getToDate() {
+		return toDate;
 	}
 
-	public void setTodate(String todate) {
-		this.todate = todate;
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
 	}
 	
-
 }

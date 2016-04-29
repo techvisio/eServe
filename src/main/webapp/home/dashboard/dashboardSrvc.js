@@ -5,7 +5,8 @@ dashboardModule.service('dashboardService', function($http, $q) {
 		getNoticeBoardCount : getNoticeBoardCount,
 		getComplaintCountByAssignment : getComplaintCountByAssignment,
 		getComplaintCountByPriority : getComplaintCountByPriority,
-		getComplaintCountBySlaDate : getComplaintCountBySlaDate
+		getComplaintCountBySlaDate : getComplaintCountBySlaDate,
+		getComplaintDataforDashboard : getComplaintDataforDashboard
 	});
 
 	
@@ -56,6 +57,19 @@ dashboardModule.service('dashboardService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
+
+	function getComplaintDataforDashboard(type, code){
+		console.log('getComplaintDataforDashboard');
+
+		var request = $http({
+			method : "get",
+			url : "../service/dashbord/complaintdata/"+type+"/"+code,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}	
 	
 	function handleError(response) {
 		console.log('Error occured while calling service');

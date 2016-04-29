@@ -1,0 +1,117 @@
+
+<div class="row">
+	<div class="col-sm-12">
+		<h3 class="custom-page-header" align="center">Report Criteria</h3>
+	</div>
+</div>
+<div ng-init="init()">
+	<div class="row">
+		<div class="col-sm-2">
+			<label>Unit Type</label>
+		</div>
+
+		<div class="col-sm-4">
+			<select ng-model="customerReportAttribute.unitTypeId"
+				class="form-control"
+				ng-options="item.unitCategoryId*1 as item.unitType for item in serverModelData.UNIT_CATEGORY">
+			</select>
+		</div>
+
+
+		<div class="col-sm-2">
+			<label for="inputlg">Customer Type</label>
+		</div>
+
+		<div class="col-sm-4">
+			<select ng-model="customerReportAttribute.customerTypeId"
+				class="form-control"
+				ng-options="item.customerTypeId*1 as item.customerType  for item in serverModelData.CUSTOMER_TYPE">
+			</select>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2">
+			<label>From Date</label>
+		</div>
+
+		<div class="col-sm-4">
+			<div class="date-input">
+				<input type="text" ng-model="customerReportAttribute.fromDate"
+					class="form-control datepicker"
+					datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
+					ng-click="startDate = !startDate; $event.stopPropagation();"
+					show-button-bar="false">
+			</div>
+		</div>
+
+
+		<div class="col-sm-2">
+			<label>To Date</label>
+		</div>
+
+		<div class="col-sm-4">
+			<div class="date-input">
+				<input type="text" ng-model="customerReportAttribute.toDate"
+					class="form-control datepicker"
+					datepicker-popup="{{'MMM dd yyyy'}}" is-open="endDate"
+					ng-click="endDate = !endDate; $event.stopPropagation();"
+					show-button-bar="false">
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+
+		<div class="col-sm-2">
+			<label>Page Size</label>
+		</div>
+
+		<div class="col-sm-4">
+			<input ng-model="customerReportAttribute.pageSize"
+				class="form-control" type="text">
+		</div>
+
+		<div class="col-sm-2">
+			<label>Page No</label>
+		</div>
+
+		<div class="col-sm-4">
+			<input ng-model="customerReportAttribute.pageNo" type="text"
+				class="form-control">
+		</div>
+
+	</div>
+
+	<div class="row">
+		<div class="col-sm-2">
+			<label>Approval Status</label>
+		</div>
+
+		<div class="col-sm-4">
+			<select class="form-control"
+				ng-model="customerReportAttribute.approvalStatus">
+				<option value="P">Publish</option>
+				<option value="D">Draft</option>
+				<option value="A">Approved</option>
+				<option value="R">Reject</option>
+			</select>
+		</div>
+
+		<div class="col-sm-2">
+			<label for="inputlg">Service Provider</label>
+		</div>
+
+		<div class="col-sm-4">
+			<select ng-model="customerReportAttribute.serviceProviderId"
+				class="form-control"
+				ng-options="item.serviceProviderId*1 as item.serviceProvider for item in serverModelData.SERVICE_PROVIDER">
+			</select>
+		</div>
+
+	</div>
+	<div class="row">
+		<button type="button" class="btn btn-success button child-right"
+			ng-click="getCustomerReportByCriteria()">Filter</button>
+	</div>
+</div>

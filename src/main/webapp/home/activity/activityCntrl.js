@@ -1,14 +1,31 @@
-var userModule = angular.module('activityModule', ['ui.bootstrap.buttons']);
+var activityModule = angular.module('activityModule', []);
 
-userModule
+activityModule
 .controller(
-		'activityController',
-		[
-		 '$scope',
-		 '$state',
-		 'activityService',
-		 'user',
-		 
-		 function($scope, $state,activityService,user) {
+		'activityController',['$scope','$state','activityService',
+		                      function($scope, $state,activityService) {
+			 
+			 $scope.startDate=false;
+			 $scope.endDate=false;
+			 
+			 $scope.activitySearchCriteria={};
+			 $scope.activities=[];
 
+			 $scope.getActivityByDate=function(){
+					activityService.getActivityByDate($scope.activitySearchCriteria)
+					.then(
+							function(data) {
+								console.log(data);
+								if (data) {
+									
+									 $scope.activities = data;
+									 
+								} else {
+									console.log('error');
+								}
+							})
+				}
+
+			 
+			 
 		 } ]);

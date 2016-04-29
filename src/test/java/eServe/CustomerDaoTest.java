@@ -1,8 +1,15 @@
 package eServe;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +17,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerReport;
 import com.techvisio.eserve.beans.CustomerReportAttribute;
-import com.techvisio.eserve.beans.GraphData;
-import com.techvisio.eserve.beans.Unit;
-import com.techvisio.eserve.db.ComplaintDao;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.db.DashBordDao;
 
@@ -26,12 +29,6 @@ public class CustomerDaoTest {
 
 	@Autowired
 	CustomerDao dao;
-	
-	@Autowired
-	ComplaintDao comp;
-
-	@Autowired
-	DashBordDao bordDao;
 
 
 	//	@Test
@@ -41,17 +38,4 @@ public class CustomerDaoTest {
 	//		System.out.println("Data is :"+customer);
 	//	}
 
-	@Test
-	public void getUnit(){
-		CustomerReportAttribute customerReportAttribute = new CustomerReportAttribute();
-		customerReportAttribute.setApprovalStatus("P");
-		List<CustomerReport> customerReports = dao.getCustomerReportByCriteria(customerReportAttribute);
-		System.out.println("Data is :"+customerReports);
-	}
-
-	@Test
-	public void getCustomers(){
-		Unit customers = comp.getUnitBasicInfo(1L);
-		System.out.println("Data is :"+customers);
-	}
 }

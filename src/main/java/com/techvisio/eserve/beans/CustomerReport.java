@@ -1,7 +1,5 @@
 package com.techvisio.eserve.beans;
 
-import java.util.Date;
-
 public class CustomerReport {
 	
 	//Customer
@@ -33,7 +31,7 @@ public class CustomerReport {
 	
 	private String modelNo;
 	
-	private Date lastApprovalDate;
+	private String lastApprovalDate;
 	
 	private String unitType;
 	
@@ -44,20 +42,14 @@ public class CustomerReport {
 	
 	private String serviceCategory;
 	
-	private Date contractStartOn;
+	private String contractStartOn;
 	
-	private Date contractExpireOn;
+	private String contractExpireOn;
 	
 	private Long approvedBy;
 	
-	//Service Agreement Finance
 	
-	private Long serviceAgreementFinanceId;
-	
-	private Double agreementAmount;
-
-	
-	//Customer Getter Setter
+	//Getter Setter
 	
 	public Long getCustomerId() {
 		return customerId;
@@ -100,8 +92,6 @@ public class CustomerReport {
 	}
 
 	
-	
-	//Unit Getter Setter
 	
 	public Long getUnitId() {
 		return unitId;
@@ -160,7 +150,6 @@ public class CustomerReport {
 	}
 	
 	
-	//Service Agreement Getter Setter
 	
 	public Long getServiceAgreementId() {
 		return serviceAgreementId;
@@ -178,22 +167,7 @@ public class CustomerReport {
 		this.serviceCategory = serviceCategory;
 	}
 
-	public Date getContractStartOn() {
-		return contractStartOn;
-	}
-
-	public void setContractStartOn(Date contractStartOn) {
-		this.contractStartOn = contractStartOn;
-	}
-
-	public Date getContractExpireOn() {
-		return contractExpireOn;
-	}
-
-	public void setContractExpireOn(Date contractExpireOn) {
-		this.contractExpireOn = contractExpireOn;
-	}
-
+	
 	public Long getApprovedBy() {
 		return approvedBy;
 	}
@@ -203,23 +177,7 @@ public class CustomerReport {
 	}
 	
 	
-	//Service Agreement Finance Getter Setter
-	
-	public Long getServiceAgreementFinanceId() {
-		return serviceAgreementFinanceId;
-	}
 
-	public void setServiceAgreementFinanceId(Long serviceAgreementFinanceId) {
-		this.serviceAgreementFinanceId = serviceAgreementFinanceId;
-	}
-
-	public Double getAgreementAmount() {
-		return agreementAmount;
-	}
-
-	public void setAgreementAmount(Double agreementAmount) {
-		this.agreementAmount = agreementAmount;
-	}
 
 	public String getCustomerType() {
 		return customerType;
@@ -229,14 +187,7 @@ public class CustomerReport {
 		this.customerType = customerType;
 	}
 
-	public Date getLastApprovalDate() {
-		return lastApprovalDate;
-	}
-
-	public void setLastApprovalDate(Date lastApprovalDate) {
-		this.lastApprovalDate = lastApprovalDate;
-	}
-
+	
 	public String getUnitType() {
 		return unitType;
 	}
@@ -244,10 +195,42 @@ public class CustomerReport {
 	public void setUnitType(String unitType) {
 		this.unitType = unitType;
 	}
-	
-    
-	
-	
 
+	public String getContractStartOn() {
+		return contractStartOn;
+	}
 
+	public void setContractStartOn(String contractStartOn) {
+		this.contractStartOn = contractStartOn;
+	}
+
+	public String getContractExpireOn() {
+		return contractExpireOn;
+	}
+
+	public void setContractExpireOn(String contractExpireOn) {
+		this.contractExpireOn = contractExpireOn;
+	}
+
+	public String getLastApprovalDate() {
+		return lastApprovalDate;
+	}
+
+	public void setLastApprovalDate(String lastApprovalDate) {
+		this.lastApprovalDate = lastApprovalDate;
+	}
+	
+	@Override
+	public String toString() {
+		return "CustomerReport [customerId=" + customerId + ", customerName=" + customerName + ", contactNo="
+				+ contactNo + ", customerCode=" + customerCode + ", emailId=" + emailId + ", customerType="
+				+ customerType + ", unitId=" + unitId + ", unitCode=" + unitCode + ", versionId=" + versionId
+				+ ", approvalStatus=" + approvalStatus + ", assetNo=" + assetNo + ", machineSerialNo=" + machineSerialNo
+				+ ", modelNo=" + modelNo + ", lastApprovalDate=" + lastApprovalDate + ", unitType=" + unitType
+				+ ", serviceAgreementId=" + serviceAgreementId + ", serviceCategory=" + serviceCategory
+				+ ", contractStartOn=" + contractStartOn + ", contractExpireOn=" + contractExpireOn + ", approvedBy="
+				+ approvedBy + "]";
+	}
+
+	
 }

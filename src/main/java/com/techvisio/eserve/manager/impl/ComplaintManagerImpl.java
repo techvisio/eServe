@@ -1,19 +1,15 @@
 package com.techvisio.eserve.manager.impl;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
 import com.techvisio.eserve.beans.ComplaintResolution;
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.SearchComplaint;
@@ -159,6 +155,23 @@ public class ComplaintManagerImpl implements ComplaintManager{
 	@Override
 	public List<CustomerComplaint> getAllComplaintsForUnit(Long unitId) {
 		List<CustomerComplaint> complaints= complaintDao.getAllComplaintsForUnit(unitId);
+		return complaints;
+	}
+	
+	@Override
+	public List<ComplaintSearchData> getComplaintDataforDashboard(Long clientId ,String type,String code) {
+		List<ComplaintSearchData> complaints=new ArrayList<ComplaintSearchData>();
+		if(type.equalsIgnoreCase("SLA")){
+			complaints=complaintDao.getComplaintBySLA(clientId, code);
+		
+		}
+		if(type.equalsIgnoreCase("ASSIGNMENT")){
+			 complaints=complaintDao.getComplaintByASSIGNMENT(clientId, code);
+		}
+		
+		if(type.equalsIgnoreCase("PRIORITY"))	{
+			complaints=complaintDao.getComplaintByPRIORITY(clientId, code);
+		}
 		return complaints;
 	}
 }

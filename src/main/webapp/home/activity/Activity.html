@@ -1,10 +1,61 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-<h3>ACtivity Screen</h3>
-</body>
-</html>
+<div >
+<div class="row" ">
+		<div class="col-sm-3">
+			<label for="inputlg">From Date</label>
+		</div>
+		<div class="col-sm-3">
+					<div class="date-input">
+						<input type="text" class="form-control datepicker"
+							name="requestDueDate"
+							ng-model="activitySearchCriteria.fromDate"
+							datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
+							ng-click="startDate = !startDate; $event.stopPropagation();"
+							show-button-bar="false">
+					</div>
+		</div>
+		
+		<div class="col-sm-3">
+			<label for="inputlg">To Date</label>
+		</div>
+		<div class="col-sm-3">
+			<div class="date-input">
+						<input type="text" class="form-control datepicker"
+							name="requestDueDate"
+							ng-model="activitySearchCriteria.toDate"
+							datepicker-popup="{{'MMM dd yyyy'}}" is-open="endDate"
+							ng-click="endDate = !endDate; $event.stopPropagation();"
+							show-button-bar="false">
+					</div>
+		</div>
+	</div>
+	<div>
+
+	<button type="button" ng-click="getActivityByDate()">Show Record</button>
+	</div>
+	
+	<div>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Activity Id</th>
+				<th>Activity</th>
+				<th>Activity Date</th>
+				<th>Description</th>
+				<th>User Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="activity in activities">
+				<td>{{activity.activityId}}</td>
+				<td>{{activity.activity}}</td>
+				<td>{{activity.activityDateString}}</td>
+				<td>{{activity.description}}</td>
+				<td>{{activity.username}}</td>
+				
+ <!-- <td><a ui-sref="resetpassword"><button class="btn-primary">Reset Password</button></a></td> -->
+			</tr>
+		</tbody>
+	</table>
+</div>
+	
+	</div>

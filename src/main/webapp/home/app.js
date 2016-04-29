@@ -10,7 +10,8 @@ var erp = angular
                 'userModule',
                 'masterdataModule',
                 'dashboardModule',
-                'activityModule'
+                'activityModule',
+                'reportModule'
                 ]);
 
 erp.run(['$rootScope', '$location',
@@ -37,27 +38,21 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		// Use a url of "/" to set a state as the "index".
 		url: "/home",
 		templateUrl: 'dashboard/dashboard.html',
-		//controller:"dashboardModule",
+		controller:"dashboardController",
 		resolve:{
-			customer: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			unit: ['$stateParams', function($stateParams){
+			complaint: ['$stateParams', function($stateParams){
 				return null;
 			}]
 		}
 	})
-	
+
 	.state('activity',{
 
 		url: "/activity",
 		templateUrl: 'activity/Activity.html',
 		controller:"activityController",
 		resolve:{
-			
-			user: ['$stateParams', function($stateParams){
-				return null;
-			}]
+
 		}
 	})
 
@@ -252,8 +247,30 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 				return {};
 			}]
 		}
+	})
+
+	.state('complaintGraph', {
+		url: "/complaintgraph/:type/:code",
+		templateUrl: 'dashboard/complaintgraphdata.html',
+		controller:"dashboardController",
+		resolve:{
+			complaint: ['$stateParams','dashboardService', function($stateParams,dashboardService){
+				return dashboardService.getComplaintDataforDashboard($stateParams.type,$stateParams.code);
+			}]	
+		}
+	})
+	
+	.state('customerReport', {
+		url: "/customerreport",
+		templateUrl: 'report/CustomerReport.html',
+		controller:"reportController",
+		resolve:{
+			
+		}
 	});
 
+	
+	
 });
 
 
