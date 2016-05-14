@@ -17,6 +17,7 @@ public interface AppConstants {
 	public static final char PENDING = 'P';
 	public static final char DRAFTSTATUS = 'D';
 
+	
 	public static final String CRITICAL = "C";
 	public static final String MEDIUM = "M";
 	public static final String HIGH = "H";
@@ -27,8 +28,12 @@ public interface AppConstants {
 	public static final String SLA_DAYS_CRITICAL = "SLA_DAYS_CRITICAL";
 	public static final String SLA_DAYS_MEDIUM = "SLA_DAYS_MEDIUM";
 	public static final String SERVICE_REMINDER = "SERVICE_REMINDER";
+	public static final String IS_TAX_INCLUDED = "IS_TAX_INCLUDED";
 	public static final String CONFIG = "CONFIG";
 
+	public static final Long BASE_AMOUNT_ID=9998L;
+	public static final Long TOTAL_AMOUNT_ID=9999L;
+	
 	public static final String WORK_ITEM_OPEN_STATUS = "OPEN";
 	public static final String WORK_ITEM_CLOSE_STATUS = "CLOSE";
 	public static final String CUSTOMER_DRAFT = "CUSTOMER_DRAFT";
@@ -86,7 +91,7 @@ public interface AppConstants {
 		}
 	};
 	
-	 enum DateFormat{DD_MM_YYYY("dd-MM-yyyy");
+	 enum DateFormat{MM_dd_yyyy("MMMM d, yyyy");
 	 String pattern;
 	 DateFormat(String pattern){
 		 this.pattern=pattern;

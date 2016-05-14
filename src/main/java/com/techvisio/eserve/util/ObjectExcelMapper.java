@@ -1,14 +1,11 @@
 package com.techvisio.eserve.util;
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.ss.usermodel.Row;
@@ -18,8 +15,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ObjectExcelMapper {
 
-	public static void createExcel(String path,List objectList,String[] columns){
-		if(columns != null && columns.length>0){
+	public static byte[] createExcel(List objectList,Map<String,String> columnsMap){
+		 byte[] bytes=null;
+		if(columnsMap != null && columnsMap.size()>0){
 			Workbook workbook = new XSSFWorkbook();
 
 	        Sheet reportSheet = workbook.createSheet("Report");
@@ -28,15 +26,15 @@ public class ObjectExcelMapper {
 	        //create header row
 	        Row row = reportSheet.createRow(rowIndex++);
             int cellIndex = 0;
-            for(String s:columns){
-            row.createCell(cellIndex++).setCellValue(s.toUpperCase());
+            for(String s:columnsMap.keySet()){
+            row.createCell(cellIndex++).setCellValue(columnsMap.get(s));
             }
 	        
 	        for(Object o : objectList){
 	            Row dataRow = reportSheet.createRow(rowIndex++);
 	            cellIndex = 0;
 	            
-	            for(String s:columns){
+	            for(String s:columnsMap.keySet()){
 	                try {
 	                	dataRow.createCell(cellIndex++).setCellValue( BeanUtils.getSimpleProperty(o, s));
 					} catch (IllegalAccessException | InvocationTargetException
@@ -48,22 +46,25 @@ public class ObjectExcelMapper {
 	        }
 
 	        //write this workbook in excel file.
+	        ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	        try {
-	        	File file=new File(path);
-	        	if(!file.exists()){
-	        		file.createNewFile();
-	        	}
-	            FileOutputStream fos = new FileOutputStream(path);
-	            workbook.write(fos);
-	            fos.close();
-
-	            System.out.println(path + " is successfully written");
-	        } catch (FileNotFoundException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
+	            try {
+	            	
+					workbook.write(bos);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        } finally {
+	            try {
+					bos.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	        }
-
+	        bytes = bos.toByteArray();
 		}
+		  return bytes;
 	}
 }

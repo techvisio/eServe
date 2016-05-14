@@ -33,6 +33,8 @@ public class CustomerReport {
 	
 	private String lastApprovalDate;
 	
+	private String lastApprovedBy;
+	
 	private String unitType;
 	
 	
@@ -219,18 +221,13 @@ public class CustomerReport {
 	public void setLastApprovalDate(String lastApprovalDate) {
 		this.lastApprovalDate = lastApprovalDate;
 	}
-	
-	@Override
-	public String toString() {
-		return "CustomerReport [customerId=" + customerId + ", customerName=" + customerName + ", contactNo="
-				+ contactNo + ", customerCode=" + customerCode + ", emailId=" + emailId + ", customerType="
-				+ customerType + ", unitId=" + unitId + ", unitCode=" + unitCode + ", versionId=" + versionId
-				+ ", approvalStatus=" + approvalStatus + ", assetNo=" + assetNo + ", machineSerialNo=" + machineSerialNo
-				+ ", modelNo=" + modelNo + ", lastApprovalDate=" + lastApprovalDate + ", unitType=" + unitType
-				+ ", serviceAgreementId=" + serviceAgreementId + ", serviceCategory=" + serviceCategory
-				+ ", contractStartOn=" + contractStartOn + ", contractExpireOn=" + contractExpireOn + ", approvedBy="
-				+ approvedBy + "]";
+
+	public String getLastApprovedBy() {
+		return lastApprovedBy;
 	}
 
+	public void setLastApprovedBy(String lastApprovedBy) {
+		this.lastApprovedBy = lastApprovedBy;
+	}
 	
 }

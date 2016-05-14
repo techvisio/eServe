@@ -1,6 +1,8 @@
 package com.techvisio.eserve.service.impl;
 
+import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.CustomerReport;
 import com.techvisio.eserve.beans.ReportAttribute;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.manager.ReportManager;
 import com.techvisio.eserve.service.ReportService;
 import com.techvisio.eserve.util.CommonUtil;
@@ -20,9 +23,16 @@ public class ReportServiceImpl implements ReportService {
 	ReportManager reportManager;
 
 	@Override
-	public List<CustomerReport> getCustomerReportByCriteria(ReportAttribute customerReportAttribute){
+	public SearchResultData getCustomerReportByCriteria(ReportAttribute customerReportAttribute) throws ParseException{
 		Long clientId = CommonUtil.getCurrentClient().getClientId();	
-		List<CustomerReport> customerReports = reportManager.getCustomerReportByCriteria(customerReportAttribute, clientId);
+		SearchResultData customerReports = reportManager.getCustomerReportByCriteria(customerReportAttribute, clientId);
 		return customerReports;
+	}
+
+	@Override
+	public byte[] getReportFile(ReportAttribute customerReportAttribute) {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();	
+		byte[] file = reportManager.getReportFile(customerReportAttribute, clientId);
+		return file;
 	}
 }

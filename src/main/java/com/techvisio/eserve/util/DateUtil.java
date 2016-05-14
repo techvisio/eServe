@@ -20,11 +20,19 @@ public class DateUtil {
 		return stringDate;
 	}
 
-	public static java.util.Date convertStringToDate(String dateString, String pattern) throws ParseException {
+	public static java.util.Date convertStringToUtilDate(String dateString, String pattern) throws ParseException {
 		DateFormat format = new SimpleDateFormat(pattern);
 		java.util.Date date = null;
 		date = format.parse(dateString);
 		return date;
+	}
+	
+	public static java.sql.Date convertStringToSqlDate(String dateString, String pattern) throws ParseException {
+		DateFormat format = new SimpleDateFormat(pattern);
+		java.util.Date javaUtilDate = null;
+		javaUtilDate = format.parse(dateString);
+		java.sql.Date javeSqlDate=new java.sql.Date(javaUtilDate.getTime());
+		return javeSqlDate;
 	}
 	
 	public static String convertDateToString(java.util.Date date){

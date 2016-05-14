@@ -1,7 +1,6 @@
 var erp = angular
 .module('erp', [
                 'ngRoute',
-                'ngAnimate',
                 'ui.bootstrap',
                 'ui.router',
                 'erp.services',
@@ -11,7 +10,8 @@ var erp = angular
                 'masterdataModule',
                 'dashboardModule',
                 'activityModule',
-                'reportModule'
+                'reportModule',
+                'ngGrid'
                 ]);
 
 erp.run(['$rootScope', '$location',

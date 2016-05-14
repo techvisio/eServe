@@ -17,6 +17,7 @@ import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.InvoiceTaxes;
 import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
@@ -35,6 +36,7 @@ import com.techvisio.eserve.util.CustomLogger;
 @Component
 public class CacheManagerImpl implements CacheManager {
 	private static CustomLogger logger = CustomLogger.getLogger(CacheManagerImpl.class);
+	
 	@Autowired
 	CacheDao cacheDao;
 
@@ -601,6 +603,11 @@ public class CacheManagerImpl implements CacheManager {
 	public List<Privilege> getPrivileges(Long clientId) {
 		List<Privilege> privileges = cacheDao.getPrivileges(clientId);
 		return privileges;
+	}
+	@Override
+	public List<InvoiceTaxes> getInvoiceTaxes(Long clientId) {
+		List<InvoiceTaxes> invoiceTaxes = cacheDao.getInvoiceTaxes(clientId);
+		return invoiceTaxes;
 	}
 }
 

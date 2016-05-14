@@ -1,4 +1,4 @@
-var customerModule = angular.module('customerModule', ['ngAnimate']);
+var customerModule = angular.module('customerModule', []);
 
 customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','unit','masterdataService','userService','complaintService','$modal',
                                                  function($scope,$window,$rootScope,customerService,$state,filter,customer,unit,masterdataService,userService,complaintService,$modal) {
@@ -13,6 +13,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.expireDate=false;
 	$scope.showStatus=false;
 	$scope.previewContext = false;
+	$scope.customerScreen = true;
 	//	$scope.getAllComplaints=false;
 	$scope.unitApproval = {};
 	$scope.customer={};
@@ -91,6 +92,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 
 	if(unit){
+		$scope.customerScreen = false;
 		$scope.unitApproval = unit;
 	}
 

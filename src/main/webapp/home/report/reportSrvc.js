@@ -2,9 +2,9 @@ reportModule.service('reportService', function($http, $q) {
 
 	// Return public API.
 	return ({
-		getCustomerReportByCriteria:getCustomerReportByCriteria
+		getCustomerReportByCriteria:getCustomerReportByCriteria,
 	});
-	
+
 	function getCustomerReportByCriteria(customerReportAttribute){
 
 		console.log('Reset user password');
@@ -19,7 +19,6 @@ reportModule.service('reportService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	
 	function handleError(response) {
 		console.log('Error occured while calling service');
 		console.log(response);
@@ -40,5 +39,6 @@ reportModule.service('reportService', function($http, $q) {
 		return (response.data.responseBody);
 
 	}
+
 
 });

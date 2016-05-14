@@ -115,6 +115,22 @@
         drop 
         foreign key FK_g2knoota7mm923vp006iw706l;
 
+    alter table TB_INVOICE 
+        drop 
+        foreign key FK_sj0g807xpe5nt1vf8bjibfnb9;
+
+    alter table TB_INVOICE_COMPONENT 
+        drop 
+        foreign key FK_4vu5mosc7kie1fa94wf6cum5b;
+
+    alter table TB_INVOICE_COMPONENT 
+        drop 
+        foreign key FK_o1odiiwx6bnfo5perft6am4u1;
+
+    alter table TB_INVOICE_TAXES_MASTER 
+        drop 
+        foreign key FK_6hws04js50atrw2rc0t2e2bp5;
+
     alter table TB_ISSUE_MASTER 
         drop 
         foreign key FK_38gjt49t15rjbd8mby5pvoyl9;
@@ -243,6 +259,10 @@
         drop 
         foreign key FK_nmbk6k9titb9n861bcpl602i8;
 
+    alter table TB__AGREEMENT_INVOICE 
+        drop 
+        foreign key FK_al7xrotox8lkfq7l7pxv4m517;
+
     drop table if exists TB_ACTIVITY;
 
     drop table if exists TB_ACTIVITY_PARAM;
@@ -278,6 +298,12 @@
     drop table if exists TB_EQUIPMENT_HISTORY;
 
     drop table if exists TB_EQUIPMENT_MASTER;
+
+    drop table if exists TB_INVOICE;
+
+    drop table if exists TB_INVOICE_COMPONENT;
+
+    drop table if exists TB_INVOICE_TAXES_MASTER;
 
     drop table if exists TB_ISSUE_MASTER;
 
@@ -319,12 +345,12 @@
 
     drop table if exists TB_WORK_ITEM;
 
+    drop table if exists TB__AGREEMENT_INVOICE;
+
     create table TB_ACTIVITY (
         ACTIVITY_ID bigint not null auto_increment,
         CREATED_BY varchar(255),
         CREATED_ON datetime,
-        UPDATED_BY varchar(255),
-        UPDATED_ON datetime,
         ACTIVITY varchar(255),
         ACTIVITY_DATE datetime,
         DESCRIPTION varchar(255),
@@ -334,15 +360,15 @@
     );
 
     create table TB_ACTIVITY_PARAM (
-        INDEX_ID bigint not null,
+        ACTIVITY_PARAM_ID bigint not null,
         CREATED_BY varchar(255),
         CREATED_ON datetime,
-        UPDATED_BY varchar(255),
-        UPDATED_ON datetime,
         ACTIVITY_ID bigint,
-        ACTIVITY_PARAM_ID bigint,
+        INDEX_ID bigint,
         URL varchar(255),
         VALUE varchar(255),
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
         Client_Id bigint,
         primary key (INDEX_ID)
     );
@@ -554,6 +580,44 @@
         PRICE double precision,
         Client_Id bigint,
         primary key (EQUIPMENT_ID)
+    );
+
+    create table TB_INVOICE (
+        INVOICE_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        AMOUNT double precision,
+        INVOICE_NO bigint,
+        Client_Id bigint,
+        primary key (INVOICE_ID)
+    );
+
+    create table TB_INVOICE_COMPONENT (
+        INVOICE_COMPONENT_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        AMOUNT double precision,
+        COMPONENT_ID bigint,
+        INVOICE_ID bigint,
+        Client_Id bigint,
+        primary key (INVOICE_COMPONENT_ID)
+    );
+
+    create table TB_INVOICE_TAXES_MASTER (
+        COMPONENT_ID bigint not null,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        ACTIVE bit,
+        CALCULATED_ON_ID bigint,
+        DESCRIPTION varchar(255),
+        IS_DOCUMENTATION_ONLY bit,
+        FIXED double precision,
+        PERCENTAGE double precision,
+        SEQUENCE_NO bigint,
+        Client_Id bigint,
+        primary key (COMPONENT_ID)
     );
 
     create table TB_ISSUE_MASTER (
@@ -817,6 +881,7 @@
         ASSIGNEE_ID bigint,
         DESCRIPTION varchar(255),
         DUE_DATE datetime,
+        ENTITY_CODE varchar(255),
         ENTITY_ID bigint,
         ENTITY_TYPE varchar(255),
         ENTITY_URL varchar(255),
@@ -826,6 +891,18 @@
         WORKTYPE varchar(255),
         Client_Id bigint,
         primary key (WORKITEM_ID)
+    );
+
+    create table TB__AGREEMENT_INVOICE (
+        AGREEMENT_INVOICE_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        AGREEMENT_ID bigint,
+        INVOICE_ID bigint,
+        Client_Id bigint,
+        primary key (AGREEMENT_INVOICE_ID)
     );
 
     alter table TB_CUSTOMER_DETAIL 
@@ -973,6 +1050,26 @@
 
     alter table TB_EQUIPMENT_MASTER 
         add constraint FK_g2knoota7mm923vp006iw706l 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_INVOICE 
+        add constraint FK_sj0g807xpe5nt1vf8bjibfnb9 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_INVOICE_COMPONENT 
+        add constraint FK_4vu5mosc7kie1fa94wf6cum5b 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_INVOICE_COMPONENT 
+        add constraint FK_o1odiiwx6bnfo5perft6am4u1 
+        foreign key (INVOICE_ID) 
+        references TB_INVOICE (INVOICE_ID);
+
+    alter table TB_INVOICE_TAXES_MASTER 
+        add constraint FK_6hws04js50atrw2rc0t2e2bp5 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 
@@ -1133,5 +1230,10 @@
 
     alter table TB_WORK_ITEM 
         add constraint FK_nmbk6k9titb9n861bcpl602i8 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB__AGREEMENT_INVOICE 
+        add constraint FK_al7xrotox8lkfq7l7pxv4m517 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);

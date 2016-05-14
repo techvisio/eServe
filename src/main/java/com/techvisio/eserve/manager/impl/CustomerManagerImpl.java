@@ -1,11 +1,13 @@
 package com.techvisio.eserve.manager.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.AgreementInvoice;
 import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.CompositeKeyEquipmentHistory;
 import com.techvisio.eserve.beans.CompositeKeyUnitHistory;
@@ -13,7 +15,6 @@ import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.EquipmentHistory;
 import com.techvisio.eserve.beans.SearchCriteria;
-import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
@@ -21,6 +22,7 @@ import com.techvisio.eserve.beans.UnitHistory;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.manager.CustomerManager;
+import com.techvisio.eserve.manager.InvoiceManager;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 @Component
@@ -32,6 +34,9 @@ public class CustomerManagerImpl implements CustomerManager {
 	@Autowired
 	CacheDao cacheDao;
 
+	@Autowired
+	InvoiceManager invoiceManager;
+	
 	@Override
 	public Customer getCustomer(Long customerId) {
 		Customer customer = customerDao.getCustomer(customerId);
@@ -120,10 +125,10 @@ public class CustomerManagerImpl implements CustomerManager {
 		return customers;
 	}
 
-//	@Override
-//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId){
-//		customerDao.updateServiceAgreement(agreement, unitId);
-//	}
+	//	@Override
+	//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId){
+	//		customerDao.updateServiceAgreement(agreement, unitId);
+	//	}
 
 	@Override
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId) {
@@ -140,16 +145,21 @@ public class CustomerManagerImpl implements CustomerManager {
 	@Override
 	public Unit approveUnit(Unit unit){
 
-		Unit unitFromDB = null;
+		Unit unitFromDB = customerDao.getUnit(unit.getUnitId());;
 
 		if(unit.getApprovalStatus()==AppConstants.PENDING){
 
 			unit.setApprovalStatus(AppConstants.APPROVED);
 
+			Double agreementAmount = unit.getServiceAgreement().getServiceAgreementFinance().getAgreementAmount();
+
+			invoiceManager.saveInvoiceAndInvoiceAgreement(unit.getServiceAgreement().getServiceAgreementId(), agreementAmount);
+
 			saveServiceAgreementHistory(unit);
 			saveServiceAgreementFinanceHistory(unit);
 			saveUnitHistory(unit);
-			
+			unit.setLastApprovalDate(new Date());
+			unit.setLastApprovedBy(CommonUtil.getCurrentUser().getUserName());
 			unit.setVersionId(unit.getVersionId()+1);
 			customerDao.saveUnit(unit);
 
@@ -159,11 +169,12 @@ public class CustomerManagerImpl implements CustomerManager {
 		return unitFromDB;
 	}
 
+
 	private List<EquipmentHistory> saveEquipmentHistory(Unit unit) {
 		List<EquipmentHistory> equipmentHistories = new ArrayList<EquipmentHistory>();
-		
+
 		for(EquipmentDetail equipmentDetail : unit.getEquipmentDetails()){
-			
+
 			EquipmentHistory equipmentHistory = new EquipmentHistory();
 			CompositeKeyEquipmentHistory keyEquipmentHistory = new CompositeKeyEquipmentHistory();
 			keyEquipmentHistory.setEquipmentDtlId(equipmentDetail.getEquipmentDtlId());
@@ -177,10 +188,10 @@ public class CustomerManagerImpl implements CustomerManager {
 			equipmentHistory.setWarrantyUnder(equipmentDetail.getWarrantyUnder());
 			equipmentHistory.setUnderWarranty(equipmentDetail.isUnderWarranty());
 			customerDao.saveEquipmentHistory(equipmentHistory);
-			
+
 			equipmentHistories.add(equipmentHistory);
 		}
-		
+
 		return equipmentHistories;
 	}
 
@@ -198,9 +209,9 @@ public class CustomerManagerImpl implements CustomerManager {
 		unitHistory.setModelNo(unit.getModelNo());
 		unitHistory.setUnitCategory(unit.getUnitCategory());
 		unitHistory.setUnitCode(unit.getUnitCode());
-		
+
 		List<EquipmentHistory> equipmentHistories=saveEquipmentHistory(unit);
-		
+
 		customerDao.saveUnitHistory(unitHistory);
 	}
 
@@ -237,13 +248,13 @@ public class CustomerManagerImpl implements CustomerManager {
 		Customer customer = customerDao.getEmailId(EmailId);
 		return customer;
 	}
-	
+
 	@Override
 	public Customer getContactNo(String ContactNo) {
 		Customer customer = customerDao.getContactNo(ContactNo);
 		return customer;
 	}
-	
+
 	@Override
 	public Unit rejectUnitApproval(Unit unit){
 
@@ -258,6 +269,6 @@ public class CustomerManagerImpl implements CustomerManager {
 
 		unitFromDB = customerDao.getUnit(unit.getUnitId());
 		return unitFromDB;
-		
+
 	}
 }

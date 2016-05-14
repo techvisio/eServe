@@ -81,7 +81,7 @@ public class WorkItemServiceImpl implements WorkItemService {
 			Customer customer, String comment) {
 
 		if (context.equalsIgnoreCase(AppConstants.CUSTOMER_DRAFT)) {
-			createWorkItemForCustomerDraft(context, customer.getCustomerId());
+			createWorkItemForCustomerDraft(context, customer.getCustomerId(), customer.getCustomerCode());
 		}
 
 		if (context.equalsIgnoreCase(AppConstants.PUBLISH)) {
@@ -98,7 +98,8 @@ public class WorkItemServiceImpl implements WorkItemService {
 
 		if (context.equalsIgnoreCase(AppConstants.CUSTOMER_DRAFT)) {
 
-			createWorkItemForCustomerDraft(context, unitFromDB.getCustomerId());
+			Customer customer = customerService.getCustomer(unitFromDB.getCustomerId());
+			createWorkItemForCustomerDraft(context, unitFromDB.getCustomerId(), customer.getCustomerCode());
 		}
 
 		if (context.equalsIgnoreCase(AppConstants.PUBLISH)) {
@@ -108,7 +109,7 @@ public class WorkItemServiceImpl implements WorkItemService {
 	}
 
 	private void createWorkItemForCustomerDraft(String context,
-			Long customerId) {
+			Long customerId, String entityCode) {
 		WorkItem workItem = workItemManager
 				.getWorkItemsByEntityIdAndEntityTypeAndWorkType(
 						customerId,
@@ -124,6 +125,7 @@ public class WorkItemServiceImpl implements WorkItemService {
 
 		workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
 		workItem.setEntityId(customerId);
+		workItem.setEntityCode(entityCode);
 		workItemManager.saveWorkItem(workItem);
 	}
 
@@ -149,6 +151,7 @@ public class WorkItemServiceImpl implements WorkItemService {
 		workItem.setComments(comments);
 		workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
 		workItem.setEntityId(unitFromDB.getUnitId());
+		workItem.setEntityCode(unitFromDB.getUnitCode());
 		workItemManager.saveWorkItem(workItem);
 	}
 
@@ -178,6 +181,7 @@ public class WorkItemServiceImpl implements WorkItemService {
 		workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
 		workItem.setDueDate(dueDate);
 		workItem.setEntityId(unit.getUnitId());
+		workItem.setEntityCode(unit.getUnitCode());
 		workItem.setDueDate(dueDate);
 		workItemManager.saveWorkItem(workItem);
 

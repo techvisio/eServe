@@ -108,6 +108,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		else{
 			for(Unit unit : customer.getUnits()){
 				insertServiceExpirationDateInServiceAgreement(unit);
+				unit.getServiceAgreement().setVersionId(unit.getVersionId());
 			}
 			getEntityManager().merge(customer);
 		}
@@ -151,19 +152,21 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 				unit.setUnitCode(unitCode);
 			}
 			insertServiceExpirationDateInServiceAgreement(unit);
+			
+			getEntityManager().persist(unit);
+			getEntityManager().flush();
 			if(unit.getServiceAgreement().getUnitId()==null){
 				unit.getServiceAgreement().setUnitId(unit.getUnitId());
 				unit.getServiceAgreement().setVersionId(unit.getVersionId());
+				saveServiceAgreement(unit.getServiceAgreement());
 			}
-			getEntityManager().persist(unit);
-			getEntityManager().flush();
-
 		}
 		else{
 			if(unitCode==null){
 				unitCode=identifierGenerator.getUniqueIdentifierForUnit(unit);
 				unit.setUnitCode(unitCode);
 			}
+			unit.getServiceAgreement().setVersionId(unit.getVersionId());
 			updateServiceAgreement(unit.getServiceAgreement(), unit.getUnitId());
 			deleteEquipmentDtlExclusion(unit.getEquipmentDetails(), unit.getUnitId());
 			getEntityManager().merge(unit);

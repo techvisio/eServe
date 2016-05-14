@@ -13,6 +13,7 @@ import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.InvoiceTaxes;
 import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
@@ -186,5 +187,13 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 			return configs.get(0);
 		}
 		return null;
+	}
+
+	@Override
+	public List<InvoiceTaxes> getInvoiceTaxes(Long clientId) {
+		String queryString="FROM InvoiceTaxes it where it.client.clientId = " + clientId;
+		Query query= getEntityManager().createQuery(queryString);
+		List<InvoiceTaxes> result= query.getResultList();
+		return result;
 	}
 }

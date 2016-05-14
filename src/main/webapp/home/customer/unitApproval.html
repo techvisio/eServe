@@ -184,22 +184,19 @@
 	</div>
 
 	<div class="row">
-		<div class="col-sm-6"></div>
-		<div class="col-sm-2 child-right">
-			<button type="button" class="btn btn-success btn-sm"
-				ng-click="approveUnit(unitApproval.unit)" ng-disabled="isProcessing">Approve
-				Unit</button>
-		</div>
-		<div class="col-sm-2 child-right">
-			<button type="button" class="btn btn-success btn-sm"
-				ng-click="showRejectionCommentBox(unitApproval.unit)" ng-disabled="isProcessing">Reject Changes </button>
-		</div>
-		<div class="col-sm-2 child-right">
-			<button type="button" class="btn btn-primary"
-				ng-click="showUnitExpireModal(unitApproval.unit)" ng-show="unitApproval.unit.unitId"
-				ng-disabled="!isPrivileged('AGREEMENT_APPROVAL') || isProcessing">Show
-				Agreement</button>
-		</div>
+		<button type="button" class="btn btn-success btn-sm child-right"
+			ng-click="approveUnit(unitApproval.unit)"
+			ng-disabled="isProcessing || unitApproval.unit.approvalStatus==='A'">Approve
+			Unit</button>
+		<button type="button" class="btn btn-success btn-sm child-right"
+			ng-click="showRejectionCommentBox(unitApproval.unit)"
+			ng-disabled="isProcessing || unitApproval.unit.approvalStatus==='A' || unitApproval.unit.approvalStatus==='R'">Reject
+			Changes</button>
+		<button type="button" class="btn btn-primary child-right"
+			ng-click="showUnitExpireModal(unitApproval.unit)"
+			ng-show="unitApproval.unit.unitId"
+			ng-disabled="!isPrivileged('AGREEMENT_APPROVAL') || isProcessing">Show
+			Agreement</button>
 	</div>
 
 </div>

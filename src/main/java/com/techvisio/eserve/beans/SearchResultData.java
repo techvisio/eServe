@@ -5,17 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SearchResultData {
+public class SearchResultData<T> {
 
-	private List<Object> objectData =  new ArrayList<Object>();
+	private List<T> objectData =  new ArrayList<T>();
 	private Long totalCount;
 	private int pageSize;
 	private int pageNo;
 	private Map<String, String> contentTypeMap = new HashMap<String, String>();
-	public List<Object> getObjectData() {
+	public List<T> getObjectData() {
 		return objectData;
 	}
-	public void setObjectData(List<Object> objectData) {
+	public void setObjectData(List<T> objectData) {
 		this.objectData = objectData;
 	}
 	public Long getTotalCount() {

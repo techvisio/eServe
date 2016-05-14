@@ -1,13 +1,47 @@
-<button ng-click="filterCustomerReport()">getData</button>
 
+<div class="row">
 
-
-<div class="searchList">
-	<span class="header">Double click a record to see Details</span>
-	<p>
-	<div class="gridStyle" ng-grid="gridOptions" id="gridStyle"></div>
-	<pagination total-items="totalItems" items-per-page="itemsPerPage"
-		ng-model="currentPage" ng-change="pageChanged()"></pagination>
-
+	<div class="child-right">
+		<button class="btn btn-primary" ng-click="filterCustomerReport()"><i class="fa fa-filter"
+		aria-hidden="true">&nbspFilter</i></button>
+	</div>	
+		<div class="child-right">
+		<button class="btn btn-primary" ng-click="downloadReport('reportName')"><i class="fa fa-download">&nbspDownload Excel</i>
+		</button>
+	</div>
 
 </div>
+
+
+	
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="searchList">
+			<div class="gridStyle" ng-grid="gridOptions" id="gridStyle"></div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-4">
+		<pagination total-items="totalServerItems"
+			items-per-page="pagingOptions.pageSize"
+			ng-model="pagingOptions.currentPage" class="pagination-sm"
+			boundary-link-numbers="true" rotate="false">
+		</pagination>
+	</div>
+	
+	<div class="col-sm-5"></div>
+	<div class="child-right col-sm-1">
+		<select  class="dropDownSelect form-control" ng-model="pagingOptions.pageSize"
+		ng-options="item as item for item in pagingOptions.pageSizes">
+		</select>
+	</div>
+	
+	<div class="col-sm-2 ">
+			<label class="child-right">Page Size:</label>
+		</div>
+	
+</div>
+

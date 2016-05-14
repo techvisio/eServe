@@ -1,51 +1,58 @@
 <div class="wrapper">
 	<div ng-init="init()">
 		<div>
-			<h3 class="custom-page-header">UNIT WARRANTY PERIOD</h3>
+			<h3 class="custom-page-header" align="center">UNIT WARRANTY
+				PERIOD</h3>
 		</div>
 
-	<div class="row">
-		<div class="col-sm-2">
-			<label for="inputlg">Service Category</label>
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg">Service Category</label>
+			</div>
+			<div class="col-sm-4">
+				<select class="form-control"
+					ng-model="serviceRenewalBean.serviceCategory" required>
+					<option>Warranty</option>
+					<option>AMC</option>
+					<option>Paid</option>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<label for="inputlg">Warranty Duration</label>
+			</div>
+			<div class="col-sm-4">
+
+				<select
+					ng-model="serviceRenewalBean.agreementDuration.agreementDurationId"
+					class="form-control"
+					ng-options="item.agreementDurationId*1 as item.displayValue  for item in serverModelData.AGREEMENT_DURATION"
+					required>
+				</select>
+			</div>
 		</div>
-		<div class="col-sm-4">
-			<select class="form-control" ng-model="serviceRenewalBean.serviceCategory" required>
-				<option>Warranty</option>
-				<option>AMC</option>
-				<option>Paid</option>
-			</select>
-		</div>
-		<div class="col-sm-2">
-			<label for="inputlg">Warranty Duration</label>
-		</div>
-		<div class="col-sm-4">
-		
-		<select ng-model="serviceRenewalBean.agreementDuration.agreementDurationId"
-						class="form-control"
-						ng-options="item.agreementDurationId*1 as item.displayValue  for item in serverModelData.AGREEMENT_DURATION" required>
-					</select>
+		<div class="row">
+			<div class="col-sm-2">
+				<label for="inputlg"> Contract Start On</label>
+			</div>
+			<div class="col-sm-4">
+				<div class="date-input">
+					<input type="text" class="form-control datepicker"
+						name="requestDueDate"
+						ng-model="serviceRenewalBean.contractStartOnString"
+						datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
+						ng-click="startDate = !startDate; $event.stopPropagation();"
+						show-button-bar="false">
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<label for="inputlg">Agreement Amount</label>
+			</div>
+			<div class="col-sm-4">
+				<input class="form-control input-sm" id="inputlg" type="text"
+					ng-model="serviceRenewalBean.serviceAgreementFinance.agreementAmount">
+			</div>
+			<button class="btn btn-primary child-right" ng-show="customerScreen"
+				ng-click="updateServiceAgreement()">Update Agreement</button>
 		</div>
 	</div>
-	<div class="row">
-	<div class="col-sm-2">
-					<label for="inputlg"> Contract Start On</label>
-				</div>
-				<div class="col-sm-4">
-					<div class="date-input">
-						<input type="text" class="form-control datepicker"
-							name="requestDueDate" ng-model="serviceRenewalBean.contractStartOnString"
-							datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
-							ng-click="startDate = !startDate; $event.stopPropagation();"
-							show-button-bar="false">
-					</div>
-					</div>
-					<div class="col-sm-2">
-					<label for="inputlg">Agreement Amount</label>
-				</div>
-				<div class="col-sm-4">
-					<input class="form-control input-sm" id="inputlg" type="text"
-						ng-model="serviceRenewalBean.serviceAgreementFinance.agreementAmount">
-				</div>
-	<button class="btn btn-primary child-right" ng-click="updateServiceAgreement()">Update Agreement</button>
 	</div>
-</div>

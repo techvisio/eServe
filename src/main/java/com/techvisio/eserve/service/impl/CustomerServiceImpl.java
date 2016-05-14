@@ -59,7 +59,7 @@ public class CustomerServiceImpl implements CustomerService{
 		Long customerId = customerManager.saveCustomer(customer, context);
 
 		workItemService.createWorkItemForCustomerSave(context, customer,comment);
-		activityService.createActivityForCustomer(customer);
+//		activityService.createActivityForCustomer(customer);
 		return customerId;
 	}
 

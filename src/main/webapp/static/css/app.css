@@ -13293,8 +13293,8 @@ max-width: 40%
 #gridStyle {
     border: 1px solid rgb(212,212,212);
     cursor: pointer;
-    width: 800px;
-    height: 300px;
+    width: 100%;
+    height: 425px;
 }
 
 #reportGrid {
@@ -13303,4 +13303,42 @@ max-width: 40%
     width: 1300px; 
     height: 500px;
     margin: auto;
+}
+
+
+
+
+.buttonf1 {
+    background-color: #76bf43; 
+    color: white; 
+    border: 2px solid #76bf43;
+    width: 60px;
+    height: 24px;
+    padding:04px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-left:1000px;
+    
+}
+
+.buttonf2 {
+    background-color: #76bf43; 
+    color: white; 
+    border: 2px solid #76bf43;
+    width: 150px;
+    height: 24px;
+    padding:04px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-left:700px;
+    
+}
+
+
+.dropDownSelect{
+	
+	width:80px;
+	float: right;
+	
+	
 }

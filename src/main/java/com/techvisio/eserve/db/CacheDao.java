@@ -9,6 +9,7 @@ import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.InvoiceTaxes;
 import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
@@ -39,4 +40,5 @@ public interface CacheDao {
 	List<ServiceProvider> getServiceProviders();
 	AgreementDuration getAgreementDuration(Long durationId);
 	Config getConfig(String property);
+	List<InvoiceTaxes> getInvoiceTaxes(Long clientId);
 }

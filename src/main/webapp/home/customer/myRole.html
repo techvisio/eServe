@@ -2,7 +2,7 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>Entity Id</th>
+				<th>Entity Code</th>
 				<th>Entity Type</th>
 				<th>Work Type</th>
 				<th>Status</th>
@@ -11,7 +11,7 @@
 		<tbody>
 			<tr ng-repeat = "workItem in workItem">
 			<td><a herf="#"
-					ng-click="redirectfromWorkItemtoEntity(workItem.entityUrl,workItem.entityId)">{{workItem.entityId}}
+					ng-click="redirectfromWorkItemtoEntity(workItem.entityUrl,workItem.entityId)">{{workItem.entityCode}}
 				</a></td>
 				<td>{{workItem.entityType}}</td>
 				<td>{{workItem.workType}}

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.techvisio.eserve.beans.AgreementDuration;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.InvoiceTaxes;
 import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
@@ -30,4 +31,5 @@ public interface CacheManager {
 	Resolution getResolutionMasters(Long resolutionId);
 	Issue getIssue(Long issueId);
 	public Map<Long, Map<String, Object>> getConfigMap(Long clientId);
+	List<InvoiceTaxes> getInvoiceTaxes(Long clientId);
 }

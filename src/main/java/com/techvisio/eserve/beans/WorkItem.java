@@ -27,6 +27,8 @@ public class WorkItem extends BasicEntity{
 	private String entityType;
 	@Column(name="ENTITY_ID")
 	private Long entityId;
+	@Column(name="ENTITY_CODE")
+	private String entityCode;
 	@Column(name="PRIVILEGE_ID")
 	private Long privilegeId;
 	@Column(name="ASSIGNEE_ID")
@@ -120,6 +122,12 @@ public class WorkItem extends BasicEntity{
 	}
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
-	} 
+	}
+	public String getEntityCode() {
+		return entityCode;
+	}
+	public void setEntityCode(String entityCode) {
+		this.entityCode = entityCode;
+	}
 
 }
