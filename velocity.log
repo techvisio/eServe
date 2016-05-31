@@ -1,0 +1,376 @@
+2016-05-24 11:32:50,827 - Log4JLogChute initialized using file 'velocity.log'
+2016-05-24 11:32:50,827 - Initializing Velocity, Calling init()...
+2016-05-24 11:32:50,827 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2016-05-24 11:32:50,827 - Default Properties File: org\apache\velocity\runtime\defaults\velocity.properties
+2016-05-24 11:32:50,827 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-05-24 11:32:50,827 - Target log system for org.apache.velocity.runtime.log.AvalonLogChute is not available (java.lang.NoClassDefFoundError: org/apache/log/format/Formatter).  Falling back to next log system...
+2016-05-24 11:32:50,827 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-24 11:32:50,827 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-24 11:32:50,837 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-24 11:32:50,837 - Do unicode file recognition:  false
+2016-05-24 11:32:50,837 - FileResourceLoader : adding path '.'
+2016-05-24 11:32:50,887 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2016-05-24 11:32:50,887 - Loaded System Directive: org.apache.velocity.runtime.directive.Stop
+2016-05-24 11:32:50,887 - Loaded System Directive: org.apache.velocity.runtime.directive.Define
+2016-05-24 11:32:50,887 - Loaded System Directive: org.apache.velocity.runtime.directive.Break
+2016-05-24 11:32:50,887 - Loaded System Directive: org.apache.velocity.runtime.directive.Evaluate
+2016-05-24 11:32:50,887 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-05-24 11:32:50,887 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-05-24 11:32:50,897 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-05-24 11:32:50,897 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-05-24 11:32:50,897 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-05-24 11:32:50,947 - Created '20' parsers.
+2016-05-24 11:32:50,957 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-05-24 11:32:50,957 - Velocimacro : Default library not found.
+2016-05-24 11:32:50,957 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-05-24 11:32:50,957 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-05-24 11:32:50,957 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-05-24 11:32:50,957 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-05-24 11:32:50,967 - FileResourceLoader : File resource error : argument null contains .. and may be trying to access content outside of template root.  Rejected.
+2016-05-24 11:32:50,967 - ResourceManager : unable to find resource '../home/Invoice.html.vm' in any resource loader.
+2016-05-24 11:33:44,391 - Log4JLogChute initialized using file 'velocity.log'
+2016-05-24 11:33:44,391 - Initializing Velocity, Calling init()...
+2016-05-24 11:33:44,391 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2016-05-24 11:33:44,391 - Default Properties File: org\apache\velocity\runtime\defaults\velocity.properties
+2016-05-24 11:33:44,391 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-05-24 11:33:44,391 - Target log system for org.apache.velocity.runtime.log.AvalonLogChute is not available (java.lang.NoClassDefFoundError: org/apache/log/format/Formatter).  Falling back to next log system...
+2016-05-24 11:33:44,391 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-24 11:33:44,391 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-24 11:33:44,391 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-24 11:33:44,391 - Do unicode file recognition:  false
+2016-05-24 11:33:44,391 - FileResourceLoader : adding path '.'
+2016-05-24 11:33:44,421 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2016-05-24 11:33:44,421 - Loaded System Directive: org.apache.velocity.runtime.directive.Stop
+2016-05-24 11:33:44,421 - Loaded System Directive: org.apache.velocity.runtime.directive.Define
+2016-05-24 11:33:44,421 - Loaded System Directive: org.apache.velocity.runtime.directive.Break
+2016-05-24 11:33:44,421 - Loaded System Directive: org.apache.velocity.runtime.directive.Evaluate
+2016-05-24 11:33:44,421 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-05-24 11:33:44,421 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-05-24 11:33:44,421 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-05-24 11:33:44,431 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-05-24 11:33:44,431 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-05-24 11:33:44,481 - Created '20' parsers.
+2016-05-24 11:33:44,501 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-05-24 11:33:44,501 - Velocimacro : Default library not found.
+2016-05-24 11:33:44,501 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-05-24 11:33:44,501 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-05-24 11:33:44,501 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-05-24 11:33:44,501 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-05-24 11:33:44,501 - ResourceManager : unable to find resource 'E:/TECHVISIO/workspace/eServe/localRepo/src/main/webapp/home/Invoice.html.vm' in any resource loader.
+2016-05-24 11:34:04,502 - Log4JLogChute initialized using file 'velocity.log'
+2016-05-24 11:34:04,502 - Initializing Velocity, Calling init()...
+2016-05-24 11:34:04,502 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2016-05-24 11:34:04,502 - Default Properties File: org\apache\velocity\runtime\defaults\velocity.properties
+2016-05-24 11:34:04,502 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-05-24 11:34:04,502 - Target log system for org.apache.velocity.runtime.log.AvalonLogChute is not available (java.lang.NoClassDefFoundError: org/apache/log/format/Formatter).  Falling back to next log system...
+2016-05-24 11:34:04,502 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-24 11:34:04,502 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-24 11:34:04,502 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-24 11:34:04,502 - Do unicode file recognition:  false
+2016-05-24 11:34:04,502 - FileResourceLoader : adding path '.'
+2016-05-24 11:34:04,522 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2016-05-24 11:34:04,532 - Loaded System Directive: org.apache.velocity.runtime.directive.Stop
+2016-05-24 11:34:04,532 - Loaded System Directive: org.apache.velocity.runtime.directive.Define
+2016-05-24 11:34:04,532 - Loaded System Directive: org.apache.velocity.runtime.directive.Break
+2016-05-24 11:34:04,532 - Loaded System Directive: org.apache.velocity.runtime.directive.Evaluate
+2016-05-24 11:34:04,532 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-05-24 11:34:04,532 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-05-24 11:34:04,532 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-05-24 11:34:04,542 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-05-24 11:34:04,542 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-05-24 11:34:04,592 - Created '20' parsers.
+2016-05-24 11:34:04,602 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-05-24 11:34:04,602 - Velocimacro : Default library not found.
+2016-05-24 11:34:04,602 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-05-24 11:34:04,602 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-05-24 11:34:04,602 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-05-24 11:34:04,602 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-05-24 11:34:04,682 - ResourceManager : found src/main/webapp/home/Invoice.html.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-26 16:50:49,181 - Log4JLogChute initialized using file 'velocity.log'
+2016-05-26 16:50:49,181 - Initializing Velocity, Calling init()...
+2016-05-26 16:50:49,181 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2016-05-26 16:50:49,181 - Default Properties File: org\apache\velocity\runtime\defaults\velocity.properties
+2016-05-26 16:50:49,181 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-05-26 16:50:49,181 - Target log system for org.apache.velocity.runtime.log.AvalonLogChute is not available (java.lang.NoClassDefFoundError: org/apache/log/format/Formatter).  Falling back to next log system...
+2016-05-26 16:50:49,181 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-26 16:50:49,181 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-26 16:50:49,191 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-26 16:50:49,191 - Do unicode file recognition:  false
+2016-05-26 16:50:49,191 - FileResourceLoader : adding path '.'
+2016-05-26 16:50:49,241 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2016-05-26 16:50:49,241 - Loaded System Directive: org.apache.velocity.runtime.directive.Stop
+2016-05-26 16:50:49,241 - Loaded System Directive: org.apache.velocity.runtime.directive.Define
+2016-05-26 16:50:49,241 - Loaded System Directive: org.apache.velocity.runtime.directive.Break
+2016-05-26 16:50:49,251 - Loaded System Directive: org.apache.velocity.runtime.directive.Evaluate
+2016-05-26 16:50:49,251 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-05-26 16:50:49,251 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-05-26 16:50:49,251 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-05-26 16:50:49,251 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-05-26 16:50:49,251 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-05-26 16:50:49,311 - Created '20' parsers.
+2016-05-26 16:50:49,321 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-05-26 16:50:49,321 - Velocimacro : Default library not found.
+2016-05-26 16:50:49,321 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-05-26 16:50:49,321 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-05-26 16:50:49,321 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-05-26 16:50:49,321 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-05-26 16:50:49,341 - ResourceManager : found src/main/webapp/home/Invoice.html.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 63] : $clientCompany cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 82] : $clientCity cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 98] : $clientCity cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 111] : $clientPincode cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 130] : $clientState cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 160] : $clientContactNo cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 52, column 25] : $customerName cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 52, column 43] : $customerAddress cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 52, column 64] : $customerCity cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 53, column 25] : $customerPincode cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 53, column 46] : $customerState cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 53, column 77] : $customerContactNo cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 54, column 30] : $customerEmailId cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 62, column 40] : $invoiceDate cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 65, column 78] : $customerCode cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 82, column 41] : $unitId cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 82, column 69] : $machineSerialNo cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 83, column 96] : $unitPrice cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 85, column 115] : $unitPrice cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 118, column 84] : $subTotal cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 123, column 84] : $serviceTax cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 128, column 84] : $swachhBharatCess cannot be resolved.
+2016-05-26 16:50:49,341 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 136, column 117] : $totalAmount cannot be resolved.
+2016-05-26 16:54:41,678 - Log4JLogChute initialized using file 'velocity.log'
+2016-05-26 16:54:41,678 - Initializing Velocity, Calling init()...
+2016-05-26 16:54:41,678 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2016-05-26 16:54:41,678 - Default Properties File: org\apache\velocity\runtime\defaults\velocity.properties
+2016-05-26 16:54:41,678 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-05-26 16:54:41,678 - Target log system for org.apache.velocity.runtime.log.AvalonLogChute is not available (java.lang.NoClassDefFoundError: org/apache/log/format/Formatter).  Falling back to next log system...
+2016-05-26 16:54:41,678 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-26 16:54:41,678 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-26 16:54:41,678 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-26 16:54:41,688 - Do unicode file recognition:  false
+2016-05-26 16:54:41,688 - FileResourceLoader : adding path '.'
+2016-05-26 16:54:41,708 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2016-05-26 16:54:41,708 - Loaded System Directive: org.apache.velocity.runtime.directive.Stop
+2016-05-26 16:54:41,708 - Loaded System Directive: org.apache.velocity.runtime.directive.Define
+2016-05-26 16:54:41,708 - Loaded System Directive: org.apache.velocity.runtime.directive.Break
+2016-05-26 16:54:41,708 - Loaded System Directive: org.apache.velocity.runtime.directive.Evaluate
+2016-05-26 16:54:41,708 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-05-26 16:54:41,708 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-05-26 16:54:41,718 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-05-26 16:54:41,718 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-05-26 16:54:41,718 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-05-26 16:54:41,768 - Created '20' parsers.
+2016-05-26 16:54:41,778 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-05-26 16:54:41,778 - Velocimacro : Default library not found.
+2016-05-26 16:54:41,778 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-05-26 16:54:41,778 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-05-26 16:54:41,778 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-05-26 16:54:41,778 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-05-26 16:54:41,778 - ResourceManager : unable to find resource 'src/main/webapp/home/Invoice.html.vm' in any resource loader.
+2016-05-26 16:54:53,976 - Log4JLogChute initialized using file 'velocity.log'
+2016-05-26 16:54:53,976 - Initializing Velocity, Calling init()...
+2016-05-26 16:54:53,976 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2016-05-26 16:54:53,976 - Default Properties File: org\apache\velocity\runtime\defaults\velocity.properties
+2016-05-26 16:54:53,976 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-05-26 16:54:53,976 - Target log system for org.apache.velocity.runtime.log.AvalonLogChute is not available (java.lang.NoClassDefFoundError: org/apache/log/format/Formatter).  Falling back to next log system...
+2016-05-26 16:54:53,976 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-26 16:54:53,976 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-26 16:54:53,986 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-26 16:54:53,986 - Do unicode file recognition:  false
+2016-05-26 16:54:53,986 - FileResourceLoader : adding path '.'
+2016-05-26 16:54:54,006 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2016-05-26 16:54:54,006 - Loaded System Directive: org.apache.velocity.runtime.directive.Stop
+2016-05-26 16:54:54,006 - Loaded System Directive: org.apache.velocity.runtime.directive.Define
+2016-05-26 16:54:54,006 - Loaded System Directive: org.apache.velocity.runtime.directive.Break
+2016-05-26 16:54:54,006 - Loaded System Directive: org.apache.velocity.runtime.directive.Evaluate
+2016-05-26 16:54:54,006 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-05-26 16:54:54,006 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-05-26 16:54:54,016 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-05-26 16:54:54,016 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-05-26 16:54:54,016 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-05-26 16:54:54,066 - Created '20' parsers.
+2016-05-26 16:54:54,076 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-05-26 16:54:54,076 - Velocimacro : Default library not found.
+2016-05-26 16:54:54,076 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-05-26 16:54:54,076 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-05-26 16:54:54,076 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-05-26 16:54:54,076 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-05-26 16:54:54,096 - ResourceManager : found src/main/webapp/home/Invoice.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 43, column 63] : $clientCompany cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 43, column 82] : $clientCity cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 43, column 98] : $clientCity cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 43, column 111] : $clientPincode cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 43, column 130] : $clientState cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 43, column 160] : $clientContactNo cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 52, column 25] : $customerName cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 52, column 43] : $customerAddress cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 52, column 64] : $customerCity cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 53, column 25] : $customerPincode cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 53, column 46] : $customerState cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 53, column 77] : $customerContactNo cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 54, column 30] : $customerEmailId cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 62, column 40] : $invoiceDate cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 65, column 78] : $customerCode cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 82, column 41] : $unitId cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 82, column 69] : $machineSerialNo cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 83, column 96] : $unitPrice cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 85, column 115] : $unitPrice cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 118, column 84] : $subTotal cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 123, column 84] : $serviceTax cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 128, column 84] : $swachhBharatCess cannot be resolved.
+2016-05-26 16:54:54,096 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 136, column 117] : $totalAmount cannot be resolved.
+2016-05-26 16:56:02,179 - Log4JLogChute initialized using file 'velocity.log'
+2016-05-26 16:56:02,179 - Initializing Velocity, Calling init()...
+2016-05-26 16:56:02,179 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2016-05-26 16:56:02,179 - Default Properties File: org\apache\velocity\runtime\defaults\velocity.properties
+2016-05-26 16:56:02,179 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-05-26 16:56:02,179 - Target log system for org.apache.velocity.runtime.log.AvalonLogChute is not available (java.lang.NoClassDefFoundError: org/apache/log/format/Formatter).  Falling back to next log system...
+2016-05-26 16:56:02,179 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-26 16:56:02,179 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-26 16:56:02,179 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-26 16:56:02,179 - Do unicode file recognition:  false
+2016-05-26 16:56:02,179 - FileResourceLoader : adding path '.'
+2016-05-26 16:56:02,199 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2016-05-26 16:56:02,209 - Loaded System Directive: org.apache.velocity.runtime.directive.Stop
+2016-05-26 16:56:02,209 - Loaded System Directive: org.apache.velocity.runtime.directive.Define
+2016-05-26 16:56:02,209 - Loaded System Directive: org.apache.velocity.runtime.directive.Break
+2016-05-26 16:56:02,209 - Loaded System Directive: org.apache.velocity.runtime.directive.Evaluate
+2016-05-26 16:56:02,209 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-05-26 16:56:02,209 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-05-26 16:56:02,209 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-05-26 16:56:02,219 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-05-26 16:56:02,219 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-05-26 16:56:02,269 - Created '20' parsers.
+2016-05-26 16:56:02,279 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-05-26 16:56:02,279 - Velocimacro : Default library not found.
+2016-05-26 16:56:02,279 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-05-26 16:56:02,279 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-05-26 16:56:02,279 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-05-26 16:56:02,279 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-05-26 16:56:02,299 - ResourceManager : found src/main/webapp/home/Invoice.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 43, column 64] : $clientCompany cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 43, column 84] : $clientCity cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 43, column 101] : $clientCity cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 43, column 114] : $clientPincode cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 43, column 133] : $clientState cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 43, column 163] : $clientContactNo cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 52, column 25] : $customerName cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 52, column 43] : $customerAddress cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 52, column 64] : $customerCity cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 53, column 25] : $customerPincode cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 53, column 46] : $customerState cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 53, column 77] : $customerContactNo cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 54, column 30] : $customerEmailId cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 62, column 40] : $invoiceDate cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 65, column 78] : $customerCode cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 82, column 41] : $unitId cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 82, column 69] : $machineSerialNo cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 83, column 96] : $unitPrice cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 85, column 115] : $unitPrice cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 118, column 84] : $subTotal cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 123, column 84] : $serviceTax cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 128, column 84] : $swachhBharatCess cannot be resolved.
+2016-05-26 16:56:02,299 - Null reference [template 'src/main/webapp/home/Invoice.vm', line 136, column 117] : $totalAmount cannot be resolved.
+2016-05-26 17:02:51,632 - Log4JLogChute initialized using file 'velocity.log'
+2016-05-26 17:02:51,632 - Initializing Velocity, Calling init()...
+2016-05-26 17:02:51,632 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2016-05-26 17:02:51,632 - Default Properties File: org\apache\velocity\runtime\defaults\velocity.properties
+2016-05-26 17:02:51,632 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-05-26 17:02:51,632 - Target log system for org.apache.velocity.runtime.log.AvalonLogChute is not available (java.lang.NoClassDefFoundError: org/apache/log/format/Formatter).  Falling back to next log system...
+2016-05-26 17:02:51,642 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-26 17:02:51,642 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-26 17:02:51,642 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-26 17:02:51,642 - Do unicode file recognition:  false
+2016-05-26 17:02:51,642 - FileResourceLoader : adding path '.'
+2016-05-26 17:02:51,662 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2016-05-26 17:02:51,672 - Loaded System Directive: org.apache.velocity.runtime.directive.Stop
+2016-05-26 17:02:51,672 - Loaded System Directive: org.apache.velocity.runtime.directive.Define
+2016-05-26 17:02:51,672 - Loaded System Directive: org.apache.velocity.runtime.directive.Break
+2016-05-26 17:02:51,672 - Loaded System Directive: org.apache.velocity.runtime.directive.Evaluate
+2016-05-26 17:02:51,672 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-05-26 17:02:51,672 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-05-26 17:02:51,672 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-05-26 17:02:51,682 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-05-26 17:02:51,682 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-05-26 17:02:51,732 - Created '20' parsers.
+2016-05-26 17:02:51,742 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-05-26 17:02:51,742 - Velocimacro : Default library not found.
+2016-05-26 17:02:51,742 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-05-26 17:02:51,742 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-05-26 17:02:51,742 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-05-26 17:02:51,742 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-05-26 17:02:51,762 - ResourceManager : found src/main/webapp/home/Invoice.html.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 64] : $clientCompany cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 84] : $clientCity cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 101] : $clientCity cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 114] : $clientPincode cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 133] : $clientState cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 163] : $clientContactNo cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 52, column 25] : $customerName cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 52, column 44] : $customerAddress cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 52, column 66] : $customerCity cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 53, column 25] : $customerPincode cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 53, column 47] : $customerState cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 53, column 78] : $customerContactNo cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 54, column 30] : $customerEmailId cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 62, column 40] : $invoiceDate cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 65, column 78] : $customerCode cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 82, column 41] : $unitId cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 82, column 69] : $machineSerialNo cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 83, column 97] : $unitPrice cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 85, column 116] : $unitPrice cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 118, column 85] : $subTotal cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 123, column 85] : $serviceTax cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 128, column 85] : $swachhBharatCess cannot be resolved.
+2016-05-26 17:02:51,762 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 136, column 118] : $totalAmount cannot be resolved.
+2016-05-27 12:37:01,980 - Log4JLogChute initialized using file 'velocity.log'
+2016-05-27 12:37:01,990 - Initializing Velocity, Calling init()...
+2016-05-27 12:37:01,990 - Starting Apache Velocity v1.7 (compiled: 2010-11-19 12:14:37)
+2016-05-27 12:37:01,990 - Default Properties File: org\apache\velocity\runtime\defaults\velocity.properties
+2016-05-27 12:37:01,990 - Trying to use logger class org.apache.velocity.runtime.log.AvalonLogChute
+2016-05-27 12:37:01,990 - Target log system for org.apache.velocity.runtime.log.AvalonLogChute is not available (java.lang.NoClassDefFoundError: org/apache/log/format/Formatter).  Falling back to next log system...
+2016-05-27 12:37:01,990 - Trying to use logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-27 12:37:01,990 - Using logger class org.apache.velocity.runtime.log.Log4JLogChute
+2016-05-27 12:37:02,000 - ResourceLoader instantiated: org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-27 12:37:02,000 - Do unicode file recognition:  false
+2016-05-27 12:37:02,000 - FileResourceLoader : adding path '.'
+2016-05-27 12:37:02,050 - ResourceCache: initialized (class org.apache.velocity.runtime.resource.ResourceCacheImpl) with class java.util.Collections$SynchronizedMap cache map.
+2016-05-27 12:37:02,050 - Loaded System Directive: org.apache.velocity.runtime.directive.Stop
+2016-05-27 12:37:02,050 - Loaded System Directive: org.apache.velocity.runtime.directive.Define
+2016-05-27 12:37:02,050 - Loaded System Directive: org.apache.velocity.runtime.directive.Break
+2016-05-27 12:37:02,050 - Loaded System Directive: org.apache.velocity.runtime.directive.Evaluate
+2016-05-27 12:37:02,060 - Loaded System Directive: org.apache.velocity.runtime.directive.Literal
+2016-05-27 12:37:02,060 - Loaded System Directive: org.apache.velocity.runtime.directive.Macro
+2016-05-27 12:37:02,060 - Loaded System Directive: org.apache.velocity.runtime.directive.Parse
+2016-05-27 12:37:02,060 - Loaded System Directive: org.apache.velocity.runtime.directive.Include
+2016-05-27 12:37:02,060 - Loaded System Directive: org.apache.velocity.runtime.directive.Foreach
+2016-05-27 12:37:02,120 - Created '20' parsers.
+2016-05-27 12:37:02,130 - Velocimacro : "velocimacro.library" is not set.  Trying default library: VM_global_library.vm
+2016-05-27 12:37:02,130 - Velocimacro : Default library not found.
+2016-05-27 12:37:02,130 - Velocimacro : allowInline = true : VMs can be defined inline in templates
+2016-05-27 12:37:02,130 - Velocimacro : allowInlineToOverride = false : VMs defined inline may NOT replace previous VM definitions
+2016-05-27 12:37:02,130 - Velocimacro : allowInlineLocal = false : VMs defined inline will be global in scope if allowed.
+2016-05-27 12:37:02,130 - Velocimacro : autoload off : VM system will not automatically reload global library macros
+2016-05-27 12:37:02,230 - ResourceManager : found src/main/webapp/home/Invoice.html.vm with loader org.apache.velocity.runtime.resource.loader.FileResourceLoader
+2016-05-27 12:37:02,230 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 84] : $clientCity cannot be resolved.
+2016-05-27 12:37:02,230 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 101] : $clientCity cannot be resolved.
+2016-05-27 12:37:02,230 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 114] : $clientPincode cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 133] : $clientState cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 43, column 163] : $clientContactNo cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 52, column 25] : $customerName cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 52, column 44] : $customerAddress cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 52, column 66] : $customerCity cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 53, column 25] : $customerPincode cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 53, column 47] : $customerState cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 53, column 78] : $customerContactNo cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 54, column 30] : $customerEmailId cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 62, column 40] : $invoiceDate cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 65, column 78] : $customerCode cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 82, column 41] : $unitId cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 82, column 69] : $machineSerialNo cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 83, column 97] : $unitPrice cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 85, column 116] : $unitPrice cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 118, column 85] : $subTotal cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 123, column 85] : $serviceTax cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 128, column 85] : $swachhBharatCess cannot be resolved.
+2016-05-27 12:37:02,240 - Null reference [template 'src/main/webapp/home/Invoice.html.vm', line 136, column 118] : $totalAmount cannot be resolved.

@@ -25,7 +25,7 @@ public class ReportDaoImpl extends BaseDao implements ReportDao {
 	public SearchResultData getCustomerReportByCriteria(ReportAttribute customerReportAttribute, Long clientId) throws ParseException {
 
 		SearchResultData<CustomerReport> searchResultData= new SearchResultData<CustomerReport>();
-		String ascOrDsc = customerReportAttribute.isAscending()?"ASC":"DESC";
+		String ascOrDsc = customerReportAttribute.getIsAscending()?"ASC":"DESC";
 
 		String queryString = filterBasedQueryForCustomerReport(customerReportAttribute, clientId, ascOrDsc);
 		Query query= getEntityManager().createNativeQuery(queryString);
@@ -61,8 +61,9 @@ public class ReportDaoImpl extends BaseDao implements ReportDao {
 				+ "  and lower(UD.APPROVAL_STATUS) = coalesce(:APPROVAL_STATUS, UD.APPROVAL_STATUS)"
 				+ "  and lower(UCT.UNIT_CATEGORY_ID) = coalesce(:UNIT_CATEGORY_ID, UCT.UNIT_CATEGORY_ID)"
 				+ " and lower(SAM.SERVICE_PROVIDER_ID) = coalesce(:SERVICE_PROVIDER_ID, SAM.SERVICE_PROVIDER_ID)"
-				+ " AND (DATE(UD.LAST_APPROVAL_DATE) BETWEEN coalesce(:DATE_FROM, DATE(UD.LAST_APPROVAL_DATE))"
-				+ " AND coalesce(:DATE_TO, DATE(UD.LAST_APPROVAL_DATE))))a";
+				+ " AND (coalesce(DATE(UD.LAST_APPROVAL_DATE),now()) "
+				+ "BETWEEN :DATE_FROM "
+				+ "AND :DATE_TO))a";
 		
 		
 		Query query1= getEntityManager().createNativeQuery(queryString1);
@@ -228,9 +229,9 @@ public class ReportDaoImpl extends BaseDao implements ReportDao {
 				+ "and lower(UCT.UNIT_CATEGORY_ID) = coalesce(:UNIT_CATEGORY_ID, UCT.UNIT_CATEGORY_ID) "
 				+ "and lower(SAM.SERVICE_PROVIDER_ID) = coalesce(:SERVICE_PROVIDER_ID, SAM.SERVICE_PROVIDER_ID) "
 				+ "and CD.client_Id ="+clientId
-				+ " AND (DATE(UD.LAST_APPROVAL_DATE) "
-				+ "BETWEEN coalesce(:DATE_FROM, DATE(UD.LAST_APPROVAL_DATE)) "
-				+ "AND coalesce(:DATE_TO, DATE(UD.LAST_APPROVAL_DATE))) "
+				+ " AND (coalesce(DATE(UD.LAST_APPROVAL_DATE),now()) "
+				+ "BETWEEN :DATE_FROM "
+				+ "AND :DATE_TO) "
 				+ "ORDER BY  "+customerReportAttribute.getSortBy()+" "+ascOrDsc+") a "
 				+ "limit :START_INDEX,:PAGE_SIZE";
 		return queryString;

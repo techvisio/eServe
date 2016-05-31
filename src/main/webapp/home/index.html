@@ -15,6 +15,8 @@
 <script src="../lib/Chart.min.js"></script>
 <script src="../lib/angular-chart/angular-chart.js"></script>
 <script src="../lib/ng-grid/ng-grid.js"></script>
+<script src="../lib/ng-table/ng-table.js"></script>
+<script src="../lib/bootstrap-3.3.6/js/bootstrap.min.js"></script>
 <script src="shared/services.js"></script>
 <script src="customer/customerCntrl.js"></script>
 <script src="customer/customerSrvc.js"></script>
@@ -31,79 +33,30 @@
 <script src="report/reportSrvc.js"></script>
 <script src="dashboard/stats.js"></script>
 <script src="app.js"></script>
-<!-- <script -->
-<!-- 	src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script> -->
 
 <link href="../static/css/bootstrap.min.css" rel="stylesheet"
 	type="text/css">
 <link href="../static/css/vendors.css" rel="stylesheet" type="text/css">
 <link href="../lib/ng-grid/ng-grid.css" rel="stylesheet" type="text/css">
+<link href="../lib/ng-table/ng-table.css" rel="stylesheet" type="text/css">
 <link href="../static/css/app.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="../lib/angular-chart/angular-chart.css">
 
 </head>
 
 <body ng-app="erp" ng-controller="ApplicationController">
-	<div class="navbar navbar-default navbar-static-top" role="navigation">
+	<div class="navbar navbar-default navbar-static-top navbar-fixed-top" role="navigation">
 		<div class="processing" ng-show="processingCount>0">
 			<h3>
 				<i class="fa fa-spinner fa-pulse"></i>
 			</h3>
 		</div>
-		<div class="wrapper">
-			<ul class="nav navbar-nav">
-				<li class="pull-right icon profile"
-					ng-class="isSel('user') || isSel('company')"><a ui-sref="home"><i></i></a>
-					<ul>
-						<li><a ui-sref="home">My Profile</a></li>
-						<li><a ui-sref="searchUser"> User Administration </a></li>
-						<li><a ui-sref="workItem">View WorkItem</a></li>
-						<li><a ui-sref="activity">Activity</a></li>
-						<li><a ui-sref="customerReport">Report</a></li>
-						<li><a ui-sref="home">Master Data</a></li>
-						<li><a href="../support.html">Support</a></li>
-						<li class="divider"></li>
-						<li><a href="../logout">Logout</a></li>
-					</ul></li>
-
-				<li ng-class="isSel('dashboard')"><a ui-sref="app.dashboard"
-					ui-sref-opts="{reload: true}"> <span>Easing Service &
-							AMC</span>
-				</a></li>
-
-				<li class="menu pull-right" ng-class="isSel('events')"><a
-					ui-sref="app.events.all">Customer</a>
-					<ul>
-						<li><a ui-sref="searchcustomer"> Customer Search </a></li>
-						<li><a herf="#" ng-click="newCustomer()"
-							ng-show="isPrivileged('CREATE_CUSTOMER')"> Create Customer </a></li>
-					</ul></li>
-				<li class="menu pull-right" ng-class="isSel('reports')"><a
-					ui-sref="home">Sales</a></li>
-				<li class="menu pull-right" ng-class="isSel('events')"><a
-					ui-sref="app.events.all">Service</a>
-					<ul>
-						<li><a ui-sref="searchcomplaint"> Complaint </a></li>
-					</ul></li>
-				<!-- 				<li class="menu pull-right" ng-cloak ng-class="isSel('companies')"><a -->
-				<!-- 					ui-sref="home">Master</a> -->
-				<!-- 					<ul> -->
-				<!-- 						<li><a ui-sref="home">Employee Master</a></li> -->
-				<!-- 						<li><a ui-sref="home">Equipment Master</a></li> -->
-				<!-- 						<li><a ui-sref="home">Item Master</a></li> -->
-				<!-- 					</ul></li> -->
-			</ul>
-		</div>
 	</div>
 
-	<div class="wrapper">
+	<div class="wrapper">	
+			<div ng-include="'sidebar/sidebar.html'" class="page-sidebar"></div>
 		<div class="container">
-
-			<div class="sidebar" ng-include="'sidebar/sidebar.html'"></div>
-			<div class="module-container">
 				<div ui-view></div>
-			</div>
-
 		</div>
 	</div>
 

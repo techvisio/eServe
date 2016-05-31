@@ -11,7 +11,8 @@ var erp = angular
                 'dashboardModule',
                 'activityModule',
                 'reportModule',
-                'ngGrid'
+                'ngGrid',
+                'ngTable'
                 ]);
 
 erp.run(['$rootScope', '$location',

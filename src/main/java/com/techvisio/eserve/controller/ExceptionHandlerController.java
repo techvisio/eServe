@@ -39,7 +39,7 @@ public class ExceptionHandlerController {
 		Response response = new Response();
 
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmssSSS")
-				.format(new Date());
+		.format(new Date());
 		String message = currentTime;
 
 		logger.error(message + "::" + exp.getMessage(), exp);

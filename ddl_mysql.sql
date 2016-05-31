@@ -402,8 +402,14 @@
 
     create table TB_CLIENT_MASTER (
         CLIENT_ID bigint not null auto_increment,
+        ADDRESS varchar(255),
+        CITY varchar(255),
         CLIENT varchar(255),
         CLIENT_CODE varchar(255),
+        CONTACT_NO varchar(255),
+        EMAIL_ID varchar(255),
+        PINCODE varchar(255),
+        STATE varchar(255),
         primary key (CLIENT_ID)
     );
 

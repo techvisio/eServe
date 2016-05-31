@@ -1,4 +1,4 @@
-<div class="well" ng-switch on="selection">
+<div  ng-switch on="selection">
 
 	<div ng
 		show="alerts..length>0 || !$scope.form.CUSTOMER.$valid || !$scope.form.UNIT.$valid">
@@ -7,7 +7,7 @@
 	</div>
 	<div class="animate-switch" ng-animate="animate" ng-switch-default>
 		<form name="form.CUSTOMER">
-			<div ng-include src="'../home/customer/fixedCustomerInfo.html'">
+			<div ng-include src="'../home/customer/sampleCustomer/sampleFixedCustomerInfo.html'">
 			</div>
 		</form>
 	</div>

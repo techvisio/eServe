@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerReport;
-import com.techvisio.eserve.beans.CustomerReportAttribute;
 import com.techvisio.eserve.beans.EquipmentHistory;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;

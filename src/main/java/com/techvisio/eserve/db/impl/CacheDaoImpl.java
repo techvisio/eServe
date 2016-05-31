@@ -8,8 +8,8 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.AgreementDuration;
+import com.techvisio.eserve.beans.Client;
 import com.techvisio.eserve.beans.Config;
-import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
@@ -116,6 +116,17 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 		return result;
 	}
 
+	@Override
+	public Client getClient(Long clientId){
+		String queryString="FROM Client s where s.clientId = "+ clientId ;
+		Query query=getEntityManager().createQuery(queryString);
+		List<Client> result= query.getResultList();
+		if(result != null && result.size()>0){
+			return result.get(0);
+		}
+		return null;
+	}
+	
 	@Override
 	public List<QuestionMaster> getQuestions(Long clientId) {
 		String queryString="FROM QuestionMaster qm where qm.clientId = "+clientId;

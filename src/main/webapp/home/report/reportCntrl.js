@@ -10,8 +10,9 @@ reportModule
 		 'reportService',
 		 '$modal',
 		 '$http',
+		 'NgTableParams',
 		 'masterdataService',
-		 function($scope, $state, $rootScope,reportService,$modal,$http,masterdataService) {
+		 function($scope, $state, $rootScope,reportService,$modal,$http,NgTableParams,masterdataService) {
 
 			 $scope.customerReportAttribute = {};
 
@@ -68,21 +69,23 @@ reportModule
 					 $scope.$apply();
 				 }
 			 };
-			 $scope.getPagedDataAsync = function (pageSize, pageNo) {
+			 $scope.getPagedDataAsync = function (pageNo,pageSize,sortBy,isAsc,params) {
 				 $scope.customerReportAttribute.pageSize=pageSize;
 				 $scope.customerReportAttribute.pageNo=pageNo;
 				 reportService.getCustomerReportByCriteria($scope.customerReportAttribute)
 				 .then(
 						 function(response) {
 							 if(response){
-								 $scope.customerReports = response;
-								 $scope.setPagingData(response,pageNo,pageSize);
+								 params.total(response.length);
+								 return response;
+								// $scope.customerReports = response;
+								 //$scope.setPagingData(response,pageNo,pageSize);
 							 }
 						 })
 
 			 };
 
-			 $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+//			 $scope.getPagedDataAsync(pageNo,pageSize,sortBy,isAsc);
 
 			 $scope.$watch('pagingOptions', function (newVal, oldVal) {
 				 if ((newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) || newVal !== oldVal && newVal.pageSize !== oldVal.pageSize) {
@@ -138,6 +141,40 @@ reportModule
 					              { field: "lastApprovedBy", width: 100,displayName :"Last Approved By"}]
 			 };
 
+			 
+			 $scope.tableParams = new NgTableParams({}, {
+			      getData: function($defer,params) {
+			    	  var sortBy="customerCode";
+			    	  var isAsc=false;
+			    	  var pageNo=params.page();
+			    	  var pageSize=params.count();
+			    	  if(params.sorting()){
+			    		  for (var attribute in params.sorting()) {
+			    			    if (params.sorting().hasOwnProperty(attribute)) {
+			    			      sortBy=attribute;
+			    			      var ascDsc=params.sorting()[attribute];
+			    			      if(ascDsc==='asc'){
+			    			    	  isAsc=true;  
+			    			      }
+			    			    }
+			    			}
+			    	  }
+			    	  $scope.customerReportAttribute.pageSize=pageSize;
+			    	  $scope.customerReportAttribute.pageNo=pageNo;
+			    	  $scope.customerReportAttribute.sortBy=sortBy;
+			    	  $scope.customerReportAttribute.isAscending=isAsc;
+			    	  reportService.getCustomerReportByCriteria($scope.customerReportAttribute)
+						 .then(
+								 function(response) {
+									 if(response){
+										 params.total(response.totalCount);
+										 $defer.resolve(response.objectData);
+									 }
+								 })
+			    	 
+			      }
+			    });
+			 
 			 $scope.downloadReport=function(reportName){
 				 $http({
 						method : "post",

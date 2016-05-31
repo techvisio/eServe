@@ -1,0 +1,155 @@
+<HTML>
+<HEAD>
+
+<style>
+.child-right {
+	margin-top: 80px;
+	float: right;
+	width: 26%;
+}
+
+.child-left {
+	margin-top: 40px;
+	margin-left: 80px;
+	float: left;
+	width: 30%;
+}
+
+.border-bottom {
+	border-bottom: 1px solid white;
+}
+
+.table {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+.sub-table {
+	padding: 5px;
+	text-align: left;
+}
+</style>
+
+<TITLE>Invoice Page</TITLE>
+</HEAD>
+
+<BODY>
+
+	<div style="width: 100%">
+
+		<div class="child-left" style="font-family: serif; font-size: small;">
+			<img
+				src="E:/TECHVISIO/workspace/eServe/localRepo/src/main/webapp/static/images/Honda.jpg"
+				height="100" width="100"> <br> $clientCompany <br> $clientCity <br> $clientCity, $clientPincode <br>$clientState <br>Contact No : $clientContactNo
+
+
+
+			<h3
+				style="padding-left: 5px; background-color: navy; font-family: serif;">
+				<font color="white">Bill To</font>
+			</h3>
+
+			$customerName <br> $customerAddress <br> $customerCity,
+			$customerPincode <br> $customerState <br>Cotact No : $customerContactNo <br>Email
+			Id : $customerEmailId
+		</div>
+
+
+		<div class="child-right">
+			<font style="color: gray; font-size: xx-large; font-family : !important;">INVOICE</font>
+			<br>
+			<br><font style="font-size: medium; width: 50%; background-color: #e1e1d0;">Invoice
+				Date : $invoiceDate </font>
+			<br><font style="font-size: medium; width: 50%; background-color: #e1e1d0;">Invoice
+				No : 78129319</font>
+			<br><font  style="font-size: medium">Customer Code : $customerCode </font>
+		</div>
+		
+
+	</div>
+
+	<div style="margin-left: 80px">
+
+		<table class="table" style="width: 90%">
+			<tr class="table">
+				<th class="table sub-table">DESCRIPTION</th>
+				<th class=" table sub-table">UNIT PRICE</th>
+				<th class=" table sub-table">QTY</th>
+				<th class=" table sub-table">Amount</th>
+			</tr>
+			<tr class="table">
+				<td class="table sub-table" style="border-bottom-color: white">unitId
+					$unitId Machine Serial No : $machineSerialNo</td>
+				<td class="table sub-table" style="border-bottom-color: white"> $unitPrice </td>
+				<td class="table sub-table" style="border-bottom-color: white"></td>
+				<td class="table sub-table" style="border-bottom-color: white; text-align: right"> $unitPrice </td>
+			</tr>
+			<tr class="sub-table">
+				<td class="table" style="border-bottom-color: white"></br></td>
+				<td class="table" style="border-bottom-color: white"></br></td>
+				<td class="table" style="border-bottom-color: white"></br></td>
+				<td class="table" style="border-bottom-color: white"></br></td>
+			</tr>
+			<tr class="sub-table ">
+				<td class="table" style="border-bottom-color: white"></br></td>
+				<td class="table" style="border-bottom-color: white"></br></td>
+				<td class="table" style="border-bottom-color: white"></br></td>
+				<td class="table" style="border-bottom-color: white"></br></td>
+			</tr>
+			<tr class="sub-table">
+				<td class="table" style="border-bottom-color: white"></br></td>
+				<td class="table" style="border-bottom-color: white"></br></td>
+				<td class="table" style="border-bottom-color: white"></br></td>
+				<td class="table" style="border-bottom-color: white"></br></td>
+			</tr>
+			<tr class="sub-table ">
+				<td class="table"></br></td>
+				<td class="table"></br></td>
+				<td class="table"></br></td>
+				<td class="table"></br></td>
+			</tr>
+
+		</table>
+
+		<table style="width: 90%">
+			<tr>
+				<td></td>
+				<td style="text-align: left; width: 88%">Subtotal</td>
+				<td style="text-align: right;; padding-left: 10px"> $subTotal </td>
+			</tr>
+			<tr>
+				<td style="width: 81.5%"></td>
+				<td style="text-align: left; width: 88%">Service Tax @14%</td>
+				<td style="text-align: right;; padding-left: 10px"> $serviceTax </td>
+			</tr>
+			<tr>
+				<td style="width: 81.5%"></td>
+				<td style="text-align: left; width: 88%">Swachh Bharat Cess @0.5%</td>
+				<td style="text-align: right;; padding-left: 10px"> $swachhBharatCess </td>
+			</tr>
+			<tr>
+				<td></td>
+				<td
+					style="text-align: left; width: 50%; border-top: 1px solid black">Total
+					Amount</td>
+				<td
+					style="text-align: right;; padding-left: 10px; border-top: 1px solid black"> $totalAmount </td>
+			</tr>
+
+		</table>
+
+	</div>
+
+	<div>
+		<h3 style="margin-left: 80px; font-family: serif">DECLARATION:</h3>
+
+		<p style="margin-left: 80px; font-family: serif">We declare that
+			this receipt shows the reimbursement of the taxes as described above
+			and that all particulars are true and correct.</p>
+
+
+		<p align="center" style="margin-left: 80px">(THIS IS COMPUTER
+			GENERATED RECEIPT AND DOES NOT REQUIRE PHYSICAL SIGNATURE)</p>
+	</div>
+</BODY>
+</HTML>

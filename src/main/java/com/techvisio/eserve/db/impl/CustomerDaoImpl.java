@@ -16,8 +16,6 @@ import org.springframework.stereotype.Component;
 import com.techvisio.eserve.beans.AgreementDuration;
 import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerReport;
-import com.techvisio.eserve.beans.CustomerReportAttribute;
 import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.EquipmentHistory;
 import com.techvisio.eserve.beans.SearchCriteria;

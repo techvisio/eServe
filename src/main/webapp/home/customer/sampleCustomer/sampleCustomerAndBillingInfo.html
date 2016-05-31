@@ -1,0 +1,213 @@
+<form name="CUSTOMER" id="CUSTOMER">
+	<div>
+		<div ng
+			show="alerts..length>0 || !$scope.CUSTOMER.$valid || !$scope.UNIT.$valid">
+			<alert ng-repeat="alert in alerts" type="{{alert.type}}"
+				close="closeAlert($index)">{{alert.msg}}</alert>
+		</div>
+
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+			<section class="box">
+				<header class="panel_header">
+					<h2 class="title pull-left">Customer Information</h2>
+					<div class="actions panel_actions pull-right">
+						<i class="fa fa-times" ng-show="!isNew && isEdit"
+							ng-click="toggleReadOnly('CUSTOMER')"></i> <i
+							class="fa fa-floppy-o"
+							ng-show="(isNew && !isEdit && !showAndHidePreview()) || (!isNew && isEdit && !showAndHidePreview())"
+							ng-click="saveAndUpdateCustomer('PUBLISH')"
+							ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i> <i
+							class="fa fa-pencil-square-o" ng-show="!isNew || isEdit"
+							ng-click="toggleReadOnly('CUSTOMER')" popover-placement="bottom"
+							popover="Click To Edit" popover-trigger="mouseenter"
+							ng-disabled="isCreateOrUpdatePrivileged()"></i>
+					</div>
+				</header>
+				<div class="content-body">
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Customer Code</label>
+								<span class="desc">e.g. "hello"</span>
+								<div class="controls">
+									<input class="form-control" ng-model="customer.customerCode"
+										type="text" disabled>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-1"></div>
+
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Customer Name</label>
+								<span class="desc">e.g. "Rahul"</span>
+								<div class="controls">
+									<input class="form-control" ng-model="customer.customerName"
+										required="required" ng-pattern="/^[a-zA-Z-z&-. ]+$/i"
+										type="text">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Contact No</label> <span
+									class="desc">e.g. "1234"</span>
+								<div class="controls">
+									<i class="fa fa-times" ng-show="contactNoError"
+										popover-placement="left" popover="Contact No. Already Exist"
+										popover-trigger="mouseenter"></i> <input class="form-control"
+										required="required"
+										ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/"
+										ng-model="customer.contactNo" type="text"
+										ng-blur="getContactNo()">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-1"></div>
+
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Email Id</label> <span
+									class="desc">e.g. "abc@xyz.com"</span>
+								<div class="controls">
+									<i class="fa fa-times" ng-show="emailError"
+										popover-placement="left" popover="Email Id Already Exist"
+										popover-trigger="mouseenter"></i> <input class="form-control"
+										ng-model="customer.emailId" required="required"
+										ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
+										type="email" ng-blur="getEmailId()">
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Customer Type</label>
+								<span class="desc">e.g. "1234"</span>
+								<div class="controls">
+									<select ng-model="customer.customerType.customerTypeId"
+										class="form-control"
+										ng-options="item.customerTypeId*1 as item.customerType  for item in serverModelData.CUSTOMER_TYPE"
+										required>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+			</section>
+
+
+			<section class="box ">
+				<header class="panel_header">
+					<h2 class="title pull-left">BILLING ADDRESS</h2>
+					<div class="actions panel_actions pull-right">
+						<i class="fa fa-plus" ng-class="{'fa-minus':!isCollapsed}"
+							ng-click="isCollapsed=!isCollapsed"></i>
+					</div>
+				</header>
+				<div class="content-body">
+					<div collapse="isCollapsed">
+						<div class="row">
+							<div class="col-md-5 col-sm-12 col-xs-12">
+								<div class="form-group">
+									<label class="form-label" for="formfield9">Address</label> <span
+										class="desc">e.g. "SECTOR II KAILASH NAGAR GHAZIABAD"</span>
+									<div class="controls">
+										<input class="form-control"
+											ng-model="customer.address.address" required></textarea>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-1"></div>
+
+							<div class="col-md-5 col-sm-12 col-xs-12">
+								<div class="form-group">
+									<label class="form-label" for="formfield9">Alt. Contact
+										No</label> <span class="desc">e.g. "1234"</span>
+									<div class="controls">
+										<input class="form-control" required="required"
+											ng-pattern="/^[0-9--]+$/"
+											ng-model="customer.address.contactNo" type="text">
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-5 col-sm-12 col-xs-12">
+								<div class="form-group">
+									<label class="form-label" for="formfield9">City</label> <span
+										class="desc">e.g. "GHAZIABAD"</span>
+									<div class="controls">
+										<input class="form-control" ng-pattern="/^[a-zA-Z]+$/i"
+											ng-model="customer.address.city" type="text" required>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-1"></div>
+
+							<div class="col-md-5 col-sm-12 col-xs-12">
+								<div class="form-group">
+									<label class="form-label" for="formfield9">Pincode</label> <span
+										class="desc">e.g. "201001"</span>
+									<div class="controls">
+										<input class="form-control"
+											ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}$/"
+											required="required" ng-model="customer.address.pincode"
+											type="text">
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-5 col-sm-12 col-xs-12">
+								<div class="form-group">
+									<label class="form-label" for="formfield9">State</label> <span
+										class="desc">e.g. "UTTAR PRADESH"</span>
+									<div class="controls">
+										<select ng-model="customer.address.state.stateId"
+											class="form-control"
+											ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE"
+											required>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+
+				</div>
+			</section>
+
+
+
+
+
+		</div>
+	</div>
+</form>
+
+
+
+
+
+
