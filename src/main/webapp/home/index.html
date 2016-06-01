@@ -45,12 +45,22 @@
 </head>
 
 <body ng-app="erp" ng-controller="ApplicationController">
-	<div class="navbar navbar-default navbar-static-top navbar-fixed-top" role="navigation">
-		<div class="processing" ng-show="processingCount>0">
+	<div class="page-topbar">
+	<div class="logo-area">
+	<div class="processing" ng-show="processingCount>0">
 			<h3>
 				<i class="fa fa-spinner fa-pulse"></i>
 			</h3>
-		</div>
+	</div>
+			<img src="../static/images/eserve-logo.png">
+	<span></span>
+	</div>
+	<div class="pagetitle">
+        <span class="line"></span>
+        <h1 class="ng-binding">Dashboard</h1>
+        <div></div>
+    </div>
+		
 	</div>
 
 	<div class="wrapper">	

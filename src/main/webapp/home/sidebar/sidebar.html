@@ -4,7 +4,12 @@
 		data-target="#menu-content"></i>
 
 	<div class="menu-list">
-
+		<div class="user-image">
+		<img src="../static/images/userImage.jpg">
+		<span>{{user.firstName}} {{user.lastName}}</span>
+		<br>
+		<span class="user-dept">{{user.designation.designation}}, {{user.department.department}}</span>
+		</div>
 		<ul id="menu-content" class="menu-content collapse out">
 			<li><a href="#"> <i class="fa fa-dashboard fa-lg"></i>
 					Dashboard
@@ -15,39 +20,40 @@
 				Profile</a></li>
 
 			<li data-toggle="collapse" data-target="#service"
-				class="collapsed"><a href="#"><i
+				class="collapsed"><a ><i
 					class="fa fa-globe fa-lg"></i> Services <span class="arrow"></span></a>
 				<ul class="sub-menu collapse" id="service">
 					<li><a ui-sref="searchcomplaint"> Complaint </a></li>
 				</ul></li>
 
 			<li data-toggle="collapse" data-target="#new"
-				class="collapsed"><a href="#"><i
+				class="collapsed"><a ><i
 					class="fa fa-car fa-lg"></i> Customer <span class="arrow"></span></a>
 
 				<ul class="sub-menu collapse" id="new">
 					<li><a ui-sref="searchcustomer"> Customer Search </a></li>
 					<li><a herf="#" ng-click="newCustomer()"
-						ng-show="isPrivileged('CREATE_CUSTOMER')"> Create Customer </a></li>
+						ng-show="isPrivileged('CREATE_CUSTOMER')"> Add Customer </a></li>
 				</ul></li>
 
 			<li data-toggle="collapse" data-target="#userAdmin"
-				class="collapsed"><a href="#"><i
+				class="collapsed"><a ><i
 					class="fa fa-globe fa-lg"></i> User Administration <span
 					class="arrow"></span></a>
 				<ul class="sub-menu collapse" id="userAdmin">
 					<li><a ui-sref="searchUser"> Search User </a></li>
+					<li><a ui-sref="createUser"> Add User </a></li>
 				</ul></li>
 
 			<li data-toggle="collapse" data-target="#workItem"
-				class="collapsed"><a href="#"><i
+				class="collapsed"><a ><i
 					class="fa fa-globe fa-lg"></i> WorkItem <span class="arrow"></span></a>
 				<ul class="sub-menu collapse" id="workItem">
 					<li><a ui-sref="workItem"> View WorkItem </a></li>
 				</ul></li>
 
 			<li data-toggle="collapse" data-target="#report"
-				class="collapsed"><a href="#"><i
+				class="collapsed"><a ><i
 					class="fa fa-globe fa-lg"></i> Reports <span class="arrow"></span></a>
 				<ul class="sub-menu collapse" id="report">
 					<li><a ui-sref="customerReport"> Customer Report </a></li>

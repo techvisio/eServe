@@ -1,69 +1,106 @@
-<div class="row">
-			<div class="col-sm-4">
-				<h3 class="new-event-subtitle">Equipment Details</h3>
-			</div>
-			<div class="col-sm-2 child-right" ng-show="!isNew || isEdit || selection !==='preview'">
-				<button type="button" class="btn btn-primary btn-sm"
-					ng-click="addMachine(unit)"
-					ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Add Equipment</button>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">Type</label>
-			</div>
-
-			<div class="col-sm-2">
-				<label for="inputlg">Model No</label>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+	<section class="box ">
+		<div class="content-body">
+			<div class="row">
+				<div class="col-md-5 col-sm-12 col-xs-12 child-right"
+					ng-show="!isNew || isEdit || selection !==='preview'">
+					<div class="form-group">
+						<button type="button" class="btn btn-primary btn-sm child-right"
+							ng-click="addMachine(unit)"
+							ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Add
+							Equipment</button>
+					</div>
+				</div>
 			</div>
 
-			<div class="col-sm-2">
-				<label for="inputlg">Serial No</label>
+			<div class="row">
+
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Type</label>
+					</div>
+				</div>
+
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Model No</label>
+					</div>
+				</div>
+
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Serial No</label>
+					</div>
+				</div>
+
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Invoice No</label>
+					</div>
+				</div>
+
+				<div class="col-md-3 col-sm-3 col-xs-3">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Warranty Under</label>
+					</div>
+				</div>
+
+
 			</div>
 
-			<div class="col-sm-2">
-				<label for="inputlg">Invoice No</label>
-			</div>
+			<div class="row" ng-repeat="equip in unit.equipmentDetails">
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<select class="form-control" ng-model="equip.type">
+							<option></option>
+						</select>
+					</div>
+				</div>
 
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<select class="form-control" ng-model="equip.equipment.model">
+							<option></option>
+						</select>
+					</div>
+				</div>
 
-			<div class="col-sm-2">
-				<label for="inputlg">Warranty Under</label>
-			</div>
-		</div>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<input class="form-control" type="text" ng-model="equip.serialNo">
+					</div>
+				</div>
 
-		<div class="row" ng-repeat="equip in unit.equipmentDetails">
-			<div class="col-sm-2">
-				<select class="form-control" ng-model="equip.type">
-					<option></option>
-				</select>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<input class="form-control" type="text" ng-model="equip.invoiceNo">
+					</div>
+				</div>
+
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<select class="form-control" ng-model="equip.warrantyUnder">
+							<option></option>
+						</select>
+					</div>
+				</div>
+
+				<div class="col-md-1 col-sm-1 col-xs-1">
+					<div class="form-group">
+						<input type="checkbox" id="chk_act_{{$id}}"
+							ng-model="equip.underWarranty" /> <label for="chk_act_{{$id}}">UW</label>
+					</div>
+				</div>
+
+				<div class="col-md-1 col-sm-1 col-xs-1">
+					<div class="form-group">
+						<button type="button" class="btn btn-default btn-sm"
+							ng-click="removeMachine(unit,$index)" ng-show="$index=>0">
+							<span class="glyphicon glyphicon-remove"></span>
+						</button>
+					</div>
+				</div>
+
 			</div>
-			<div class="col-sm-2">
-				<select class="form-control" ng-model="equip.equipment.model">
-					<option></option>
-				</select>
-			</div>
-			<div class="col-sm-2">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="equip.serialNo">
-			</div>
-			<div class="col-sm-2">
-				<input class="form-control input-sm" id="inputlg" type="text"
-					ng-model="equip.invoiceNo">
-			</div>
-			<div class="col-sm-2">
-				<select class="form-control" ng-model="equip.warrantyUnder">
-					<option></option>
-				</select>
-			</div>
-			<div class="col-sm-1">
-				<input type="checkbox" id="chk_act_{{$id}}"
-					ng-model="equip.underWarranty" /> <label for="chk_act_{{$id}}">UW</label>
-			</div>
-			<div class="col-sm-1">
-				<button type="button" class="btn btn-default btn-sm"
-					ng-click="removeMachine(unit,$index)" ng-show="$index=>0">
-					<span class="glyphicon glyphicon-remove"></span>
-				</button>
-			</div>
-		</div>
+	</section>
+</div>

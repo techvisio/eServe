@@ -12,6 +12,8 @@ userModule
 		 'masterdataService',
 		 function($scope, $state, $rootScope,userService,user,masterdataService) {
 			 $scope.form={};
+			 $scope.isUserCollapsed= true;
+			 $scope.isPrivilegesCollapsed= true;
 			 $scope.isEdit = false;
 			 $scope.customQuestion = false;
 			 $scope.wrongNewPass = false;
@@ -300,7 +302,7 @@ userModule
 
 					 $scope.user.securityQuestion.customQuestion = true;
 				 }
-				 
+
 				 if(!$scope.chkStatus){
 
 					 $scope.user.securityQuestion.customQuestion = false;
