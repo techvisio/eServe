@@ -1,281 +1,271 @@
 <form name="form.UNIT" id="UNIT">
-<div ng-init="init()">
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-        <section class="box ">
-            <header class="panel_header">
-                <h2 class="title pull-left">UNIT INFORMATION</h2>
-                <div class="actions panel_actions pull-right">
-                    <i class="box_toggle material-icons"></i>
-                    <i class="box_setting material-icons"></i>
-                    <i class="box_close material-icons"></i>
-                </div>
-            </header>
-            <div class="content-body">
-                <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Unit Code</label>
-                                <span class="desc">e.g. "789456"</span>
-                                <div class="controls">
-                                    <input class="form-control" type="text"
-									ng-model="unit.unitCode" ng-click="resetAleart()" disabled>
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Service Type</label>
-                                <span class="desc">e.g. "Select From Dropdown"</span>
-                                <div class="controls">
-                                    <select class="form-control"
-									ng-model="unit.serviceAgreement.serviceCategory" disabled>
-									<option>Warranty</option>
-									<option>AMC</option>
-									<option>Paid</option>
+	<div ng-init="init()">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+			<section class="box ">
+				<header class="panel_header">
+					<h2 class="title pull-left">UNIT INFORMATION</h2>
+					<div class="actions panel_actions pull-right">
+						<i class="box_toggle material-icons"></i> <i
+							class="box_setting material-icons"></i> <i
+							class="box_close material-icons"></i>
+					</div>
+				</header>
+				<div class="content-body">
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Unit Code</label> 
+								<div class="controls">
+									<input class="form-control" type="text"
+										ng-model="unit.unitCode" ng-click="resetAleart()" disabled>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-1"></div>
+
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Service Type</label>
+								
+								<div class="controls">
+									<select class="form-control"
+										ng-model="unit.serviceAgreement.serviceCategory" disabled>
+										<option>Warranty</option>
+										<option>AMC</option>
+										<option>Paid</option>
 									</select>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Service Party</label>
-                                <span class="desc">e.g. "Select From Dropdown"</span>
-                                <div class="controls">
-                                    <select
-									ng-model="unit.serviceAgreement.serviceProvider.serviceProviderId"
-									class="form-control"
-									ng-options="item.serviceProviderId*1 as item.serviceProvider for item in serverModelData.SERVICE_PROVIDER"
-									required>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Service Party</label>
+								
+								<div class="controls">
+									<select
+										ng-model="unit.serviceAgreement.serviceProvider.serviceProviderId"
+										class="form-control"
+										ng-options="item.serviceProviderId*1 as item.serviceProvider for item in serverModelData.SERVICE_PROVIDER"
+										required>
 									</select>
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Unit Category</label>
-                                <span class="desc">e.g. "Select From Dropdown"</span>
-                                <div class="controls">
-                                    <select ng-model="unit.unitCategory.unitCategoryId"
-									class="form-control"
-									ng-options="item.unitCategoryId*1 as item.unitType for item in serverModelData.UNIT_CATEGORY"
-									required>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-1"></div>
+
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Unit Category</label>
+								
+								<div class="controls">
+									<select ng-model="unit.unitCategory.unitCategoryId"
+										class="form-control"
+										ng-options="item.unitCategoryId*1 as item.unitType for item in serverModelData.UNIT_CATEGORY"
+										required>
 									</select>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            
-            	<div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Model No</label>
-                                <span class="desc">e.g. "1234"</span>
-                                <div class="controls">
-                                    <input class="form-control" type="text"
-									required ng-model="unit.modelNo" ng-click="resetAleart()">
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Machine Serial No</label>
-                                <span class="desc">e.g. "1234"</span>
-                                <div class="controls">
-                                    <input class="form-control input-sm" id="inputlg" type="text"
-									required ng-model="unit.machineSerialNo" ng-click="resetAleart()">
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            
-            	<div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Asset No</label>
-                                <span class="desc">e.g. "1234"</span>
-                                <div class="controls">
-                                	<input class="form-control" type="text"
-									required ng-model="unit.assetNo" ng-click="resetAleart()">
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Agreement Duration</label>
-                                <span class="desc">e.g. "months or year"</span>
-                                <div class="controls">
-                                    <select
-									ng-model="unit.serviceAgreement.agreementDuration.agreementDurationId"
-									class="form-control"
-									ng-options="item.agreementDurationId*1 as item.displayValue for item in serverModelData.AGREEMENT_DURATION">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Model No</label>
+								<div class="controls">
+									<input class="form-control" type="text" required
+										ng-model="unit.modelNo" ng-click="resetAleart()">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-1"></div>
+
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Machine
+									Serial No</label> 
+								<div class="controls">
+									<input class="form-control input-sm" id="inputlg" type="text"
+										required ng-model="unit.machineSerialNo"
+										ng-click="resetAleart()">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Asset No</label> 
+								<div class="controls">
+									<input class="form-control" type="text" required
+										ng-model="unit.assetNo" ng-click="resetAleart()">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-1"></div>
+
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Agreement
+									Duration</label> 
+								<div class="controls">
+									<select
+										ng-model="unit.serviceAgreement.agreementDuration.agreementDurationId"
+										class="form-control"
+										ng-options="item.agreementDurationId*1 as item.displayValue for item in serverModelData.AGREEMENT_DURATION">
 									</select>
-	
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            
-            	<div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Contract Start On</label>
-                                <span class="desc">e.g. "dd/mm/yy"</span>
-                                <div class="controls">
-                                   <div class="date-input">
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Contract
+									Start On</label> 
+								<div class="controls">
+									<div class="date-input">
 										<input type="text" class="form-control datepicker"
 											name="requestDueDate"
 											ng-model="unit.serviceAgreement.contractStartOnString"
 											datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
 											ng-click="startDate = !startDate; $event.stopPropagation();"
 											show-button-bar="false">
-									</div>                                
+									</div>
 								</div>
-                       </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Contract Expire On</label>
-                                <span class="desc">e.g. "dd/mm/yy"</span>
-                                <div class="controls">
-                                <div class="date-input">
-									<input type="text" class="form-control datepicker"
-									name="requestDueDate"
-									ng-model="unit.serviceAgreement.contractExpireOnString"
-									datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate" disabled
-									ng-click="expireDate = !expireDate; $event.stopPropagation();"
-									show-button-bar="false">
+							</div>
+						</div>
+
+						<div class="col-md-1"></div>
+
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Contract
+									Expire On</label> 
+								<div class="controls">
+									<div class="date-input">
+										<input type="text" class="form-control datepicker"
+											name="requestDueDate"
+											ng-model="unit.serviceAgreement.contractExpireOnString"
+											datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate"
+											disabled
+											ng-click="expireDate = !expireDate; $event.stopPropagation();"
+											show-button-bar="false">
+									</div>
 								</div>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            
-			  </div>
-        </section>
-    </div>
-    
-    
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-        <section class="box ">
-            <header class="panel_header">
-                <h2 class="title pull-left">Site Address Details</h2>
-                <div class="actions panel_actions pull-right">
-                    <i class="box_toggle material-icons"></i>
-                    <i class="box_setting material-icons"></i>
-                    <i class="box_close material-icons"></i>
-                </div>
-            </header>
-            <div class="content-body">
-                <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12" ng-disabled="unit.address.addressId">
-                       <div class="form-group">
-                       			<input type="checkbox"
-								ng-disabled="unit.address.addressId"
-								ng-change="copyCustomerAddress(unit,sameAsAbove)"
-								ng-model="sameAsAbove" />
-                                <label class="form-label" for="formfield9">Same As Billing Address</label>
-                      </div>
-                    </div>
-                </div>
-				
-				<div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Address</label>
-                                <span class="desc">e.g. "SECTOR II , CITY, STATE"</span>
-                                <div class="controls">
-                                    <input class="form-control" ng-model="unit.address.address"
-									ng-click="resetAleart()" required />
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Alt. Contact No</label>
-                                <span class="desc">e.g. "1234567890"</span>
-                                <div class="controls">
-                                    <input class="form-control" type="text"
-									ng-pattern="/^[0-9--]+$/" ng-model="unit.address.contactNo"
-									ng-click="resetAleart()" required>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-				
-				<div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">City</label>
-                                <span class="desc">e.g. "GHAZIABAD,MUMBAI ETC"</span>
-                                <div class="controls">
-                                    <input class="form-control" type="text"
-									ng-model="unit.address.city" ng-pattern="/^[a-zA-Z]+$/i"
-									ng-click="resetAleart()" required>
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Pincode</label>
-                                <span class="desc">e.g. "1234567890"</span>
-                                <div class="controls">
-                                    <input class="form-control" type="text"<input
-									ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}$/"
-									class="form-control" ng-model="unit.address.pincode"
-									ng-click="resetAleart()" required>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">State</label>
-                                <span class="desc">e.g. "UTTAR PRADESH,PUNJAB ETC"</span>
-                                <div class="controls">
-                                    <select ng-model="unit.address.state.stateId" class="form-control"
-									ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE"
-									required>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</section>
+		</div>
+
+
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+			<section class="box ">
+				<header class="panel_header">
+					<h2 class="title pull-left">Site Address Details</h2>
+					<div class="actions panel_actions pull-right">
+						<i class="box_toggle material-icons"></i> <i
+							class="box_setting material-icons"></i> <i
+							class="box_close material-icons"></i>
+					</div>
+				</header>
+				<div class="content-body">
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12"
+							ng-disabled="unit.address.addressId">
+							<div class="form-group">
+								<input type="checkbox" class="faChkSqr"
+									ng-disabled="unit.address.addressId"
+									ng-change="copyCustomerAddress(unit,sameAsAbove)"
+									ng-model="sameAsAbove" /> <label class="form-label"
+									for="formfield9">Same As Billing Address</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Address</label> 
+								<div class="controls">
+									<input class="form-control" ng-model="unit.address.address"
+										ng-click="resetAleart()" required />
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-1"></div>
+
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Alt. Contact
+									No</label> 
+								<div class="controls">
+									<input class="form-control" type="text"
+										ng-pattern="/^[0-9--]+$/" ng-model="unit.address.contactNo"
+										ng-click="resetAleart()" required>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">City</label> 
+								<div class="controls">
+									<input class="form-control" type="text"
+										ng-model="unit.address.city" ng-pattern="/^[a-zA-Z]+$/i"
+										ng-click="resetAleart()" required>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-1"></div>
+
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Pincode</label> 
+								<div class="controls">
+									<input class="form-control" type="text"<input
+										ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}$/"
+										class="form-control" ng-model="unit.address.pincode"
+										ng-click="resetAleart()" required>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">State</label> 
+								<div class="controls">
+									<select ng-model="unit.address.state.stateId"
+										class="form-control"
+										ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE"
+										required>
 									</select>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-    	        	            	            
-            </div>
-        </section>
-    </div>
-  </div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</section>
+		</div>
+	</div>
 </form>

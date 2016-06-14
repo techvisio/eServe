@@ -1,5 +1,7 @@
 package com.techvisio.eserve.beans;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "TB_EQUIPMENT_DETAIL")
@@ -30,10 +41,18 @@ public class EquipmentDetail extends BasicEntity{
 	@OneToOne
 	@JoinColumn(name="EQUIPMENT_ID")
 	private Equipment equipment;
-	
+
 	@Column(name="IS_UNDER_WARRANTY")
 	private boolean underWarranty;
-	
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="INSTALLATION_DATE")
+	@JsonIgnore
+	private Date installationDate;
+
+	@Transient
+	private String installationDateString;
+
 	public Long getEquipmentDtlId() {
 		return equipmentDtlId;
 	}
@@ -82,5 +101,33 @@ public class EquipmentDetail extends BasicEntity{
 	public void setUnderWarranty(boolean underWarranty) {
 		this.underWarranty = underWarranty;
 	}
-	
+
+	@JsonIgnore
+	public Date getInstallationDate() {
+		return installationDate;
+	}
+	@JsonIgnore
+	public void setInstallationDate(Date installationDate) {
+		this.installationDate = installationDate;
+	}
+	public String getInstallationDateString() {
+		if (this.installationDate == null)
+			return null;
+
+		try {
+			DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+			return fmt.print(this.installationDate.getTime());
+
+		} catch (Exception e) {
+
+		}
+		return null;
+	}
+	public void setInstallationDateString(String installationDateString) {
+		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
+		if(!StringUtils.isEmpty(installationDateString)){
+			this.installationDate = parser2.parseDateTime(installationDateString).toDate();
+		}
+	}
+
 }

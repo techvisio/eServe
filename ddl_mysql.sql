@@ -549,6 +549,7 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
+        INSTALLATION_DATE date,
         INVOICE_NO bigint,
         SERIAL_NO varchar(255),
         TYPE varchar(255),

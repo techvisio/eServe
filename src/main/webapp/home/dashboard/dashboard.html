@@ -1,6 +1,7 @@
 <div ng-init="init()">
 	<div class="row">
 		<div class="col-lg-3 col-md-6" ng-click="updateModule('complaint')">
+			<div class="whiteBorder">
 			<div class="panel panel-red">
 				<div class="panel-heading">
 					<div class="row">
@@ -21,9 +22,11 @@
 					</div>
 				</a>
 			</div>
+			</div>
 		</div>
 
 		<div class="col-lg-3 col-md-6" ng-click="updateModule('approval')">
+		<div class="whiteBorder">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<div class="row">
@@ -44,9 +47,11 @@
 					</div>
 				</a>
 			</div>
+			</div>
 		</div>
 
 		<div class="col-lg-3 col-md-6" ng-click="updateModule('sales')">
+			<div class="whiteBorder">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
 					<div class="row">
@@ -67,9 +72,11 @@
 					</div>
 				</a>
 			</div>
+			</div>
 		</div>
 
 		<div class="col-lg-3 col-md-6" ng-click="updateModule('PMS')">
+		<div class="whiteBorder">
 			<div class="panel panel-red">
 				<div class="panel-heading">
 					<div class="row">
@@ -90,6 +97,7 @@
 					</div>
 				</a>
 			</div>
+			</div>
 		</div>
 		<!--         <stats number="6" comments="New comments!" colour="primary" type="comments"></stats> -->
 		<!--         <stats number="12" comments="New tasks!" colour="primary" type="user"></stats> -->
@@ -98,11 +106,7 @@
 
 	</div>
 
-<section>
-<div class="body-content">
 	<div ng-include src="'../home/dashboard/complaintCharts.html'" ng-if="selectedModule=='complaint'"></div>
-</div>
-</section>
 <!-- 	<div ng-include src="'../home/dashboard/complaintCharts.html'" ng-if="selectedModule=='approval'"></div> -->
 <!-- 	<div ng-include src="'../home/dashboard/complaintCharts.html'" ng-if="selectedModule=='sales'"></div> -->
 <!-- 	<div ng-include src="'../home/dashboard/complaintCharts.html'" ng-if="selectedModule=='PMS'"></div> -->

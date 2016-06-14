@@ -1,53 +1,77 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+	<section class="box ">
 
-<div class="row">
-	<div class="col-sm-2">
-		<label for="inputlg">Address</label>
-	</div>
-	<div class="col-sm-4">
-		<textarea rows="3" cols="30" class="form-control input-sm"
-			id="inputlg" ng-model="unitApproval.unit.address.address" required></textarea>
-	</div>
+		<div class="content-body">
+			<div class="row">
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Address</label>
 
-	<div class="col-sm-2">
-		<label for="inputlg">Contact No</label>
-	</div>
-	<div class="col-sm-4">
-		<input class="form-control input-sm" id="inputlg" type="text"
-			ng-pattern="/^[0-9--]+$/"
-			ng-model="unitApproval.unit.address.contactNo" required>
-	</div>
-</div>
+						<div class="controls">
+							<input type="text" class="form-control"
+								ng-model="unitApproval.unit.address.address" required>
+						</div>
+					</div>
+				</div>
 
+				<div class="col-md-1"></div>
 
-<div class="row">
-	<div class="col-sm-2">
-		<label for="inputlg">City</label>
-	</div>
-	<div class="col-sm-4">
-		<input class="form-control input-sm" id="inputlg" type="text"
-			ng-model="unitApproval.unit.address.city" ng-pattern="/^[a-zA-Z]+$/i" required>
-	</div>
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Contact No</label>
 
-	<div class="col-sm-2">
-		<label for="inputlg">Pincode</label>
-	</div>
-	<div class="col-sm-4">
-		<input class="form-control input-sm" id="inputlg" type="text"<input
-			ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}$/"
-			class="form-control input-sm"
-			ng-model="unitApproval.unit.address.pincode" required>
-	</div>
-</div>
+						<div class="controls">
+							<input class="form-control" type="text" ng-pattern="/^[0-9--]+$/"
+								ng-model="unitApproval.unit.address.contactNo" required>
+						</div>
+					</div>
+				</div>
+			</div>
 
-<div class="row">
-	<div class="col-sm-2">
-		<label for="inputlg">State</label>
-	</div>
-	<div class="col-sm-4">
-		<select ng-model="unitApproval.unit.address.state.stateId"
-			class="form-control"
-			ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE"
-			required>
-		</select>
-	</div>
+			<div class="row">
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">City</label>
+
+						<div class="controls">
+							<input class="form-control" type="text"
+								ng-model="unitApproval.unit.address.city"
+								ng-pattern="/^[a-zA-Z]+$/i" required>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-1"></div>
+
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Pincode</label>
+
+						<div class="controls">
+							<input class="form-control" type="text"<input
+								ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}$/"
+								class="form-control"
+								ng-model="unitApproval.unit.address.pincode" required>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">State</label>
+
+						<div class="controls">
+							<select ng-model="unitApproval.unit.address.state.stateId"
+								class="form-control"
+								ng-options="item.stateId*1 as item.stateName  for item in serverModelData.STATE"
+								required>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 </div>

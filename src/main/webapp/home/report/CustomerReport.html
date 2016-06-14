@@ -1,58 +1,41 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+	<section class="box ">
+		<header class="panel_header">
+			<h2 class=" pull-left"></h2>
+			<div class="actions panel_actions pull-right">
+				<i class="fa fa-filter" aria-hidden="true"
+					ng-click="filterCustomerReport()">&nbspFilter</i> <i
+					class="box_setting material-icons"></i> <i class="fa fa-download"
+					ng-click="downloadReport('reportName')">&nbspDownload Excel</i>
+			</div>
+		</header>
+		<div class="content-body">
+			<div class="row"></div>
+			<div class="row"></div>
+			<div class="row">
+				<div class="table-parent-container">
+					<div>
+						<table ng-table="tableParams"
+							class="table table-condensed table-bordered table-striped">
+							<tr ng-repeat="row in $data">
+								<td data-title="'Customer_Code'" sortable="'customerCode'"
+									class="col-sm-2 col-md-2 col-lg-2">{{row.customerCode}}</td>
+								<td data-title="'Customer_Name'" sortable="'customerName'">{{row.customerName}}</td>
+								<td data-title="'Email Id'">{{row.emailId}}</td>
+								<td data-title="'Contact No'">{{row.contactNo}}</td>
+								<td data-title="'Customer Type'">{{row.customerType}}</td>
+								<td data-title="'Customer Type'">{{row.customerType}}</td>
+								<td data-title="'Customer Type'">{{row.customerType}}</td>
+								<td data-title="'Customer Type'">{{row.customerType}}</td>
+								<td data-title="'Customer Type'">{{row.customerType}}</td>
+								<td data-title="'Customer Type'">{{row.customerType}}</td>
+								<td data-title="'Customer Type'">{{row.customerType}}</td>
 
-<div class="row">
-
-	<div class="child-right">
-		<button class="btn btn-primary" ng-click="filterCustomerReport()"><i class="fa fa-filter"
-		aria-hidden="true">&nbspFilter</i></button>
-	</div>	
-		<div class="child-right">
-		<button class="btn btn-primary" ng-click="downloadReport('reportName')"><i class="fa fa-download">&nbspDownload Excel</i>
-		</button>
-	</div>
-
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 </div>
-
-
-	
-<div class="table-parent-container">
-<div>
-	<table ng-table="tableParams" class="table table-condensed table-bordered table-striped">
-        <tr ng-repeat="row in $data">
-          <td data-title="'Customer_Code'" sortable="'customerCode'" class="col-sm-2 col-md-2 col-lg-2">{{row.customerCode}}</td>
-          <td data-title="'Customer_Name'" sortable="'customerName'">{{row.customerName}}</td>
-          <td data-title="'Email Id'">{{row.emailId}}</td>
-          <td data-title="'Contact No'">{{row.contactNo}}</td>
-          <td data-title="'Customer Type'">{{row.customerType}}</td>
-          <td data-title="'Customer Type'">{{row.customerType}}</td>
-          <td data-title="'Customer Type'">{{row.customerType}}</td>
-          <td data-title="'Customer Type'">{{row.customerType}}</td>
-          <td data-title="'Customer Type'">{{row.customerType}}</td>
-          <td data-title="'Customer Type'">{{row.customerType}}</td>
-          <td data-title="'Customer Type'">{{row.customerType}}</td>
-          
-        </tr>
-      </table>
-</div>
-</div>
-<!-- <div class="row"> -->
-<!-- 	<div class="col-sm-4"> -->
-<!-- 		<pagination total-items="totalServerItems" -->
-<!-- 			items-per-page="pagingOptions.pageSize" -->
-<!-- 			ng-model="pagingOptions.currentPage" class="pagination-sm" -->
-<!-- 			boundary-link-numbers="true" rotate="false"> -->
-<!-- 		</pagination> -->
-<!-- 	</div> -->
-	
-<!-- 	<div class="col-sm-5"></div> -->
-<!-- 	<div class="child-right col-sm-1"> -->
-<!-- 		<select  class="dropDownSelect form-control" ng-model="pagingOptions.pageSize" -->
-<!-- 		ng-options="item as item for item in pagingOptions.pageSizes"> -->
-<!-- 		</select> -->
-<!-- 	</div> -->
-	
-<!-- 	<div class="col-sm-2 "> -->
-<!-- 			<label class="child-right">Page Size:</label> -->
-<!-- 		</div> -->
-	
-<!-- </div> -->
-

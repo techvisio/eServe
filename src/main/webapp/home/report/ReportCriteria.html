@@ -1,96 +1,122 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 box-align">
+	<section class="box">
+		<header class="panel_header">
+			<h2 class="title pull-left">Report Criteria</h2>
 
-<div class="row">
-	<div class="col-sm-12">
-		<h3 class="custom-page-header" align="center">Report Criteria</h3>
-	</div>
-</div>
-<div ng-init="init()">
-	<div class="row">
-		<div class="col-sm-2">
-			<label>Unit Type</label>
-		</div>
+		</header>
+		<div ng-init="init()">
+			<div class="content-body">
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="form-label element-size-label" for="formfield9">Unit
+								Type</label>
 
-		<div class="col-sm-4">
-			<select ng-model="customerReportAttribute.unitTypeId"
-				class="form-control"
-				ng-options="item.unitCategoryId*1 as item.unitType for item in serverModelData.UNIT_CATEGORY">
-			</select>
-		</div>
+							<div class="controls">
+								<select ng-model="customerReportAttribute.unitTypeId"
+									class="form-control"
+									ng-options="item.unitCategoryId*1 as item.unitType for item in serverModelData.UNIT_CATEGORY">
+								</select>
+							</div>
+						</div>
+					</div>
 
+					<div class="col-md-1"></div>
 
-		<div class="col-sm-2">
-			<label for="inputlg">Customer Type</label>
-		</div>
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="form-label element-size-label" for="formfield9">Customer
+								Type</label>
 
-		<div class="col-sm-4">
-			<select ng-model="customerReportAttribute.customerTypeId"
-				class="form-control"
-				ng-options="item.customerTypeId*1 as item.customerType  for item in serverModelData.CUSTOMER_TYPE">
-			</select>
-		</div>
-	</div>
+							<div class="controls">
+								<select ng-model="customerReportAttribute.customerTypeId"
+									class="form-control"
+									ng-options="item.customerTypeId*1 as item.customerType  for item in serverModelData.CUSTOMER_TYPE">
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
 
-	<div class="row">
-		<div class="col-sm-2">
-			<label>From Date</label>
-		</div>
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="form-label element-size-label" for="formfield9">From
+								Date</label>
 
-		<div class="col-sm-4">
-			<div class="date-input">
-				<input type="text" ng-model="customerReportAttribute.fromDate"
-					class="form-control datepicker"
-					datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
-					ng-click="startDate = !startDate; $event.stopPropagation();"
-					show-button-bar="false">
+							<div class="controls">
+								<div class="date-input">
+									<input type="text" ng-model="customerReportAttribute.fromDate"
+										class="form-control datepicker"
+										datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
+										ng-click="startDate = !startDate; $event.stopPropagation();"
+										show-button-bar="false">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="form-label element-size-label" for="formfield9">To
+								Date</label>
+
+							<div class="controls">
+								<div class="date-input">
+									<input type="text" ng-model="customerReportAttribute.toDate"
+										class="form-control datepicker"
+										datepicker-popup="{{'MMM dd yyyy'}}" is-open="endDate"
+										ng-click="endDate = !endDate; $event.stopPropagation();"
+										show-button-bar="false">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="form-label element-size-label" for="formfield9">Approval
+								Status</label>
+
+							<div class="controls">
+								<select class="form-control"
+									ng-model="customerReportAttribute.approvalStatus">
+									<option value="P">Publish</option>
+									<option value="D">Draft</option>
+									<option value="A">Approved</option>
+									<option value="R">Reject</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="form-label element-size-label" for="formfield9">Service
+								Provider</label>
+
+							<div class="controls">
+								<select ng-model="customerReportAttribute.serviceProviderId"
+									class="form-control"
+									ng-options="item.serviceProviderId*1 as item.serviceProvider for item in serverModelData.SERVICE_PROVIDER">
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<button type="button" class="btn btn-success button child-right"
+						ng-click="getCustomerReportByCriteria()">Get Data</button>
+				</div>
+
 			</div>
 		</div>
-
-
-		<div class="col-sm-2">
-			<label>To Date</label>
-		</div>
-
-		<div class="col-sm-4">
-			<div class="date-input">
-				<input type="text" ng-model="customerReportAttribute.toDate"
-					class="form-control datepicker"
-					datepicker-popup="{{'MMM dd yyyy'}}" is-open="endDate"
-					ng-click="endDate = !endDate; $event.stopPropagation();"
-					show-button-bar="false">
-			</div>
-		</div>
-	</div>
-
-	
-	<div class="row">
-		<div class="col-sm-2">
-			<label>Approval Status</label>
-		</div>
-
-		<div class="col-sm-4">
-			<select class="form-control"
-				ng-model="customerReportAttribute.approvalStatus">
-				<option value="P">Publish</option>
-				<option value="D">Draft</option>
-				<option value="A">Approved</option>
-				<option value="R">Reject</option>
-			</select>
-		</div>
-
-		<div class="col-sm-2">
-			<label for="inputlg">Service Provider</label>
-		</div>
-
-		<div class="col-sm-4">
-			<select ng-model="customerReportAttribute.serviceProviderId"
-				class="form-control"
-				ng-options="item.serviceProviderId*1 as item.serviceProvider for item in serverModelData.SERVICE_PROVIDER">
-			</select>
-		</div>
-
-	</div>
-	<div class="row">
-		<button type="button" class="btn btn-success button child-right"
-			ng-click="getCustomerReportByCriteria()">Get Data</button>
-	</div>
+	</section>
 </div>

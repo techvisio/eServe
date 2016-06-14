@@ -1,6 +1,6 @@
 <form name="COMPLAINT" id="COMPLAINT">
 	<div ng-init="init(); getUsers(); toggleReadOnly('COMPLAINT')">
-		<div ng show="alerts..length>0 || !$scope.COMPLAINT.$valid">
+		<div ng show="alerts.length>0 || !$scope.COMPLAINT.$valid">
 			<alert ng-repeat="alert in alerts" type="{{alert.type}}"
 				close="closeAlert($index)">{{alert.msg}}</alert>
 		</div>

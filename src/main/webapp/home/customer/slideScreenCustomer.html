@@ -31,10 +31,9 @@
 		<div ng-include src="'../home/customer/amcMain.html'"></div>
 	</div>
 </div>
-</div>
 
 <div class="fix-button">
-	<button type="button" class="btn btn-primary button child-left"
+	<button type="button" class="btn btn-primary child-left"
 		ng-click="switchToPreviousPage()"
 		ng-hide="selection==='customer' || selection==='preview'"
 		ng-disabled="isProcessing">
@@ -42,34 +41,34 @@
 		<i class="fa fa-arrow-left" style="font-size: 13px"></i>&nbsp Previous
 	</button>
 
-	<button type="button" class="btn btn-primary button child-right"
+	<button type="button" class="btn btn-primary child-right"
 		ng-click="selection = 'equipmntDtl'" ng-show="selection==='preview'"
 		ng-disabled="isProcessing">Close</button>
 
-	<button type="button" class="btn btn-primary button"
+	<button type="button" class="btn btn-primary"
 		ng-click="addMoreUnit(); selection = 'unitDtl'"
 		ng-show="selection==='equipmntDtl'" ng-disabled="isProcessing">
 		Add More Unit</button>
-	<button type="button" class="btn btn-primary button"
+	<button type="button" class="btn btn-primary"
 		ng-click="addcurrentUnittoCustomer();selection='preview'"
 		ng-show="selection==='equipmntDtl'" ng-disabled="isProcessing">
 		<i class="fa fa-eye" style="font-size: 13px"></i> Preview
 	</button>
-	<button type="button" class="btn btn-primary button child-right"
+	<button type="button" class="btn btn-primary child-right"
 		ng-click="saveAndUpdateCustomer('CUSTOMER_DRAFT')"
 		ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"
 		ng-show="selection==='equipmntDtl'|| selection==='preview'">
 		<i class="fa fa-floppy-o" style="font-size: 13px"></i>&nbsp Save As
 		Draft
 	</button>
-	<button type="button" class="btn btn-success button child-right"
+	<button type="button" class="btn btn-success child-right"
 		ng-show="selection==='equipmntDtl' || selection==='preview'"
 		ng-click="showCommentBoxCustomerPublish()"
 		ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">
 		<i class="fa fa-paper-plane" style="font-size: 12px"></i>&nbsp Publish
 	</button>
 
-	<button type="button" class="btn btn-primary button child-right"
+	<button type="button" class="btn btn-primary child-right"
 		ng-click="switchToNextPage()"
 		ng-hide="selection==='equipmntDtl' || selection==='preview'">
 		Next &nbsp<i class="fa fa-arrow-right" style="font-size: 13px"></i>

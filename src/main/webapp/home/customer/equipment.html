@@ -1,106 +1,116 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-non">
 	<section class="box ">
 		<div class="content-body">
-			<div class="row">
-				<div class="col-md-5 col-sm-12 col-xs-12 child-right"
-					ng-show="!isNew || isEdit || selection !==='preview'">
-					<div class="form-group">
-						<button type="button" class="btn btn-primary btn-sm child-right"
-							ng-click="addMachine(unit)"
-							ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Add
-							Equipment</button>
-					</div>
-				</div>
-			</div>
 
 			<div class="row">
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-1 col-sm-1 col-xs-1 padding-non">
 					<div class="form-group">
-						<label class="form-label" for="formfield9">Type</label>
+						<label class="font-size_header" for="formfield9">Type</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
 					<div class="form-group">
-						<label class="form-label" for="formfield9">Model No</label>
+						<label class="font-size_header" for="formfield9">Model No</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
 					<div class="form-group">
-						<label class="form-label" for="formfield9">Serial No</label>
+						<label class=" font-size_header" for="formfield9">Serial
+							No</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
 					<div class="form-group">
-						<label class="form-label" for="formfield9">Invoice No</label>
+						<label class="font-size_header" for="formfield9">Invoice
+							No</label>
 					</div>
 				</div>
 
-				<div class="col-md-3 col-sm-3 col-xs-3">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
 					<div class="form-group">
-						<label class="form-label" for="formfield9">Warranty Under</label>
+						<label class=" font-size_header" for="formfield9">Installation
+							Date</label>
 					</div>
 				</div>
 
-
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
+					<div class="form-group">
+						<label class="font-size_header" for="formfield9">Warranty
+							Under</label>
+					</div>
+				</div>
+				<div class="col-md-1 col-sm-1 col-xs-1 padding-non"
+					ng-show="!isNew || isEdit || selection !='preview'">
+					<button type="button" class="btn btn-primary btn-sm padding-non"
+						ng-click="editEquipment='false'; showAddEquipmentModel(unit,editEquipment )"
+						ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Add
+						Equipment</button>
+				</div>
 			</div>
 
-			<div class="row" ng-repeat="equip in unit.equipmentDetails">
-				<div class="col-md-2 col-sm-2 col-xs-2">
+			<div class="row gray-border" ng-repeat="equip in unit.equipmentDetails"
+				id="parent">
+				<div class="col-md-1 col-sm-1 col-xs-1 padding-non text-centre">
 					<div class="form-group">
-						<select class="form-control" ng-model="equip.type">
-							<option></option>
-						</select>
+						<label class="font-size-label" for="formfield9">{{equip.type}}</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 					<div class="form-group">
-						<select class="form-control" ng-model="equip.equipment.model">
-							<option></option>
-						</select>
+						<label class=" font-size-label" for="formfield9">{{equip.equipment.model}}</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 					<div class="form-group">
-						<input class="form-control" type="text" ng-model="equip.serialNo">
+						<label class="font-size-label" for="formfield9">{{equip.serialNo}}</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 					<div class="form-group">
-						<input class="form-control" type="text" ng-model="equip.invoiceNo">
+						<label class="font-size-label" for="formfield9">{{equip.invoiceNo}}</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 					<div class="form-group">
-						<select class="form-control" ng-model="equip.warrantyUnder">
-							<option></option>
-						</select>
+						<label class="font-size-label" for="formfield9">{{equip.warrantyUnder}}</label>
+					</div>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
+					<div class="form-group">
+						<label class="font-size-label" for="formfield9">{{equip.installationDate}}</label>
 					</div>
 				</div>
 
-				<div class="col-md-1 col-sm-1 col-xs-1">
+
+				<!-- 				<DIV CLASS="COL-MD-1 COL-SM-1 COL-XS-1"> -->
+				<!-- 					<DIV CLASS="FORM-GROUP"> -->
+				<!-- 						                               <INPUT TYPE="CHECKBOX" ID="CHK_ACT_{{$ID}}" -->
+				<!-- 														NG-MODEL="EQUIP.UNDERWARRANTY" />  -->
+				<!-- 														<LABEL FOR="CHK_ACT_{{$ID}}">UW</LABEL> -->
+				<!-- <DIV STYLE="MARGIN-TOP: 0PX"> -->
+				<!-- 						<INPUT TYPE="CHECKBOX" CLASS="FACHKSQR" -->
+				<!-- 							NG-MODEL="EQUIP.UNDERWARRANTY"><LABEL CLASS="PADDING-UW">UW</LABEL> -->
+				<!-- </DIV> -->
+				<!-- 					</DIV> -->
+				<!-- 				</DIV> -->
+
+				<div class="col-md-1 col-sm-1 col-xs-1 padding-non">
 					<div class="form-group">
-						<input type="checkbox" id="chk_act_{{$id}}"
-							ng-model="equip.underWarranty" /> <label for="chk_act_{{$id}}">UW</label>
+						<i class="fa fa-trash-o icon"
+							ng-click="removeMachine(unit,$index)"></i> <i
+							class="fa fa-pencil icon"
+							ng-click="editEquipment='true' ; showAddEquipmentModel(equip,editEquipment)"></i>
 					</div>
 				</div>
-
-				<div class="col-md-1 col-sm-1 col-xs-1">
-					<div class="form-group">
-						<button type="button" class="btn btn-default btn-sm"
-							ng-click="removeMachine(unit,$index)" ng-show="$index=>0">
-							<span class="glyphicon glyphicon-remove"></span>
-						</button>
-					</div>
-				</div>
-
 			</div>
+		</div>
 	</section>
 </div>

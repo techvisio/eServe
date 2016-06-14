@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techvisio.eserve.beans.CustomerReport;
-import com.techvisio.eserve.beans.CustomerReportAttribute;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.db.DashBordDao;
 

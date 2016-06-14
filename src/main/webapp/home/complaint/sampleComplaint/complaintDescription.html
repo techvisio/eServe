@@ -1,0 +1,60 @@
+<section class="box ">
+	<header class="panel_header">
+		<h2 class="title pull-left">COMPLAINT DESCRIPTION</h2>
+
+	</header>
+	<div class="content-body">
+		<div class="row">
+			<div class="col-md-2 col-sm-12 col-xs-12">
+				<label for="inputlg">Issue in unit</label>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<select class="form-control"
+					ng-model="customerComplaint.issue.issueId"
+					ng-options="item.issueId*1 as item.value for item in serverModelData.ISSUE"
+					required>
+				</select>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<label for="inputlg">Description of Complaint</label>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<textarea rows="3" cols="30" class="form-control"
+					ng-model="customerComplaint.description" required></textarea>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="box ">
+	<header class="panel_header">
+		<h2 class="title pull-left">WORK DESCRIPTION</h2>
+
+	</header>
+	<div class="content-body">
+		<table class="table table-striped">
+				<tr>
+					<th>Part</th>
+					<th>Assest</th>
+					<th>Task</th>
+					<th>Description</th>
+				</tr>
+
+				<tr>
+					<td><input class="form-control" type="text"></td>
+					<td><input class="form-control" type="text"></td>
+					<td><input class="form-control" type="text"></td>
+					<td><input class="form-control" type="text"></td>
+				</tr>
+		</table>
+	</div>
+</section>

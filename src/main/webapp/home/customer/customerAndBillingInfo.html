@@ -1,7 +1,7 @@
 <form name="CUSTOMER" id="CUSTOMER">
 	<div>
 		<div ng
-			show="alerts..length>0 || !$scope.CUSTOMER.$valid || !$scope.UNIT.$valid">
+			show="alerts.length>0 || !$scope.CUSTOMER.$valid || !$scope.UNIT.$valid">
 			<alert ng-repeat="alert in alerts" type="{{alert.type}}"
 				close="closeAlert($index)">{{alert.msg}}</alert>
 		</div>
@@ -12,17 +12,17 @@
 					<h2 class="title pull-left">Customer Information</h2>
 					<div class="actions panel_actions pull-right">
 
-
-						<i class="fa fa-times" ng-show="!isNew && isEdit"
-							ng-click="toggleReadOnly('CUSTOMER')"></i> <i
-							class="fa fa-floppy-o"
-							ng-show="(isNew && !isEdit && !showAndHidePreview()) || (!isNew && isEdit && !showAndHidePreview())"
-							ng-click="saveAndUpdateCustomer('PUBLISH')"
-							ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i> <i
-							class="fa fa-pencil-square-o" ng-show="!isNew || isEdit"
-							ng-click="toggleReadOnly('CUSTOMER')" popover-placement="bottom"
-							popover="Click To Edit" popover-trigger="mouseenter"
-							ng-disabled="isCreateOrUpdatePrivileged()"></i>
+						<div ng-show="!showAndHidePreview()">
+							<i class="fa fa-floppy-o" ng-show="!isNew && !isEdit"
+								ng-click="saveAndUpdateCustomer('PUBLISH')"
+								ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i>
+							<i class="fa fa-times" ng-show="!isNew && !isEdit"
+								ng-click="toggleReadOnly('CUSTOMER')"></i> <i
+								class="fa fa-pencil" ng-show="!isNew && isEdit"
+								ng-click="toggleReadOnly('CUSTOMER')" popover-placement="bottom"
+								popover="Click To Edit" popover-trigger="mouseenter"
+								ng-disabled="isCreateOrUpdatePrivileged()"></i>
+						</div>
 					</div>
 				</header>
 				<div class="content-body">
@@ -30,7 +30,7 @@
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Customer Code</label>
-								<span class="desc">e.g. "hello"</span>
+
 								<div class="controls">
 									<input class="form-control" ng-model="customer.customerCode"
 										type="text" disabled>
@@ -43,7 +43,7 @@
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Customer Name</label>
-								<span class="desc">e.g. "Rahul"</span>
+
 								<div class="controls">
 									<input class="form-control" ng-model="customer.customerName"
 										required="required" ng-pattern="/^[a-zA-Z-z&-. ]+$/i"
@@ -56,8 +56,8 @@
 					<div class="row">
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">Contact No</label> <span
-									class="desc">e.g. "1234"</span>
+								<label class="form-label" for="formfield9">Contact No</label>
+
 								<div class="controls">
 									<i class="fa fa-times" ng-show="contactNoError"
 										popover-placement="left" popover="Contact No. Already Exist"
@@ -74,8 +74,7 @@
 
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">Email Id</label> <span
-									class="desc">e.g. "abc@xyz.com"</span>
+								<label class="form-label" for="formfield9">Email Id</label>
 								<div class="controls">
 									<i class="fa fa-times" ng-show="emailError"
 										popover-placement="left" popover="Email Id Already Exist"
@@ -93,7 +92,7 @@
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Customer Type</label>
-								<span class="desc">e.g. "1234"</span>
+
 								<div class="controls">
 									<select ng-model="customer.customerType.customerTypeId"
 										class="form-control"
@@ -115,7 +114,8 @@
 				<header class="panel_header">
 					<h2 class="title pull-left">BILLING ADDRESS</h2>
 					<div class="actions panel_actions pull-right">
-						<i class="fa fa-plus" ng-class="{'fa-minus':!isCollapsed}"
+						<i class="fa fa-chevron-up"
+							ng-class="{'fa-chevron-down':isCollapsed}"
 							ng-click="isCollapsed=!isCollapsed"></i>
 					</div>
 				</header>
@@ -124,8 +124,7 @@
 						<div class="row">
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
-									<label class="form-label" for="formfield9">Address</label> <span
-										class="desc">e.g. "SECTOR II KAILASH NAGAR GHAZIABAD"</span>
+									<label class="form-label" for="formfield9">Address</label>
 									<div class="controls">
 										<input class="form-control"
 											ng-model="customer.address.address" required>
@@ -139,7 +138,7 @@
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
 									<label class="form-label" for="formfield9">Alt. Contact
-										No</label> <span class="desc">e.g. "1234"</span>
+										No</label>
 									<div class="controls">
 										<input class="form-control" required="required"
 											ng-pattern="/^[0-9--]+$/"
@@ -153,8 +152,7 @@
 						<div class="row">
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
-									<label class="form-label" for="formfield9">City</label> <span
-										class="desc">e.g. "GHAZIABAD"</span>
+									<label class="form-label" for="formfield9">City</label>
 									<div class="controls">
 										<input class="form-control" ng-pattern="/^[a-zA-Z]+$/i"
 											ng-model="customer.address.city" type="text" required>
@@ -166,8 +164,7 @@
 
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
-									<label class="form-label" for="formfield9">Pincode</label> <span
-										class="desc">e.g. "201001"</span>
+									<label class="form-label" for="formfield9">Pincode</label>
 									<div class="controls">
 										<input class="form-control"
 											ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}$/"
@@ -182,8 +179,7 @@
 						<div class="row">
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
-									<label class="form-label" for="formfield9">State</label> <span
-										class="desc">e.g. "UTTAR PRADESH"</span>
+									<label class="form-label" for="formfield9">State</label>
 									<div class="controls">
 										<select ng-model="customer.address.state.stateId"
 											class="form-control"

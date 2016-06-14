@@ -7,6 +7,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.form={};
 	$scope.isCollapsed = true;
 	$scope.workItem = {}
+//	$scope.editEquipment=false;
 	$scope.isNew=true;
 	$scope.isEdit=false;
 	$scope.startDate=false;
@@ -167,15 +168,15 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		})
 	}
 
-	$scope.addMachine = function(object) {
+//	$scope.addMachine = function(object) {
 
-		var equipmentDetail = angular
-		.copy($scope.dummyEquipmentDetails);
-		equipmentDetail.unitId = object.unitId;
-		object.equipmentDetails
-		.push(equipmentDetail);
+//	var equipmentDetail = angular
+//	.copy($scope.dummyEquipmentDetails);
+//	equipmentDetail.unitId = object.unitId;
+//	object.equipmentDetails
+//	.push(equipmentDetail);
 
-	};
+//	};
 
 	$scope.removeMachine = function(object, index) {
 		console.log(index);
@@ -452,7 +453,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 		if($scope.selection="customer"){
 
-			
+
 			if(!$scope.form.CUSTOMER.$valid || $scope.contactNoError || $scope.emailError){
 				$scope.alerts=[];
 				$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
@@ -620,6 +621,57 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		};
 
 	};
+
+
+	$scope.showAddEquipmentModel = function(object, editEquipment) {
+		$scope.dummyEquipmentDetails={};
+		$rootScope.curModal = $modal.open({
+			templateUrl: 'customer/addEquipment.html',
+			controller: function (customerService, masterdataService) {
+
+				if(editEquipment==='true'){
+					$scope.dummyEquipmentDetails = object;
+				}
+			},
+			scope:$scope,
+		});
+
+
+
+		$scope.addMachine = function() {
+
+			if(editEquipment==='true'){
+				$rootScope.curModal.close();
+			}
+
+			else{
+				var equipmentDetail = angular
+				.copy($scope.dummyEquipmentDetails);
+				equipmentDetail.unitId = object.unitId;
+				object.equipmentDetails
+				.push(equipmentDetail);
+
+				$scope.dummyEquipmentDetails={};
+				$rootScope.curModal.close();
+			};
+		}
+
+	};
+
+	$scope.showEditEquipmentModel = function(object) {
+
+		$scope.editEquipment=true;
+		$rootScope.curModal = $modal.open({
+			templateUrl: 'customer/addEquipment.html',
+			controller: function (customerService, masterdataService) {
+				$scope.dummyEquipmentDetails = object;
+			},
+			scope:$scope,
+		});
+
+
+	};
+
 
 	$scope.addcurrentUnittoCustomer = function(){
 

@@ -1,11 +1,22 @@
 package com.techvisio.eserve.beans;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "TB_EQUIPMENT_MASTER")
@@ -25,7 +36,6 @@ public class Equipment extends BasicEntity{
 	private Double price;
 	@Column(name="BRAND")
 	private String brand;
-
 	
 	public Long getEquipmentId() {
 		return equipmentId;
@@ -63,6 +73,5 @@ public class Equipment extends BasicEntity{
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
-	
-	
+
 }

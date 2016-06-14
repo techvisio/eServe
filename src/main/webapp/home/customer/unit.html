@@ -5,12 +5,18 @@
 				<header class="panel_header">
 					<h2 class="title pull-left">Unit No({{unit.machineSerialNo}})</h2>
 					<div class="actions panel_actions pull-right">
-						<i class="fa fa-trash-o" ng-click="removeUnit($index)"
-							ng-show="$index>0" ng-disabled="isCreateOrUpdatePrivileged()"></i>
-						<img src="../static/images/complaint.png" height="25" width="25"
+						<i class="fa fa-pencil icon" ng-click="toggleReadOnly('UNIT')"
+							ng-show="!isNew && !isEdit"
+							ng-disabled="isCreateOrUpdatePrivileged()"></i> <i
+							class="fa fa-times icon" ng-click="toggleReadOnly('UNIT')"
+							ng-show="!isNew && isEdit"></i> <i class="fa fa-trash-o"
+							ng-click="removeUnit($index)" ng-show="$index>0"
+							ng-disabled="isCreateOrUpdatePrivileged()"></i> <img
+							src="../static/images/complaint.png" height="25" width="25"
 							ng-click="(!isPrivileged('CREATE_COMPLAINT')) || redirectToComplaintScreenByUnitId(unit,unit.unitId)"
 							ng-disabled="(!isPrivileged('CREATE_COMPLAINT')) || isProcessing" />
-						<i class="fa fa-plus" ng-class="{'fa-minus':!isCollapsed}"
+						<i class="fa fa-chevron-up"
+							ng-class="{'fa-chevron-down':isCollapsed}"
 							ng-click="isCollapsed=!isCollapsed"></i>
 						<!--                     <i class="box_setting material-icons"></i> -->
 						<!--                     <i class="box_close material-icons"></i> -->
@@ -23,8 +29,7 @@
 						<div class="row">
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
-									<label class="form-label" for="formfield9">Unit Code</label> <span
-										class="desc">e.g. "HW1234"</span>
+									<label class="form-label" for="formfield9">Unit Code</label>
 									<div class="controls">
 										<input class="form-control" type="text"
 											ng-model="unit.unitCode" disabled>
@@ -37,7 +42,7 @@
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
 									<label class="form-label" for="formfield9">Service Type</label>
-									<span class="desc">e.g. "hello123"</span>
+
 									<div class="controls">
 										<select class="form-control"
 											ng-model="unit.serviceAgreement.serviceCategory" disabled>
@@ -55,7 +60,7 @@
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
 									<label class="form-label" for="formfield9">Service
-										Party</label> <span class="desc">e.g. "Dropdown"</span>
+										Party</label>
 									<div class="controls">
 										<select
 											ng-model="unit.serviceAgreement.serviceProvider.serviceProviderId"
@@ -72,7 +77,7 @@
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
 									<label class="form-label" for="formfield9">Unit
-										Category</label> <span class="desc">e.g. "Blood"</span>
+										Category</label>
 									<div class="controls">
 										<select ng-model="unit.unitCategory.unitCategoryId"
 											class="form-control"
@@ -88,8 +93,7 @@
 						<div class="row">
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
-									<label class="form-label" for="formfield9">Model No</label> <span
-										class="desc">e.g. "1234"</span>
+									<label class="form-label" for="formfield9">Model No</label>
 									<div class="controls">
 										<input class="form-control" type="text" required
 											ng-model="unit.modelNo">
@@ -102,7 +106,7 @@
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
 									<label class="form-label" for="formfield9">Machine
-										Serial No</label> <span class="desc">e.g. "123"</span>
+										Serial No</label>
 									<div class="controls">
 										<input class="form-control" type="text" required
 											ng-model="unit.machineSerialNo">
@@ -115,8 +119,7 @@
 						<div class="row">
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
-									<label class="form-label" for="formfield9">Asset No</label> <span
-										class="desc">e.g. "1234"</span>
+									<label class="form-label" for="formfield9">Asset No</label>
 									<div class="controls">
 										<input class="form-control type=" text"
 										required
@@ -130,7 +133,7 @@
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
 									<label class="form-label" for="formfield9">Agreement
-										Duration</label> <span class="desc">e.g. "123"</span>
+										Duration</label>
 									<div class="controls">
 										<select
 											ng-model="unit.serviceAgreement.agreementDuration.agreementDurationId"
@@ -147,7 +150,7 @@
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
 									<label class="form-label" for="formfield9">Contract
-										Start On</label> <span class="desc">e.g. "dd/mm/yy"</span>
+										Start On</label>
 									<div class="controls">
 										<input type="text" class="form-control datepicker"
 											name="requestDueDate"
@@ -164,7 +167,7 @@
 							<div class="col-md-5 col-sm-12 col-xs-12">
 								<div class="form-group">
 									<label class="form-label" for="formfield9">Contract
-										Expire On</label> <span class="desc">e.g. "dd/mm/yy"</span>
+										Expire On</label>
 									<div class="controls">
 										<input type="text" class="form-control datepicker"
 											name="requestDueDate"
@@ -183,11 +186,9 @@
 						<br>
 						<div class="tab-separator min-height">
 							<tabset justified="true"> <tab heading="SITE ADDRESS">
-							<div ng-include
-								src="'../home/customer/siteAddress.html'"></div>
+							<div ng-include src="'../home/customer/siteAddress.html'"></div>
 							</tab> <tab heading="EQUIPMENTS">
-							<div ng-include
-								src="'../home/customer/equipment.html'"></div>
+							<div ng-include src="'../home/customer/equipment.html'"></div>
 							</tab> <tab heading="SERVICE HISTORY"
 								ng-click="getServiceAgreementHistoryForUnit(unit.unitId)"
 								disabled="!unit.unitId">
@@ -205,16 +206,16 @@
 
 
 						<div class="row">
-							<button type="button" class="btn btn-primary button child-right"
-								ng-show="!isNew"
+							<button type="button" class="btn btn-primary child-right"
+								ng-show="!isNew && isEdit"
 								ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"
 								ng-click="saveUnit(unit,'CUSTOMER_DRAFT')">
 								<i class="fa fa-floppy-o" style="font-size: 13px"></i>&nbsp Save
 								As Draft
 							</button>
 
-							<button type="button" class="btn btn-success button child-right"
-								ng-show="!isNew"
+							<button type="button" class="btn btn-success child-right"
+								ng-show="!isNew && isEdit"
 								ng-disabled="isCreateOrUpdatePrivileged() || isProcessing || unit.approvalStatus==='P'"
 								ng-click="showCommentBoxUnitPublish(unit)">
 								<i class="fa fa-paper-plane" style="font-size: 12px"></i>&nbsp
@@ -222,16 +223,9 @@
 							</button>
 
 							<button type="button" class="btn btn-primary child-right"
-								ng-click="showUnitExpireModal(unit)" ng-show="unit.unitId"
+								ng-click="showUnitExpireModal(unit)" ng-show="unit.unitId" 
 								ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Show
 								Agreement</button>
-
-							<button type="button" class="btn btn-primary child-right"
-								ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && isEdit"
-								ng-disabled="isCreateOrUpdatePrivileged()">Edit</button>
-
-							<button type="button" class="btn btn-primary child-right"
-								ng-click="toggleReadOnly('UNIT')" ng-show="!isNew && !isEdit">Cancel</button>
 
 						</div>
 

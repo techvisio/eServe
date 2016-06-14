@@ -170,9 +170,11 @@ public class ReportDaoImpl extends BaseDao implements ReportDao {
 			customerReport.setAssetNo((String) result[10]);
 			customerReport.setMachineSerialNo((String) result[11]);
 			customerReport.setModelNo((String) result[12]);
+			if(result[13]!=null){
 			Date date =  (Date) result[13];
 			String lastApprovalDate = DateUtil.convertDateToString(date);
 			customerReport.setLastApprovalDate(lastApprovalDate);
+			}
 			customerReport.setLastApprovedBy((String) result[14]);
 			customerReport.setUnitType((String) result[15]);
 			Long serviceAgreementId = (long) ((Number) result[16]).intValue();

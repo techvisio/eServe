@@ -1,284 +1,282 @@
 <div ng-init="init()">
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-        <section class="box ">
-            <header class="panel_header">
-                <h2 class="title pull-left">CUSTOMER INFORMATION</h2>
-                <div class="actions panel_actions pull-right">
-                    <i class="box_toggle material-icons"></i>
-                    <i class="box_setting material-icons"></i>
-                    <i class="box_close material-icons"></i>
-                </div>
-            </header>
-            <div class="content-body">
-                <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Customer Code</label>
-                                
-                                <div class="controls">
-                                    <input class="form-control"
-									ng-model="unitApproval.customerCode" type="text"
-									disabled>
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Customer Name</label>
-                                
-                                <div class="controls">
-                                    <input class="form-control" disabled
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+		<section class="box ">
+			<header class="panel_header">
+				<h2 class="title pull-left">CUSTOMER INFORMATION</h2>
+				<div class="actions panel_actions pull-right">
+					<i class="box_toggle material-icons"></i> <i
+						class="box_setting material-icons"></i> <i
+						class="box_close material-icons"></i>
+				</div>
+			</header>
+			<div class="content-body">
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Customer Code</label>
+
+							<div class="controls">
+								<input class="form-control" ng-model="unitApproval.customerCode"
+									type="text" disabled>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Customer Name</label>
+
+							<div class="controls">
+								<input class="form-control" disabled
 									ng-model="unitApproval.customerName" type="text">
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            
-            	<div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Contact No</label>
-                                
-                                <div class="controls">
-                                    <input class="form-control" disabled
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Contact No</label>
+
+							<div class="controls">
+								<input class="form-control" disabled
 									ng-model="unitApproval.contactNo" type="text"
 									ng-click="resetAleart()">
-                                </div>
-                            </div>
-                    </div>
-                    <div class="col-md-1">
-                    </div>
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Email Id</label>
-                                
-                                <div class="controls">
-                                    <input class="form-control" ng-model="unitApproval.emailId"
-									disabled  type="email" ng-click="resetAleart()">
-                                </div>
-                            </div>
-                    </div>
-                </div>
-            
-            </div>
-        </section>
-    </div>
-    
-    
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-        <section class="box ">
-            <header class="panel_header">
-                <h2 class="title pull-left">UNIT INFORMATION</h2>
-                <div class="actions panel_actions pull-right">
-                    <i class="box_toggle material-icons"></i>
-                    <i class="box_setting material-icons"></i>
-                    <i class="box_close material-icons"></i>
-                </div>
-            </header>
-            <div class="content-body">
-                <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Unit Code</label>
-                                
-                                <div class="controls">
-                                    <input class="form-control" type="text"
+							</div>
+						</div>
+					</div>
+					<div class="col-md-1"></div>
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Email Id</label>
+
+							<div class="controls">
+								<input class="form-control" ng-model="unitApproval.emailId"
+									disabled type="email" ng-click="resetAleart()">
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</section>
+	</div>
+
+
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+		<section class="box ">
+			<header class="panel_header">
+				<h2 class="title pull-left">UNIT INFORMATION</h2>
+				<div class="actions panel_actions pull-right">
+					<i class="box_toggle material-icons"></i> <i
+						class="box_setting material-icons"></i> <i
+						class="box_close material-icons"></i>
+				</div>
+			</header>
+			<div class="content-body">
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Unit Code</label>
+
+							<div class="controls">
+								<input class="form-control" type="text"
 									ng-model="unitApproval.unit.unitCode" disabled>
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Service Type</label>
-                                
-                                <div class="controls">
-                                    <select class="form-control"
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Service Type</label>
+
+							<div class="controls">
+								<select class="form-control"
 									ng-model="unitApproval.unit.serviceAgreement.serviceCategory"
 									disabled>
 									<option>Warranty</option>
 									<option>AMC</option>
 									<option>Paid</option>
-									</select>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-          
-      			   <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Service Party</label>
-                                
-                                <div class="controls">
-                                    <select
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Service Party</label>
+
+							<div class="controls">
+								<select
 									ng-model="unitApproval.unit.serviceAgreement.serviceProvider.serviceProviderId"
 									class="form-control"
 									ng-options="item.serviceProviderId*1 as item.serviceProvider for item in serverModelData.SERVICE_PROVIDER"
 									required>
-									</select>
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Unit Category</label>
-                                
-                                <div class="controls">
-                                    <select ng-model="unitApproval.unit.unitCategory.unitCategoryId"
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Unit Category</label>
+
+							<div class="controls">
+								<select ng-model="unitApproval.unit.unitCategory.unitCategoryId"
 									class="form-control"
 									ng-options="item.unitCategoryId*1 as item.unitType for item in serverModelData.UNIT_CATEGORY"
 									required>
-									</select>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-      
-      			   <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Model No</label>
-                                
-                                <div class="controls">
-                                   <input class="form-control" type="text"
-									required ng-model="unitApproval.unit.modelNo">
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Machine Serial No</label>
-                                
-                                <div class="controls">
-                                    		<input class="form-control" type="text"
-											required ng-model="unitApproval.unit.machineSerialNo">
-                                </div>
-                            </div>
-                    </div>
-                </div>
-      	
-      			   <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Asset No</label>
-                                
-                                <div class="controls">
-                                    <input class="form-control" type="text"
-									required ng-model="unitApproval.unit.assetNo">
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Agreement Duration</label>
-                                
-                                <div class="controls">
-                                    <select
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Model No</label>
+
+							<div class="controls">
+								<input class="form-control" type="text" required
+									ng-model="unitApproval.unit.modelNo">
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Machine Serial
+								No</label>
+
+							<div class="controls">
+								<input class="form-control" type="text" required
+									ng-model="unitApproval.unit.machineSerialNo">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Asset No</label>
+
+							<div class="controls">
+								<input class="form-control" type="text" required
+									ng-model="unitApproval.unit.assetNo">
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Agreement
+								Duration</label>
+
+							<div class="controls">
+								<select
 									ng-model="unitApproval.unit.serviceAgreement.agreementDuration.agreementDurationId"
 									class="form-control"
 									ng-options="item.agreementDurationId*1 as item.displayValue for item in serverModelData.AGREEMENT_DURATION">
-									</select>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Contract Start On</label>
-                                
-                                <div class="controls">
-                                   <div class="date-input">
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Contract Start
+								On</label>
+
+							<div class="controls">
+								<div class="date-input">
 									<input type="text" class="form-control datepicker"
-									name="requestDueDate"
-									ng-model="unitApproval.unit.serviceAgreement.contractStartOnString"
-									datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
-									ng-click="startDate = !startDate; $event.stopPropagation();"
-									show-button-bar="false">
-									</div>
-                                </div>
-                            </div>
-                    </div>
-                    
-                    <div class="col-md-1">
-                    </div>
-                    
-                     <div class="col-md-5 col-sm-12 col-xs-12">
-                       <div class="form-group">
-                                <label class="form-label" for="formfield9">Contract Expire On</label>
-                                
-                                <div class="controls">
-                                    <div class="date-input">
+										name="requestDueDate"
+										ng-model="unitApproval.unit.serviceAgreement.contractStartOnString"
+										datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
+										ng-click="startDate = !startDate; $event.stopPropagation();"
+										show-button-bar="false">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="form-label" for="formfield9">Contract
+								Expire On</label>
+
+							<div class="controls">
+								<div class="date-input">
 									<input type="text" class="form-control datepicker"
-									name="requestDueDate"
-									ng-model="unitApproval.unit.serviceAgreement.contractExpireOnString"
-									datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate" disabled
-									ng-click="expireDate = !expireDate; $event.stopPropagation();"
-									show-button-bar="false">
-									</div>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-                
-     <hr>
-	<div class="tab-separator">
-		<tabset justified="true"> <tab heading="SITE ADDRESS">
-		<div ng-include src="'../home/customer/approveUnitSiteAddress.html'"></div>
-		</tab> <tab heading="EQUIPMENTS">
-		<div ng-include src="'../home/customer/approveUnitEquipmentDtl.html'"></div>
-		</tab> <tab heading="SERVICE HISTORY"
-			ng-click="getServiceAgreementHistoryForUnit(unitApproval.unit.unitId)"
-			disabled="!unitApproval.unit.unitId">
-		<div ng-include src="'../home/customer/serviceHistory.html'"></div>
-		</tab> <tab heading="COMPLAINTS"
-			ng-click="getAllComplaintsForUnit(unitApproval.unit.unitId)"
-			disabled="!unitApproval.unit.unitId">
-		<div ng-include src="'../home/customer/customerComplaint.html'"></div>
-		</tab> </tabset>
+										name="requestDueDate"
+										ng-model="unitApproval.unit.serviceAgreement.contractExpireOnString"
+										datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate"
+										disabled
+										ng-click="expireDate = !expireDate; $event.stopPropagation();"
+										show-button-bar="false">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<hr>
+				<div class="tab-separator">
+					<tabset justified="true"> <tab heading="SITE ADDRESS">
+					<div ng-include
+						src="'../home/customer/approveUnitSiteAddress.html'"></div>
+					</tab> <tab heading="EQUIPMENTS">
+					<div ng-include
+						src="'../home/customer/approveUnitEquipmentDtl.html'"></div>
+					</tab> <tab heading="SERVICE HISTORY"
+						ng-click="getServiceAgreementHistoryForUnit(unitApproval.unit.unitId)"
+						disabled="!unitApproval.unit.unitId">
+					<div ng-include src="'../home/customer/serviceHistory.html'"></div>
+					</tab> <tab heading="COMPLAINTS"
+						ng-click="getAllComplaintsForUnit(unitApproval.unit.unitId)"
+						disabled="!unitApproval.unit.unitId">
+					<div ng-include src="'../home/customer/customerComplaint.html'"></div>
+					</tab> </tabset>
+				</div>
+
+
+				<div class="row">
+					<button type="button" class="btn btn-success btn-sm child-right"
+						ng-click="approveUnit(unitApproval.unit)"
+						ng-disabled="isProcessing || unitApproval.unit.approvalStatus==='A'">Approve
+						Unit</button>
+
+					<button type="button" class="btn btn-success btn-sm child-right"
+						ng-click="showRejectionCommentBox(unitApproval.unit)"
+						ng-disabled="isProcessing || unitApproval.unit.approvalStatus==='A' || unitApproval.unit.approvalStatus==='R'">Reject
+						Changes</button>
+
+					<button type="button" class="btn btn-primary child-right"
+						ng-click="showUnitExpireModal(unitApproval.unit)"
+						ng-show="unitApproval.unit.unitId"
+						ng-disabled="!isPrivileged('AGREEMENT_APPROVAL') || isProcessing">Show
+						Agreement</button>
+				</div>
+			</div>
+		</section>
 	</div>
-                
-      
-      <div class="row">
-            <button type="button" class="btn btn-success btn-sm child-right"
-			ng-click="approveUnit(unitApproval.unit)"
-			ng-disabled="isProcessing || unitApproval.unit.approvalStatus==='A'">Approve
-			Unit</button>
-		
-			<button type="button" class="btn btn-success btn-sm child-right"
-			ng-click="showRejectionCommentBox(unitApproval.unit)"
-			ng-disabled="isProcessing || unitApproval.unit.approvalStatus==='A' || unitApproval.unit.approvalStatus==='R'">Reject
-			Changes</button>
-			
-			<button type="button" class="btn btn-primary child-right"
-			ng-click="showUnitExpireModal(unitApproval.unit)"
-			ng-show="unitApproval.unit.unitId"
-			ng-disabled="!isPrivileged('AGREEMENT_APPROVAL') || isProcessing">Show
-			Agreement</button>
-      </div>
-            
-            </div>
-        </section>
-    </div>
 </div>

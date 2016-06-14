@@ -12,8 +12,8 @@ userModule
 		 'masterdataService',
 		 function($scope, $state, $rootScope,userService,user,masterdataService) {
 			 $scope.form={};
-			 $scope.isUserCollapsed= true;
-			 $scope.isPrivilegesCollapsed= true;
+//			 $scope.isUserCollapsed= true;
+//			 $scope.isPrivilegesCollapsed= false;
 			 $scope.isEdit = false;
 			 $scope.customQuestion = false;
 			 $scope.wrongNewPass = false;
@@ -53,6 +53,7 @@ userModule
 							 console.log(userPrivileges);
 							 if (userPrivileges) {
 								 $scope.user.privileges=userPrivileges;
+								 $scope.createPriviledgeGrp(userPrivileges);
 							 }
 						 })
 			 }			 
@@ -130,6 +131,25 @@ userModule
 						 })
 			 }
 
+			 $scope.createPriviledgeGrp=function(priviledgesList){
+				 $scope.priviledgeGrp={};
+				 angular.forEach(priviledgesList, function(privilege) {
+					var priviledgeTypeGrp=$scope.priviledgeGrp[privilege.privilege.type];
+					if(!priviledgeTypeGrp){
+						$scope.priviledgeGrp[privilege.privilege.type]=[[]];
+						priviledgeTypeGrp=$scope.priviledgeGrp[privilege.privilege.type];
+					}
+					var lastList=priviledgeTypeGrp[priviledgeTypeGrp.length-1];
+					if(lastList.length>1)
+						{
+						priviledgeTypeGrp.push([privilege]);
+						}
+					else
+						{
+						lastList.push(privilege);
+						}
+				 });
+			 }
 			 $scope.addUser=function(){
 
 				 if($scope.user.password != $scope.confirmPassword){
@@ -253,33 +273,6 @@ userModule
 				 window.location=document.getElementById('logout').href;
 			 }
 
-
-
-//			 return;
-//			 }
-//			 }
-//			 if($scope.user.password==null){
-//			 $scope.userPassword = $scope.getCurrentPassword();
-//			 $scope.user.password = $scope.userPassword.password;
-//			 $scope.addUser();
-//			 }
-
-//			 })
-//			 }
-//			 $scope.getUserPrivileges=function(){
-//			 userService.getUserPrivileges($scope.user.userId||0)
-//			 .then(
-//			 function(privileges) {
-//			 console
-//			 .log('Privilege Data received from service in controller : ');
-//			 console.log(privileges);
-//			 if (privileges != null) {
-//			 $scope.allUserPrivileges=privileges;
-//			 }
-
-//			 })
-//			 }
-
 			 $scope.saveQuestion=function(){
 
 				 if($scope.user.password == $scope.user.newPassword){
@@ -324,10 +317,6 @@ userModule
 
 			 $scope.saveUser=function(){
 
-//				 if($scope.user.password.length != 6 && $scope.user.password.length < 6){
-//				 $scope.`.$valid = false;
-//				 }
-
 				 if(!$scope.USER.$valid){
 
 					 $scope.alerts=[];
@@ -335,10 +324,6 @@ userModule
 					 return;
 				 }
 
-//				 if($scope.user.password == null || $scope.confirmPassword==null || $scope.user.password != $scope.confirmPassword){
-//				 $scope.wrongConfirmPass = true;
-//				 return;
-//				 }
 				 userService.saveUser($scope.user)
 				 .then(
 						 function(response) {

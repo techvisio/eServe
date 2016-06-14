@@ -137,7 +137,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 
 	.state('complaintScreen', {
 		url: "/complaint/{entityId:[0-9]{1,8}}",
-		templateUrl: 'complaint/complaint.html',
+		templateUrl: 'complaint/sampleComplaint.html',
 		controller: "complaintController",
 		resolve:{
 			complaint: ['$stateParams','complaintService', function($stateParams,complaintService){

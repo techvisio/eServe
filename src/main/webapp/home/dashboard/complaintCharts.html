@@ -1,38 +1,62 @@
 <div class="row">
-		<div class="col-sm-4 col-sm-12" id="pie-chart">
-			<div class="panel panel-default">
-				<div class="panel-heading">Complaint by SLA</div>
+
+
+	<div class="col-sm-4 col-sm-12" id="pie-chart">
+
+		<section class="box">
+			<header class="panel_header">
+				<h2 class="title pull-left">Complaint by SLA</h2>
+				
+			</header>
+			<div class="content-body">
 				<div class="panel-body">
 					<canvas id="pie" class="chart chart-doughnut"
 						chart-data="complaintsBySLA.data"
 						chart-labels="complaintsBySLA.label"
-						chart-options="complaintsBySLA.options" chart-legend=true chart-click="getComplaintBySlaCount">
+						chart-options="complaintsBySLA.options" chart-legend=true
+						chart-click="getComplaintBySlaCount">
 				</canvas>
 				</div>
 			</div>
-		</div>
-		<div class="col-sm-4 col-sm-12" id="pie-chart">
-			<div class="panel panel-default">
-				<div class="panel-heading">Complaint by Assignment</div>
+		</section>
+	</div>
+	<div class="col-sm-4 col-sm-12" id="pie-chart">
+		<section class="box ">
+			<header class="panel_header">
+				<h2 class="title pull-left">Complaint by Assignment</h2>
+				
+			</header>
+			<div class="content-body">
+
 				<div class="panel-body">
 					<canvas id="pie" class="chart chart-doughnut"
 						chart-data="complaintsByAssignment.data"
 						chart-labels="complaintsByAssignment.label"
-						chart-options="complaintsByAssignment.options" chart-legend=true chart-click="getComplaintByAssignmentCount">
+						chart-options="complaintsByAssignment.options" chart-legend=true
+						chart-click="getComplaintByAssignmentCount">
 				</canvas>
 				</div>
 			</div>
-		</div>
-		<div class="col-sm-4 col-sm-12" id="pie-chart">
-			<div class="panel panel-default">
-				<div class="panel-heading">Complaint by Priority</div>
+		</section>
+	</div>
+
+
+	<div class="col-sm-4 col-sm-12" id="pie-chart">
+		<section class="box ">
+			<header class="panel_header">
+				<h2 class="title pull-left">Complaint by Priority</h2>
+				
+			</header>
+			<div class="content-body">
 				<div class="panel-body">
 					<canvas id="pie" class="chart chart-doughnut"
 						chart-data="complaintsByPriority.data"
 						chart-labels="complaintsByPriority.label"
-						chart-options="complaintsByPriority.options" chart-legend=true chart-click="getComplaintByPriorityCount">
+						chart-options="complaintsByPriority.options" chart-legend=true
+						chart-click="getComplaintByPriorityCount">
 				</canvas>
 				</div>
 			</div>
-		</div>
+		</section>
 	</div>
+</div>

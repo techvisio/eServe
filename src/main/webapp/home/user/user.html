@@ -1,178 +1,203 @@
 <form name='USER' id="USER">
 	<div ng-init="init()">
-		<div>
-			<h3 class="custom-page-header">CREATE USER</h3>
-		</div>
-		<div ng show="alerts..length>0 || !$scope.USER.$valid">
-			<alert ng-repeat="alert in alerts" type="{{alert.type}}"
-				close="closeAlert($index)">{{alert.msg}}</alert>
-		</div>
-		<div class="row">
-			<div class="col-sm-2">
-				<label for="inputlg">First Name</label>
-			</div>
-			<div class="col-sm-3">
-				<input class="form-control input-sm" ng-model="user.firstName"
-					type="text" ng-pattern="/^[a-zA-Z]+$/i" required="required">
-			</div>
 
-			<div class="col-sm-2">
-				<label for="inputlg">Last Name</label>
-			</div>
-			<div class="col-sm-3">
-				<input class="form-control input-sm" ng-pattern="/^[a-zA-Z]+$/i"
-					ng-model="user.lastName" id="inputlg" type="text"
-					required="required">
-			</div>
-		</div>
+		<section class="box ">
+			<header class="panel_header">
+				<h2 class="title pull-left">USER INFORMATION</h2>
+				<div class="actions panel_actions pull-right">
+					<i class="fa fa-chevron-up"
+						ng-class="{'fa-chevron-down':!isUserCollapsed}"
+						ng-click="isUserCollapsed=!isUserCollapsed"></i>
+				</div>
+			</header>
+			<div class="content-body">
 
-		<div class="row">
-
-			<div class="col-sm-2">
-				<label for="inputlg"> Date of Birth</label>
-			</div>
+				<div collapse="!isUserCollapsed">
+					<div ng show="alerts..length>0 || !$scope.USER.$valid">
+						<alert ng-repeat="alert in alerts" type="{{alert.type}}"
+							close="closeAlert($index)">{{alert.msg}}</alert>
+					</div>
 
 
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">First Name</label> <span
+									class="desc">e.g. "Rajat"</span>
+								<div class="controls">
+									<input type="text" class="form-control"
+										ng-model="user.firstName" type="text"
+										ng-pattern="/^[a-zA-Z]+$/i" required="required">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Last Name</label> <span
+									class="desc">e.g. "Kumar"</span>
+								<div class="controls">
+									<input type="text" class="form-control" required="required"
+										ng-pattern="/^[a-zA-Z]+$/i" ng-model="user.lastName">
+								</div>
+							</div>
+						</div>
+					</div>
 
-			<div class="col-sm-3">
-				<div class="date-input">
-					<input type="text" class="form-control datepicker"
-						required="required" name="requestDueDate"
-						ng-model="user.dobString" datepicker-popup="{{'MMM dd yyyy'}}"
-						is-open="openedFrom"
-						ng-click="openedFrom = !openedFrom; $event.stopPropagation();"
-						show-button-bar="false" placeholder="Date of Birth">
+
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Date of Birth</label>
+								<span class="desc">e.g. "10 nov 1991//span>
+									<div class="controls">
+										<input type="text" class="form-control datepicker"
+											required="required" name="requestDueDate"
+											ng-model="user.dobString"
+											datepicker-popup="{{'MMM dd yyyy'}}" is-open="openedFrom"
+											ng-click="openedFrom = !openedFrom; $event.stopPropagation();"
+											show-button-bar="false" placeholder="Date of Birth">
+									</div>
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Email Id</label> <span
+									class="desc">e.g. "asd@asd.com"</span>
+								<div class="controls">
+									<input type="email" class="form-control"
+										ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
+										ng-model="user.emailId" ng-click="resetAlert()"
+										required="required">
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">User Name</label> <span
+									class="desc">e.g. "XYZ"</span>
+								<div class="controls">
+									<input type="text" class="form-control"
+										ng-pattern="/^[a-zA-_-Z0-9]+$/i" ng-model="user.userName"
+										required="required" ng-click="resetAlert()">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Active</label> <span
+									class="desc">e.g. "Kumar"</span>
+								<div class="controls">
+									<input type="checkbox" class="faChkSqr" ng-model="user.active"
+										id="chk_{{$id}}"><label for="chk_{{$id}}"
+										class="padding-uw"></label>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Department</label> <span
+									class="desc">e.g. "Rajat"</span>
+								<div class="controls">
+									<select ng-model="user.department.departmentId"
+										class="form-control"
+										ng-options="item.departmentId as item.department for item in serverModelData.DEPARTMENT"
+										required>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Designation</label> <span
+									class="desc">e.g. "Kumar"</span>
+								<div class="controls">
+									<select ng-model="user.designation.designationId"
+										class="form-control"
+										ng-options="item.designationId as item.designation  for item in serverModelData.DESIGNATION"
+										required>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			<!-- 		<div class="col-md-6"> -->
-			<!--             <p class="input-group"> -->
-			<!--               <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" /> -->
-			<!--               <span class="input-group-btn"> -->
-			<!--                 <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button> -->
-			<!--               </span> -->
-			<!--             </p> -->
-			<!--         </div> -->
+		</section>
 
-			<div class="col-sm-2">
-				<label for="inputlg"> Email Id</label>
+
+		<section class="box ">
+			<header class="panel_header">
+				<h2 class="title pull-left">USER PRIVILEGES</h2>
+				<div class="actions panel_actions pull-right">
+					<i class="fa fa-chevron-up"
+						ng-class="{'fa-chevron-down':!isPrivilegesCollapsed}"
+						ng-click="isPrivilegesCollapsed=!isPrivilegesCollapsed"></i>
+				</div>
+			</header>
+			<div class="content-body">
+
+
+				<div collapse="!isPrivilegesCollapsed">
+					<div class="row" ng-repeat="privilege in user.privileges">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<input type="checkbox" class="faChkSqr"
+									ng-model="privilege.granted" id="chk_{{$id}}"><label
+									for="chk_{{$id}}" class="padding-uw">{{privilege.privilege.privilege}}</label>
+
+							</div>
+						</div>
+
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<span>{{privilege.privilege.description}}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-9"></div>
+
+						<div class="col-sm-2" ng-show="!isEdit">
+							<button type="button" class="btn btn-primary"
+								ng-click="toggleReadOnly('USER')"
+								ng-disabled="isCreateOrUpdatePrivileged()">Edit</button>
+						</div>
+						<div class="col-sm-1" ng-show="!isNew && isEdit">
+							<button type="button" class="btn btn-primary"
+								ng-click="toggleReadOnly('USER')">Cancel</button>
+						</div>
+
+						<div class="col-sm-2 child-right" ng-show="isNew || isEdit">
+							<button type="button" class="btn btn-primary"
+								ng-click="saveAndUpdateUser()"
+								ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Save
+								User</button>
+						</div>
+
+					</div>
+				</div>
 			</div>
-			<div class="col-sm-3">
-				<input class="form-control input-sm"
-					ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
-					ng-model="user.emailId" id="inputlg" type="email" ng-click="resetAlert()"
-					required="required">
-			</div>
-
-		</div>
-
-		<div class="row">
-
-			<div class="col-sm-2">
-				<label for="inputlg"> User Name</label>
-			</div>
-			<div class="col-sm-3">
-				<input class="form-control input-sm"
-					ng-pattern="/^[a-zA-_-Z0-9]+$/i" ng-model="user.userName"
-					id="inputlg" type="text" required="required" ng-click="resetAlert()">
-			</div>
-
-			<div class="col-sm-2">
-				<label> Active </label>
-			</div>
-			<div class="col-sm-2">
-				<input type="checkbox" id="chk_act" ng-model="user.active" /> <label
-					for="chk_act"></label>
-			</div>
-
-		</div>
-
-		<!-- 		<div class="row"> -->
-
-		<!-- 			<div class="col-sm-2"> -->
-		<!-- 				<label for="inputlg"> Password</label> -->
-		<!-- 			</div> -->
-		<!-- 			<div class="col-sm-3"> -->
-		<!-- 				<input class="form-control input-sm" name="password" pattern=".{6,}" -->
-		<!-- 					ng-model="user.password" id="pass" id="inputlg" type="password" -->
-		<!-- 					tooltip-enable="userForm.$invalid" -->
-		<!-- 					tooltip="Password must be atleast 6 character" required="required"> -->
-		<!-- 			</div> -->
-
-		<!-- 			<div class="col-sm-2"> -->
-		<!-- 				<label for="inputlg"> Confirm Password</label> -->
-		<!-- 			</div> -->
-		<!-- 			<div class="col-sm-3"> -->
-		<!-- 				<input class="form-control input-sm" ng-model="confirmPassword" -->
-		<!-- 					id="inputlg" type="password" required="required"> -->
-		<!-- 			</div> -->
-		<!-- 			<div class="col-sm-1"> -->
-		<!-- 				<img height="30" width="30" ng-src="../static/images/redwarning.png" -->
-		<!-- 					ng-show="wrongConfirmPass" -->
-		<!-- 					tooltip="Password And Confirm Password Must Be Same" /> -->
-		<!-- 			</div> -->
-
-		<!-- 		</div> -->
-
-		<div class="row">
-
-			<div class="col-sm-2">
-				<label for="inputlg">Department</label>
-			</div>
-			<div class="col-sm-3">
-				<select ng-model="user.department.departmentId" class="form-control"
-					ng-options="item.departmentId as item.department for item in serverModelData.DEPARTMENT" required>
-				</select>
-			</div>
+		</section>
 
 
-			<div class="col-sm-2">
-				<label for="inputlg">Designation</label>
-			</div>
-			<div class="col-sm-3">
-				<select ng-model="user.designation.designationId"
-					class="form-control"
-					ng-options="item.designationId as item.designation  for item in serverModelData.DESIGNATION" required>
-				</select>
-			</div>
 
-
-		</div>
-	
-	</br>
-	<div class="row">
-		<div class="col-sm-12">
-			<h3 class="new-event-subtitle">USER PRIVILEGES</h3>
-		</div>
-	</div>
-	<div>
-		<div class="row" ng-repeat="privilege in user.privileges">
-			<div class="col-sm-6">
-				<input type="checkbox" id="chk_{{$id}}" ng-model="privilege.granted" />
-				<label for="chk_{{$id}}">{{privilege.privilege.privilege}}</label>
-			</div>
-			<div class="col-sm-6">
-				<span>{{privilege.privilege.description}}</span>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-9"></div>
-
-			<div class="col-sm-2" ng-show="!isEdit">
-				<button type="button" class="btn btn-primary"
-					ng-click="toggleReadOnly('USER')" ng-disabled="isCreateOrUpdatePrivileged()">Edit</button>
-			</div>
-			<div class="col-sm-1" ng-show="!isNew && isEdit">
-				<button type="button" class="btn btn-primary"
-					ng-click="toggleReadOnly('USER')">Cancel</button>
-			</div>
-
-			<div class="col-sm-2 child-right" ng-show="isEdit">
-				<button type="button" class="btn btn-primary"
-					ng-click="saveAndUpdateUser()" ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Save User</button>
-			</div>
-
-		</div>
-	</div>
 	</div>
 </form>

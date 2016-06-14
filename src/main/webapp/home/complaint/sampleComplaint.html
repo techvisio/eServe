@@ -1,0 +1,92 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+	<section class="box ">
+		<div class="content-body">
+
+			<div class="row">
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Work Order No</label>
+						<div class="controls">
+							<input type="text" class="form-control" type="text"
+								ng-pattern="/^[a-zA-Z]+$/i" required="required">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-1"></div>
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Type</label>
+						<div class="controls">
+							<input type="text" class="form-control" required="required"
+								ng-pattern="/^[a-zA-Z]+$/i">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Priority</label>
+						<div class="controls">
+							<select class="form-control">
+								<option></option>
+								<option value="C">Critical</option>
+								<option value="H">High</option>
+								<option value="M">Medium</option>
+								<option value="L">Low</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-1"></div>
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Status</label>
+						<div class="controls">
+							<input type="text" class="form-control" required="required"
+								ng-pattern="/^[a-zA-Z]+$/i">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Sla Date</label>
+						<div class="controls">
+							<input type="text" class="form-control datepicker"
+								name="requestDueDate" datepicker-popup="{{'MMM dd yyyy'}}"
+								disabled>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<br>
+			<div class="tab-separator">
+				<tabset justified="true"> <tab heading="CUSTOMER">
+				<div ng-include
+					src="'../home/complaint/sampleComplaint/complaintCustomerInfo.html'"></div>
+				</tab> <tab heading="COMPLAINT DESCRIPTION">
+				<div ng-include
+					src="'../home/complaint/sampleComplaint/complaintDescription.html'"></div>
+				</tab> <tab heading="PARTS & EQUIPMENTS">
+				<div ng-include
+					src="'../home/complaint/sampleComplaint/complaintPartsAndEquipment.html'"></div>
+				</tab> <tab heading="SCHEDULING">
+				<div ng-include
+					src="'../home/complaint/sampleComplaint/complaintScheduling.html'"></div>
+				</tab> <tab heading="BILLING">
+				<div ng-include
+					src="'../home/complaint/sampleComplaint/complaintBilling.html'"></div>
+				</tab> <tab heading="ATTACHMENT">
+				<div ng-include
+					src="'../home/complaint/sampleComplaint/complaintAttachment.html'"></div>
+				</tab> </tabset>
+			</div>
+		</div>
+	</section>
+</div>
