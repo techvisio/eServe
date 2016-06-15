@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.AgreementInvoice;
 import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.CompositeKeyEquipmentHistory;
 import com.techvisio.eserve.beans.CompositeKeyUnitHistory;
@@ -15,6 +14,7 @@ import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.EquipmentHistory;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
@@ -44,10 +44,11 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 
 	@Override
-	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria) {
-		List<Customer> customers = customerDao.getCustomerByCriteria(searchCriteria);
+	public SearchResultData getCustomerByCriteria(SearchCriteria searchCriteria) {
+		SearchResultData customers = customerDao.getCustomerByCriteria(searchCriteria);
 		return customers;
 	}
+
 
 	@Override
 	public Long saveCustomer(Customer customer) {

@@ -8,6 +8,7 @@ import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.EquipmentHistory;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
@@ -22,7 +23,7 @@ public interface CustomerDao {
 	public Long saveUnit(Unit unit);
 	public List<Unit> getUnits(Long customerId);
 	public List<Customer> getCustomers();
-	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
+	public SearchResultData getCustomerByCriteria(SearchCriteria searchCriteria);
 	public boolean isCustomerExists(Customer customer);
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
 	//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);

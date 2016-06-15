@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
@@ -57,7 +58,7 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 		}
 		return null;
 	}
-	
+
 	@Override
 	public User getUserByUserName(String userName) {
 		String queryString="FROM User u WHERE u.userName = "+ "'"+userName +"'";
@@ -92,27 +93,74 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 	}
 
 	@Override
-	public List<User> getUserByCriteria(SearchCriteria searchCriteria) {
+	public SearchResultData getUserByCriteria(SearchCriteria searchCriteria) {
 
-		String queryString="from User WHERE client.clientId = coalesce(:clientId, client.clientId) and userId = coalesce(:userId, userId) and department.departmentId = coalesce(:departmentId, department.departmentId) and designation.designationId = coalesce(:designationId, designation.designationId) and lower(emailId) = coalesce(:emailId, emailId) and  lower(firstName) LIKE :firstName and lower(lastName) Like :lastName and lower(userName) Like :userName";
-		Query query=getEntityManager().createQuery(queryString);
+		SearchResultData<User> searchResultData= new SearchResultData<User>();
+		String ascOrDsc = searchCriteria.getIsAscending()?"ASC":"DESC";
+
+		String queryString="select USER_ID,CREATED_BY,CREATED_ON,UPDATED_BY,UPDATED_ON,DOB,IS_ACTIVE,EMAIL_ID,FIRST_NAME,FORCE_PASSWORD_CHANGE,LAST_NAME,PASSWORD,USER_NAME ,Client_Id,DEPARTMENT_ID,DESIGNATION_ID from tb_User WHERE client_Id = coalesce(:client_Id, client_Id) and user_Id = coalesce(:user_Id, user_Id) and department_Id = coalesce(:department_Id, department_Id) and designation_Id = coalesce(:designation_Id, designation_Id) and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(first_Name) LIKE :first_Name and lower(last_Name) Like :last_Name and lower(user_Name) Like :user_Name ORDER BY  "+searchCriteria.getSortBy()+" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
+		Query query=getEntityManager().createNativeQuery(queryString, User.class);
+
+		String queryString1="SELECT count(*),'totalCount' FROM (select * from tb_User WHERE client_Id = coalesce(:client_Id, client_Id) and user_Id = coalesce(:user_Id, user_Id) and department_Id = coalesce(:department_Id, department_Id) and designation_Id = coalesce(:designation_Id, designation_Id) and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(first_Name) LIKE :first_Name and lower(last_Name) Like :last_Name and lower(user_Name) Like :user_Name)a";
+		Query query1=getEntityManager().createNativeQuery(queryString1);
 
 		String firstName = StringUtils.isEmpty(searchCriteria.getFirstName())?"":searchCriteria.getFirstName().toLowerCase();
 		String lastName = StringUtils.isEmpty(searchCriteria.getLastName())?"":searchCriteria.getLastName().toLowerCase();
 		String userName = StringUtils.isEmpty(searchCriteria.getUserName())?"":searchCriteria.getUserName().toLowerCase();
 		String emailId = StringUtils.isEmpty(searchCriteria.getEmailId())?null:searchCriteria.getEmailId().toLowerCase();
-		query.setParameter("firstName", "%"+firstName+"%");
-		query.setParameter("lastName", "%"+lastName+"%");
-		query.setParameter("userName", "%"+userName+"%");
-		query.setParameter("userId", searchCriteria.getUserId());
-		query.setParameter("clientId", searchCriteria.getClientId());
-		query.setParameter("departmentId", searchCriteria.getDepartmentId());
-		query.setParameter("designationId", searchCriteria.getDesignationId());
-		query.setParameter("emailId", emailId);
+
+		int pageSize,pageNo;
+		if(searchCriteria.getPageSize()==0)
+		{
+			pageSize = 3;
+		}
+		else
+		{
+			pageSize = searchCriteria.getPageSize();
+		}
+		if(searchCriteria.getPageNo() == 0)
+		{
+			pageNo = 1;
+		}
+		else
+		{
+			pageNo = searchCriteria.getPageNo();
+		}
+
+		int startIndex = (pageSize * pageNo) - pageSize;
+
+		query.setParameter("first_Name", "%"+firstName+"%");
+		query.setParameter("last_Name", "%"+lastName+"%");
+		query.setParameter("user_Name", "%"+userName+"%");
+		query.setParameter("user_Id", searchCriteria.getUserId());
+		query.setParameter("client_Id", searchCriteria.getClientId());
+		query.setParameter("department_Id", searchCriteria.getDepartmentId());
+		query.setParameter("designation_Id", searchCriteria.getDesignationId());
+		query.setParameter("email_Id", emailId);
+		query.setParameter("PAGE_SIZE", pageSize);
+		query.setParameter("START_INDEX", startIndex);
+
+
+		query1.setParameter("first_Name", "%"+firstName+"%");
+		query1.setParameter("last_Name", "%"+lastName+"%");
+		query1.setParameter("user_Name", "%"+userName+"%");
+		query1.setParameter("user_Id", searchCriteria.getUserId());
+		query1.setParameter("client_Id", searchCriteria.getClientId());
+		query1.setParameter("department_Id", searchCriteria.getDepartmentId());
+		query1.setParameter("designation_Id", searchCriteria.getDesignationId());
+		query1.setParameter("email_Id", emailId);
+
+		@SuppressWarnings("unchecked")
+		List<Object[]> counts = query1.getResultList();
+		for (Object[] count : counts) {
+			Long count1 = (long) ((Number) count[0]).intValue();
+			searchResultData.setTotalCount(count1);
+		}
 
 		@SuppressWarnings("unchecked")
 		List<User> result= (List<User>)query.getResultList();
-		return result;
+		searchResultData.setObjectData(result);
+		return searchResultData;
 
 	}
 

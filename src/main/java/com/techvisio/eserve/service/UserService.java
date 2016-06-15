@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
@@ -35,7 +36,7 @@ public interface UserService {
 
 	public Map<String, Boolean> forcePasswordChange(User user);
 
-	public List<User> getUserByCriteria(SearchCriteria searchCriteria);
+	public SearchResultData getUserByCriteria(SearchCriteria searchCriteria);
 
 	public User getCurrentPassword(Long userId);
 

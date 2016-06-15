@@ -1,58 +1,41 @@
-
 <div ng-init="init()">
-<!-- <div class="row"> -->
-<!-- 			<div class="col-sm-10"> -->
-<!-- 			</div> -->
-<!-- <div class="col-sm-2" popover-placement="bottom" popover="you don't have permission to create users. please contact your administration!!" popover-trigger="mouseenter"><a ui-sref="createUser"><button class="	fa fa-user-plus btn btn-primary" ng-disabled="isCreateOrUpdatePrivileged()" > Create User</button></a></div> -->
-<!-- </div> -->
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+		<section class="box ">
+			<header class="panel_header">
+				<h2 class=" pull-left"></h2>
+				<div class="actions panel_actions pull-right">
+					<i class="fa fa-filter" aria-hidden="true" ng-click="filterUser()">&nbspFilter</i>
+					<i class="box_setting material-icons"></i> 
 
 
-<section class="box">
-<div class="content-body">
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>User Name</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email Id</th>
-            <th>Department</th>
-            <th>Designation</th>
-        </tr>
-        
-        <tr>
-            <td><input class="form-control input-sm" ng-model="searchCriteria.userName"
-				id="inputlg" type="text"></td>
-            <td><input class="form-control input-sm" ng-model="searchCriteria.firstName"
-				id="inputlg" type="text"></td>
-            <td><input class="form-control input-sm" ng-model="searchCriteria.lastName"
-				id="inputlg" type="text"></td>
-            <td><input class="form-control input-sm" ng-model="searchCriteria.emailId"
-				id="inputlg" type="text"></td>
-            <td><select ng-model="searchCriteria.departmentId" class="form-control"
-				ng-options="item.departmentId as item.department for item in serverModelData.DEPARTMENT">
-			</select></td>
-            <td><select ng-model="searchCriteria.designationId"
-				class="form-control"
-				ng-options="item.designationId as item.designation  for item in serverModelData.DESIGNATION">
-			</select></td>
-            <th><button class="btn-primary" ng-click="getUserByCriteria()" ng-disabled="isViewPrivileged()"><i class="fa fa-search"></i></button></a></th>
-        </tr>
-    </thead>
-    
-    
-    <tbody>
-     <tr ng-repeat="user in users">
-        <td><a herf="#" ng-click="redirectToUser(user.userId)">{{user.userName}} </a></td>
-        <td>{{user.firstName}}</td>
-        <td>{{user.lastName}}</td>
-        <td>{{user.emailId}}</td>
-        <td>{{user.department.department}}</td>
-        <td>{{user.designation.designation}}</td>
-        <td><a><button class="btn-primary" ng-click="resetPassword(user)" ng-hide="!isPrivileged('USER_ADMINISTRATION')">Reset</button></a></td>
-        </tr>
-    </tbody>
-</table>
-</div>
-</section>
+
+
+
+				</div>
+			</header>
+			<div class="content-body">
+				<div class="row"></div>
+				<div class="row"></div>
+				<div class="row">
+					<div class="table-parent-container">
+						<div>
+							<table ng-table="tableParams"
+								class="table table-condensed table-bordered table-striped">
+								<tr ng-repeat="row in $data">
+									<td data-title="'User Name'" sortable="'userName'"
+										class="col-sm-2 col-md-2 col-lg-2">{{row.userName}}</td>
+									<td data-title="'Last Name'" sortable="'lastName'">{{row.lastName}}</td>
+									<td data-title="'First Name'" sortable="'firstName'">{{row.firstName}}</td>
+									<td data-title="'Email Id'" sortable="'emailId'">{{row.emailId}}</td>
+									<td data-title="'Department'" sortable="'departmentId'">{{row.department.department}}</td>
+									<td data-title="'Designation'" sortable="'designationId'">{{row.designation.designation}}</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+	</div>
 </div>

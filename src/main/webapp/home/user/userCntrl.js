@@ -10,7 +10,10 @@ userModule
 		 'userService',
 		 'user',
 		 'masterdataService',
-		 function($scope, $state, $rootScope,userService,user,masterdataService) {
+		 '$modal',
+		 '$http',
+		 'NgTableParams',
+		 function($scope, $state, $rootScope,userService,user,masterdataService,$modal,$http,NgTableParams) {
 			 $scope.form={};
 //			 $scope.isUserCollapsed= true;
 //			 $scope.isPrivilegesCollapsed= false;
@@ -134,20 +137,20 @@ userModule
 			 $scope.createPriviledgeGrp=function(priviledgesList){
 				 $scope.priviledgeGrp={};
 				 angular.forEach(priviledgesList, function(privilege) {
-					var priviledgeTypeGrp=$scope.priviledgeGrp[privilege.privilege.type];
-					if(!priviledgeTypeGrp){
-						$scope.priviledgeGrp[privilege.privilege.type]=[[]];
-						priviledgeTypeGrp=$scope.priviledgeGrp[privilege.privilege.type];
-					}
-					var lastList=priviledgeTypeGrp[priviledgeTypeGrp.length-1];
-					if(lastList.length>1)
-						{
-						priviledgeTypeGrp.push([privilege]);
-						}
-					else
-						{
-						lastList.push(privilege);
-						}
+					 var priviledgeTypeGrp=$scope.priviledgeGrp[privilege.privilege.type];
+					 if(!priviledgeTypeGrp){
+						 $scope.priviledgeGrp[privilege.privilege.type]=[[]];
+						 priviledgeTypeGrp=$scope.priviledgeGrp[privilege.privilege.type];
+					 }
+					 var lastList=priviledgeTypeGrp[priviledgeTypeGrp.length-1];
+					 if(lastList.length>1)
+					 {
+						 priviledgeTypeGrp.push([privilege]);
+					 }
+					 else
+					 {
+						 lastList.push(privilege);
+					 }
 				 });
 			 }
 			 $scope.addUser=function(){
@@ -444,4 +447,57 @@ userModule
 			 $scope.isViewPrivileged=function(){
 				 return !($scope.isPrivileged('CREATE_USER')) && !($scope.isPrivileged('VIEW_USER')) && !($scope.isPrivileged('USER_ADMINISTRATION'));
 			 }
+
+			 $scope.filterUser = function() {
+
+				 $rootScope.curModal = $modal.open({
+					 templateUrl: 'user/userCriteria.html',
+					 scope:$scope,
+					 controller: function (userService,$scope) {
+
+						 $scope.getUserByCriteria = function(){
+							 $scope.tableParams.reload();
+							 $rootScope.curModal.close();
+						 }
+
+					 },
+				 });
+			 };
+
+
+
+			 $scope.tableParams = new NgTableParams({}, {
+				 getData: function($defer,params) {
+					 var sortBy="USER_NAME";
+					 var isAsc=false;
+					 var pageNo=params.page();
+					 var pageSize=params.count();
+					 if(params.sorting()){
+						 for (var attribute in params.sorting()) {
+							 if (params.sorting().hasOwnProperty(attribute)) {
+								 sortBy=attribute;
+								 var ascDsc=params.sorting()[attribute];
+								 if(ascDsc==='asc'){
+									 isAsc=true;  
+								 }
+							 }
+						 }
+					 }
+					 $scope.searchCriteria.pageSize=pageSize;
+					 $scope.searchCriteria.pageNo=pageNo;
+					 $scope.searchCriteria.sortBy=sortBy;
+					 $scope.searchCriteria.isAscending=isAsc;
+
+					 userService.getUserByCriteria($scope.searchCriteria)
+					 .then(
+							 function(users) {
+								 if(users){
+									 params.total(users.totalCount);
+									 $defer.resolve(users.objectData);
+								 }
+							 })
+
+				 }
+			 });
+
 		 } ]);

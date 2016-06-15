@@ -18,7 +18,7 @@ import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.Response;
 import com.techvisio.eserve.beans.SearchCriteria;
-import com.techvisio.eserve.beans.ServiceAgreement;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.service.CustomerService;
@@ -90,7 +90,7 @@ public class CustomerController {
 	@RequestMapping(value ="/search/", method = RequestMethod.POST)
 	public ResponseEntity<Response> getCustomerByCriteria(@RequestBody SearchCriteria searchCriteria) {
 		Response response=new Response();
-		List<Customer> customerByCriteria = customerService.getCustomerByCriteria(searchCriteria);
+		SearchResultData customerByCriteria = customerService.getCustomerByCriteria(searchCriteria);
 		response.setResponseBody(customerByCriteria);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);

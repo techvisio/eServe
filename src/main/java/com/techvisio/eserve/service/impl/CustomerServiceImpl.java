@@ -13,6 +13,7 @@ import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.manager.CustomerManager;
@@ -89,8 +90,8 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria) {
-		List<Customer> customers = customerManager.getCustomerByCriteria(searchCriteria);
+	public SearchResultData getCustomerByCriteria(SearchCriteria searchCriteria) {
+		SearchResultData customers = customerManager.getCustomerByCriteria(searchCriteria);
 		return customers;
 	}
 

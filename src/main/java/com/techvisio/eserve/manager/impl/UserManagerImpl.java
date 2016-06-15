@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +12,11 @@ import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
 import com.techvisio.eserve.db.CacheDao;
-import com.techvisio.eserve.db.SecurityDao;
 import com.techvisio.eserve.db.UserDao;
 import com.techvisio.eserve.manager.UserManager;
 import com.techvisio.eserve.util.AppConstants;
@@ -62,9 +60,10 @@ public class UserManagerImpl implements UserManager{
 	}
 
 
+
 	@Override
-	public List<User> getUserByCriteria(SearchCriteria searchCriteria){
-		List<User> users = userDao.getUserByCriteria(searchCriteria);
+	public SearchResultData getUserByCriteria(SearchCriteria searchCriteria){
+		SearchResultData users = userDao.getUserByCriteria(searchCriteria);
 		return users;
 	}
 

@@ -1,7 +1,7 @@
 var customerModule = angular.module('customerModule', []);
 
-customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','unit','masterdataService','userService','complaintService','$modal',
-                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,unit,masterdataService,userService,complaintService,$modal) {
+customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','unit','masterdataService','userService','complaintService','$modal','$http','NgTableParams',
+                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,unit,masterdataService,userService,complaintService,$modal,$http,NgTableParams) {
 
 
 	$scope.form={};
@@ -717,5 +717,56 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.alerts=[];
 	}
 
+	$scope.filterCustomer = function() {
+
+		 $rootScope.curModal = $modal.open({
+			 templateUrl: 'customer/customerSearchCriteria.html',
+			 scope:$scope,
+			 controller: function (userService,$scope) {
+
+				 $scope.getCustomerByCriteria = function(){
+					 $scope.tableParams.reload();
+					 $rootScope.curModal.close();
+				 }
+
+			 },
+		 });
+	 };
+	 
+	 $scope.tableParams = new NgTableParams({}, {
+	      getData: function($defer,params) {
+	    	  var sortBy="CUSTOMER_NAME";
+	    	  var isAsc=false;
+	    	  var pageNo=params.page();
+	    	  var pageSize=params.count();
+	    	  if(params.sorting()){
+	    		  for (var attribute in params.sorting()) {
+	    			    if (params.sorting().hasOwnProperty(attribute)) {
+	    			      sortBy=attribute;
+	    			      var ascDsc=params.sorting()[attribute];
+	    			      if(ascDsc==='asc'){
+	    			    	  isAsc=true;  
+	    			      }
+	    			    }
+	    			}
+	    	  }
+	    	  $scope.searchCriteria.pageSize=pageSize;
+	    	  $scope.searchCriteria.pageNo=pageNo;
+	    	  $scope.searchCriteria.sortBy=sortBy;
+	    	  $scope.searchCriteria.isAscending=isAsc;
+	    	  
+	    	  customerService.getCustomerByCriteria($scope.searchCriteria)
+				 .then(
+						 function(customers) {
+							 if(customers){
+								 params.total(customers.totalCount);
+								 $defer.resolve(customers.objectData);
+							 }
+						 })
+	    	 
+	      }
+	    });
+
+	
 
 } ]);

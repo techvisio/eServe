@@ -1,5 +1,7 @@
 package com.techvisio.eserve.beans;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class Customer extends BasicEntity{
 	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER )
 	@JoinColumn(name="CUSTOMER_ID")
 	private List<Unit> units=new ArrayList<Unit>();
-	
+
 	public Long getCustomerId() {
 		return customerId;
 	}
@@ -60,7 +62,7 @@ public class Customer extends BasicEntity{
 	public void setContactNo(String contactNo) {
 		this.contactNo = contactNo;
 	}
-	
+
 	public List<Unit> getUnits() {
 		return units;
 	}
@@ -73,7 +75,7 @@ public class Customer extends BasicEntity{
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
-	
+
 	public CustomerType getCustomerType() {
 		return customerType;
 	}
@@ -92,5 +94,18 @@ public class Customer extends BasicEntity{
 	public void setCustomerCode(String customerCode) {
 		this.customerCode = customerCode;
 	}
-	
+
+	public static void main(String[] args) throws Exception {
+
+		Field field = Customer.class.getDeclaredField("contactNo"); 
+		Annotation[] annotations = field.getDeclaredAnnotations();
+
+		for(Annotation annotation : annotations){
+			if(annotation instanceof javax.persistence.Column){
+				javax.persistence.Column myAnnotation = (javax.persistence.Column) annotation;
+				System.out.println("name: " + myAnnotation.name());
+			}
+		}
+
+	}
 }

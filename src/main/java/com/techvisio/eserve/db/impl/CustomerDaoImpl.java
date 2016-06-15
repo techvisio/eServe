@@ -1,5 +1,7 @@
 package com.techvisio.eserve.db.impl;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +21,7 @@ import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.EquipmentHistory;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
@@ -60,25 +63,68 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria) {
+	public SearchResultData getCustomerByCriteria(SearchCriteria searchCriteria) {
 
-		String queryString="from Customer WHERE client.clientId = coalesce(:clientId, client.clientId) and lower(contactNo) = coalesce(:contactNo, contactNo) and lower(customerCode) = coalesce(:customerCode, customerCode)  and lower(emailId) = coalesce(:emailId, emailId) and  lower(customerName) LIKE :customerName";
-		Query query= getEntityManager().createQuery(queryString);
-
+		SearchResultData<Customer> searchResultData= new SearchResultData<Customer>();
+		String ascOrDsc = searchCriteria.getIsAscending()?"ASC":"DESC";
+		
+		String queryString="select CUSTOMER_ID,CREATED_BY,CREATED_ON,UPDATED_BY,UPDATED_ON,CONTACT_NO,CUSTOMER_CODE,CUSTOMER_NAME,EMAIL_ID,Client_Id,ADDRESS_ID,CUSTOMER_TYPE_ID from tb_customer_detail WHERE client_Id = coalesce(:client_Id, client_Id) and lower(contact_No) = coalesce(:contact_No, contact_No) and lower(customer_Code) = coalesce(:customer_Code, customer_Code)  and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(customer_Name) LIKE :customer_Name ORDER BY  "+searchCriteria.getSortBy()+" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
+		Query query= getEntityManager().createNativeQuery(queryString, Customer.class);
+		
+		String queryString1="SELECT count(*),'totalCount' FROM (select * from tb_customer_detail WHERE client_Id = coalesce(:client_Id, client_Id) and lower(contact_No) = coalesce(:contact_No, contact_No) and lower(customer_Code) = coalesce(:customer_Code, customer_Code)  and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(customer_Name) LIKE :customer_Name)a";
+		Query query1= getEntityManager().createNativeQuery(queryString1);
+		
 		String customerName = StringUtils.isEmpty(searchCriteria.getCustomerName())?"":searchCriteria.getCustomerName().toLowerCase();
 		String emailId = StringUtils.isEmpty(searchCriteria.getEmailId())?null:searchCriteria.getEmailId().toLowerCase();
 		String contactNo = StringUtils.isEmpty(searchCriteria.getContactNo())?null:searchCriteria.getContactNo().toLowerCase();
 		String customerCode = StringUtils.isEmpty(searchCriteria.getCustomerCode())?null:searchCriteria.getCustomerCode().toLowerCase();
-		query.setParameter("customerName", "%"+customerName+"%");
-		query.setParameter("contactNo", contactNo);
-		query.setParameter("clientId", searchCriteria.getClientId());
-		query.setParameter("customerCode", customerCode);
-		query.setParameter("emailId", emailId);
+		
+		int pageSize,pageNo;
+		if(searchCriteria.getPageSize()==0)
+		{
+			pageSize = 3;
+		}
+		else
+		{
+			pageSize = searchCriteria.getPageSize();
+		}
+		if(searchCriteria.getPageNo() == 0)
+		{
+			pageNo = 1;
+		}
+		else
+		{
+			pageNo = searchCriteria.getPageNo();
+		}
+		
+		int startIndex = (pageSize * pageNo) - pageSize;
+		
+		
+		query.setParameter("customer_Name", "%"+customerName+"%");
+		query.setParameter("contact_No", contactNo);
+		query.setParameter("client_Id", searchCriteria.getClientId());
+		query.setParameter("customer_Code", customerCode);
+		query.setParameter("email_Id", emailId);
+		query.setParameter("PAGE_SIZE", pageSize);
+		query.setParameter("START_INDEX", startIndex);
+		
+		query1.setParameter("customer_Name", "%"+customerName+"%");
+		query1.setParameter("contact_No", contactNo);
+		query1.setParameter("client_Id", searchCriteria.getClientId());
+		query1.setParameter("customer_Code", customerCode);
+		query1.setParameter("email_Id", emailId);
 
 		@SuppressWarnings("unchecked")
+		List<Object[]> counts = query1.getResultList();
+		for (Object[] count : counts) {
+			Long count1 = (long) ((Number) count[0]).intValue();
+			searchResultData.setTotalCount(count1);
+		}
+		
+		@SuppressWarnings("unchecked")
 		List<Customer> result= (List<Customer>)query.getResultList();
-		return result;
-
+		searchResultData.setObjectData(result);
+		return searchResultData;
 	}
 
 	@Override
@@ -377,4 +423,26 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		return null;
 	}
 
+	
+	public static void main(String[] args) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		
+		CustomerDaoImpl customerDaoImpl = new CustomerDaoImpl();
+		customerDaoImpl.getFieldValue(Customer.class, "customerId");
+		
+	}
+	
+	private String getFieldValue(Class classType, String propertyName) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		
+		Field field = classType.getDeclaredField(propertyName); 
+		Annotation[] annotations = field.getDeclaredAnnotations();
+
+		for(Annotation annotation : annotations){
+			if(annotation instanceof javax.persistence.Column){
+				javax.persistence.Column myAnnotation = (javax.persistence.Column) annotation;
+				return myAnnotation.name();
+			}
+		}
+		return null;
+	}
+	
 }

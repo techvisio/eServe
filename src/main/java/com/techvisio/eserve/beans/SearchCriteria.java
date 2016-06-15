@@ -15,21 +15,14 @@ public class SearchCriteria {
 	private Long userId;
 	private boolean active;
 	private Long clientId;
-    private Long pageSize;
-    private Long pageNo;
+    private int pageSize;
+    private int pageNo;
+    private String sortBy;
+    private boolean isAscending;
+    private int startIndex;
+    
+    
 	
-	public Long getPageSize() {
-		return pageSize;
-	}
-	public void setPageSize(Long pageSize) {
-		this.pageSize = pageSize;
-	}
-	public Long getPageNo() {
-		return pageNo;
-	}
-	public void setPageNo(Long pageNo) {
-		this.pageNo = pageNo;
-	}
 	public String getEmailId() {
 		return emailId;
 	}
@@ -109,5 +102,36 @@ public class SearchCriteria {
 	public void setComplaintCode(String complaintCode) {
 		this.complaintCode = complaintCode;
 	}
+	public String getSortBy() {
+		return sortBy;
+	}
+	public void setSortBy(String sortBy) {
+		this.sortBy = sortBy;
+	}
+	public boolean getIsAscending() {
+		return isAscending;
+	}
+	public void setIsAscending(boolean isAscending) {
+		this.isAscending = isAscending;
+	}
+	public int getStartIndex() {
+		return startIndex;
+	}
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
+	}
+	public int getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+	public int getPageNo() {
+		return pageNo;
+	}
+	public void setPageNo(int pageNo) {
+		this.pageNo = pageNo;
+	}
+	
 	
 }

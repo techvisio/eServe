@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
@@ -34,7 +35,7 @@ public interface UserDao {
 
 	void savePrivilege(Privilege privilege);
 
-	List<User> getUserByCriteria(SearchCriteria searchCriteria);
+	SearchResultData getUserByCriteria(SearchCriteria searchCriteria);
 
 	User getCurrentPassword(Long userId);
 

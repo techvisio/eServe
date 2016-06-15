@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
-import com.techvisio.eserve.db.UserDao;
 import com.techvisio.eserve.manager.UserManager;
 import com.techvisio.eserve.service.UserService;
 
@@ -72,11 +72,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<User> getUserByCriteria(SearchCriteria searchCriteria) {
-		List<User> users = userManager.getUserByCriteria(searchCriteria);
+	public SearchResultData getUserByCriteria(SearchCriteria searchCriteria) {
+		SearchResultData users = userManager.getUserByCriteria(searchCriteria);
 		return users;
 	}
-
+	
 	@Override
 	public User getCurrentPassword(Long userId) {
 		User user = userManager.getCurrentPassword(userId);

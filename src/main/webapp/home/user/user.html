@@ -155,44 +155,15 @@
 
 
 				<div collapse="!isPrivilegesCollapsed">
-					<div class="row" ng-repeat="privilege in user.privileges">
-						<div class="col-md-5 col-sm-12 col-xs-12">
-							<div class="form-group">
-								<input type="checkbox" class="faChkSqr"
-									ng-model="privilege.granted" id="chk_{{$id}}"><label
-									for="chk_{{$id}}" class="padding-uw">{{privilege.privilege.privilege}}</label>
-
-							</div>
-						</div>
-
-						<div class="col-md-5 col-sm-12 col-xs-12">
-							<div class="form-group">
-								<span>{{privilege.privilege.description}}</span>
-							</div>
-						</div>
-					</div>
-
+				<div class="row" ng-repeat="(key, value) in priviledgeGrp">
+					<div class="col-md-6 col-sm-12 col-xs-12">{{key}}</div>
+					<br>
 					<div class="row">
-						<div class="col-sm-9"></div>
-
-						<div class="col-sm-2" ng-show="!isEdit">
-							<button type="button" class="btn btn-primary"
-								ng-click="toggleReadOnly('USER')"
-								ng-disabled="isCreateOrUpdatePrivileged()">Edit</button>
-						</div>
-						<div class="col-sm-1" ng-show="!isNew && isEdit">
-							<button type="button" class="btn btn-primary"
-								ng-click="toggleReadOnly('USER')">Cancel</button>
-						</div>
-
-						<div class="col-sm-2 child-right" ng-show="isNew || isEdit">
-							<button type="button" class="btn btn-primary"
-								ng-click="saveAndUpdateUser()"
-								ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Save
-								User</button>
-						</div>
-
+					<div class="row" ng-repeat="priviledgeList in value">
+						<div class="col-md-6 col-sm-12 col-xs-12" ng-repeat="priviledge in priviledgeList">{{priviledge.privilege.description}}</div>
 					</div>
+					</div>
+				</div>
 				</div>
 			</div>
 		</section>

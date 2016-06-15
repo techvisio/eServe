@@ -1,44 +1,41 @@
 
-<div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+	<section class="box ">
+		<header class="panel_header">
+			<h2 class=" pull-left"></h2>
+			<div class="actions panel_actions pull-right">
+				<i class="fa fa-filter" aria-hidden="true"
+					ng-click="filterCustomer()">&nbspFilter</i>
 
-<div class="row">
-			<div class="col-sm-8">
+
+
+
+
+
 			</div>
-<div class="col-sm-2 child-right"><a ui-sref="#"><button class="btn btn-primary">Advance Search</button></a></td></div>
-</div>
+		</header>
+		<div class="content-body">
+			<div class="row"></div>
+			<div class="row"></div>
+			<div class="row">
+				<div class="table-parent-container">
+					<div>
+						<table ng-table="tableParams"
+							class="table table-condensed table-bordered table-striped">
+							<tr ng-repeat="row in $data">
+								<td data-title="'Customer Code'" sortable="'customerCode'"
+									class="col-sm-2 col-md-2 col-lg-2">{{row.customerCode}}</td>
+								<td data-title="'Customer Name'" sortable="'customerName'">{{row.customerName}}</td>
+								<td data-title="'Contact No'" sortable="'contactNo'">{{row.contactNo}}</td>
+								<td data-title="'Email Id'" sortable="'emailId'">{{row.emailId}}</td>
+								<td data-title="'No Of Units'">{{countUnit(row)}}</td>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Customer Code</th>
-            <th>Customer Name</th>
-            <th>Contact No</th>
-            <th>Email Id</th>
-            <th>No Of Units</th>
-        </tr>
-        
-        <tr>
-            <td><input class="form-control input-sm" ng-model="searchCriteria.customerCode"
-				id="inputlg" type="text"></td>
-            <td><input class="form-control input-sm" ng-model="searchCriteria.customerName"
-				id="inputlg" type="text"></td>
-            <td><input class="form-control input-sm" ng-model="searchCriteria.contactNo"
-				id="inputlg" type="text"></td>
-            <td><input class="form-control input-sm" ng-model="searchCriteria.emailId"
-				id="inputlg" type="text"></td>
-            <th><button class="btn-primary" ng-click="getCustomerByCriteria()" ng-disabled="isViewPrivileged() || isProcessing">Search</button></a></th>
-        </tr>
-    </thead>
-    <tbody>
-     <tr ng-repeat="customer in customers">
-        <td><a herf="#" ng-click="redirectToCustomerDtlScreen(customer.customerId); toggleReadOnly('CUSTOMER')">{{customer.customerCode}} </a></td></td>
-        <td>{{customer.customerName}}</td>
-        <td>{{customer.contactNo}}</td>
-        <td>{{customer.emailId}}</td>
-        <td><td>{{countUnit(customer)}}</td>
-        </td>
-<!--         <td><a ui-sref="resetpassword"><button class="btn-primary">Reset Password</button></a></td> -->
-        </tr>
-    </tbody>
-</table>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
 </div>

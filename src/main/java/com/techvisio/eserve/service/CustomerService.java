@@ -17,6 +17,7 @@ import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.ServiceRenewalBean;
@@ -33,7 +34,7 @@ public interface CustomerService {
 	public void saveUnit(List<Unit> units,  Long customerId);
 	public Long saveUnit(GenericRequest<Unit> request, String context);
 	public List<Unit> getUnits(Long customerId);
-	public List<Customer> getCustomerByCriteria(SearchCriteria searchCriteria);
+	public SearchResultData getCustomerByCriteria(SearchCriteria searchCriteria);
 //	public Map<String, Object> checkCustomerExistOrNot(
 //			CustomerComplaint customerComplaint);
 //	public void updateServiceAgreement(ServiceAgreement agreement,Long unitId);

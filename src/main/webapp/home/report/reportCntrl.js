@@ -43,7 +43,7 @@ reportModule
 					 controller: function (reportService,$scope) {
 
 						 $scope.getCustomerReportByCriteria = function(){
-							 $scope.getPagedDataAsync($scope.customerReportAttribute.pageSize,$scope.customerReportAttribute.pageNo);
+							 $scope.tableParams.reload();
 							 $rootScope.curModal.close();
 						 }
 
@@ -51,97 +51,6 @@ reportModule
 				 });
 			 };
 
-			 $scope.filterOptions = {
-					 filterText: "",
-					 useExternalFilter: true
-			 }; 
-			 $scope.totalServerItems = {};
-			 $scope.pagingOptions = {
-					 pageSizes: [2,3,5,10, 20, 50],
-					 pageSize: 2,
-					 currentPage: 1
-			 };	
-			 $scope.setPagingData = function(data, page, pageSize){	
-				 //var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
-				 $scope.customerReports = data.objectData;
-				 $scope.totalServerItems = data.totalCount;
-				 if (!$scope.$$phase) {
-					 $scope.$apply();
-				 }
-			 };
-			 $scope.getPagedDataAsync = function (pageNo,pageSize,sortBy,isAsc,params) {
-				 $scope.customerReportAttribute.pageSize=pageSize;
-				 $scope.customerReportAttribute.pageNo=pageNo;
-				 reportService.getCustomerReportByCriteria($scope.customerReportAttribute)
-				 .then(
-						 function(response) {
-							 if(response){
-								 params.total(response.length);
-								 return response;
-								// $scope.customerReports = response;
-								 //$scope.setPagingData(response,pageNo,pageSize);
-							 }
-						 })
-
-			 };
-
-//			 $scope.getPagedDataAsync(pageNo,pageSize,sortBy,isAsc);
-
-			 $scope.$watch('pagingOptions', function (newVal, oldVal) {
-				 if ((newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) || newVal !== oldVal && newVal.pageSize !== oldVal.pageSize) {
-					 $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
-				 }
-			 }, true);
-			 $scope.$watch('filterOptions', function (newVal, oldVal) {
-				 if (newVal !== oldVal) {
-					 $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
-				 }
-			 }, true);
-
-			 // Watch for sorting option change
-			 $scope.$watch('gridOptions.sortInfo', function (newVal, oldVal) {
-				 if (newVal !== oldVal) {
-					 if (newVal.fields != oldVal.fields || newVal.directions != oldVal.directions) {
-						 $scope.customerReportAttribute.sortBy=newVal.fields[0];
-						 if(newVal.directions=='asc'){
-							 $scope.customerReportAttribute.isAscending=true;
-						 }else{
-							 $scope.customerReportAttribute.isAscending=false;
-						 }
-					 }
-					 $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
-				 }
-			 }, true);  
-
-			 $scope.gridOptions = {
-					 multiSelect:false,
-					 data: 'customerReports',
-					 sortInfo: { fields: [], columns: [], directions: [] },
-					 useExternalSorting: true,
-					 showFooter: true,
-					 totalServerItems: 'totalServerItems',
-					 columnDefs: [
-
-
-					              { field: "customerCode", width: 100,displayName :"Customer Code"},
-					              { field: "customerName", width: 105,displayName :"Customer Name"},
-					              { field: "customerType", width: 100,displayName :"Customer Type"},
-					              { field: "contactNo", width: 100,displayName :"Contact No"},
-					              { field: "emailId", width: 140,displayName :"Email Id" },
-					              { field: "unitCode", width: 180,displayName :"Unit Code" },
-					              { field: "unitType", width: 140,displayName :"Unit Type" },
-					              { field: "assetNo", width: 100,displayName :"Asset No"},
-					              { field: "machineSerialNo", width: 140,displayName :"Machine Serial No" },
-					              { field: "modelNo", width: 140,displayName :"Model No" },
-					              { field: "serviceCategory", width: 140,displayName :"Service Category" },
-					              { field: "contractStartOn", width: 150,displayName :"Contract Start On"},
-					              { field: "contractExpireOn", width: 150,displayName :"Contract Expire On"},
-					              { field: "approvalStatus", width: 105,displayName :"Approval Status"},
-					              { field: "lastApprovalDate", width: 180,displayName :"Last Approval Date" },					              
-					              { field: "lastApprovedBy", width: 100,displayName :"Last Approved By"}]
-			 };
-
-			 
 			 $scope.tableParams = new NgTableParams({}, {
 			      getData: function($defer,params) {
 			    	  var sortBy="customerCode";

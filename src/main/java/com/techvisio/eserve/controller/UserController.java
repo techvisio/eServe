@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techvisio.eserve.beans.Response;
 import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
-import com.techvisio.eserve.manager.UserManager;
 import com.techvisio.eserve.service.UserService;
 import com.techvisio.eserve.util.CommonUtil;
 
@@ -44,23 +44,23 @@ public class UserController {
 		response.setResponseBody(user);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public void logoutPage (HttpServletRequest request, HttpServletResponse response) {
-	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    if (auth != null){    
-	        new SecurityContextLogoutHandler().logout(request, response, auth);
-	    }
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null){    
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
 	}
 
-//	@RequestMapping(method = RequestMethod.POST)
-//	public ResponseEntity<Response> saveUser(@RequestBody User user){
-//		Response response = new Response();
-//		userWorkflowManager.saveUser(user);
-//		User userFromDB = userWorkflowManager.getUser(user.getUserId());
-//		response.setResponseBody(userFromDB);
-//		return new ResponseEntity<Response>(response,HttpStatus.OK);
-//	}
+	//	@RequestMapping(method = RequestMethod.POST)
+	//	public ResponseEntity<Response> saveUser(@RequestBody User user){
+	//		Response response = new Response();
+	//		userWorkflowManager.saveUser(user);
+	//		User userFromDB = userWorkflowManager.getUser(user.getUserId());
+	//		response.setResponseBody(userFromDB);
+	//		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	//	}
 
 	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getUser(@PathVariable Long userId){
@@ -69,7 +69,7 @@ public class UserController {
 		response.setResponseBody(userFromDB);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/currentpass/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getCurrentPassword(@PathVariable Long userId){
 		Response response = new Response();
@@ -119,7 +119,7 @@ public class UserController {
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT)
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> updateUser(@RequestBody User user){
@@ -127,21 +127,21 @@ public class UserController {
 		Map<String, Object> result = userService.saveUser(user);
 		user = (User) result.get("user");
 		if(user!=null){
-		List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(user);
-		user.setPrivileges(userPrivileges);
+			List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(user);
+			user.setPrivileges(userPrivileges);
 		}
 		Response response=new Response();
 		response.setResponseBody(result);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}	
-//	@RequestMapping(value = "/userprivileges/{userId}", method = RequestMethod.GET)
-//	public ResponseEntity<Response> getUserPrivileges(@PathVariable Long userId){
-//		Response response = new Response();
-//		List<Privilege> userPrivileges=userManager.getUserPrivileges(userId);
-//		response.setResponseBody(userPrivileges);
-//		return new ResponseEntity<Response>(response,HttpStatus.OK);
-//	}
+	//	@RequestMapping(value = "/userprivileges/{userId}", method = RequestMethod.GET)
+	//	public ResponseEntity<Response> getUserPrivileges(@PathVariable Long userId){
+	//		Response response = new Response();
+	//		List<Privilege> userPrivileges=userManager.getUserPrivileges(userId);
+	//		response.setResponseBody(userPrivileges);
+	//		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	//	}
 
 	@RequestMapping(value = "/userwithprivileges/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getUserWithUserPrivileges(@PathVariable Long userId){
@@ -163,16 +163,17 @@ public class UserController {
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value ="/search/", method = RequestMethod.POST)
 	public ResponseEntity<Response> getUserByCriteria(@RequestBody SearchCriteria searchCriteria) {
 		Response response=new Response();
-		List<User> userByCriteria = userService.getUserByCriteria(searchCriteria);
+		SearchResultData userByCriteria = userService.getUserByCriteria(searchCriteria);
 		response.setResponseBody(userByCriteria);
-		
+
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
+
 
 	@RequestMapping(value ="/resetpassword/", method = RequestMethod.POST)
 	public ResponseEntity<Response> resetPassword(@RequestBody User user) {
