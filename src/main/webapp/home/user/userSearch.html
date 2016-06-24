@@ -23,7 +23,7 @@
 								class="table table-condensed table-bordered table-striped">
 								<tr ng-repeat="row in $data">
 									<td data-title="'User Name'" sortable="'userName'"
-										class="col-sm-2 col-md-2 col-lg-2">{{row.userName}}</td>
+										class="col-sm-2 col-md-2 col-lg-2"><a href="" ng-click="redirectToUser(row.userId)">{{row.userName}}</a></td>
 									<td data-title="'Last Name'" sortable="'lastName'">{{row.lastName}}</td>
 									<td data-title="'First Name'" sortable="'firstName'">{{row.firstName}}</td>
 									<td data-title="'Email Id'" sortable="'emailId'">{{row.emailId}}</td>

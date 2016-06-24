@@ -17,7 +17,9 @@ customerModule.service('customerService', function($http, $q) {
 		getWorkItemByUserIdAndWorkType : getWorkItemByUserIdAndWorkType,
 		getEmailId : getEmailId,
 		getContactNo : getContactNo,
-		rejectUnitApproval : rejectUnitApproval
+		rejectUnitApproval : rejectUnitApproval,
+		lockEntity : lockEntity,
+		unlockEntity:unlockEntity
 	});
 
 
@@ -226,6 +228,30 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
+	function lockEntity(entityLock){
+		console.log('lock entity');
+		var request = $http({
+			method : "post",
+			url : "../service/entityLock/lockEntity",
+			params : "",
+			data: entityLock
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
+	function unlockEntity(entityLock){
+		console.log('unlock entity');
+		var request = $http({
+			method : "post",
+			url : "../service/entityLock/unlockEntity",
+			params : "",
+			data: entityLock
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+	
 	function handleError(response) {
 		console.log('Error occured while calling service');
 		console.log(response);

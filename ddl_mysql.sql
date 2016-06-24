@@ -1,4 +1,8 @@
 
+    alter table QUESTIONNNAIRE_ANSWER_OPTION 
+        drop 
+        foreign key FK_l0g3606y7ssgwag771urjy48x;
+
     alter table TB_ACTIVITY 
         drop 
         foreign key FK_f2uvsrbbc21ss9pj7mv62a41o;
@@ -143,6 +147,10 @@
         drop 
         foreign key FK_s1rhf50ehwwjplbbe76d2ic88;
 
+    alter table TB_QUESTIONNAIRE_MASTER 
+        drop 
+        foreign key FK_lndorodiltic651ikg7554l33;
+
     alter table TB_QUESTION_MASTER 
         drop 
         foreign key FK_oqwkem6mbs8r60b513ankmkw2;
@@ -263,6 +271,8 @@
         drop 
         foreign key FK_al7xrotox8lkfq7l7pxv4m517;
 
+    drop table if exists QUESTIONNNAIRE_ANSWER_OPTION;
+
     drop table if exists TB_ACTIVITY;
 
     drop table if exists TB_ACTIVITY_PARAM;
@@ -293,6 +303,8 @@
 
     drop table if exists TB_DESIGNATION_MASTER;
 
+    drop table if exists TB_ENTITY_LOCKS;
+
     drop table if exists TB_EQUIPMENT_DETAIL;
 
     drop table if exists TB_EQUIPMENT_HISTORY;
@@ -310,6 +322,8 @@
     drop table if exists TB_MODULE_LOG;
 
     drop table if exists TB_PRIVILEGE;
+
+    drop table if exists TB_QUESTIONNAIRE_MASTER;
 
     drop table if exists TB_QUESTION_MASTER;
 
@@ -346,6 +360,13 @@
     drop table if exists TB_WORK_ITEM;
 
     drop table if exists TB__AGREEMENT_INVOICE;
+
+    create table QUESTIONNNAIRE_ANSWER_OPTION (
+        OPTION_ID bigint not null auto_increment,
+        QUESTION_ID bigint,
+        TYPE varchar(255),
+        primary key (OPTION_ID)
+    );
 
     create table TB_ACTIVITY (
         ACTIVITY_ID bigint not null auto_increment,
@@ -543,6 +564,15 @@
         primary key (DESIGNATION_ID)
     );
 
+    create table TB_ENTITY_LOCKS (
+        ENTITY_LOCK_ID bigint not null auto_increment,
+        ENTITY_ID bigint,
+        ENTITY_TYPE varchar(255),
+        LOCKED_BY varchar(255),
+        LOCKED_DATE datetime,
+        primary key (ENTITY_LOCK_ID)
+    );
+
     create table TB_EQUIPMENT_DETAIL (
         EQUIPMENT_DTL_ID bigint not null auto_increment,
         CREATED_BY varchar(255),
@@ -665,6 +695,18 @@
         TYPE varchar(255),
         Client_Id bigint,
         primary key (PRIVILEGE_ID)
+    );
+
+    create table TB_QUESTIONNAIRE_MASTER (
+        QUESTION_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        QUESTION varchar(255),
+        TYPE varchar(255),
+        Client_Id bigint,
+        primary key (QUESTION_ID)
     );
 
     create table TB_QUESTION_MASTER (
@@ -915,6 +957,11 @@
     alter table TB_CUSTOMER_DETAIL 
         add constraint UK_dm4qmvg9y85yey4796hr6sflt  unique (CONTACT_NO, EMAIL_ID);
 
+    alter table QUESTIONNNAIRE_ANSWER_OPTION 
+        add constraint FK_l0g3606y7ssgwag771urjy48x 
+        foreign key (OPTION_ID) 
+        references TB_QUESTIONNAIRE_MASTER (QUESTION_ID);
+
     alter table TB_ACTIVITY 
         add constraint FK_f2uvsrbbc21ss9pj7mv62a41o 
         foreign key (Client_Id) 
@@ -1092,6 +1139,11 @@
 
     alter table TB_PRIVILEGE 
         add constraint FK_s1rhf50ehwwjplbbe76d2ic88 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_QUESTIONNAIRE_MASTER 
+        add constraint FK_lndorodiltic651ikg7554l33 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 

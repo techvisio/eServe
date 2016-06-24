@@ -23,12 +23,12 @@
 						<table ng-table="tableParams"
 							class="table table-condensed table-bordered table-striped">
 							<tr ng-repeat="row in $data">
-								<td data-title="'Customer Code'" sortable="'customerCode'"
-									class="col-sm-2 col-md-2 col-lg-2">{{row.customerCode}}</td>
-								<td data-title="'Customer Name'" sortable="'customerName'">{{row.customerName}}</td>
-								<td data-title="'Contact No'" sortable="'contactNo'">{{row.contactNo}}</td>
-								<td data-title="'Email Id'" sortable="'emailId'">{{row.emailId}}</td>
-								<td data-title="'No Of Units'">{{countUnit(row)}}</td>
+								<td data-title="'Customer Code'" sortable="'customerCode'" class="text-center"
+									class="col-sm-2 col-md-2 col-lg-2"><a href="" ng-click="redirectToCustomerDtlScreen(row.customerId)">{{row.customerCode}}</td></a>
+								<td data-title="'Customer Name'" sortable="'customerName'" class="text-center">{{row.customerName}}</td>
+								<td data-title="'Contact No'" sortable="'contactNo'" class="text-center">{{row.contactNo}}</td>
+								<td data-title="'Email Id'" sortable="'emailId'" class="text-center">{{row.emailId}}</td>
+								<td data-title="'No Of Units'" class="text-center">{{countUnit(row)}}</td>
 
 							</tr>
 						</table>

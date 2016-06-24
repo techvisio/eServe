@@ -94,18 +94,5 @@ public class Customer extends BasicEntity{
 	public void setCustomerCode(String customerCode) {
 		this.customerCode = customerCode;
 	}
-
-	public static void main(String[] args) throws Exception {
-
-		Field field = Customer.class.getDeclaredField("contactNo"); 
-		Annotation[] annotations = field.getDeclaredAnnotations();
-
-		for(Annotation annotation : annotations){
-			if(annotation instanceof javax.persistence.Column){
-				javax.persistence.Column myAnnotation = (javax.persistence.Column) annotation;
-				System.out.println("name: " + myAnnotation.name());
-			}
-		}
-
-	}
+	
 }

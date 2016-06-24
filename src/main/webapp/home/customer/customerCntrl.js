@@ -1,7 +1,7 @@
 var customerModule = angular.module('customerModule', []);
 
-customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','unit','masterdataService','userService','complaintService','$modal','$http','NgTableParams',
-                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,unit,masterdataService,userService,complaintService,$modal,$http,NgTableParams) {
+customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','unit','masterdataService','userService','complaintService','$modal','$http','NgTableParams','isCustomerSearch',
+                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,unit,masterdataService,userService,complaintService,$modal,$http,NgTableParams,isCustomerSearch) {
 
 
 	$scope.form={};
@@ -77,8 +77,24 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		}
 	};
 
+	if(!customer && !unit){
+		if(isCustomerSearch==="workItem"){
+			$rootScope.heading = 'Workitem';
+		}
+	}
+
+	if(!customer && !unit){
+		if(isCustomerSearch){
+			$rootScope.heading = 'Search Customer';
+		}
+		else{
+			$rootScope.heading = 'Create Customer'
+		}
+	}
+
 	if(customer){
 //		$scope.getAllComplaints = true;
+		$rootScope.heading = 'Customer';
 		$scope.isEdit = true;
 		$scope.isNew=false;
 		angular.forEach(customer.units, function(unit) {
@@ -93,6 +109,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 
 	if(unit){
+		$rootScope.heading = 'Unit Approval';
 		$scope.customerScreen = false;
 		$scope.unitApproval = unit;
 	}
@@ -151,6 +168,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			} 
 		})
 	}
+
+
 
 	$scope.getAllComplaintsForUnit = function(unitId){
 
@@ -544,6 +563,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 					})
 				};
 			},
+			backdrop:'static',
+			keyboard: false
 		});
 	};
 
@@ -572,6 +593,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 					})
 				};
 			},
+			backdrop:'static',
+			keyboard: false
 		});
 	};
 
@@ -603,6 +626,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 					})
 				};
 			},
+			backdrop:'static',
+			keyboard: false
 		});
 	};
 
@@ -614,6 +639,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				$scope.serviceRenewalBean = unit.serviceAgreement;
 			},
 			scope:$scope,
+			backdrop:'static',
+			keyboard: false
 		});
 
 		$scope.updateServiceAgreement = function(){
@@ -634,9 +661,13 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				}
 			},
 			scope:$scope,
+			backdrop:'static',
+			keyboard: false
 		});
 
-
+		$scope.closeModal=function(){
+			$rootScope.curModal.close();
+		}
 
 		$scope.addMachine = function() {
 
@@ -657,21 +688,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		}
 
 	};
-
-	$scope.showEditEquipmentModel = function(object) {
-
-		$scope.editEquipment=true;
-		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/addEquipment.html',
-			controller: function (customerService, masterdataService) {
-				$scope.dummyEquipmentDetails = object;
-			},
-			scope:$scope,
-		});
-
-
-	};
-
 
 	$scope.addcurrentUnittoCustomer = function(){
 
@@ -719,54 +735,105 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.filterCustomer = function() {
 
-		 $rootScope.curModal = $modal.open({
-			 templateUrl: 'customer/customerSearchCriteria.html',
-			 scope:$scope,
-			 controller: function (userService,$scope) {
+		$rootScope.curModal = $modal.open({
+			templateUrl: 'customer/customerSearchCriteria.html',
+			scope:$scope,
+			controller: function (userService,$scope) {
 
-				 $scope.getCustomerByCriteria = function(){
-					 $scope.tableParams.reload();
-					 $rootScope.curModal.close();
-				 }
+				$scope.getCustomerByCriteria = function(){
+					$scope.tableParams.reload();
+					$rootScope.curModal.close();
+				}
 
-			 },
-		 });
-	 };
-	 
-	 $scope.tableParams = new NgTableParams({}, {
-	      getData: function($defer,params) {
-	    	  var sortBy="CUSTOMER_NAME";
-	    	  var isAsc=false;
-	    	  var pageNo=params.page();
-	    	  var pageSize=params.count();
-	    	  if(params.sorting()){
-	    		  for (var attribute in params.sorting()) {
-	    			    if (params.sorting().hasOwnProperty(attribute)) {
-	    			      sortBy=attribute;
-	    			      var ascDsc=params.sorting()[attribute];
-	    			      if(ascDsc==='asc'){
-	    			    	  isAsc=true;  
-	    			      }
-	    			    }
-	    			}
-	    	  }
-	    	  $scope.searchCriteria.pageSize=pageSize;
-	    	  $scope.searchCriteria.pageNo=pageNo;
-	    	  $scope.searchCriteria.sortBy=sortBy;
-	    	  $scope.searchCriteria.isAscending=isAsc;
-	    	  
-	    	  customerService.getCustomerByCriteria($scope.searchCriteria)
-				 .then(
-						 function(customers) {
-							 if(customers){
-								 params.total(customers.totalCount);
-								 $defer.resolve(customers.objectData);
-							 }
-						 })
-	    	 
-	      }
-	    });
+			},
+		});
+	};
 
-	
+	$scope.tableParams = new NgTableParams({}, {
+		getData: function($defer,params) {
+			var sortBy="CUSTOMER_NAME";
+			var isAsc=false;
+			var pageNo=params.page();
+			var pageSize=params.count();
+			if(params.sorting()){
+				for (var attribute in params.sorting()) {
+					if (params.sorting().hasOwnProperty(attribute)) {
+						sortBy=attribute;
+						var ascDsc=params.sorting()[attribute];
+						if(ascDsc==='asc'){
+							isAsc=true;  
+						}
+					}
+				}
+			}
+			$scope.searchCriteria.pageSize=pageSize;
+			$scope.searchCriteria.pageNo=pageNo;
+			$scope.searchCriteria.sortBy=sortBy;
+			$scope.searchCriteria.isAscending=isAsc;
+
+			customerService.getCustomerByCriteria($scope.searchCriteria)
+			.then(
+					function(customers) {
+						if(customers){
+							params.total(customers.totalCount);
+							$defer.resolve(customers.objectData);
+						}
+					})
+
+		}
+	});
+
+	$scope.lockCustomerEntity = function()
+	{
+		$scope.entityLock = {};
+		$scope.entityLock.entityId = $scope.customer.customerId;
+		$scope.entityLock.entityType = 'CUSTOMER';
+
+		customerService.lockEntity($scope.entityLock);
+	}
+
+	$scope.lockUnitEntity = function(unit)
+	{
+		$scope.entityLock = {};
+		$scope.entityLock.entityId = unit.unitId;
+		$scope.entityLock.entityType = 'UNIT';
+		customerService.lockEntity($scope.entityLock);
+	}
+
+	$scope.unlockCustomerEntity = function()
+	{
+		$scope.entityLock = {};
+		$scope.entityLock.entityId = $scope.customer.customerId;
+		$scope.entityLock.entityType = 'CUSTOMER';
+
+		customerService.unlockEntity($scope.entityLock)
+		.then(
+				function(customer) {
+					console
+					.log('Unlocking customer entity in controller');
+					console.log(customer);
+					if (customer) {
+						$scope.customer=customer;
+					}
+				})
+	}
+
+	$scope.unlockUnitEntity = function(unit)
+	{
+		$scope.entityLock = {};
+		$scope.entityLock.entityId = unit.unitId;
+		$scope.entityLock.entityType = 'UNIT';
+
+		customerService.unlockEntity($scope.entityLock)
+		.then(
+				function(unitFromDB) {
+					console
+					.log('Unlocking unit entity in controller');
+					console.log(unitFromDB);
+					if (unitFromDB) {
+						unit = unitFromDB;
+					}
+				})
+	}
 
 } ]);

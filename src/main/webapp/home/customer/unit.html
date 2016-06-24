@@ -5,10 +5,10 @@
 				<header class="panel_header">
 					<h2 class="title pull-left">Unit No({{unit.machineSerialNo}})</h2>
 					<div class="actions panel_actions pull-right">
-						<i class="fa fa-pencil icon" ng-click="toggleReadOnly('UNIT')"
+						<i class="fa fa-pencil icon" ng-click="toggleReadOnly('UNIT'); lockUnitEntity(unit)"
 							ng-show="!isNew && !isEdit"
 							ng-disabled="isCreateOrUpdatePrivileged()"></i> <i
-							class="fa fa-times icon" ng-click="toggleReadOnly('UNIT')"
+							class="fa fa-times icon" ng-click="toggleReadOnly('UNIT'); unlockUnitEntity(unit)"
 							ng-show="!isNew && isEdit"></i> <i class="fa fa-trash-o"
 							ng-click="removeUnit($index)" ng-show="$index>0"
 							ng-disabled="isCreateOrUpdatePrivileged()"></i> <img

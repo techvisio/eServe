@@ -1,5 +1,5 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-	<section class="box ">
+	<section class="box " >
 		<header class="panel_header">
 			<h2 class=" pull-left"></h2>
 			<div class="actions panel_actions pull-right">
@@ -18,19 +18,28 @@
 						<table ng-table="tableParams"
 							class="table table-condensed table-bordered table-striped">
 							<tr ng-repeat="row in $data">
-								<td data-title="'Customer_Code'" sortable="'customerCode'"
-									class="col-sm-2 col-md-2 col-lg-2">{{row.customerCode}}</td>
+								<td data-title="'Customer_Code'" sortable="'customerCode'">{{row.customerCode}}</td>
 								<td data-title="'Customer_Name'" sortable="'customerName'">{{row.customerName}}</td>
-								<td data-title="'Email Id'">{{row.emailId}}</td>
-								<td data-title="'Contact No'">{{row.contactNo}}</td>
-								<td data-title="'Customer Type'">{{row.customerType}}</td>
-								<td data-title="'Customer Type'">{{row.customerType}}</td>
-								<td data-title="'Customer Type'">{{row.customerType}}</td>
-								<td data-title="'Customer Type'">{{row.customerType}}</td>
-								<td data-title="'Customer Type'">{{row.customerType}}</td>
-								<td data-title="'Customer Type'">{{row.customerType}}</td>
-								<td data-title="'Customer Type'">{{row.customerType}}</td>
-
+								<td data-title="'Email Id'" sortable="'emailId'">{{row.emailId}}</td>
+								<td data-title="'Contact No'" sortable="'contactNo'">{{row.contactNo}}</td>
+								<td data-title="'Customer Type'" sortable="'customerType'">{{row.customerType}}</td>
+								<td data-title="'Contract Start On'"
+									sortable="'contractStartOn'">{{row.contractStartOn}}</td>
+								<td data-title="'Contract Expire On'"
+									sortable="'contractExpireOn'">{{row.contractExpireOn}}</td>
+								<td data-title="'Unit Code'" sortable="'unitCode'">{{row.unitCode}}</td>
+								<td data-title="'Unit Type'" sortable="'unitType'">{{row.unitType}}</td>
+								<td data-title="'Service Category'" sortable="'serviceCategory'">{{row.serviceCategory}}</td>
+								<td data-title="'Last Approval Date'"
+									sortable="'lastApprovalDate'">{{row.lastApprovalDate}}</td>
+								<td data-title="'Last Approved By'" sortable="'lastApprovedBy'">{{row.lastApprovedBy}}</td>
+								<td data-title="'Machine Serial No'"
+									sortable="'machineSerialNo'">{{row.machineSerialNo}}</td>
+								<td data-title="'Model No'" sortable="'modelNo'">{{row.modelNo}}</td>
+								<td data-title="'Approval Status'" sortable="'approvalStatus'">{{row.approvalStatus}}</td>
+								<td data-title="'Approved By'" sortable="'approvedBy'">{{row.approvedBy}}</td>
+								<td data-title="'Asset No'" sortable="'assetNo'">{{row.assetNo}}</td>
+								<td data-title="'Version Id'" sortable="'versionId'">{{row.versionId}}</td>
 							</tr>
 						</table>
 					</div>

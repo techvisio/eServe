@@ -16,10 +16,14 @@ import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.manager.CustomerManager;
 import com.techvisio.eserve.service.ActivityService;
 import com.techvisio.eserve.service.CustomerService;
+import com.techvisio.eserve.service.EntityLockService;
 import com.techvisio.eserve.service.WorkItemService;
+import com.techvisio.eserve.util.AppConstants;
+import com.techvisio.eserve.util.CommonUtil;
 
 @Component
 @Transactional
@@ -33,7 +37,10 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Autowired
 	ActivityService activityService;
-	
+
+	@Autowired
+	EntityLockService entityLockService;
+
 	@Override
 	public List<Customer> getCustomers() {
 		List<Customer> customers = customerManager.getCustomers();
@@ -48,8 +55,18 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public Long saveCustomer(Customer customer) {
-		Long customerId = customerManager.saveCustomer(customer);
-		return customerId;
+		String userName = CommonUtil.getCurrentUser().getUserName();
+		boolean isEntityLocked=entityLockService.isEntityLocked(customer.getCustomerId(), AppConstants.entityType.CUSTOMER.toString(), userName);
+		if(isEntityLocked){
+			throw new EntityLockedException("Current user does not hold lock for this customer");
+		}
+
+		else{
+			Long customerId = customerManager.saveCustomer(customer);
+			entityLockService.unlockEntity("CUSTOMER", customerId);
+			return customerId;
+		}
+
 	}
 
 	@Override
@@ -60,7 +77,7 @@ public class CustomerServiceImpl implements CustomerService{
 		Long customerId = customerManager.saveCustomer(customer, context);
 
 		workItemService.createWorkItemForCustomerSave(context, customer,comment);
-//		activityService.createActivityForCustomer(customer);
+		//		activityService.createActivityForCustomer(customer);
 		return customerId;
 	}
 
@@ -74,11 +91,19 @@ public class CustomerServiceImpl implements CustomerService{
 	public Long saveUnit(GenericRequest<Unit> request, String context) {
 
 		Unit unit=request.getBussinessObject();
+		if(unit.getUnitId()!=null){
+			String userName = CommonUtil.getCurrentUser().getUserName();
+			boolean isEntityLocked=entityLockService.isEntityLocked(unit.getUnitId(), AppConstants.entityType.UNIT.toString(), userName);
+			if(!isEntityLocked){
+				throw new EntityLockedException("Current user does not hold lock for this unit");
+			}
+		}
 		String comment = request.getContextInfo().get("comment");
 		Long unitId = customerManager.saveUnit(unit,context);
 
 		workItemService.createWorkItemForUnitSave(context, unitId, comment);
 
+		entityLockService.unlockEntity("UNIT", unitId);
 		return unitId;
 	}
 

@@ -17,9 +17,9 @@
 								ng-click="saveAndUpdateCustomer('PUBLISH')"
 								ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i>
 							<i class="fa fa-times" ng-show="!isNew && !isEdit"
-								ng-click="toggleReadOnly('CUSTOMER')"></i> <i
+								ng-click="toggleReadOnly('CUSTOMER'); unlockCustomerEntity()"></i> <i
 								class="fa fa-pencil" ng-show="!isNew && isEdit"
-								ng-click="toggleReadOnly('CUSTOMER')" popover-placement="bottom"
+								ng-click="toggleReadOnly('CUSTOMER'); lockCustomerEntity();" popover-placement="bottom"
 								popover="Click To Edit" popover-trigger="mouseenter"
 								ng-disabled="isCreateOrUpdatePrivileged()"></i>
 						</div>

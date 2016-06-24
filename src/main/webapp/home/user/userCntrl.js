@@ -9,11 +9,13 @@ userModule
 		 '$rootScope',
 		 'userService',
 		 'user',
+		 'isUserSearch',
 		 'masterdataService',
 		 '$modal',
 		 '$http',
 		 'NgTableParams',
-		 function($scope, $state, $rootScope,userService,user,masterdataService,$modal,$http,NgTableParams) {
+		 function($scope, $state, $rootScope,userService,user,isUserSearch,masterdataService,$modal,$http,NgTableParams) {
+			 $rootScope.heading='Search User';
 			 $scope.form={};
 //			 $scope.isUserCollapsed= true;
 //			 $scope.isPrivilegesCollapsed= false;
@@ -47,7 +49,31 @@ userModule
 				 return result;		
 			 }
 
+			 $scope.createPriviledgeGrp=function(priviledgesList){
+				 $scope.priviledgeGrp={};
+				 angular.forEach(priviledgesList, function(privilege) {
+					 var priviledgeTypeGrp=$scope.priviledgeGrp[privilege.privilege.type];
+					 if(!priviledgeTypeGrp){
+						 $scope.priviledgeGrp[privilege.privilege.type]=[[]];
+						 priviledgeTypeGrp=$scope.priviledgeGrp[privilege.privilege.type];
+					 }
+					 var lastList=priviledgeTypeGrp[priviledgeTypeGrp.length-1];
+					 if(lastList.length>1)
+					 {
+						 priviledgeTypeGrp.push([privilege]);
+					 }
+					 else
+					 {
+						 lastList.push(privilege);
+					 }
+				 });
+			 }
+			 
 			 if(!user){
+				if(isUserSearch){$rootScope.heading='Search User'}
+				else{
+					$rootScope.heading='Create User';
+				}
 				 userService.getUserprivileges()
 				 .then(
 						 function(userPrivileges) {
@@ -62,9 +88,11 @@ userModule
 			 }			 
 
 			 if(user){
+				 $rootScope.heading='User';
 				 $scope.isEdit = true;
 				 $scope.isNew = false;
 				 $scope.user = user;
+				 $scope.createPriviledgeGrp(user.privileges);
 			 }			 
 
 			 $scope.authenticateUser=function(){
@@ -134,25 +162,7 @@ userModule
 						 })
 			 }
 
-			 $scope.createPriviledgeGrp=function(priviledgesList){
-				 $scope.priviledgeGrp={};
-				 angular.forEach(priviledgesList, function(privilege) {
-					 var priviledgeTypeGrp=$scope.priviledgeGrp[privilege.privilege.type];
-					 if(!priviledgeTypeGrp){
-						 $scope.priviledgeGrp[privilege.privilege.type]=[[]];
-						 priviledgeTypeGrp=$scope.priviledgeGrp[privilege.privilege.type];
-					 }
-					 var lastList=priviledgeTypeGrp[priviledgeTypeGrp.length-1];
-					 if(lastList.length>1)
-					 {
-						 priviledgeTypeGrp.push([privilege]);
-					 }
-					 else
-					 {
-						 lastList.push(privilege);
-					 }
-				 });
-			 }
+			
 			 $scope.addUser=function(){
 
 				 if($scope.user.password != $scope.confirmPassword){
@@ -216,19 +226,6 @@ userModule
 
 						 })
 			 }
-//			 $scope.getCurrentPassword=function(){
-//			 userService.getCurrentPassword($scope.user.userId)
-//			 .then(
-//			 function(userPassword) {
-//			 console
-//			 .log('user password received from service in controller : ');
-//			 console.log(userPassword);
-//			 if (userPassword) {
-//			 $scope.userPassword=userPassword;
-//			 }
-
-//			 })
-//			 }
 
 			 $scope.getUsers=function(){
 				 userService.getUsers()

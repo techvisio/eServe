@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Customer;
+import com.techvisio.eserve.beans.EntityLocks;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.Response;
 import com.techvisio.eserve.beans.SearchCriteria;
@@ -22,6 +23,8 @@ import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.service.CustomerService;
+import com.techvisio.eserve.service.EntityLockService;
+import com.techvisio.eserve.util.AppConstants;
 
 @RestController
 @RequestMapping("service/customer")
@@ -96,15 +99,15 @@ public class CustomerController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
-//	@RequestMapping(value ="/renewService/{unitId}", method = RequestMethod.PUT)
-//	public ResponseEntity<Response> renewService(@PathVariable Long unitId, @RequestBody ServiceAgreement agreement) {
-//		Response response=new Response();
-//		customerService.updateServiceAgreement(agreement, unitId);
-//		Unit unitFromDB = customerService.getUnit(unitId);
-//		response.setResponseBody(unitFromDB);
-//
-//		return new ResponseEntity<Response>(response,HttpStatus.OK);
-//	}
+	//	@RequestMapping(value ="/renewService/{unitId}", method = RequestMethod.PUT)
+	//	public ResponseEntity<Response> renewService(@PathVariable Long unitId, @RequestBody ServiceAgreement agreement) {
+	//		Response response=new Response();
+	//		customerService.updateServiceAgreement(agreement, unitId);
+	//		Unit unitFromDB = customerService.getUnit(unitId);
+	//		response.setResponseBody(unitFromDB);
+	//
+	//		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	//	}
 
 	@RequestMapping(value ="/servicehistory/{unitId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getServiceAgreementHistoryForUnit(@PathVariable Long unitId) {
@@ -123,7 +126,7 @@ public class CustomerController {
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value ="/rejectunit", method = RequestMethod.PUT)
 	public ResponseEntity<Response> rejectUnitApprovalUnit(@RequestBody GenericRequest<Unit> request) {
 		Response response=new Response();
@@ -140,7 +143,7 @@ public class CustomerController {
 		response.setResponseBody(unitDtl);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value="/emailId",method = RequestMethod.GET)
 	public ResponseEntity<Response> getEmailId(@RequestParam(value="emailId", defaultValue="")String emailId) {  
 		Response response=new Response();
@@ -148,7 +151,7 @@ public class CustomerController {
 		response.setResponseBody(customer);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value="/contactNo",method = RequestMethod.GET)
 	public ResponseEntity<Response> getContactNo(@RequestParam(value="contactNo", defaultValue="")String contactNo) {  
 		Response response=new Response();
@@ -156,4 +159,5 @@ public class CustomerController {
 		response.setResponseBody(customer);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
+
 }

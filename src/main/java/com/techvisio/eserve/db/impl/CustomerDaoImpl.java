@@ -1,7 +1,5 @@
 package com.techvisio.eserve.db.impl;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,6 +29,7 @@ import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.exception.NoEntityFoundException;
 import com.techvisio.eserve.factory.UniqueIdentifierGenerator;
+import com.techvisio.eserve.util.CommonUtil;
 
 @Component
 public class CustomerDaoImpl extends BaseDao implements CustomerDao{
@@ -68,7 +67,15 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		SearchResultData<Customer> searchResultData= new SearchResultData<Customer>();
 		String ascOrDsc = searchCriteria.getIsAscending()?"ASC":"DESC";
 		
-		String queryString="select CUSTOMER_ID,CREATED_BY,CREATED_ON,UPDATED_BY,UPDATED_ON,CONTACT_NO,CUSTOMER_CODE,CUSTOMER_NAME,EMAIL_ID,Client_Id,ADDRESS_ID,CUSTOMER_TYPE_ID from tb_customer_detail WHERE client_Id = coalesce(:client_Id, client_Id) and lower(contact_No) = coalesce(:contact_No, contact_No) and lower(customer_Code) = coalesce(:customer_Code, customer_Code)  and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(customer_Name) LIKE :customer_Name ORDER BY  "+searchCriteria.getSortBy()+" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
+		String sortBy=null;
+		try {
+			sortBy = CommonUtil.getFieldValue(Customer.class, searchCriteria.getSortBy());
+		} catch (NoSuchFieldException | SecurityException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String queryString="select CUSTOMER_ID,CREATED_BY,CREATED_ON,UPDATED_BY,UPDATED_ON,CONTACT_NO,CUSTOMER_CODE,CUSTOMER_NAME,EMAIL_ID,Client_Id,ADDRESS_ID,CUSTOMER_TYPE_ID from tb_customer_detail WHERE client_Id = coalesce(:client_Id, client_Id) and lower(contact_No) = coalesce(:contact_No, contact_No) and lower(customer_Code) = coalesce(:customer_Code, customer_Code)  and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(customer_Name) LIKE :customer_Name ORDER BY  "+sortBy +" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
 		Query query= getEntityManager().createNativeQuery(queryString, Customer.class);
 		
 		String queryString1="SELECT count(*),'totalCount' FROM (select * from tb_customer_detail WHERE client_Id = coalesce(:client_Id, client_Id) and lower(contact_No) = coalesce(:contact_No, contact_No) and lower(customer_Code) = coalesce(:customer_Code, customer_Code)  and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(customer_Name) LIKE :customer_Name)a";
@@ -423,26 +430,4 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		return null;
 	}
 
-	
-	public static void main(String[] args) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
-		
-		CustomerDaoImpl customerDaoImpl = new CustomerDaoImpl();
-		customerDaoImpl.getFieldValue(Customer.class, "customerId");
-		
-	}
-	
-	private String getFieldValue(Class classType, String propertyName) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
-		
-		Field field = classType.getDeclaredField(propertyName); 
-		Annotation[] annotations = field.getDeclaredAnnotations();
-
-		for(Annotation annotation : annotations){
-			if(annotation instanceof javax.persistence.Column){
-				javax.persistence.Column myAnnotation = (javax.persistence.Column) annotation;
-				return myAnnotation.name();
-			}
-		}
-		return null;
-	}
-	
 }

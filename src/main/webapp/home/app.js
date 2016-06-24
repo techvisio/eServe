@@ -43,6 +43,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			complaint: ['$stateParams', function($stateParams){
 				return null;
+			}],
+			isDashboard: ['$stateParams', function($stateParams){
+				return true;
 			}]
 		}
 	})
@@ -68,6 +71,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			unit: ['$stateParams', function($stateParams){
 				return null;
+			}],
+			isCustomerSearch: ['$stateParams', function($stateParams){
+				return 'workItem';
 			}]
 		}
 	})
@@ -117,6 +123,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			unit: ['$stateParams', function($stateParams){
 				return null;
+			}],
+			isCustomerSearch: ['$stateParams', function($stateParams){
+				return false;
 			}]
 		}
 	})
@@ -137,7 +146,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 
 	.state('complaintScreen', {
 		url: "/complaint/{entityId:[0-9]{1,8}}",
-		templateUrl: 'complaint/sampleComplaint.html',
+		templateUrl: 'complaint/complaint.html',
 		controller: "complaintController",
 		resolve:{
 			complaint: ['$stateParams','complaintService', function($stateParams,complaintService){
@@ -159,6 +168,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			unit: ['$stateParams', function($stateParams){
 				return null;
+			}],
+			isCustomerSearch: ['$stateParams', function($stateParams){
+				return true;
 			}]
 		}
 	})
@@ -187,6 +199,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			unit: ['$stateParams', function($stateParams){
 				return null;
+			}],
+			isCustomerSearch: ['$stateParams', function($stateParams){
+				return false;
 			}]
 		}
 	})
@@ -201,6 +216,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			customer: ['$stateParams', function($stateParams){
 				return null;
+			}],
+			isCustomerSearch: ['$stateParams', function($stateParams){
+				return false;
 			}]
 		}
 	})
@@ -213,6 +231,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			user: ['$stateParams','userService', function($stateParams,userService){
 				return null;
+			}],
+			isUserSearch: ['$stateParams', function($stateParams){
+				return true;
 			}]
 		}
 	})
@@ -224,6 +245,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			user: ['$stateParams','userService', function($stateParams,userService){
 				return userService.getUserwithprivileges($stateParams.entityId);
+			}],
+			isUserSearch: ['$stateParams', function($stateParams){
+				return false;
 			}]
 		}
 	})
@@ -235,6 +259,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			user: ['$stateParams', function($stateParams){
 				return null;
+			}],
+			isUserSearch: ['$stateParams', function($stateParams){
+				return false;
 			}]
 		}
 	})
@@ -246,6 +273,10 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			user: ['$stateParams', function($stateParams){
 				return {};
+			}],
+
+			isUserSearch: ['$stateParams', function($stateParams){
+				return false;
 			}]
 		}
 	})
@@ -260,18 +291,18 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}]	
 		}
 	})
-	
+
 	.state('customerReport', {
 		url: "/customerreport",
 		templateUrl: 'report/CustomerReport.html',
 		controller:"reportController",
 		resolve:{
-			
+
+			isCustomerReport: ['$stateParams', function($stateParams){
+				return true;
+			}]
 		}
 	});
-
-	
-	
 });
 
 
@@ -280,6 +311,7 @@ erp.controller('ApplicationController',
 		 function ($scope, $rootScope, $timeout, $modal,$http,$state,userService) {
 
 			$rootScope.user=null;
+			$rootScope.heading = 'Dashboard';
 
 			$scope.getAuthenticatedUser = function() {
 				console
@@ -298,10 +330,14 @@ erp.controller('ApplicationController',
 										resolve: {
 											user: ['$stateParams', function($stateParams){
 												return angular.copy($rootScope.user);
+											}],
+											isUserSearch: ['$stateParams', function($stateParams){
+												return false;
 											}]
 										},
 
-										backdrop:false
+										backdrop:'static',
+//										keyboard: false
 									});
 								}
 							} else {

@@ -3,7 +3,7 @@ var dashboardModule=angular.module('dashboardModule',['chart.js']);
 dashboardModule
 .controller(
 		'dashboardController',
-		['dashboardService','$scope','$state','complaint', function(dashboardService,$scope,$state,complaint) {
+		['dashboardService','$scope','$rootScope','$state','complaint','isDashboard', function(dashboardService,$scope,$rootScope,$state,complaint,isDashboard) {
 
 			$scope.selectedModule="complaint";
 			$scope.noticeBoardCount;
@@ -12,7 +12,15 @@ dashboardModule
 				$scope.selectedModule=module;
 			};
 			
+			if(!complaint){
+				if(isDashboard){
+					$rootScope.heading='Dashboard'
+				}
+			}
 			if(complaint){
+				if(isDashboard){
+					$rootScope.heading='Dashboard'
+				}
 				$scope.complaintSearchData = complaint;
 			}
 			

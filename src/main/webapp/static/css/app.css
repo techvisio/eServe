@@ -1220,3 +1220,25 @@ background-color: #F5F5F5;
 .padding-right{
 	padding-right: 20px;
 }
+
+/* css for user privileges */
+
+.form-group.privilege-header-font{
+	
+    display: inline-block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 12px;
+    line-height: 1.42857143;
+    color: #333;
+}
+
+.margin-top-privilege{
+	margin-top: 16px;
+}
+
+.margin-left-privilege{
+	margin-left: 25px;
+}

@@ -72,8 +72,12 @@
 								Date</label>
 
 							<div class="controls">
-								<input class="form-control input-sm" id="inputlg" type="text"
-									ng-model="dummyEquipmentDetails.installationDate">
+								<input type="text" class="form-control datepicker"
+											name="requestDueDate"
+											ng-model="dummyEquipmentDetails.installationDateString"
+											datepicker-popup="{{'MMM dd yyyy'}}" is-open="openedFrom"
+											ng-click="openedFrom = !openedFrom; $event.stopPropagation();"
+											show-button-bar="false" placeholder="Installation Date">
 							</div>
 						</div>
 					</div>
@@ -104,8 +108,11 @@
 								Warranty </label>
 						</div>
 					</div>
-					<div class="col-md-4 col-sm-12 col-xs-12"></div>
+					<div class="col-md-3 col-sm-12 col-xs-12"></div>
 					<div class="col-md-2 col-sm-12 col-xs-12">
+					<button type="button" class="btn btn-primary child-right right-margin-non"
+							ng-click="closeModal()">Cancel</button></div>
+					<div class="col-md-1 col-sm-12 col-xs-12">
 						<button type="button" class="btn btn-success child-right right-margin-non"
 							ng-click="addMachine()">Ok</button>
 					</div>

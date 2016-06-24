@@ -46,6 +46,10 @@ public interface AppConstants {
 	public enum complaintStatus {
 		ASSIGNED, UNASSIGNED, CLOSED
 	};
+	
+	public enum entityType {
+		CUSTOMER, UNIT, USER, COMPLAINT
+	};
 
 	public enum WorkItemType {
 		AGREEMENT_APPROVAL("unit", "APPROVE_SERVICE_AGREEMENT",

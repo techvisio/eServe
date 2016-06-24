@@ -6,13 +6,22 @@
 				<h2 class="title pull-left">USER INFORMATION</h2>
 				<div class="actions panel_actions pull-right">
 					<i class="fa fa-chevron-up"
-						ng-class="{'fa-chevron-down':!isUserCollapsed}"
-						ng-click="isUserCollapsed=!isUserCollapsed"></i>
+						ng-class="{'fa-chevron-down':isUserCollapsed}"
+						ng-click="isUserCollapsed=!isUserCollapsed"></i> <i
+						class="fa fa-floppy-o" ng-show="isNew || isEdit"
+						ng-click="saveAndUpdateUser()"
+						ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i> <i
+						class="fa fa-times" ng-show="!isNew && isEdit"
+						ng-click="toggleReadOnly('USER')"></i> <i class="fa fa-pencil"
+						ng-show="!isEdit" popover-placement="bottom"
+						popover="Click To Edit" popover-trigger="mouseenter"
+						ng-click="toggleReadOnly('USER')"
+						ng-disabled="isCreateOrUpdatePrivileged()""></i>
 				</div>
 			</header>
 			<div class="content-body">
 
-				<div collapse="!isUserCollapsed">
+				<div collapse="isUserCollapsed">
 					<div ng show="alerts..length>0 || !$scope.USER.$valid">
 						<alert ng-repeat="alert in alerts" type="{{alert.type}}"
 							close="closeAlert($index)">{{alert.msg}}</alert>
@@ -22,8 +31,7 @@
 					<div class="row">
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">First Name</label> <span
-									class="desc">e.g. "Rajat"</span>
+								<label class="form-label" for="formfield9">First Name</label>
 								<div class="controls">
 									<input type="text" class="form-control"
 										ng-model="user.firstName" type="text"
@@ -34,8 +42,7 @@
 						<div class="col-md-1"></div>
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">Last Name</label> <span
-									class="desc">e.g. "Kumar"</span>
+								<label class="form-label" for="formfield9">Last Name</label>
 								<div class="controls">
 									<input type="text" class="form-control" required="required"
 										ng-pattern="/^[a-zA-Z]+$/i" ng-model="user.lastName">
@@ -50,15 +57,15 @@
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Date of Birth</label>
-								<span class="desc">e.g. "10 nov 1991//span>
-									<div class="controls">
-										<input type="text" class="form-control datepicker"
-											required="required" name="requestDueDate"
-											ng-model="user.dobString"
-											datepicker-popup="{{'MMM dd yyyy'}}" is-open="openedFrom"
-											ng-click="openedFrom = !openedFrom; $event.stopPropagation();"
-											show-button-bar="false" placeholder="Date of Birth">
-									</div>
+
+								<div class="controls">
+									<input type="text" class="form-control datepicker"
+										required="required" name="requestDueDate"
+										ng-model="user.dobString" datepicker-popup="{{'MMM dd yyyy'}}"
+										is-open="openedFrom"
+										ng-click="openedFrom = !openedFrom; $event.stopPropagation();"
+										show-button-bar="false" placeholder="Date of Birth">
+								</div>
 							</div>
 						</div>
 						<div class="col-md-1"></div>
@@ -81,8 +88,7 @@
 					<div class="row">
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">User Name</label> <span
-									class="desc">e.g. "XYZ"</span>
+								<label class="form-label" for="formfield9">User Name</label>
 								<div class="controls">
 									<input type="text" class="form-control"
 										ng-pattern="/^[a-zA-_-Z0-9]+$/i" ng-model="user.userName"
@@ -93,8 +99,7 @@
 						<div class="col-md-1"></div>
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">Active</label> <span
-									class="desc">e.g. "Kumar"</span>
+								<label class="form-label" for="formfield9">Active</label>
 								<div class="controls">
 									<input type="checkbox" class="faChkSqr" ng-model="user.active"
 										id="chk_{{$id}}"><label for="chk_{{$id}}"
@@ -111,8 +116,7 @@
 					<div class="row">
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">Department</label> <span
-									class="desc">e.g. "Rajat"</span>
+								<label class="form-label" for="formfield9">Department</label>
 								<div class="controls">
 									<select ng-model="user.department.departmentId"
 										class="form-control"
@@ -125,8 +129,7 @@
 						<div class="col-md-1"></div>
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">Designation</label> <span
-									class="desc">e.g. "Kumar"</span>
+								<label class="form-label" for="formfield9">Designation</label>
 								<div class="controls">
 									<select ng-model="user.designation.designationId"
 										class="form-control"
@@ -144,7 +147,7 @@
 
 		<section class="box ">
 			<header class="panel_header">
-				<h2 class="title pull-left">USER PRIVILEGES</h2>
+				<h2 class="title pull-left">PRIVILEGES</h2>
 				<div class="actions panel_actions pull-right">
 					<i class="fa fa-chevron-up"
 						ng-class="{'fa-chevron-down':!isPrivilegesCollapsed}"
@@ -155,15 +158,29 @@
 
 
 				<div collapse="!isPrivilegesCollapsed">
-				<div class="row" ng-repeat="(key, value) in priviledgeGrp">
-					<div class="col-md-6 col-sm-12 col-xs-12">{{key}}</div>
-					<br>
-					<div class="row">
-					<div class="row" ng-repeat="priviledgeList in value">
-						<div class="col-md-6 col-sm-12 col-xs-12" ng-repeat="priviledge in priviledgeList">{{priviledge.privilege.description}}</div>
+
+					<div class="row" ng-repeat="(key, value) in priviledgeGrp">
+						<div class="col-md-12 col-sm-12 col-xs-12 gray-border">
+							<label class="margin-top-privilege"">{{key}}</label>
+						</div>
+						<div class="row">
+							<div class="row margin-left-privilege"
+								ng-repeat="priviledgeList in value">
+
+								<div class="col-md-5 col-sm-12 col-xs-12"
+									ng-repeat="priviledge in priviledgeList">
+									<div class="">
+										<input type="checkbox" class="faChkSqr"
+											ng-model="priviledge.granted" id="chk_{{$id}}"><span
+											for="chk_{{$id}}" class="privilege-header-font">&nbsp
+											{{priviledge.privilege.description}}</span>
+
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-					</div>
-				</div>
+
 				</div>
 			</div>
 		</section>
