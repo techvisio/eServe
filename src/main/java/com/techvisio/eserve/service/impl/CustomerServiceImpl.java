@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.EntityLocks;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SearchResultData;
@@ -49,7 +50,14 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public Customer getCustomer(Long customerId) {
-		Customer customer = customerManager.getCustomer(customerId); 
+		Customer customer = customerManager.getCustomer(customerId);
+		EntityLocks entityLocks  = entityLockService.getEntity(customerId, AppConstants.entityType.CUSTOMER.toString());
+		if(entityLocks!=null){
+			customer.setEdited(true);
+		}
+		else{
+			customer.setEdited(false);
+		}
 		return customer;
 	}
 

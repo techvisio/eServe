@@ -43,18 +43,41 @@ public class EntityLockServiceImpl implements EntityLockService{
 	}
 
 	@Override
-	public void lockEntity(EntityLocks entityLocks){
+	public Object lockEntity(EntityLocks entityLocks){
 
 		EntityLocks entityLocksFromDB = entityLockManager.getEntity(entityLocks.getEntityId(), entityLocks.getEntityType());
 
-		if(entityLocksFromDB==null){
-			entityLocks.setLockedBy(CommonUtil.getCurrentUser().getUserName());
-			entityLocks.setLockedDate(new Date());
-			entityLockManager.saveEntityLock(entityLocks);
+		boolean entityLockBySameUser = isEntityLocked(entityLocks.getEntityId(), entityLocks.getEntityType(), CommonUtil.getCurrentUser().getUserName());
+
+		//		temprory work
+		if(entityLockBySameUser){
+			unlockEntity(entityLocks.getEntityType(), entityLocks.getEntityId());
 		}
-		else {
-			throw new EntityLockedException("This entity is already being edited by " + entityLocksFromDB.getLockedBy());
+		//
+
+		else{	
+			if(entityLocksFromDB==null){
+				entityLocks.setLockedBy(CommonUtil.getCurrentUser().getUserName());
+				entityLocks.setLockedDate(new Date());
+				entityLockManager.saveEntityLock(entityLocks);
+				if(entityLocks.getEntityType().equalsIgnoreCase(AppConstants.entityType.CUSTOMER.toString())){
+					Customer customerFromDB = customerService.getCustomer(entityLocks.getEntityId());
+					return customerFromDB;
+				}
+				else if(entityLocks.getEntityType().equalsIgnoreCase(AppConstants.entityType.UNIT.toString())){
+					Unit unitFromDB = customerService.getUnit(entityLocks.getEntityId());
+					return unitFromDB;
+				}
+				else{
+					User userFromDB = userService.getUser(entityLocks.getEntityId());
+					return userFromDB;
+				}	
+			}
+			else {
+				throw new EntityLockedException("This entity is already being edited by " + entityLocksFromDB.getLockedBy());
+			}
 		}
+		return entityLockBySameUser;
 	}
 
 	@Override

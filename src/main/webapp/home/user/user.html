@@ -12,10 +12,10 @@
 						ng-click="saveAndUpdateUser()"
 						ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i> <i
 						class="fa fa-times" ng-show="!isNew && isEdit"
-						ng-click="toggleReadOnly('USER')"></i> <i class="fa fa-pencil"
+						ng-click="toggleReadOnly('USER'); unlockUserEntity()"></i> <i class="fa fa-pencil"
 						ng-show="!isEdit" popover-placement="bottom"
 						popover="Click To Edit" popover-trigger="mouseenter"
-						ng-click="toggleReadOnly('USER')"
+						ng-click="toggleReadOnly('USER'); lockUserEntity()"
 						ng-disabled="isCreateOrUpdatePrivileged()""></i>
 				</div>
 			</header>

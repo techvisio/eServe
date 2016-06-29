@@ -68,12 +68,12 @@ userModule
 					 }
 				 });
 			 }
-			 
+
 			 if(!user){
-				if(isUserSearch){$rootScope.heading='Search User'}
-				else{
-					$rootScope.heading='Create User';
-				}
+				 if(isUserSearch){$rootScope.heading='Search User'}
+				 else{
+					 $rootScope.heading='Create User';
+				 }
 				 userService.getUserprivileges()
 				 .then(
 						 function(userPrivileges) {
@@ -162,7 +162,7 @@ userModule
 						 })
 			 }
 
-			
+
 			 $scope.addUser=function(){
 
 				 if($scope.user.password != $scope.confirmPassword){
@@ -496,5 +496,42 @@ userModule
 
 				 }
 			 });
+
+			 $scope.lockUserEntity = function()
+			 {
+				 $scope.entityLock = {};
+				 $scope.entityLock.entityId = $scope.user.userId;
+				 $scope.entityLock.entityType = 'USER';
+
+				 userService.lockEntity($scope.entityLock)
+				 .then(
+						 function(customer) {
+							 console
+							 .log('Locking customer entity in controller');
+							 console.log(customer);
+							 if (customer) {
+								 $scope.customer=customer;
+							 }
+						 })
+			 }
+
+			 $scope.unlockUserEntity = function()
+			 {
+				 $scope.entityLock = {};
+				 $scope.entityLock.entityId = $scope.user.userId;
+				 $scope.entityLock.entityType = 'USER';
+
+				 userService.unlockEntity($scope.entityLock)
+				 .then(
+						 function(customer) {
+							 console
+							 .log('Unlocking customer entity in controller');
+							 console.log(customer);
+							 if (customer) {
+								 $scope.customer=customer;
+							 }
+						 })
+			 }
+
 
 		 } ]);

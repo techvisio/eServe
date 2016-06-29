@@ -6,6 +6,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.form={};
 	$scope.isCollapsed = true;
+
 	$scope.workItem = {}
 //	$scope.editEquipment=false;
 	$scope.isNew=true;
@@ -18,6 +19,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	//	$scope.getAllComplaints=false;
 	$scope.unitApproval = {};
 	$scope.customer={};
+	$scope.customer.edited = false;
 	$scope.customers=[];
 	$scope.searchCriteria = {};
 	$scope.dummyEquipmentDetails ={};
@@ -48,7 +50,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	}
 
 	$scope.toggleReadOnly = function(form) {
-		if($scope.isEdit){
+		if($scope.customer.edited){
 			$('#' + form + ' *').attr('readonly',
 					true);
 			$('#' + form + ' select')
@@ -59,7 +61,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			.attr('disabled', true);
 			$('#' + form + ' input[type="button"]')
 			.attr('disabled', true);
-			$scope.isEdit = !$scope.isEdit;
+			$scope.customer.edited = !$scope.customer.edited;
 		}
 
 		else{
@@ -73,7 +75,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			.attr('disabled', false);
 			$('#' + form + ' input[type="button"]')
 			.attr('disabled', false);
-			$scope.isEdit = !$scope.isEdit;
+			$scope.customer.edited = !$scope.customer.edited;
 		}
 	};
 
@@ -95,6 +97,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	if(customer){
 //		$scope.getAllComplaints = true;
 		$rootScope.heading = 'Customer';
+		$scope.customer.edited = customer.edited;
 		$scope.isEdit = true;
 		$scope.isNew=false;
 		angular.forEach(customer.units, function(unit) {
@@ -788,8 +791,17 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.entityLock = {};
 		$scope.entityLock.entityId = $scope.customer.customerId;
 		$scope.entityLock.entityType = 'CUSTOMER';
+		customerService.lockEntity($scope.entityLock)
+		.then(
+				function(customer) {
+					console
+					.log('Locking customer entity in controller');
+					console.log(customer);
+					if (customer) {
+						$scope.customer=customer;
+					}
+				})
 
-		customerService.lockEntity($scope.entityLock);
 	}
 
 	$scope.lockUnitEntity = function(unit)
@@ -797,7 +809,17 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.entityLock = {};
 		$scope.entityLock.entityId = unit.unitId;
 		$scope.entityLock.entityType = 'UNIT';
-		customerService.lockEntity($scope.entityLock);
+		customerService.lockEntity($scope.entityLock)
+		.then(
+				function(unitFromDB) {
+					console
+					.log('Locking unit entity in controller');
+					console.log(unitFromDB);
+					if (unitFromDB) {
+						unit = unitFromDB;
+					}
+				})
+
 	}
 
 	$scope.unlockCustomerEntity = function()

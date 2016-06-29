@@ -46,17 +46,17 @@ public class Unit extends BasicEntity{
 	private String lastApprovedBy;
 	@Column(name="LAST_APPROVAL_DATE")
 	private Date lastApprovalDate;
-	
+
 	@Column(name="ASSET_NO")
 	private String assetNo;
-	
+
 	@Column(name="MACHINE_SERIAL_NO")
 	private String machineSerialNo;
-	
+
 	@Column(name="MODEL_NO")
 	private String modelNo;
-	
-		
+
+
 	@OneToOne
 	@JoinColumn(name="UNIT_CATEGORY_ID")
 	private UnitCategory unitCategory;
@@ -64,28 +64,38 @@ public class Unit extends BasicEntity{
 	@OneToOne(cascade={CascadeType.ALL})
 	@JoinColumn(name="ADDRESS_ID")
 	private Address address;
-	
+
 	@OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
 	@JoinColumn(name="UNIT_ID")
 	private ServiceAgreement serviceAgreement;
-	
+
 	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
 	@JoinColumn(name="UNIT_ID")
 	private List<EquipmentDetail> equipmentDetails;
+
+	@Transient
+	private boolean edited = false;
 	
+	public boolean isEdited() {
+		return edited;
+	}
+	public void setEdited(boolean edited) {
+		this.edited = edited;
+	}
+
 	public String getAssetNo() {
 		return assetNo;
 	}
 	public void setAssetNo(String assetNo) {
 		this.assetNo = assetNo;
 	}
-		public Long getUnitId() {
+	public Long getUnitId() {
 		return unitId;
 	}
 	public void setUnitId(Long unitId) {
 		this.unitId = unitId;
 	}
-	
+
 	public UnitCategory getUnitCategory() {
 		return unitCategory;
 	}

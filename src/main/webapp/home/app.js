@@ -85,7 +85,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 
 	.state('complaint', {
 		url: "/complaint",
-		templateUrl: 'complaint/complaint.html',
+		templateUrl: 'complaint/sampleComplaint.html',
 		controller:"complaintController",
 		resolve:{
 			complaint: ['$stateParams', function($stateParams){
@@ -132,7 +132,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 
 	.state('customerToComplaint', {
 		url: "/complaint/unit/{entityId:[0-9]{1,8}}",
-		templateUrl: 'complaint/complaint.html',
+		templateUrl: 'complaint/sampleComplaint.html',
 		controller: "complaintController",
 		resolve:{
 			unitComplaint: ['$stateParams','complaintService', function($stateParams,complaintService){
@@ -146,7 +146,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 
 	.state('complaintScreen', {
 		url: "/complaint/{entityId:[0-9]{1,8}}",
-		templateUrl: 'complaint/complaint.html',
+		templateUrl: 'complaint/sampleComplaint.html',
 		controller: "complaintController",
 		resolve:{
 			complaint: ['$stateParams','complaintService', function($stateParams,complaintService){

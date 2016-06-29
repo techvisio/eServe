@@ -22,8 +22,13 @@ public class EntityLockController {
 
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value ="/lockEntity", method = RequestMethod.POST)
-	public void lockEntity(@RequestBody EntityLocks entityLocks) {
-		entityLockService.lockEntity(entityLocks);
+	public ResponseEntity<Response> lockEntity(@RequestBody EntityLocks entityLocks) {
+
+		Response response=new Response();
+		Object object=entityLockService.lockEntity(entityLocks);
+		response.setResponseBody(object);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+
 	}
 
 	@ResponseStatus(value = HttpStatus.OK)

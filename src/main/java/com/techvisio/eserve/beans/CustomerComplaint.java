@@ -1,8 +1,6 @@
 package com.techvisio.eserve.beans;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -57,7 +55,12 @@ public class CustomerComplaint extends BasicEntity{
 	private String priority;
 	@Column(name="SLA_DATE")
 	private Date slaDate;
-
+	@Column(name="CONTACT_PERSON")
+	private String contactPerson;
+	@Column(name="ALTERNATE_MOBILE_NO")
+	private String alternateMobileNo;
+	@Column(name="LANDLINE_NO")
+	private String landlineNo;
 	@Transient
 	private String slaDateString;
 
@@ -175,7 +178,6 @@ public class CustomerComplaint extends BasicEntity{
 	public String getSlaDateString() {
 		if (this.slaDate == null)
 			return null;
-
 		try {
 			DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
 			return fmt.print(this.slaDate.getTime());
@@ -184,7 +186,6 @@ public class CustomerComplaint extends BasicEntity{
 
 		}
 		return null;
-
 	}
 	public void setSlaDateString(String slaDateString) {
 		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
@@ -192,13 +193,29 @@ public class CustomerComplaint extends BasicEntity{
 			this.slaDate = parser2.parseDateTime(slaDateString).toDate();
 		}
 	}
-	
 	public String getComplaintCode() {
 		return complaintCode;
 	}
-	
 	public void setComplaintCode(String complaintCode) {
 		this.complaintCode = complaintCode;
+	}
+	public String getContactPerson() {
+		return contactPerson;
+	}
+	public void setContactPerson(String contactPerson) {
+		this.contactPerson = contactPerson;
+	}
+	public String getAlternateMobileNo() {
+		return alternateMobileNo;
+	}
+	public void setAlternateMobileNo(String alternateMobileNo) {
+		this.alternateMobileNo = alternateMobileNo;
+	}
+	public String getLandlineNo() {
+		return landlineNo;
+	}
+	public void setLandlineNo(String landlineNo) {
+		this.landlineNo = landlineNo;
 	}
 
 }

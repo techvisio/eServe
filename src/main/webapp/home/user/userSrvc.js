@@ -14,7 +14,9 @@ userModule.service('userService', function($http, $q) {
 		getUserwithprivileges : getUserwithprivileges,
 		getUserprivileges : getUserprivileges,
 		getCurrentPassword :getCurrentPassword,
-		resetPassword : resetPassword
+		resetPassword : resetPassword,
+		lockEntity : lockEntity,
+		unlockEntity : unlockEntity
 	});
 
 	function authenticateUser(form) {
@@ -201,6 +203,31 @@ userModule.service('userService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
+	function lockEntity(entityLock){
+		console.log('lock entity');
+		var request = $http({
+			method : "post",
+			url : "../service/entityLock/lockEntity",
+			params : "",
+			data: entityLock
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
+	function unlockEntity(entityLock){
+		console.log('unlock entity');
+		var request = $http({
+			method : "post",
+			url : "../service/entityLock/unlockEntity",
+			params : "",
+			data: entityLock
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
+	
 	
 	function handleError(response) {
 		console.log('Error occured while calling service');

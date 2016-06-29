@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 @Entity
@@ -44,6 +45,15 @@ public class Customer extends BasicEntity{
 	@JoinColumn(name="CUSTOMER_ID")
 	private List<Unit> units=new ArrayList<Unit>();
 
+	@Transient
+	private boolean edited = false;
+	
+	public boolean isEdited() {
+		return edited;
+	}
+	public void setEdited(boolean edited) {
+		this.edited = edited;
+	}
 	public Long getCustomerId() {
 		return customerId;
 	}

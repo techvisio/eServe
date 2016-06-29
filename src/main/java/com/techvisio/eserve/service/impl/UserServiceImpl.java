@@ -15,8 +15,12 @@ import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
+import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.manager.UserManager;
+import com.techvisio.eserve.service.EntityLockService;
 import com.techvisio.eserve.service.UserService;
+import com.techvisio.eserve.util.AppConstants;
+import com.techvisio.eserve.util.CommonUtil;
 
 @Component
 @Transactional
@@ -25,8 +29,20 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	UserManager userManager;
 
+	@Autowired
+	EntityLockService entityLockService;
+
 	@Override
 	public Map<String, Object> saveUser(User user) {
+		String userName = CommonUtil.getCurrentUser().getUserName();
+
+		if(user.getUserId()!=null){
+			boolean isEntityLocked=entityLockService.isEntityLocked(user.getUserId(), AppConstants.entityType.USER.toString(), userName);
+			if(isEntityLocked){
+				throw new EntityLockedException("Current user does not hold lock for this customer");
+			}
+		}
+
 		Map<String, Object> userMap = userManager.saveUser(user);
 		return userMap;
 	}
@@ -76,7 +92,7 @@ public class UserServiceImpl implements UserService{
 		SearchResultData users = userManager.getUserByCriteria(searchCriteria);
 		return users;
 	}
-	
+
 	@Override
 	public User getCurrentPassword(Long userId) {
 		User user = userManager.getCurrentPassword(userId);

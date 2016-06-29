@@ -14,7 +14,7 @@ public interface EntityLockService {
 
 	void saveEntityLock(EntityLocks entityLocks);
 
-	void lockEntity(EntityLocks entityLocks);
+	Object lockEntity(EntityLocks entityLocks);
 
 	Object unlockEntity(String entityType, Long entityId);
 
