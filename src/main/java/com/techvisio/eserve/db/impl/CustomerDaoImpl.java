@@ -66,7 +66,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 
 		SearchResultData<Customer> searchResultData= new SearchResultData<Customer>();
 		String ascOrDsc = searchCriteria.getIsAscending()?"ASC":"DESC";
-		
+
 		String sortBy=null;
 		try {
 			sortBy = CommonUtil.getFieldValue(Customer.class, searchCriteria.getSortBy());
@@ -74,18 +74,18 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		String queryString="select CUSTOMER_ID,CREATED_BY,CREATED_ON,UPDATED_BY,UPDATED_ON,CONTACT_NO,CUSTOMER_CODE,CUSTOMER_NAME,EMAIL_ID,Client_Id,ADDRESS_ID,CUSTOMER_TYPE_ID from tb_customer_detail WHERE client_Id = coalesce(:client_Id, client_Id) and lower(contact_No) = coalesce(:contact_No, contact_No) and lower(customer_Code) = coalesce(:customer_Code, customer_Code)  and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(customer_Name) LIKE :customer_Name ORDER BY  "+sortBy +" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
 		Query query= getEntityManager().createNativeQuery(queryString, Customer.class);
-		
+
 		String queryString1="SELECT count(*),'totalCount' FROM (select * from tb_customer_detail WHERE client_Id = coalesce(:client_Id, client_Id) and lower(contact_No) = coalesce(:contact_No, contact_No) and lower(customer_Code) = coalesce(:customer_Code, customer_Code)  and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(customer_Name) LIKE :customer_Name)a";
 		Query query1= getEntityManager().createNativeQuery(queryString1);
-		
+
 		String customerName = StringUtils.isEmpty(searchCriteria.getCustomerName())?"":searchCriteria.getCustomerName().toLowerCase();
 		String emailId = StringUtils.isEmpty(searchCriteria.getEmailId())?null:searchCriteria.getEmailId().toLowerCase();
 		String contactNo = StringUtils.isEmpty(searchCriteria.getContactNo())?null:searchCriteria.getContactNo().toLowerCase();
 		String customerCode = StringUtils.isEmpty(searchCriteria.getCustomerCode())?null:searchCriteria.getCustomerCode().toLowerCase();
-		
+
 		int pageSize,pageNo;
 		if(searchCriteria.getPageSize()==0)
 		{
@@ -103,10 +103,10 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		{
 			pageNo = searchCriteria.getPageNo();
 		}
-		
+
 		int startIndex = (pageSize * pageNo) - pageSize;
-		
-		
+
+
 		query.setParameter("customer_Name", "%"+customerName+"%");
 		query.setParameter("contact_No", contactNo);
 		query.setParameter("client_Id", searchCriteria.getClientId());
@@ -114,7 +114,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		query.setParameter("email_Id", emailId);
 		query.setParameter("PAGE_SIZE", pageSize);
 		query.setParameter("START_INDEX", startIndex);
-		
+
 		query1.setParameter("customer_Name", "%"+customerName+"%");
 		query1.setParameter("contact_No", contactNo);
 		query1.setParameter("client_Id", searchCriteria.getClientId());
@@ -127,7 +127,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 			Long count1 = (long) ((Number) count[0]).intValue();
 			searchResultData.setTotalCount(count1);
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		List<Customer> result= (List<Customer>)query.getResultList();
 		searchResultData.setObjectData(result);
@@ -203,7 +203,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 				unit.setUnitCode(unitCode);
 			}
 			insertServiceExpirationDateInServiceAgreement(unit);
-			
+
 			getEntityManager().persist(unit);
 			getEntityManager().flush();
 			if(unit.getServiceAgreement().getUnitId()==null){
@@ -243,6 +243,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		return units;
 	}
 
+	@Override
 	public void deleteEquipmentDtlExclusion(
 			List<EquipmentDetail> equipmentDetails, Long unitId) {
 
@@ -428,6 +429,42 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 			return customers.get(0);
 		}
 		return null;
+	}
+
+	@Override
+	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId){
+
+		String queryString="FROM EquipmentDetail ed WHERE ed.equipmentDtlId = "+equipDtlId ;
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<EquipmentDetail> equipmentDetails= (List<EquipmentDetail>)query.getResultList();
+
+		return equipmentDetails;
+	}
+	
+	@Override
+	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId){
+
+		String queryString="FROM EquipmentDetail ed WHERE ed.type = "+"'"+ type +"'"+" and ed.unitId = "+unitId ;
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<EquipmentDetail> equipmentDetails= (List<EquipmentDetail>)query.getResultList();
+
+		return equipmentDetails;
+	}
+
+	@Override
+	public void saveEquipment(EquipmentDetail equipmentDetail){
+
+
+		if(equipmentDetail.getEquipmentDtlId() == null){
+			getEntityManager().persist(equipmentDetail);
+			getEntityManager().flush();
+		}
+		else{
+			getEntityManager().merge(equipmentDetail);
+		}
+		getEntityManager().flush();
 	}
 
 }

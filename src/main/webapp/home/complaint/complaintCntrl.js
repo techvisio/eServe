@@ -1,7 +1,7 @@
 var complaintModule = angular.module('complaintModule', []);
 
-complaintModule.controller('complaintController', ['$scope','$window','$rootScope','complaintService','$state','$filter','unitComplaint','complaint','masterdataService','userService',
-                                                   function($scope,$window,$rootScope,complaintService,$state,filter,unitComplaint,complaint,masterdataService,userService) {
+complaintModule.controller('complaintController', ['$scope','$window','$rootScope','complaintService','$state','$filter','unitComplaint','complaint','masterdataService','userService','isComplaintSearch','$modal',
+                                                   function($scope,$window,$rootScope,complaintService,$state,filter,unitComplaint,complaint,masterdataService,userService,isComplaintSearch,$modal) {
 
 
 	$scope.form={};
@@ -20,7 +20,47 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	$scope.customerComplaints = [];
 	$scope.complaintResolution={};
 	$scope.complaintAssignment={};
+	$scope.dummyEquipmentDetails ={};
+	$scope.equipment={};
+	
+	$scope.toggleReadOnly = function(form) {
 
+		if($scope.customerComplaint.edited){
+			$('#' + form + ' *').attr('readonly',
+					true);
+			$('#' + form + ' select')
+			.attr('disabled', true);
+			$('#' + form + ' input[type="radio"]')
+			.attr('disabled', true);
+			$('#' + form + ' input[type="checkbox"]')
+			.attr('disabled', true);
+			$('#' + form + ' input[type="button"]')
+			.attr('disabled', true);
+			$scope.customerComplaint.edited = !$scope.customerComplaint.edited;
+		}
+
+		else{
+			$('#' + form + ' *').attr('readonly',
+					false);
+			$('#' + form + ' select')
+			.attr('disabled', false);
+			$('#' + form + ' input[type="radio"]')
+			.attr('disabled', false);
+			$('#' + form + ' input[type="checkbox"]')
+			.attr('disabled', false);
+			$('#' + form + ' input[type="button"]')
+			.attr('disabled', false);
+			$scope.customerComplaint.edited = !$scope.customerComplaint.edited;
+		}
+	};
+
+	$scope.isCreateOrUpdatePrivileged=function(){
+		return !($scope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !(!$scope.isNew && $scope.isPrivileged('CREATE_COMPLAINT'));
+	}
+
+	$scope.isViewPrivileged=function(){
+		return !($scope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !($scope.isPrivileged('CREATE_COMPLAINT')) && !($scope.isPrivileged('VIEW_COMPLAINT'));
+	}
 
 	$scope.isPrivileged = function(role){
 
@@ -58,13 +98,21 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		$scope.customerComplaint.unit = unitComplaint;
 	}
 
+	if(!complaint){
+		if(isComplaintSearch){$rootScope.heading='Search Complaint'}
+		else{
+			$rootScope.heading='Create Complaint';
+		}
+	}		
 
 	if(complaint){
+		$rootScope.heading='Complaint';
 		$scope.newComplaint=false;
 		$scope.showStatus = true;
 		$scope.isEdit = true;
 		$scope.isNew = false;
 		$scope.customerComplaint = complaint;
+		$scope.toggleReadOnly('COMPLAINT');
 	}
 
 	$scope.init = function() {
@@ -208,7 +256,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 
 	$scope.saveComplaint = function() {
 
-		if(!$scope.COMPLAINT.$valid){
+		if(!$scope.from.COMPLAINT.$valid){
 			$scope.alerts=[];
 			$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
 			return;
@@ -285,43 +333,112 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		})
 	};
 
-	$scope.toggleReadOnly = function(form) {
+	$scope.lockComplaintEntity = function()
+	{
+		$scope.entityLock = {};
+		$scope.entityLock.entityId = $scope.customerComplaint.complaintId;
+		$scope.entityLock.entityType = 'COMPLAINT';
+		complaintService.lockEntity($scope.entityLock)
+		.then(
+				function(complaintFromDB) {
+					console
+					.log('Locking complaint entity in controller');
+					console.log(complaintFromDB);
+					if (complaintFromDB) {
+						$scope.customerComplaint = complaintFromDB;
+					}
+				})
 
-		if($scope.isEdit){
-			$('#' + form + ' *').attr('readonly',
-					true);
-			$('#' + form + ' select')
-			.attr('disabled', true);
-			$('#' + form + ' input[type="radio"]')
-			.attr('disabled', true);
-			$('#' + form + ' input[type="checkbox"]')
-			.attr('disabled', true);
-			$('#' + form + ' input[type="button"]')
-			.attr('disabled', true);
-			$scope.isEdit = !$scope.isEdit;
-		}
+	}
 
-		else{
-			$('#' + form + ' *').attr('readonly',
-					false);
-			$('#' + form + ' select')
-			.attr('disabled', false);
-			$('#' + form + ' input[type="radio"]')
-			.attr('disabled', false);
-			$('#' + form + ' input[type="checkbox"]')
-			.attr('disabled', false);
-			$('#' + form + ' input[type="button"]')
-			.attr('disabled', false);
-			$scope.isEdit = !$scope.isEdit;
-		}
+	$scope.unlockComplaintEntity = function()
+	{
+		$scope.entityLock = {};
+		$scope.entityLock.entityId = $scope.customerComplaint.complaintId;
+		$scope.entityLock.entityType = 'COMPLAINT';
+
+		complaintService.unlockEntity($scope.entityLock)
+		.then(
+				function(complaint) {
+					console
+					.log('Unlocking complaint entity in controller');
+					console.log(complaint);
+					if (complaint) {
+						$scope.customerComplaint=complaint;
+					}
+				})
+	}
+
+
+	$scope.getEquipments = function(unit, equipType){
+
+		complaintService.getEquipments(equipType, unit.unitId)
+		.then(
+				function(equipments) {
+					console
+					.log('getting equipments in controller : ');
+					console.log(equipments);
+					if (equipments) {
+						$scope.customerComplaint.unit.equipmentDetails = equipments;
+
+						$scope.showEquipmentModel('lg');
+					}
+				})
+
+	}
+
+	$scope.showEquipmentModel = function(size) {
+		$rootScope.curModal = $modal.open({
+			templateUrl: 'complaint/equipmentPopup.html',
+			controller: function (customerService, masterdataService) {
+			},
+			size:size,
+			scope:$scope,
+			backdrop:'static',
+			keyboard: false
+		});
 	};
 
-	$scope.isCreateOrUpdatePrivileged=function(){
-		return !($scope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !(!$scope.isNew && $scope.isPrivileged('CREATE_COMPLAINT'));
-	}
+	$scope.showAddEquipmentModel = function(object, editEquipment) {
+		$scope.dummyEquipmentDetails=[];
+		$rootScope.curModal = $modal.open({
+			templateUrl: 'complaint/addEquipmentComplaint.html',
+			controller: function (complaintService, masterdataService) {
+			},
+			scope:$scope,
+			backdrop:'static',
+			keyboard: false
+		});
 
-	$scope.isViewPrivileged=function(){
-		return !($scope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !($scope.isPrivileged('CREATE_COMPLAINT')) && !($scope.isPrivileged('VIEW_COMPLAINT'));
-	}
 
+		$scope.addMachine = function() {
+
+			var equipmentDetail = angular
+			.copy($scope.dummyEquipmentDetails);
+			equipmentDetail.unitId = object.unitId;
+			object.equipmentDetails
+			.push(equipmentDetail);
+
+			$scope.dummyEquipmentDetails={};
+			$rootScope.curModal.close();
+		};
+
+	};
+
+	$scope.saveEquipment = function() {
+
+		customerService.saveEquipment($scope.dummyEquipmentDetails)
+		.then(function(response) {
+			console.log('equipment Data received from service : ');
+			console.log(equipment);
+			if (equipment) {
+				$scope.customerComplaint.unit.equipmentDetails = equipment;
+				$scope.alerts=[];
+				alert("equipment Saved Successfully")
+			} 
+		})
+	};
+
+	
+	
 } ]);

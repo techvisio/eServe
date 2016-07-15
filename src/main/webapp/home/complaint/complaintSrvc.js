@@ -12,9 +12,14 @@ complaintModule.service('complaintService', function($http, $q) {
 		getComplaintByCriteria : getComplaintByCriteria,
 		getSearchUnitByCustomerId : getSearchUnitByCustomerId,
 		getComplaintByUnitId : getComplaintByUnitId,
-		getAllComplaintsForUnit : getAllComplaintsForUnit
+		getAllComplaintsForUnit : getAllComplaintsForUnit,
+		lockEntity : lockEntity,
+		unlockEntity : unlockEntity,
+		getEquipments:getEquipments,
+		saveEquipment:saveEquipment
 	});
 
+	
 
 	function getComplaintByCriteria(searchCriteria){
 
@@ -157,6 +162,55 @@ complaintModule.service('complaintService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
+	function lockEntity(entityLock){
+		console.log('lock entity');
+		var request = $http({
+			method : "post",
+			url : "../service/entityLock/lockEntity",
+			params : "",
+			data: entityLock
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
+	function unlockEntity(entityLock){
+		console.log('unlock entity');
+		var request = $http({
+			method : "post",
+			url : "../service/entityLock/unlockEntity",
+			params : "",
+			data: entityLock
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
+	function getEquipments(type, unitId){
+		console.log('getting equipmentDetails in service');
+
+		var request = $http({
+			method : "get",
+			url : "../service/complaint/equipment/"+type+"/"+unitId,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}	
+
+	function saveEquipment(equipment){
+		console.log('save equipment call in service');
+		var request = $http({
+			method : "post",
+			url : "../service/complaint/equipment",
+			params : "",
+			data: equipment
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+	
 	function handleError(response) {
 		console.log('Error occured while calling service');
 		console.log(response);

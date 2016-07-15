@@ -1,115 +1,123 @@
-<div ng-init=init()>
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+<form name="form.COMPLAINT">
+	<div ng-init=init()>
 
-		<section class="box ">
+		<div ng
+			show="alerts..length>0 || !$scope.form.COMPLAINT.$valid">
+			<alert ng-repeat="alert in alerts" type="{{alert.type}}"
+				close="closeAlert($index)">{{alert.msg}}</alert>
+		</div>
 
-			<header class="panel_header">
-				<h2 class="title pull-left">Complaint Information</h2>
-				<div class="actions panel_actions pull-right">
-					<i class="fa fa-floppy-o" 
-						ng-click="saveAndUpdateComplaint()"
-						ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i> <i
-						class="fa fa-times" 
-						ng-click="toggleReadOnly('CUSTOMER'); unlockCustomerEntity()"></i>
-					<i class="fa fa-pencil" 
-						ng-click="toggleReadOnly('CUSTOMER'); lockCustomerEntity();"
-						ng-disabled="isCreateOrUpdatePrivileged()"></i> <i
-						class="fa fa-chevron-up"
-						ng-class="{'fa-chevron-down':isCollapsed}"
-						ng-click="isCollapsed=!isCollapsed"></i>
-					<!--                     <i class="box_setting material-icons"></i> -->
-					<!--                     <i class="box_close material-icons"></i> -->
-				</div>
-			</header>
-			<div class="content-body">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
 
-				<div class="row">
-					<div class="col-md-5 col-sm-12 col-xs-12">
-						<div class="form-group">
-							<label class="form-label" for="formfield9">Work Order No</label>
-							<div class="controls">
-								<input type="text" class="form-control" type="text"
-									ng-model="customerComplaint.complaintCode" required="required">
+			<section class="box ">
+
+				<header class="panel_header">
+					<h2 class="title pull-left">Complaint Information</h2>
+					<div class="actions panel_actions pull-right">
+						<i class="fa fa-floppy-o" ng-click="saveAndUpdateComplaint()" ng-show="customerComplaint.edited"
+							ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i> <i
+							class="fa fa-times" ng-show="customerComplaint.edited"
+							ng-click="toggleReadOnly('COMPLAINT'); unlockComplaintEntity()"></i>
+						<i class="fa fa-pencil" ng-show="!customerComplaint.edited"
+							ng-click="toggleReadOnly('COMPLAINT'); lockComplaintEntity();"
+							ng-disabled="isCreateOrUpdatePrivileged()"></i> <i
+							class="fa fa-chevron-up"
+							ng-class="{'fa-chevron-down':isCollapsed}"
+							ng-click="isCollapsed=!isCollapsed"></i>
+						<!--                     <i class="box_setting material-icons"></i> -->
+						<!--                     <i class="box_close material-icons"></i> -->
+					</div>
+				</header>
+				<div class="content-body">
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Work Order No</label>
+								<div class="controls">
+									<input type="text" class="form-control" type="text"
+										ng-model="customerComplaint.complaintCode" disabled>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Type</label>
+								<div class="controls">
+									<input type="text" class="form-control"
+										ng-pattern="/^[a-zA-Z]+$/i">
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-md-1"></div>
-					<div class="col-md-5 col-sm-12 col-xs-12">
-						<div class="form-group">
-							<label class="form-label" for="formfield9">Type</label>
-							<div class="controls">
-								<input type="text" class="form-control" required="required"
-									ng-pattern="/^[a-zA-Z]+$/i">
-							</div>
-						</div>
-					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-md-5 col-sm-12 col-xs-12">
-						<div class="form-group">
-							<label class="form-label" for="formfield9">Priority</label>
-							<div class="controls">
-								<select class="form-control"
-									ng-model="customerComplaint.priority">
-									<option></option>
-									<option value="C">Critical</option>
-									<option value="H">High</option>
-									<option value="M">Medium</option>
-									<option value="L">Low</option>
-								</select>
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Priority</label>
+								<div class="controls">
+									<select class="form-control"
+										ng-model="customerComplaint.priority">
+										<option></option>
+										<option value="C">Critical</option>
+										<option value="H">High</option>
+										<option value="M">Medium</option>
+										<option value="L">Low</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Status</label>
+								<div class="controls">
+									<input type="text" class="form-control" disabled
+										ng-model="customerComplaint.status">
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-md-1"></div>
-					<div class="col-md-5 col-sm-12 col-xs-12">
-						<div class="form-group">
-							<label class="form-label" for="formfield9">Status</label>
-							<div class="controls">
-								<input type="text" class="form-control" required="required"
-									ng-model="customerComplaint.status">
-							</div>
-						</div>
-					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-md-5 col-sm-12 col-xs-12">
-						<div class="form-group">
-							<label class="form-label" for="formfield9">Sla Date</label>
-							<div class="controls">
-								<input type="text" class="form-control datepicker"
-									ng-model="customerComplaint.slaDateString"
-									name="requestDueDate" datepicker-popup="{{'MMM dd yyyy'}}"
-									disabled>
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<label class="form-label" for="formfield9">Sla Date</label>
+								<div class="controls">
+									<input type="text" class="form-control datepicker"
+										ng-model="customerComplaint.slaDateString"
+										name="requestDueDate" datepicker-popup="{{'MMM dd yyyy'}}"
+										disabled>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 
-				<br>
-				<div class="tab-separator">
-					<tabset justified="true"> <tab heading="CUSTOMER">
-					<div ng-include
-						src="'../home/complaint/sampleComplaint/complaintCustomerInfo.html'"></div>
-					</tab> <tab heading="COMPLAINT DESCRIPTION">
-					<div ng-include
-						src="'../home/complaint/sampleComplaint/complaintDescription.html'"></div>
-					</tab> <tab heading="PARTS & EQUIPMENTS">
-					<div ng-include
-						src="'../home/complaint/sampleComplaint/complaintPartsAndEquipment.html'"></div>
-					</tab> <tab heading="SCHEDULING">
-					<div ng-include
-						src="'../home/complaint/sampleComplaint/complaintScheduling.html'"></div>
-					</tab> <tab heading="BILLING">
-					<div ng-include
-						src="'../home/complaint/sampleComplaint/complaintBilling.html'"></div>
-					</tab> <tab heading="ATTACHMENT">
-					<div ng-include
-						src="'../home/complaint/sampleComplaint/complaintAttachment.html'"></div>
-					</tab> </tabset>
+					<br>
+					<div class="tab-separator">
+						<tabset justified="true"> <tab heading="CUSTOMER">
+						<div ng-include
+							src="'../home/complaint/sampleComplaint/complaintCustomerInfo.html'"></div>
+						</tab> <tab heading="COMPLAINT DESCRIPTION">
+						<div ng-include
+							src="'../home/complaint/sampleComplaint/complaintDescription.html'"></div>
+						</tab> <tab heading="PARTS & EQUIPMENTS">
+						<div ng-include
+							src="'../home/complaint/sampleComplaint/complaintPartsAndEquipment.html'"></div>
+						</tab> <tab heading="SCHEDULING">
+						<div ng-include
+							src="'../home/complaint/sampleComplaint/complaintScheduling.html'"></div>
+						</tab> <tab heading="BILLING">
+						<div ng-include
+							src="'../home/complaint/sampleComplaint/complaintBilling.html'"></div>
+						</tab> <tab heading="ATTACHMENT">
+						<div ng-include
+							src="'../home/complaint/sampleComplaint/complaintAttachment.html'"></div>
+						</tab> </tabset>
+					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		</div>
 	</div>
-</div>
+</form>

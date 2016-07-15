@@ -12,6 +12,7 @@ import com.techvisio.eserve.beans.ComplaintAssignment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
@@ -46,4 +47,9 @@ public interface CustomerService {
 	public Customer createCustomerfromComplaint(CustomerComplaint customerComplaint);
 	public Customer getEmailId(String emailId);
 	public Customer getContactNo(String contactNo);
+	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId);
+	public void deleteEquipmentDtlExclusion(List<EquipmentDetail> equipmentDetails,
+			Long unitId);
+	public void saveEquipment(EquipmentDetail equipmentDetail);
+	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId);
 }

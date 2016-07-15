@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +38,7 @@ public class CustomerManagerImpl implements CustomerManager {
 
 	@Autowired
 	InvoiceManager invoiceManager;
-	
+
 	@Override
 	public Customer getCustomer(Long customerId) {
 		Customer customer = customerDao.getCustomer(customerId);
@@ -267,9 +269,32 @@ public class CustomerManagerImpl implements CustomerManager {
 			customerDao.saveUnit(unit);
 
 		}
-
 		unitFromDB = customerDao.getUnit(unit.getUnitId());
 		return unitFromDB;
+	}
 
+	@Override
+	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId){
+
+		List<EquipmentDetail> equipmentDetails= customerDao.getEquipmentDetail(type, unitId);
+		return equipmentDetails;
+	}
+
+	@Override
+	public void deleteEquipmentDtlExclusion(
+			List<EquipmentDetail> equipmentDetails, Long unitId) {
+		customerDao.deleteEquipmentDtlExclusion(equipmentDetails, unitId);
+
+	}
+
+	@Override
+	public void saveEquipment(EquipmentDetail equipmentDetail) {
+		customerDao.saveEquipment(equipmentDetail);
+	}
+
+	@Override
+	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId) {
+		List<EquipmentDetail> equipmentDetails = customerDao.getEquipmentDetailByEquipmentId(equipDtlId);
+		return equipmentDetails;
 	}
 }

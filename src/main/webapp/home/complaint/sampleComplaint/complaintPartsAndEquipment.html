@@ -1,166 +1,127 @@
-<div class="row">
-	<div class="col-sm-12">
-		<h3 class="custom-page-header" align="center">PART LIST</h3>
-	</div>
-</div>
 
 <div class="row">
-	<div class="col-sm-12">
-		<p align="left"><b><i>MECHANICAL</i></b></p>
+	<div class="col-md-4 col-sm-12 col-xs-12">
+		<div class="form-group">
+			<label class="form-label" for="formfield9">Select Equipment
+				Type</label>
+			<div class="controls">
+				<select class="form-control" ng-model="equipType">
+					<option></option>
+					<option value="COMPRESSOR">COMPRESSOR</option>
+					<option value="PCB">PCB</option>
+					<option value="FILTER">FILTER</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2 col-sm-12 col-xs-12">
+		<div class="form-group">
+			<label class="form-label" for="formfield9"></label>
+			<div class="controls">
+				<button type="button" class="btn btn-success child-right"
+					ng-click="getEquipments(customerComplaint.unit, equipType)">Select</button>
+			</div>
+		</div>
+
 	</div>
 </div>
+<br>
 
 <div class="row">
-	<div class="col-sm-2">
-		<label>S.No</label>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	<div class="row">
+
+		<div class="col-md-1 col-sm-1 col-xs-1 ">
+			<div class="form-group">
+				<label class="font-size_header" for="formfield9">Type</label>
+			</div>
+		</div>
+
+		<div class="col-md-2 col-sm-2 col-xs-2 ">
+			<div class="form-group">
+				<label class="font-size_header" for="formfield9">Model No</label>
+			</div>
+		</div>
+
+		<div class="col-md-2 col-sm-2 col-xs-2 ">
+			<div class="form-group">
+				<label class=" font-size_header" for="formfield9">Serial No</label>
+			</div>
+		</div>
+
+		<div class="col-md-2 col-sm-2 col-xs-2 ">
+			<div class="form-group">
+				<label class="font-size_header" for="formfield9">Invoice No</label>
+			</div>
+		</div>
+
+		<div class="col-md-2 col-sm-2 col-xs-2 ">
+			<div class="form-group">
+				<label class=" font-size_header" for="formfield9">Installation
+					Date</label>
+			</div>
+		</div>
+
+		<div class="col-md-2 col-sm-2 col-xs-2">
+			<div class="form-group">
+				<label class="font-size_header" for="formfield9">Warranty
+					Under</label>
+			</div>
+		</div>
+		<div class="col-md-1 col-sm-1 col-xs-1 padding-non"
+			ng-show="!isNew || isEdit || selection !='preview'">
+			<button type="button" class="btn btn-primary btn-sm padding-non"
+				ng-click="editEquipment='false'; showAddEquipmentModel(customerComplaint.unit,editEquipment )"
+				ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Add
+				Equipment</button>
+		</div>
 	</div>
 
-	<div class="col-sm-2">
-		<label>Part Name</label>
+	<div class="row gray-border" ng-repeat="equip in customerComplaint.unit.equipmentDetails"
+		id="parent">
+		<div class="col-md-1 col-sm-1 col-xs-1 text-centre">
+			<div class="form-group">
+				<label class="font-size-label" for="formfield9">{{equip.type}}</label>
+			</div>
+		</div>
+
+		<div class="col-md-2 col-sm-2 col-xs-2 text-centre">
+			<div class="form-group">
+				<label class=" font-size-label" for="formfield9">{{equip.equipment.model}}</label>
+			</div>
+		</div>
+
+		<div class="col-md-2 col-sm-2 col-xs-2 text-centre">
+			<div class="form-group">
+				<label class="font-size-label" for="formfield9">{{equip.serialNo}}</label>
+			</div>
+		</div>
+
+		<div class="col-md-2 col-sm-2 col-xs-2  text-centre">
+			<div class="form-group">
+				<label class="font-size-label" for="formfield9">{{equip.invoiceNo}}</label>
+			</div>
+		</div>
+
+		<div class="col-md-2 col-sm-2 col-xs-2 text-centre">
+			<div class="form-group">
+				<label class="font-size-label" for="formfield9">{{equip.warrantyUnder}}</label>
+			</div>
+		</div>
+		<div class="col-md-2 col-sm-2 col-xs-2 text-centre">
+			<div class="form-group">
+				<label class="font-size-label" for="formfield9">{{equip.installationDateString}}</label>
+			</div>
+		</div>
+
+		<div class="col-md-1 col-sm-1 col-xs-1">
+			<div class="form-group">
+				<i class="fa fa-trash-o icon" ng-click="removeMachine(unit,$index)"></i>
+				<i class="fa fa-pencil icon"
+					ng-click="editEquipment='true' ; showAddEquipmentModel(equip,editEquipment)"></i>
+			</div>
+		</div>
 	</div>
 
-	<div class="col-sm-2">
-		<label>Part No</label>
-	</div>
-
-	<div class="col-sm-2">
-		<label>Cost</label>
-	</div>
-
-	<div class="col-sm-2">
-		<label>Issuer Name</label>
-	</div>
-	
-	<div class="col-sm-2">
-		<label>Return</label>
-	</div>
-	
-</div>
-
-
-<div class="row">
-<div class="col-sm-2">
-<p>1.</p>
-</div>
-<div class="col-sm-2">
-	<select class="form-control">
-		<option>Select 1</option>
-		<option>Select 2</option>
-		<option>Select 3</option>
-		<option>Select 4</option>
-	</select>
-</div>
-<div class="col-sm-2">
-	<select class="form-control">
-		<option>Select 1</option>
-		<option>Select 2</option>
-		<option>Select 3</option>
-		<option>Select 4</option>
-	</select>
-</div>
-<div class="col-sm-2">
-	<select class="form-control">
-		<option>Select 1</option>
-		<option>Select 2</option>
-		<option>Select 3</option>
-		<option>Select 4</option>
-	</select>
-</div>
-<div class="col-sm-2">
-	<select class="form-control">
-		<option>Select 1</option>
-		<option>Select 2</option>
-		<option>Select 3</option>
-		<option>Select 4</option>
-	</select>
-</div>
-<div class="col-sm-2">
-	<select class="form-control">
-		<option>Select 1</option>
-		<option>Select 2</option>
-		<option>Select 3</option>
-		<option>Select 4</option>
-	</select>
 </div>
 </div>
-
-<div class="row"></div>
-<div class="row"></div>
-<div class="row"></div>
-<div class="row"></div>
-<div class="row"></div>
-<div class="row"></div>
-
-
-<div class="row">
-	<div class="col-sm-12">
-		<p align="left"><b><i>ELECTRICAL</i></b></p>
-	</div>
-</div>
-
-
-<div class="row">
-<div class="col-sm-2">
-<p>1.</p>
-</div>
-<div class="col-sm-2">
-	<select class="form-control">
-		<option>Select 1</option>
-		<option>Select 2</option>
-		<option>Select 3</option>
-		<option>Select 4</option>
-	</select>
-</div>
-<div class="col-sm-2">
-	<select class="form-control">
-		<option>Select 1</option>
-		<option>Select 2</option>
-		<option>Select 3</option>
-		<option>Select 4</option>
-	</select>
-</div>
-<div class="col-sm-2">
-	<select class="form-control">
-		<option>Select 1</option>
-		<option>Select 2</option>
-		<option>Select 3</option>
-		<option>Select 4</option>
-	</select>
-</div>
-<div class="col-sm-2">
-	<select class="form-control">
-		<option>Select 1</option>
-		<option>Select 2</option>
-		<option>Select 3</option>
-		<option>Select 4</option>
-	</select>
-</div>
-<div class="col-sm-2">
-	<select class="form-control">
-		<option>Select 1</option>
-		<option>Select 2</option>
-		<option>Select 3</option>
-		<option>Select 4</option>
-	</select>
-</div>
-</div>
-
-<div class="row"></div>
-<div class="row"></div>
-<div class="row"></div>
-<div class="row"></div>
-<div class="row"></div>
-<div class="row"></div>
-
-<div class="row">
-	<div class="col-sm-12">
-		<p align="left"><b><i>EQUIPMENT OR TOOL CHECK LIST</i></b></p>
-	</div>
-</div>
-
-
-<div class="row">
-<div class="col-sm-2">{{}}</div>
-<div class="col-sm-2">{{}}</div>
-</div>
-

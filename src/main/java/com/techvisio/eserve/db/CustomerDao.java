@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Customer;
+import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.EquipmentHistory;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SearchResultData;
@@ -36,4 +37,9 @@ public interface CustomerDao {
 	public Customer getContactNo(String ContactNo);
 	public void saveUnitHistory(UnitHistory unitHistory);
 	public void saveEquipmentHistory(EquipmentHistory equipmentHistory);
+	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId);
+	public void deleteEquipmentDtlExclusion(List<EquipmentDetail> equipmentDetails,
+			Long unitId);
+	public void saveEquipment(EquipmentDetail equipmentDetail);
+	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId);
 }

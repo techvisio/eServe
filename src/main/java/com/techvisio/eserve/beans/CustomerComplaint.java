@@ -76,6 +76,9 @@ public class CustomerComplaint extends BasicEntity{
 	@JoinColumn(name="UNIT_ID")
 	private Unit unit;
 
+	@Transient
+	private boolean edited = false;
+	
 	public Long getComplaintId() {
 		return complaintId;
 	}
@@ -216,6 +219,12 @@ public class CustomerComplaint extends BasicEntity{
 	}
 	public void setLandlineNo(String landlineNo) {
 		this.landlineNo = landlineNo;
+	}
+	public boolean isEdited() {
+		return edited;
+	}
+	public void setEdited(boolean edited) {
+		this.edited = edited;
 	}
 
 }

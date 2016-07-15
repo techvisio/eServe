@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.EntityLocks;
+import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.Response;
 import com.techvisio.eserve.beans.SearchCriteria;
@@ -160,4 +161,13 @@ public class CustomerController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
+	@RequestMapping(value ="/deleteequipment/{unitId}", method = RequestMethod.PUT)
+	public ResponseEntity<Response> deleteEquipmentDtlExclusion(@RequestBody List<EquipmentDetail> equipmentDetails, @PathVariable Long unitId) {
+		Response response=new Response();
+		customerService.deleteEquipmentDtlExclusion(equipmentDetails, unitId);
+		Unit unitFromDB = customerService.getUnit(unitId);
+		response.setResponseBody(unitFromDB);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
 }

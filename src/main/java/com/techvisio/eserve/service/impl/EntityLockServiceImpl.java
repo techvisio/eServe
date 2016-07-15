@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Customer;
+import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.EntityLocks;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.manager.EntityLockManager;
+import com.techvisio.eserve.service.ComplaintService;
 import com.techvisio.eserve.service.CustomerService;
 import com.techvisio.eserve.service.EntityLockService;
 import com.techvisio.eserve.service.UserService;
@@ -31,6 +33,10 @@ public class EntityLockServiceImpl implements EntityLockService{
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	ComplaintService complaintService;
+
+	
 	@Override
 	public EntityLocks getEntity(Long entityId, String entityType) {
 		EntityLocks entityLocks = entityLockManager.getEntity(entityId, entityType);
@@ -99,9 +105,18 @@ public class EntityLockServiceImpl implements EntityLockService{
 					Unit unitFromDB = customerService.getUnit(entityId);
 					return unitFromDB;
 				}
-				else{
+				else if(entityType.equalsIgnoreCase(AppConstants.entityType.COMPLAINT.toString())){
+					CustomerComplaint complaintFromDB = complaintService.getCustomerComplaint(entityId);
+					return complaintFromDB;
+				}
+				
+				else if(entityType.equalsIgnoreCase(AppConstants.entityType.UNIT.toString())){
 					User userFromDB = userService.getUser(entityId);
 					return userFromDB;
+				}
+				
+				else{
+					return null;
 				}	
 			}
 

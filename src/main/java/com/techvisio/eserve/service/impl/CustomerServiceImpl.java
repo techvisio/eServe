@@ -12,6 +12,7 @@ import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.EntityLocks;
+import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SearchResultData;
@@ -224,4 +225,27 @@ public class CustomerServiceImpl implements CustomerService{
 		return unitFromDB;
 	}
 
+	@Override
+	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId){
+
+		List<EquipmentDetail> equipmentDetails= customerManager.getEquipmentDetail(type, unitId);
+		return equipmentDetails;
+	}
+
+	@Override
+	public void deleteEquipmentDtlExclusion(
+			List<EquipmentDetail> equipmentDetails, Long unitId) {
+		customerManager.deleteEquipmentDtlExclusion(equipmentDetails, unitId);
+	}
+
+	@Override
+	public void saveEquipment(EquipmentDetail equipmentDetail) {
+		customerManager.saveEquipment(equipmentDetail);
+	}
+
+	@Override
+	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId) {
+		List<EquipmentDetail> equipmentDetails = customerManager.getEquipmentDetailByEquipmentId(equipDtlId);
+		return equipmentDetails;
+		}
 }

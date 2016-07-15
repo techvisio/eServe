@@ -12,6 +12,7 @@ import com.techvisio.eserve.beans.ComplaintAssignment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
@@ -34,10 +35,15 @@ public interface CustomerManager {
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
 	public Unit getUnit(Long unitId);
 	public Unit approveUnit(Unit unit);
-//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
+	//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
 	public ApproveUnitDtl getUnitForApproval(Long unitId);
 	public Long saveCustomer(Customer customer);
 	public Customer getEmailId(String EmailId);
 	public Customer getContactNo(String ContactNo);
 	public Unit rejectUnitApproval(Unit unit);
+	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId);
+	public void deleteEquipmentDtlExclusion(List<EquipmentDetail> equipmentDetails,
+			Long unitId);
+	public void saveEquipment(EquipmentDetail equipmentDetail);
+	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId);
 }

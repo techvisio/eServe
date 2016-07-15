@@ -93,7 +93,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
-
+			}],
+			isComplaintSearch: ['$stateParams', function($stateParams){
+				return false;
 			}]
 		}
 	})
@@ -140,6 +142,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			complaint: ['$stateParams', function($stateParams){
 				return null;
+			}],
+			isComplaintSearch: ['$stateParams', function($stateParams){
+				return false;
 			}]
 		}
 	})
@@ -154,6 +159,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
+			}],
+			isComplaintSearch: ['$stateParams', function($stateParams){
+				return false;
 			}]
 		}
 	})
@@ -185,6 +193,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			unitComplaint: ['$stateParams', function($stateParams){
 				return null;
+			}],
+			isComplaintSearch: ['$stateParams', function($stateParams){
+				return true;
 			}]
 		}
 	})

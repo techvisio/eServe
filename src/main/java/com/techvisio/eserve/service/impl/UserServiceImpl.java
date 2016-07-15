@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.EntityLocks;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
@@ -50,6 +51,13 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User getUser(Long userId) {
 		User user = userManager.getUser(userId);
+		EntityLocks entityLocks  = entityLockService.getEntity(userId, AppConstants.entityType.USER.toString());
+		if(entityLocks!=null){
+			user.setEdited(true);
+		}
+		else{
+			user.setEdited(false);
+		}
 		return user;
 	}
 

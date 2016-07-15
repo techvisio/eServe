@@ -16,6 +16,7 @@ import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.Response;
 import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
@@ -30,26 +31,26 @@ public class ComplaintController {
 
 	@Autowired
 	ComplaintService complaintService;
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Response> saveCustomerComplaint(@RequestBody CustomerComplaint complaint) {
 		Long complaintId = complaintService.saveComplaint(complaint);
-		CustomerComplaint coplaintFromDB = complaintService.getCustomerComplaint(complaintId);
+		CustomerComplaint complaintFromDB = complaintService.getCustomerComplaint(complaintId);
 		Response response=new Response();
-		response.setResponseBody(coplaintFromDB);
+		response.setResponseBody(complaintFromDB);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
 	public ResponseEntity<Response> updateCustomerComplaint(@RequestBody CustomerComplaint complaint) {
 		Response response=new Response();
-        complaintService.saveComplaint(complaint);
+		complaintService.saveComplaint(complaint);
 		CustomerComplaint complaintFromDB = complaintService.getCustomerComplaint(complaint.getComplaintId());
-        response.setResponseBody(complaintFromDB);
+		response.setResponseBody(complaintFromDB);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}	
-	
+
 	@RequestMapping(value="customercomplaint/{customerId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getCustomerForComplaint(@PathVariable Long customerId) {  
 		Response response=new Response();
@@ -57,7 +58,7 @@ public class ComplaintController {
 		response.setResponseBody(customer);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value="unitcomplaint/{unitId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getUnitForComplaint(@PathVariable Long unitId) {  
 		Response response=new Response();
@@ -65,7 +66,7 @@ public class ComplaintController {
 		response.setResponseBody(unit);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value="complaints/{customerId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getAllCustomerComplaints(@PathVariable Long customerId) {  
 		Response response=new Response();
@@ -85,18 +86,18 @@ public class ComplaintController {
 	@RequestMapping(value ="/complaintresolution/{complaintId}", method = RequestMethod.POST)
 	public ResponseEntity<Response> saveComplaintResolution(@PathVariable Long complaintId, @RequestBody ComplaintResolution complaintResolution) {
 		Response response=new Response();
-        complaintService.saveComplaintResolution(complaintId, complaintResolution);
-        CustomerComplaint complaintFromDB = complaintService.getCustomerComplaint(complaintId);
-        response.setResponseBody(complaintFromDB);
+		complaintService.saveComplaintResolution(complaintId, complaintResolution);
+		CustomerComplaint complaintFromDB = complaintService.getCustomerComplaint(complaintId);
+		response.setResponseBody(complaintFromDB);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value ="/complaintassignment/{complaintId}", method = RequestMethod.POST)
 	public ResponseEntity<Response> saveComplaintAssignment(@PathVariable Long complaintId, @RequestBody ComplaintAssignment complaintAssignment) {
 		Response response=new Response();
-        complaintService.saveComplaintAssignment(complaintId, complaintAssignment);
+		complaintService.saveComplaintAssignment(complaintId, complaintAssignment);
 		CustomerComplaint complaintFromDB = complaintService.getCustomerComplaint(complaintId);
-        response.setResponseBody(complaintFromDB);
+		response.setResponseBody(complaintFromDB);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -109,7 +110,7 @@ public class ComplaintController {
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value ="/searchcomplaintunit/{customerId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getSearchUnitByCustomerId(@PathVariable Long customerId) {
 		Response response=new Response();
@@ -118,7 +119,7 @@ public class ComplaintController {
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value ="/searchcomplaint/{unitId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getComplaintSearchByUnitId(@PathVariable Long unitId) {
 		Response response=new Response();
@@ -127,7 +128,7 @@ public class ComplaintController {
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value ="/complaint/{unitId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getAllComplaintsForUnit(@PathVariable Long unitId) {
 		Response response=new Response();
@@ -146,5 +147,21 @@ public class ComplaintController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
+	@RequestMapping(value ="/equipment/{type}/{unitId}", method = RequestMethod.GET)
+	public ResponseEntity<Response> getEquipmentDetail(@PathVariable String type,@PathVariable Long unitId) {
+		Response response=new Response();
+		List<EquipmentDetail> equipmentDetails = complaintService.getEquipmentDetail(type, unitId);
+		response.setResponseBody(equipmentDetails);
 
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+
+	@RequestMapping(value ="/equipment",method = RequestMethod.POST)
+	public ResponseEntity<Response> saveEquipment(@RequestBody EquipmentDetail equipmentDetail) {
+		complaintService.saveEquipment(equipmentDetail);
+		List<EquipmentDetail> equipmentDetails = complaintService.getEquipmentDetailByEquipmentId(equipmentDetail.getEquipmentDtlId());
+		Response response=new Response();
+		response.setResponseBody(equipmentDetails);
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}
 }

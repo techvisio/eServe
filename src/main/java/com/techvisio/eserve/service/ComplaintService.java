@@ -11,6 +11,7 @@ import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
@@ -37,4 +38,7 @@ public interface ComplaintService {
 	public List<CustomerComplaint> getAllComplaintsForUnit(Long unitId);
 	public List<ComplaintSearchData> getComplaintDataforDashboard(String type,
 			String code);
+	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId);
+	public void saveEquipment(EquipmentDetail equipmentDetail);
+	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId);
 }

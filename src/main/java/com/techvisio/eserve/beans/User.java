@@ -97,6 +97,8 @@ public class User extends BasicEntity {
 	@JoinColumn(name="USER_ID")
 	private List<UserPrivilege> privileges = new ArrayList<UserPrivilege>();
 
+	@Transient
+	private boolean edited = false;
 	
 	public Long getUserId() {
 		return userId;
@@ -241,5 +243,12 @@ public class User extends BasicEntity {
 		this.privileges = privileges;
 	}
 
-	
+	public boolean isEdited() {
+		return edited;
+	}
+
+	public void setEdited(boolean edited) {
+		this.edited = edited;
+	}
+
 }

@@ -12,13 +12,19 @@ import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.EntityLocks;
+import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.manager.ComplaintManager;
 import com.techvisio.eserve.service.ComplaintService;
+import com.techvisio.eserve.service.CustomerService;
+import com.techvisio.eserve.service.EntityLockService;
+import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 
 @Component
@@ -28,8 +34,23 @@ public class ComplaintServiceImpl implements ComplaintService{
 	@Autowired
 	ComplaintManager complaintManager;
 
+	@Autowired
+	EntityLockService entityLockService;
+
+	@Autowired
+	CustomerService customerService;
+
 	@Override
 	public Long saveComplaint(CustomerComplaint customerComplaint) {
+
+		String userName = CommonUtil.getCurrentUser().getUserName();
+		if(customerComplaint.getComplaintId()!=null){
+			boolean isEntityLocked=entityLockService.isEntityLocked(customerComplaint.getComplaintId(), AppConstants.entityType.COMPLAINT.toString(), userName);
+			if(isEntityLocked){
+				throw new EntityLockedException("Current user does not hold lock for this customer");
+			}
+		}
+
 		Long complaintId = complaintManager.saveComplaint(customerComplaint);		
 		return complaintId;
 	}
@@ -37,6 +58,13 @@ public class ComplaintServiceImpl implements ComplaintService{
 	@Override
 	public CustomerComplaint getCustomerComplaint(Long complaintId) {
 		CustomerComplaint customerComplaint = complaintManager.getCustomerComplaint(complaintId);
+		EntityLocks entityLocks  = entityLockService.getEntity(complaintId, AppConstants.entityType.COMPLAINT.toString());
+		if(entityLocks!=null){
+			customerComplaint.setEdited(true);
+		}
+		else{
+			customerComplaint.setEdited(false);
+		}
 		return customerComplaint;
 	}
 
@@ -101,7 +129,7 @@ public class ComplaintServiceImpl implements ComplaintService{
 		List<SearchComplaint> complaints = complaintManager.getComplaintSearchByUnitId(unitId);
 		return complaints;
 	}
-	
+
 	@Override
 	public List<CustomerComplaint> getAllComplaintsForUnit(Long unitId) {
 		List<CustomerComplaint> complaints= complaintManager.getAllComplaintsForUnit(unitId);
@@ -114,5 +142,24 @@ public class ComplaintServiceImpl implements ComplaintService{
 		List<ComplaintSearchData> complaints= complaintManager.getComplaintDataforDashboard( clientId,type,code);
 		return complaints;
 	}
-	
+
+	@Override
+	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId){
+
+		List<EquipmentDetail> equipmentDetails= customerService.getEquipmentDetail(type, unitId);
+		return equipmentDetails;
+	}
+
+	@Override
+	public void saveEquipment(EquipmentDetail equipmentDetail) {
+		customerService.saveEquipment(equipmentDetail);
+	}
+
+	@Override
+	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId) {
+		List<EquipmentDetail> equipmentDetails = customerService.getEquipmentDetailByEquipmentId(equipDtlId);
+		return equipmentDetails;
+	}
+
 }
+
