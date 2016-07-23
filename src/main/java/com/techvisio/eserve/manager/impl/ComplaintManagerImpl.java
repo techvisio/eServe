@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
+import com.techvisio.eserve.beans.ComplaintEquipment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
@@ -37,7 +39,7 @@ public class ComplaintManagerImpl implements ComplaintManager{
 	CustomerService customerService;
 
 	@Autowired 
-	ConfigPreferences configPreferences;
+	ClientConfiguration configPreferences;
 
 	@Override
 	public CustomerComplaint getCustomerComplaint(Long complaintId) {
@@ -157,21 +159,31 @@ public class ComplaintManagerImpl implements ComplaintManager{
 		List<CustomerComplaint> complaints= complaintDao.getAllComplaintsForUnit(unitId);
 		return complaints;
 	}
-	
+
 	@Override
 	public List<ComplaintSearchData> getComplaintDataforDashboard(Long clientId ,String type,String code) {
 		List<ComplaintSearchData> complaints=new ArrayList<ComplaintSearchData>();
 		if(type.equalsIgnoreCase("SLA")){
 			complaints=complaintDao.getComplaintBySLA(clientId, code);
-		
+
 		}
 		if(type.equalsIgnoreCase("ASSIGNMENT")){
-			 complaints=complaintDao.getComplaintByASSIGNMENT(clientId, code);
+			complaints=complaintDao.getComplaintByASSIGNMENT(clientId, code);
 		}
-		
+
 		if(type.equalsIgnoreCase("PRIORITY"))	{
 			complaints=complaintDao.getComplaintByPRIORITY(clientId, code);
 		}
 		return complaints;
+	}
+	@Override
+	public void saveComplaintEquipments(ComplaintEquipment complaintEquipment) {
+		complaintDao.saveComplaintEquipments(complaintEquipment);
+
+	}
+	@Override
+	public List<ComplaintEquipment> getComplaintEquipments(Long complaintId) {
+		List<ComplaintEquipment> complaintEquipments = complaintDao.getComplaintEquipments(complaintId);
+		return complaintEquipments;
 	}
 }

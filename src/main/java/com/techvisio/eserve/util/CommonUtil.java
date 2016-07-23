@@ -2,15 +2,21 @@ package com.techvisio.eserve.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.techvisio.eserve.beans.Client;
+import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.User;
+import com.techvisio.eserve.manager.CacheManager;
 
 public class CommonUtil {
 
@@ -83,4 +89,44 @@ public class CommonUtil {
 		}
 		return null;
 	}
+
+	public static Date getDueDateByPmsFrequencyCalculator(Date date, int pmsFrequencyCount, String pmsFrequencyCalculator){
+
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(date); 
+		if(pmsFrequencyCalculator.equalsIgnoreCase(AppConstants.CalculationFrequency.DAY.name()))
+		{
+			c.add(Calendar.DATE, (pmsFrequencyCount));
+		}
+		else if(pmsFrequencyCalculator.equalsIgnoreCase(AppConstants.CalculationFrequency.MONTH.name()))
+		{
+			c.add(Calendar.MONTH, (pmsFrequencyCount));	
+		}
+		else if(pmsFrequencyCalculator.equalsIgnoreCase(AppConstants.CalculationFrequency.YEAR.name()))
+		{
+			c.add(Calendar.YEAR, (pmsFrequencyCount));	
+		}
+		date = c.getTime();
+		return date;
+	}
+
+	public static List<String> stringToStringArray(String value){
+
+		String[] stringArray  = value.split(",");
+		List<String> stringArrayList = new ArrayList<String>(stringArray.length);
+		for(String c : stringArray){
+			stringArrayList.add(c);
+		}
+		return stringArrayList;
+	}
+
+	public static List<Integer> stringArrayToIntegerArray(List<String> stringArrayList){
+
+		List<Integer> integerList = new ArrayList<Integer>();
+		for(String s : stringArrayList) {
+			integerList.add(Integer.valueOf(s));}
+		return integerList;
+
+	}
+
 }

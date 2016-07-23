@@ -51,6 +51,9 @@ public class EquipmentDetail extends BasicEntity{
 	private Date installationDate;
 
 	@Transient
+	private boolean deleted;
+	
+	@Transient
 	private String installationDateString;
 
 	public Long getEquipmentDtlId() {
@@ -128,6 +131,12 @@ public class EquipmentDetail extends BasicEntity{
 		if(!StringUtils.isEmpty(installationDateString)){
 			this.installationDate = parser2.parseDateTime(installationDateString).toDate();
 		}
+	}
+	public boolean isDeleted() {
+		return deleted;
+	}
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 }

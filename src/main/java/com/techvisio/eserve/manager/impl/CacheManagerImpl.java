@@ -36,7 +36,7 @@ import com.techvisio.eserve.util.CustomLogger;
 @Component
 public class CacheManagerImpl implements CacheManager {
 	private static CustomLogger logger = CustomLogger.getLogger(CacheManagerImpl.class);
-	
+
 	@Autowired
 	CacheDao cacheDao;
 
@@ -66,28 +66,27 @@ public class CacheManagerImpl implements CacheManager {
 	private static Map<Long, UnitCategory> unitCategoryMap = new HashMap<Long, UnitCategory>();
 	private static Map<Long, CustomerType> customerTypeMap = new HashMap<Long, CustomerType>();
 	private static Map<Long, ServiceProvider> serviceProviderMap  = new HashMap<Long, ServiceProvider>();
-	
-	
+
+
 	@Override
-	public Map<Long, Map<String,Object>> getConfigMap(Long clientId){
-		
+	public Map<Long, Map<String,Object>> getConfigMap(){
+
 		Map<Long, Map<String,Object>> configMap = new HashMap<Long, Map<String,Object>>();
 		Map<String,Object> subMap = new HashMap<String, Object>();
-		
-		clientId = CommonUtil.getCurrentClient().getClientId();
-		List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
+
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		List<Config> defaultValues = cacheDao.getDefalutValues(clientId);
 		for(Config config : defaultValues){
 			subMap.put(config.getProperty(), config);
 		}
-
 		configMap.put(clientId, subMap);
 
 		return configMap;
 	}
-	
-	
-	
-	
+
+
+
+
 	public  List<State> getStates(Long clientId) {
 		Map<String, List> clientMap = clientEntityListMap.get(clientId);
 		if (clientMap != null){
@@ -140,7 +139,7 @@ public class CacheManagerImpl implements CacheManager {
 		return new ArrayList<Designation>();
 	}
 
-	
+
 	public  List<Resolution> getComplaintResolutions(Long clientId) {
 		Map<String, List> clientMap = clientEntityListMap.get(clientId);
 		if (clientMap != null){
@@ -151,7 +150,7 @@ public class CacheManagerImpl implements CacheManager {
 		}
 		return new ArrayList<Resolution>();
 	}
-	
+
 	public  List<Issue> getIssues(Long clientId) {
 		Map<String, List> clientMap = clientEntityListMap.get(clientId);
 		if (clientMap != null){
@@ -162,7 +161,7 @@ public class CacheManagerImpl implements CacheManager {
 		}
 		return new ArrayList<Issue>();
 	}
-	
+
 	public  List<AgreementDuration> getAgreementDurations(Long clientId) {
 		Map<String, List> clientMap = clientEntityListMap.get(clientId);
 		if (clientMap != null){
@@ -206,7 +205,7 @@ public class CacheManagerImpl implements CacheManager {
 		}
 		return new ArrayList<ServiceProvider>();
 	}
-	
+
 	public void builtEntityListCache(){
 		List<State> states=new ArrayList<State>();
 		logger.info("{} : built entity list cache work for get state ",this.getClass().getName());
@@ -232,7 +231,7 @@ public class CacheManagerImpl implements CacheManager {
 		List<Issue> issues =new ArrayList<Issue>();
 		issues=cacheDao.getIssues();
 		entityListMap.put(AppConstants.ISSUE, issues);
-		
+
 		List<AgreementDuration> agreementDurations =new ArrayList<AgreementDuration>();
 		agreementDurations=cacheDao.getAgreementDuration();
 		entityListMap.put(AppConstants.AGREEMENT_DURATION, agreementDurations);
@@ -244,7 +243,7 @@ public class CacheManagerImpl implements CacheManager {
 		List<CustomerType> customerTypes =new ArrayList<CustomerType>();
 		customerTypes=cacheDao.getCustomerTypes();
 		entityListMap.put(AppConstants.CUSTOMER_TYPE, customerTypes);
-		
+
 		List<ServiceProvider> serviceProviders =new ArrayList<ServiceProvider>();
 		serviceProviders=cacheDao.getServiceProviders();
 		entityListMap.put(AppConstants.SERVICE_PROVIDER, serviceProviders);
@@ -288,37 +287,37 @@ public class CacheManagerImpl implements CacheManager {
 			resolutions=cacheDao.getResolution();
 			entityListMap.put(AppConstants.RESOLUTION, resolutions);
 			break;
-			
+
 		case AppConstants.ISSUE:
 			List<Issue> issues =new ArrayList<Issue>();
 			issues=cacheDao.getIssues();
 			entityListMap.put(AppConstants.ISSUE, issues);
 			break;
-			
+
 		case AppConstants.AGREEMENT_DURATION:
 			List<AgreementDuration> agreementDurations =new ArrayList<AgreementDuration>();
 			agreementDurations=cacheDao.getAgreementDuration();
 			entityListMap.put(AppConstants.AGREEMENT_DURATION, agreementDurations);
 			break;
-			
+
 		case AppConstants.UNIT_CATEGORY:
 			List<UnitCategory> unitCategories =new ArrayList<UnitCategory>();
 			unitCategories=cacheDao.getUnitCategories();
 			entityListMap.put(AppConstants.UNIT_CATEGORY, unitCategories);
 			break;
-			
+
 		case AppConstants.CUSTOMER_TYPE:
 			List<CustomerType> customerTypes =new ArrayList<CustomerType>();
 			customerTypes=cacheDao.getCustomerTypes();
 			entityListMap.put(AppConstants.CUSTOMER_TYPE, customerTypes);
 			break;
-			
+
 		case AppConstants.SERVICE_PROVIDER:
 			List<ServiceProvider> serviceProviders =new ArrayList<ServiceProvider>();
 			serviceProviders=cacheDao.getServiceProviders();
 			entityListMap.put(AppConstants.SERVICE_PROVIDER, serviceProviders);
 			break;
-			
+
 		default:
 
 		}
@@ -403,7 +402,7 @@ public class CacheManagerImpl implements CacheManager {
 				data.add(department);
 			}
 		}
-		
+
 		List<Designation> designations = cacheDao.getDesignations();
 		if(designations!=null){
 			for(Designation designation : designations){
@@ -426,7 +425,7 @@ public class CacheManagerImpl implements CacheManager {
 				data.add(designation);
 			}
 		}
-		
+
 		List<Resolution> resolutions = cacheDao.getResolution();
 		if(resolutions!=null){
 			for(Resolution resolutionMaster : resolutions){
@@ -518,7 +517,7 @@ public class CacheManagerImpl implements CacheManager {
 				data.add(unitCategory);
 			}
 		}
-		
+
 		List<CustomerType> customerTypes = cacheDao.getCustomerTypes();
 		if(customerTypes!=null){
 			for(CustomerType customerType: customerTypes){
@@ -541,7 +540,7 @@ public class CacheManagerImpl implements CacheManager {
 				data.add(customerType);
 			}
 		}
-		
+
 		List<ServiceProvider> serviceProviders = cacheDao.getServiceProviders();
 		if(serviceProviders!=null){
 			for(ServiceProvider serviceProvider: serviceProviders){
@@ -564,12 +563,12 @@ public class CacheManagerImpl implements CacheManager {
 				data.add(serviceProvider);
 			}
 		}
-		
+
 	}
 
-	
-	
-	
+
+
+
 	@Override
 	public State getStateId(Long id){
 		return stateMap.get(id);

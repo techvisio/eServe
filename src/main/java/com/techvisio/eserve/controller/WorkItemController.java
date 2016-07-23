@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Response;
+import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkItem;
 import com.techvisio.eserve.service.WorkItemService;
 
@@ -33,5 +34,12 @@ public class WorkItemController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);		
 	}
 	
-	
+	@RequestMapping(value="/unitinfo/{entityId}/{entityType}",method = RequestMethod.GET)
+	public ResponseEntity<Response> getUnitInfoByEntityIdAndEntityType(@PathVariable Long entityId, @PathVariable String entityType){
+		 
+		Response response=new Response();
+		UnitBasicInfo unitBasicInfo = workItemService.getUnitBasicInfo(entityId,entityType);
+		response.setResponseBody(unitBasicInfo);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);		
+	}
 }

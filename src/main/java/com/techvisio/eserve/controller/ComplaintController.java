@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
+import com.techvisio.eserve.beans.ComplaintEquipment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
@@ -156,12 +157,30 @@ public class ComplaintController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
-	@RequestMapping(value ="/equipment",method = RequestMethod.POST)
-	public ResponseEntity<Response> saveEquipment(@RequestBody EquipmentDetail equipmentDetail) {
-		complaintService.saveEquipment(equipmentDetail);
-		List<EquipmentDetail> equipmentDetails = complaintService.getEquipmentDetailByEquipmentId(equipmentDetail.getEquipmentDtlId());
+	@RequestMapping(value ="/equipment/{complaintId}",method = RequestMethod.POST)
+	public ResponseEntity<Response> saveEquipment(@RequestBody List<EquipmentDetail> equipmentDetail, @PathVariable Long complaintId) {
+		complaintService.saveEquipment(equipmentDetail,complaintId);
+		List<ComplaintEquipment> equipmentDetails = complaintService.getComplaintEquipments(complaintId);
 		Response response=new Response();
 		response.setResponseBody(equipmentDetails);
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}
+
+	@RequestMapping(value ="/complaintequipment/{complaintId}", method = RequestMethod.GET)
+	public ResponseEntity<Response> getComplaintEquipment(@PathVariable Long complaintId) {
+		Response response=new Response();
+		List<ComplaintEquipment> complaintEquipments = complaintService.getComplaintEquipments(complaintId);
+		response.setResponseBody(complaintEquipments);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value ="/deleteequipment/{unitId}/{complaintId}",method = RequestMethod.POST)
+	public ResponseEntity<Response> deleteEquipments(@RequestBody List<EquipmentDetail> equipmentDetails, @PathVariable Long unitId, @PathVariable Long complaintId) {
+		complaintService.deleteEquipmentDtlInclusion(equipmentDetails, unitId, complaintId);
+		List<ComplaintEquipment> complaintEquipments = complaintService.getComplaintEquipments(complaintId);
+		Response response=new Response();
+		response.setResponseBody(complaintEquipments);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 }

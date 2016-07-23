@@ -38,9 +38,9 @@ public class UserServiceImpl implements UserService{
 		String userName = CommonUtil.getCurrentUser().getUserName();
 
 		if(user.getUserId()!=null){
-			boolean isEntityLocked=entityLockService.isEntityLocked(user.getUserId(), AppConstants.entityType.USER.toString(), userName);
+			boolean isEntityLocked=entityLockService.isEntityLocked(user.getUserId(), AppConstants.EntityType.USER.toString(), userName);
 			if(isEntityLocked){
-				throw new EntityLockedException("Current user does not hold lock for this customer");
+				throw new EntityLockedException("Current user does not hold lock for this user");
 			}
 		}
 
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User getUser(Long userId) {
 		User user = userManager.getUser(userId);
-		EntityLocks entityLocks  = entityLockService.getEntity(userId, AppConstants.entityType.USER.toString());
+		EntityLocks entityLocks  = entityLockService.getEntity(userId, AppConstants.EntityType.USER.toString());
 		if(entityLocks!=null){
 			user.setEdited(true);
 		}

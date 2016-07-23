@@ -1242,3 +1242,11 @@ background-color: #F5F5F5;
 .margin-left-privilege{
 	margin-left: 25px;
 }
+
+.button-right {
+	float: right;
+}
+
+button-left {
+	float: left;
+}

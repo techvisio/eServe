@@ -24,12 +24,14 @@ import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.UnitHistory;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.exception.NoEntityFoundException;
 import com.techvisio.eserve.factory.UniqueIdentifierGenerator;
 import com.techvisio.eserve.util.CommonUtil;
+import com.techvisio.eserve.util.DateUtil;
 
 @Component
 public class CustomerDaoImpl extends BaseDao implements CustomerDao{
@@ -243,7 +245,6 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		return units;
 	}
 
-	@Override
 	public void deleteEquipmentDtlExclusion(
 			List<EquipmentDetail> equipmentDetails, Long unitId) {
 
@@ -432,16 +433,18 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId){
+	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId){
 
 		String queryString="FROM EquipmentDetail ed WHERE ed.equipmentDtlId = "+equipDtlId ;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<EquipmentDetail> equipmentDetails= (List<EquipmentDetail>)query.getResultList();
-
-		return equipmentDetails;
+		if(equipmentDetails != null && equipmentDetails.size()>0){
+			return equipmentDetails.get(0);
+		}
+		return null;
 	}
-	
+
 	@Override
 	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId){
 
@@ -454,7 +457,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public void saveEquipment(EquipmentDetail equipmentDetail){
+	public Long saveEquipment(EquipmentDetail equipmentDetail){
 
 
 		if(equipmentDetail.getEquipmentDtlId() == null){
@@ -465,6 +468,84 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 			getEntityManager().merge(equipmentDetail);
 		}
 		getEntityManager().flush();
+		return equipmentDetail.getEquipmentDtlId();
+	}
+
+	@Override
+	public void deleteEquipmentDtlInclusion(
+			List<EquipmentDetail> equipmentDetails, Long unitId) {
+
+		List<Long> equipmentDtlId = new ArrayList<Long>();
+		if (equipmentDtlId != null) {
+			if(equipmentDetails!=null){
+				for (EquipmentDetail equipmentDetail : equipmentDetails) {
+					if(equipmentDetail.getEquipmentDtlId() != null && equipmentDetail.isDeleted()){
+						equipmentDtlId.add(equipmentDetail.getEquipmentDtlId());
+					}
+				}
+			}
+
+			if (equipmentDtlId.size() == 0) {
+				equipmentDtlId.add(-1L);
+			}
+		}
+
+		String deleteQuery = "Delete from tb_equipment_detail where UNIT_ID =:UNIT_ID and EQUIPMENT_DTL_ID = :EQUIPMENT_DTL_ID";
+
+		Query query=(Query) getEntityManager().createNativeQuery(deleteQuery).setParameter("UNIT_ID", unitId).setParameter("EQUIPMENT_DTL_ID", equipmentDtlId);
+		query.executeUpdate();	
+
+	}
+
+	@Override
+	public UnitBasicInfo getUnitBasicInfo(Long unitId){
+
+		String queryString="select Cd.CUSTOMER_ID,Cd.CUSTOMER_NAME,Cd.CONTACT_NO,Cd.CUSTOMER_CODE,Cd.EMAIL_ID,ctm.CUSTOMER_TYPE,Un.UNIT_ID,Un.UNIT_CODE,Un.ASSET_NO,Un.MACHINE_SERIAL_NO,Un.MODEL_NO,ucm.UNIT_TYPE,sg.CONTRACT_EXPIRE_ON,sg.CONTRACT_START_ON,"
+				+ "sg.SERVICE_CATEGORY,sp.SERVICE_PROVIDER,Ad.ADDRESS,Ad.CITY,"
+				+ "Ad.PINCODE,sm.STATE_NAME from tb_unit_detail Un join tb_customer_detail Cd on Cd.CUSTOMER_ID = Un.CUSTOMER_ID join tb_customer_type_master ctm "
+				+ "on Cd.CUSTOMER_TYPE_ID = ctm.CUSTOMER_TYPE_ID join tb_unit_category_master ucm on ucm.UNIT_CATEGORY_ID = Un.UNIT_CATEGORY_ID join tb_service_agreement sg "
+				+ "on Un.UNIT_ID = sg.UNIT_ID join tb_agreement_duration AgD on AgD.AGREEMENT_DURATION_ID = sg.AGREEMENT_DURATION_ID join tb_service_provider_master sp "
+				+ "on sg.SERVICE_PROVIDER_ID = sp.SERVICE_PROVIDER_ID join tb_address_detail Ad on Ad.ADDRESS_ID = Un.ADDRESS_ID join tb_state_master sm on sm.STATE_ID = Ad.STATE_ID where Un.UNIT_ID = "+unitId;
+		Query query= getEntityManager().createNativeQuery(queryString);
+		List<Object[]> results = query.getResultList();
+		UnitBasicInfo unitBasicInfo = putDataInUnitBasicInfoFromResultSet(results);
+		return unitBasicInfo;
+
+	}
+
+	private UnitBasicInfo putDataInUnitBasicInfoFromResultSet( List<Object[]> results) {
+
+		for (Object[] result : results) {
+			UnitBasicInfo unitBasicInfo = new UnitBasicInfo();
+			Long custId = (long) ((Number) result[0]).intValue();
+			unitBasicInfo.setCustomerId(custId);
+			unitBasicInfo.setCustomerName((String) result[1]);			
+			unitBasicInfo.setContactNo((String) result[2]);
+			unitBasicInfo.setCustomerCode((String) result[3]);
+			unitBasicInfo.setEmailId((String) result[4]);
+			unitBasicInfo.setCustomerType((String) result[5]);
+			Long unitId = (long) ((Number) result[6]).intValue();
+			unitBasicInfo.setUnitId(unitId);
+			unitBasicInfo.setUnitCode((String) result[7]);
+			unitBasicInfo.setAssetNo((String) result[8]);
+			unitBasicInfo.setMachineSerialNo((String) result[9]);
+			unitBasicInfo.setModelNo((String) result[10]);
+			unitBasicInfo.setUnitType((String) result[11]);
+			Date contractExpireOnDate =  (Date) result[12];
+			String contractExpireOnString = DateUtil.convertDateToString(contractExpireOnDate);
+			unitBasicInfo.setContractExpiredOn(contractExpireOnString);;
+			Date contractStartOnDate =  (Date) result[13];
+			String contractStartOnString = DateUtil.convertDateToString(contractStartOnDate);
+			unitBasicInfo.setContractStartOn(contractStartOnString);
+			unitBasicInfo.setServiceCategory((String) result[14]);
+			unitBasicInfo.setServiceProvider((String) result[15]);
+			unitBasicInfo.setAddress((String) result[16]);
+			unitBasicInfo.setCity((String) result[17]);
+			unitBasicInfo.setPincode((int) result[18]);
+			unitBasicInfo.setState((String) result[19]);
+			return unitBasicInfo;
+		}
+		return null;
 	}
 
 }

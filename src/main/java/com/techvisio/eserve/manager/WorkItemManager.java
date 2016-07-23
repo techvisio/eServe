@@ -18,6 +18,7 @@ public interface WorkItemManager {
 			String status);
 	public void updateWorkItemStatus(Long entityId, String status);
 	public List<WorkItem> getWorkItemsByEntityId(Long entityId);
-	public WorkItem getWorkItemsByEntityIdAndEntityTypeAndWorkType(Long entityId,
+	public List<WorkItem> getWorkItemsByEntityIdAndEntityTypeAndWorkType(Long entityId,
 			String entityType, String workType);
+	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId, String workType);
 }

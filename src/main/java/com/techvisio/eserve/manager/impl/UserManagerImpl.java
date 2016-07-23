@@ -31,7 +31,7 @@ public class UserManagerImpl implements UserManager{
 	CacheDao cacheDao;
 
 	@Autowired
-	ConfigPreferences configPreferences;
+	ClientConfiguration configPreferences;
 
 
 	@Override

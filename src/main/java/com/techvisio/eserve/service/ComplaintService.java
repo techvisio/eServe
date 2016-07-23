@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
+import com.techvisio.eserve.beans.ComplaintEquipment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
@@ -39,6 +40,12 @@ public interface ComplaintService {
 	public List<ComplaintSearchData> getComplaintDataforDashboard(String type,
 			String code);
 	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId);
-	public void saveEquipment(EquipmentDetail equipmentDetail);
-	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId);
+	public void saveEquipment(List<EquipmentDetail> equipmentDetail, Long complaintId);
+	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId);
+	public void saveComplaintEquipments(ComplaintEquipment complaintEquipment);
+	public Long saveUnit(Unit unit);
+	public List<ComplaintEquipment> getComplaintEquipments(Long complaintId);
+	public void deleteEquipmentDtlInclusion(List<EquipmentDetail> equipmentDetails,
+			Long unitId, Long complaintId);
+	public void createPmsWorkItem(Unit unit);
 }

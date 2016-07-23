@@ -11,6 +11,7 @@ var erp = angular
                 'dashboardModule',
                 'activityModule',
                 'reportModule',
+                'masterModule',
                 'ngGrid',
                 'ngTable'
                 ]);
@@ -312,6 +313,15 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			isCustomerReport: ['$stateParams', function($stateParams){
 				return true;
 			}]
+		}
+	})
+	
+	.state('masterData', {
+		url: "/masterData",
+		templateUrl: 'masterdata/MasterData.html',
+		controller:"masterController",
+		resolve:{
+			
 		}
 	});
 });

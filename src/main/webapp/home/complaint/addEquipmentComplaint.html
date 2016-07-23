@@ -1,0 +1,228 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 box-align">
+	<section class="box">
+		<header class="panel_header">
+			<h2 class="title pull-left">Equipment Detail</h2>
+
+		</header>
+		<div ng-init="init()">
+			<div class="content-body padding-right">
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="form-label element-size-label" for="formfield9">Type</label>
+
+							<div class="controls">
+								<select class="form-control"
+									ng-model="dummyEquipmentDetails.type"
+									ng-change="getEquipments(dummyEquipmentDetails.type)">
+									<option></option>
+									<option value="COMPRESSOR">COMPRESSOR</option>
+									<option value="PCB">PCB</option>
+									<option value="FILTER">FILTER</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="form-label element-size-label" for="formfield9">Model
+								No</label>
+
+							<div class="controls">
+								<select class="form-control"
+									ng-model="dummyEquipmentDetails.equipment.model">
+									<option></option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="form-label element-size-label" for="formfield9">Serial
+								No</label>
+
+							<div class="controls">
+								<input class="form-control input-sm" id="inputlg" type="text"
+									ng-model="dummyEquipmentDetails.serialNo">
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="form-label element-size-label" for="formfield9">Invoice
+								No</label>
+
+							<div class="controls">
+								<input class="form-control input-sm" id="inputlg" type="text"
+									ng-model="dummyEquipmentDetails.invoiceNo">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="form-label element-size-label" for="formfield9">Installation
+								Date</label>
+
+							<div class="controls">
+								<input type="text" class="form-control datepicker"
+									name="requestDueDate"
+									ng-model="dummyEquipmentDetails.installationDateString"
+									datepicker-popup="{{'MMM dd yyyy'}}" is-open="openedFrom"
+									ng-click="openedFrom = !openedFrom; $event.stopPropagation();"
+									show-button-bar="false" placeholder="Installation Date">
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="form-label element-size-label" for="formfield9">Warranty
+								Under</label>
+
+							<div class="controls">
+								<select class="form-control"
+									ng-model="dummyEquipmentDetails.warrantyUnder">
+									<option></option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="controls">
+							<input type="checkbox" class="faChkSqr"
+								ng-model="dummyEquipmentDetails.underWarranty" id="chk_{{$id}}"><label
+								for="chk_{{$id}}" class="padding-uw">Covered Under
+								Warranty </label>
+						</div>
+					</div>
+				</div>
+
+				<div ng-show="customerComplaint.unit.equipmentDetails.length>0">
+					<hr>
+
+					<div class="row">
+						<div class="col-md-1 col-sm-1 col-xs-1 padding-non"></div>
+						<div class="col-md-1 col-sm-1 col-xs-1 padding-non">
+							<div class="form-group">
+								<label class="font-size_header" for="formfield9">Type</label>
+							</div>
+						</div>
+
+						<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
+							<div class="form-group">
+								<label class="font-size_header" for="formfield9">Model
+									No</label>
+							</div>
+						</div>
+
+						<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
+							<div class="form-group">
+								<label class=" font-size_header" for="formfield9">Serial
+									No</label>
+							</div>
+						</div>
+
+						<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
+							<div class="form-group">
+								<label class="font-size_header" for="formfield9">Invoice
+									No</label>
+							</div>
+						</div>
+
+						<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
+							<div class="form-group">
+								<label class=" font-size_header" for="formfield9">Installation
+									Date</label>
+							</div>
+						</div>
+
+						<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
+							<div class="form-group">
+								<label class="font-size_header" for="formfield9">Warranty
+									Under</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="row"
+						ng-repeat="equip in customerComplaint.unit.equipmentDetails"
+						id="parent">
+
+						<div class="col-md-1 col-sm-12 col-xs-12">
+							<div class="form-group">
+								<input type="checkbox" class="faChkSqr" ng-model="equip.deleted"
+									id="chk_{{$id}}">
+							</div>
+						</div>
+						<div class="col-md-1 col-sm-1 col-xs-1 padding-non text-centre">
+							<div class="form-group">
+								<label class="font-size-label" for="formfield9">{{equip.type}}</label>
+							</div>
+						</div>
+
+						<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
+							<div class="form-group">
+								<label class=" font-size-label" for="formfield9">{{equip.equipment.model}}</label>
+							</div>
+						</div>
+
+						<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
+							<div class="form-group">
+								<label class="font-size-label" for="formfield9">{{equip.serialNo}}</label>
+							</div>
+						</div>
+
+						<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
+							<div class="form-group">
+								<label class="font-size-label" for="formfield9">{{equip.invoiceNo}}</label>
+							</div>
+						</div>
+						<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
+							<div class="form-group">
+								<label class="font-size-label" for="formfield9">{{equip.installationDateString}}</label>
+							</div>
+						</div>
+						<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
+							<div class="form-group">
+								<label class="font-size-label" for="formfield9">{{equip.warrantyUnder}}</label>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 col-sm-12 col-xs-12"></div>
+					<div class="col-md-8 col-sm-12 col-xs-12">
+						<button type="button" class="btn btn-success child-right"
+							ng-click="addMachine(); saveEquipment() ">Skip & Save Equipment</button>
+							
+						<button type="button" class="btn btn-primary child-right"
+							ng-click="deleteEquipments();saveEquipment()">Replace</button>
+						<button type="button" class="btn btn-primary child-right"
+							ng-click="addMachine()">Add Equipment</button>
+						<button type="button" class="btn btn-primary child-right"
+							ng-click="closeModal()">Cancel</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+</div>

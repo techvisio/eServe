@@ -43,6 +43,10 @@
         drop 
         foreign key FK_nuwbb7pohotx6gbai57ly13f8;
 
+    alter table TB_COMPLAINT_EQUIPMENT 
+        drop 
+        foreign key FK_6fjq83hiqier4rf46p7mjlmnv;
+
     alter table TB_COMPLAINT_RESOLUTION 
         drop 
         foreign key FK_b7c34492wmue9o8hovw0y4361;
@@ -287,6 +291,8 @@
 
     drop table if exists TB_COMPLAINT_ASSIGNMENT;
 
+    drop table if exists TB_COMPLAINT_EQUIPMENT;
+
     drop table if exists TB_COMPLAINT_RESOLUTION;
 
     drop table if exists TB_CONFIG;
@@ -453,6 +459,22 @@
         Client_Id bigint,
         USER_ID bigint,
         primary key (COMPLAINT_ID)
+    );
+
+    create table TB_COMPLAINT_EQUIPMENT (
+        COMPLAINT_EQUIPMENT_ID bigint not null auto_increment,
+        COMPLAINT_ID bigint,
+        IS_DELETED bit,
+        EQUIPMENT_DTL_ID bigint,
+        INSTALLATION_DATE date,
+        INVOICE_NO bigint,
+        SERIAL_NO varchar(255),
+        TYPE varchar(255),
+        IS_UNDER_WARRANTY bit,
+        UNIT_ID bigint,
+        WARRANTY_UNDER varchar(255),
+        EQUIPMENT_ID bigint,
+        primary key (COMPLAINT_EQUIPMENT_ID)
     );
 
     create table TB_COMPLAINT_RESOLUTION (
@@ -1014,6 +1036,11 @@
         add constraint FK_nuwbb7pohotx6gbai57ly13f8 
         foreign key (COMPLAINT_ID) 
         references TB_CUSTOMER_COMPLAINT (COMPLAINT_ID);
+
+    alter table TB_COMPLAINT_EQUIPMENT 
+        add constraint FK_6fjq83hiqier4rf46p7mjlmnv 
+        foreign key (EQUIPMENT_ID) 
+        references TB_EQUIPMENT_MASTER (EQUIPMENT_ID);
 
     alter table TB_COMPLAINT_RESOLUTION 
         add constraint FK_b7c34492wmue9o8hovw0y4361 

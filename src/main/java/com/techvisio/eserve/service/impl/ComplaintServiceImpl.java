@@ -1,6 +1,12 @@
 package com.techvisio.eserve.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -8,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
+import com.techvisio.eserve.beans.ComplaintEquipment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
+import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.EntityLocks;
@@ -19,11 +27,16 @@ import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.WorkItem;
 import com.techvisio.eserve.exception.EntityLockedException;
+import com.techvisio.eserve.factory.WorkItemFactory;
+import com.techvisio.eserve.manager.CacheManager;
 import com.techvisio.eserve.manager.ComplaintManager;
+import com.techvisio.eserve.manager.impl.ClientConfiguration;
 import com.techvisio.eserve.service.ComplaintService;
 import com.techvisio.eserve.service.CustomerService;
 import com.techvisio.eserve.service.EntityLockService;
+import com.techvisio.eserve.service.WorkItemService;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 
@@ -40,14 +53,21 @@ public class ComplaintServiceImpl implements ComplaintService{
 	@Autowired
 	CustomerService customerService;
 
+	@Autowired
+	ClientConfiguration configPreferences;
+
+	@Autowired
+	WorkItemService workItemService;
+
+
 	@Override
 	public Long saveComplaint(CustomerComplaint customerComplaint) {
 
 		String userName = CommonUtil.getCurrentUser().getUserName();
 		if(customerComplaint.getComplaintId()!=null){
-			boolean isEntityLocked=entityLockService.isEntityLocked(customerComplaint.getComplaintId(), AppConstants.entityType.COMPLAINT.toString(), userName);
+			boolean isEntityLocked=entityLockService.isEntityLocked(customerComplaint.getComplaintId(), AppConstants.EntityType.COMPLAINT.toString(), userName);
 			if(isEntityLocked){
-				throw new EntityLockedException("Current user does not hold lock for this customer");
+				throw new EntityLockedException("Current user does not hold lock for this complaint");
 			}
 		}
 
@@ -58,7 +78,7 @@ public class ComplaintServiceImpl implements ComplaintService{
 	@Override
 	public CustomerComplaint getCustomerComplaint(Long complaintId) {
 		CustomerComplaint customerComplaint = complaintManager.getCustomerComplaint(complaintId);
-		EntityLocks entityLocks  = entityLockService.getEntity(complaintId, AppConstants.entityType.COMPLAINT.toString());
+		EntityLocks entityLocks  = entityLockService.getEntity(complaintId, AppConstants.EntityType.COMPLAINT.toString());
 		if(entityLocks!=null){
 			customerComplaint.setEdited(true);
 		}
@@ -151,15 +171,110 @@ public class ComplaintServiceImpl implements ComplaintService{
 	}
 
 	@Override
-	public void saveEquipment(EquipmentDetail equipmentDetail) {
-		customerService.saveEquipment(equipmentDetail);
+	public void saveEquipment(List<EquipmentDetail> equipmentDetails, Long complaintId) {
+		for(EquipmentDetail equipmentDetail:equipmentDetails){
+			Long equipmentdtlId = customerService.saveEquipment(equipmentDetail);
+			EquipmentDetail equipmentDetailFromDB = customerService.getEquipmentDetailByEquipmentId(equipmentdtlId);
+			saveComplaintEquipment(equipmentDetailFromDB, complaintId);
+		}
+	}
+
+	private void saveComplaintEquipment(EquipmentDetail equipmentDetail, Long complaintId) {
+		ComplaintEquipment complaintEquipment = new ComplaintEquipment();
+		complaintEquipment.setComplaintId(complaintId);
+		complaintEquipment.setEquipment(equipmentDetail.getEquipment());
+		complaintEquipment.setEquipmentDtlId(equipmentDetail.getEquipmentDtlId());
+		complaintEquipment.setInstallationDate(equipmentDetail.getInstallationDate());
+		complaintEquipment.setInstallationDateString(equipmentDetail.getInstallationDateString());
+		complaintEquipment.setInvoiceNo(equipmentDetail.getInvoiceNo());
+		complaintEquipment.setSerialNo(equipmentDetail.getSerialNo());
+		complaintEquipment.setType(equipmentDetail.getType());
+		complaintEquipment.setUnderWarranty(equipmentDetail.isUnderWarranty());
+		complaintEquipment.setUnitId(equipmentDetail.getUnitId());
+		complaintEquipment.setWarrantyUnder(equipmentDetail.getWarrantyUnder());
+		complaintEquipment.setDeleted(false);
+		if(equipmentDetail.isDeleted()){
+			complaintEquipment.setDeleted(true);
+		}
+
+		complaintManager.saveComplaintEquipments(complaintEquipment);
 	}
 
 	@Override
-	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId) {
-		List<EquipmentDetail> equipmentDetails = customerService.getEquipmentDetailByEquipmentId(equipDtlId);
+	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId) {
+		EquipmentDetail equipmentDetails = customerService.getEquipmentDetailByEquipmentId(equipDtlId);
 		return equipmentDetails;
 	}
 
+	@Override
+	public void saveComplaintEquipments(ComplaintEquipment complaintEquipment) {
+		complaintManager.saveComplaintEquipments(complaintEquipment);
+
+	}
+
+	@Override
+	public Long saveUnit(Unit unit) {
+		Long unitId = customerService.saveUnit(unit);
+		return unitId;
+	}
+
+	@Override
+	public List<ComplaintEquipment> getComplaintEquipments(Long complaintId) {
+		List<ComplaintEquipment> complaintEquipments = complaintManager.getComplaintEquipments(complaintId);
+		return complaintEquipments;
+	}
+
+	@Override
+	public void deleteEquipmentDtlInclusion(
+			List<EquipmentDetail> equipmentDetails, Long unitId, Long complaintId) {
+
+		for(EquipmentDetail equipmentDetail:equipmentDetails){
+			if(equipmentDetail.isDeleted()){
+				saveComplaintEquipment(equipmentDetail, complaintId);
+			}
+		}
+		customerService.deleteEquipmentDtlInclusion(equipmentDetails, unitId);
+
+	}
+
+	@Override
+	public void createPmsWorkItem(Unit unit){
+
+		Config pmsCalculationData = configPreferences.getConfigObject(AppConstants.PMS_CALCULATION_DATA);
+		Config pmsCalculationFreqeuncy = configPreferences.getConfigObject(AppConstants.PMS_CACULATION_FREQUENCY); 
+		List<String> stringToStringArray = CommonUtil.stringToStringArray(pmsCalculationData.getValue());
+		List<Integer> stringArrayToIntegerArray = CommonUtil.stringArrayToIntegerArray(stringToStringArray);
+
+		//get existing workitem for unit and type
+		List<WorkItem> existingWorkItem=workItemService.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unit.getUnitId(),AppConstants.WorkItemType.PMS.getEntityType(), AppConstants.WorkItemType.PMS.getWorkType());
+		Collections.sort(existingWorkItem, new Comparator<WorkItem>() {
+
+			@Override
+			public int compare(WorkItem o1, WorkItem o2) {
+				return o1.getDueDate().compareTo(o2.getDueDate());
+			}
+		});
+
+		workItemService.deleteWorkItemsByEntityIdAndWorkType(unit.getUnitId(), AppConstants.WorkItemType.PMS.getWorkType());
+
+		int index=0;
+		for (Integer pmsFrequencyCount : stringArrayToIntegerArray){
+			Date dueDate = CommonUtil.getDueDateByPmsFrequencyCalculator(unit.getServiceAgreement()	.getContractStartOn(), pmsFrequencyCount, pmsCalculationFreqeuncy.getValue());
+
+			WorkItem workItem=null;
+			if(existingWorkItem !=null && existingWorkItem.size()>index){
+				workItem=existingWorkItem.get(index++);
+			}
+
+			if (workItem == null) {
+				WorkItemFactory factory = new WorkItemFactory();
+				workItem  = factory.getWorkItem(AppConstants.PMS);
+			}
+			workItem.setDueDate(dueDate);
+			workItem.setEntityId(unit.getUnitId());
+			workItem.setEntityCode(unit.getUnitCode());
+			workItemService.saveWorkItem(workItem);
+		}
+	}
 }
 

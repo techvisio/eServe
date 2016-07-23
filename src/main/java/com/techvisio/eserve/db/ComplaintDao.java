@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
+import com.techvisio.eserve.beans.ComplaintEquipment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
@@ -38,4 +39,6 @@ public interface ComplaintDao {
 	public List<ComplaintSearchData> getComplaintByASSIGNMENT(Long clientId,String code);
 	public List<ComplaintSearchData> getComplaintByPRIORITY(Long clientId, String code);
 	public List<ComplaintSearchData> getComplaintBySLA(Long clientId, String code);
+	public void saveComplaintEquipments(ComplaintEquipment complaintEquipment);
+	public List<ComplaintEquipment> getComplaintEquipments(Long complaintId);
 }

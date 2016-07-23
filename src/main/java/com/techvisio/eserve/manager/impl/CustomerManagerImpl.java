@@ -20,6 +20,7 @@ import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.UnitHistory;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
@@ -116,6 +117,14 @@ public class CustomerManagerImpl implements CustomerManager {
 		return unitId;
 	}
 
+	@Override
+	public Long saveUnit(Unit unit) {
+
+		Long unitId = customerDao.saveUnit(unit);
+		return unitId;
+	}
+
+	
 	@Override
 	public List<Unit> getUnits(Long customerId) {
 		List<Unit> units = customerDao.getUnits(customerId);
@@ -281,20 +290,27 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 
 	@Override
-	public void deleteEquipmentDtlExclusion(
-			List<EquipmentDetail> equipmentDetails, Long unitId) {
-		customerDao.deleteEquipmentDtlExclusion(equipmentDetails, unitId);
+	public void deleteEquipmentDtlInclusion(List<EquipmentDetail> equipmentDetails,
+			Long unitId){
+		customerDao.deleteEquipmentDtlInclusion(equipmentDetails, unitId);
 
 	}
 
 	@Override
-	public void saveEquipment(EquipmentDetail equipmentDetail) {
-		customerDao.saveEquipment(equipmentDetail);
+	public Long saveEquipment(EquipmentDetail equipmentDetail) {
+		Long equipmentdtlId = customerDao.saveEquipment(equipmentDetail);
+		return equipmentdtlId;
 	}
 
 	@Override
-	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId) {
-		List<EquipmentDetail> equipmentDetails = customerDao.getEquipmentDetailByEquipmentId(equipDtlId);
+	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId) {
+	EquipmentDetail equipmentDetails = customerDao.getEquipmentDetailByEquipmentId(equipDtlId);
 		return equipmentDetails;
+	}
+
+	@Override
+	public UnitBasicInfo getUnitBasicInfo(Long unitId) {
+	UnitBasicInfo basicInfo = customerDao.getUnitBasicInfo(unitId);
+		return basicInfo;
 	}
 }

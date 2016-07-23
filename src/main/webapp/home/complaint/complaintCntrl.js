@@ -22,7 +22,10 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	$scope.complaintAssignment={};
 	$scope.dummyEquipmentDetails ={};
 	$scope.equipment={};
-	
+	$scope.replaceEquip = false;
+	$scope.equipments=[];	
+
+
 	$scope.toggleReadOnly = function(form) {
 
 		if($scope.customerComplaint.edited){
@@ -400,45 +403,105 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	};
 
 	$scope.showAddEquipmentModel = function(object, editEquipment) {
-		$scope.dummyEquipmentDetails=[];
+		$scope.customerComplaint.unit.equipmentDetails=[];
 		$rootScope.curModal = $modal.open({
+
 			templateUrl: 'complaint/addEquipmentComplaint.html',
 			controller: function (complaintService, masterdataService) {
+
+				$scope.getEquipments = function(equipType){
+
+					complaintService.getEquipments(equipType, object.unitId)
+					.then(
+							function(equipments) {
+								console
+								.log('getting equipments in controller : ');
+								console.log(equipments);
+								if (equipments) {
+									$scope.customerComplaint.unit.equipmentDetails = equipments;
+								}
+							})
+				}
+
+				$scope.addMachine = function() {
+
+					var equipmentDetail = angular
+					.copy($scope.dummyEquipmentDetails);
+					equipmentDetail.unitId = object.unitId;
+
+					if(equipmentDetail.serialNo !=null && !angular.isUndefined(equipmentDetail.serialNo)){
+						$scope.equipments
+						.push(equipmentDetail);
+					}
+
+					$scope.dummyEquipmentDetails={};
+					$rootScope.curModal.close();
+
+				};
+
+				$scope.saveEquipment = function() {
+
+					complaintService.saveEquipment($scope.equipments, $scope.customerComplaint.complaintId)
+					.then(function(response) {
+						console.log('equipment Data received from service : ');
+						console.log(equipment);
+						if (equipment) {
+							$scope.ComplaintEquipments = equipment;
+							$scope.alerts=[];
+							alert("equipment Saved Successfully")
+						} 
+					})
+				};
+
+
+
+				$scope.deleteEquipments = function() {
+					complaintService.deleteEquipments($scope.customerComplaint.unit.equipmentDetails, object.unitId, $scope.customerComplaint.complaintId)
+					.then(function(response) {
+						console.log('delete Equipments Data received from service : ');
+						console.log(equipment);
+						if (equipment) {
+							$scope.ComplaintEquipments = equipment;
+						} 
+					})
+				};
+
+				$scope.closeModal = function(){
+					$rootScope.curModal.close();
+				}
+
 			},
+
+			size:'lg',
 			scope:$scope,
 			backdrop:'static',
 			keyboard: false
 		});
 
-
-		$scope.addMachine = function() {
-
-			var equipmentDetail = angular
-			.copy($scope.dummyEquipmentDetails);
-			equipmentDetail.unitId = object.unitId;
-			object.equipmentDetails
-			.push(equipmentDetail);
-
-			$scope.dummyEquipmentDetails={};
-			$rootScope.curModal.close();
-		};
-
 	};
 
-	$scope.saveEquipment = function() {
-
-		customerService.saveEquipment($scope.dummyEquipmentDetails)
-		.then(function(response) {
-			console.log('equipment Data received from service : ');
-			console.log(equipment);
-			if (equipment) {
-				$scope.customerComplaint.unit.equipmentDetails = equipment;
-				$scope.alerts=[];
-				alert("equipment Saved Successfully")
-			} 
-		})
+	$scope.checkComplaintEquipments = function(){
+		if(ComplaintEquipments.length<=0 || angular.isUndefined($scope.ComplaintEquipments)){
+			return true;
+		} 
+		
+		else{
+			return false;
+		}
 	};
 
-	
-	
+	$scope.getComplaintEquipment =  function(){
+
+		if($scope.customerComplaint.complaintId){
+			complaintService.getComplaintEquipment($scope.customerComplaint.complaintId)
+			.then(function(response) {
+				console.log('getComplaintEquipment Data received from service : ');
+				console.log(response);
+				if (response) {
+					$scope.ComplaintEquipments = response;
+				} 
+			})
+		}
+	}
+
 } ]);

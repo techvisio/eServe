@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
+import com.techvisio.eserve.beans.ComplaintEquipment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
@@ -33,4 +35,6 @@ public interface ComplaintManager {
 	public List<SearchComplaint> getComplaintSearchByUnitId(Long unitId);
 	public List<CustomerComplaint> getAllComplaintsForUnit(Long unitId);
 	public 	List<ComplaintSearchData> getComplaintDataforDashboard(Long clientId, String type, String code);
+	public void saveComplaintEquipments(ComplaintEquipment complaintEquipment);
+	public List<ComplaintEquipment> getComplaintEquipments(Long complaintId);
 }

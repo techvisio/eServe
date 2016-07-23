@@ -30,6 +30,6 @@ public interface CacheManager {
 	List<Privilege> getPrivileges(Long clientId);
 	Resolution getResolutionMasters(Long resolutionId);
 	Issue getIssue(Long issueId);
-	public Map<Long, Map<String, Object>> getConfigMap(Long clientId);
+	public Map<Long, Map<String, Object>> getConfigMap();
 	List<InvoiceTaxes> getInvoiceTaxes(Long clientId);
 }

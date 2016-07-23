@@ -18,14 +18,18 @@ import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicInfo;
+import com.techvisio.eserve.db.impl.ComplaintDaoImpl;
 import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.manager.CustomerManager;
 import com.techvisio.eserve.service.ActivityService;
+import com.techvisio.eserve.service.ComplaintService;
 import com.techvisio.eserve.service.CustomerService;
 import com.techvisio.eserve.service.EntityLockService;
 import com.techvisio.eserve.service.WorkItemService;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
+import com.techvisio.eserve.util.ServiceLocator;
 
 @Component
 @Transactional
@@ -42,7 +46,12 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Autowired
 	EntityLockService entityLockService;
+	
+	@Autowired
+	ServiceLocator servicelocator;
 
+	@Autowired
+	ComplaintService complaintService;
 	@Override
 	public List<Customer> getCustomers() {
 		List<Customer> customers = customerManager.getCustomers();
@@ -51,8 +60,9 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public Customer getCustomer(Long customerId) {
+//		System.out.println(servicelocator.getService(ComplaintDaoImpl.class));
 		Customer customer = customerManager.getCustomer(customerId);
-		EntityLocks entityLocks  = entityLockService.getEntity(customerId, AppConstants.entityType.CUSTOMER.toString());
+		EntityLocks entityLocks  = entityLockService.getEntity(customerId, AppConstants.EntityType.CUSTOMER.toString());
 		if(entityLocks!=null){
 			customer.setEdited(true);
 		}
@@ -65,7 +75,7 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public Long saveCustomer(Customer customer) {
 		String userName = CommonUtil.getCurrentUser().getUserName();
-		boolean isEntityLocked=entityLockService.isEntityLocked(customer.getCustomerId(), AppConstants.entityType.CUSTOMER.toString(), userName);
+		boolean isEntityLocked=entityLockService.isEntityLocked(customer.getCustomerId(), AppConstants.EntityType.CUSTOMER.toString(), userName);
 		if(isEntityLocked){
 			throw new EntityLockedException("Current user does not hold lock for this customer");
 		}
@@ -102,8 +112,8 @@ public class CustomerServiceImpl implements CustomerService{
 		Unit unit=request.getBussinessObject();
 		if(unit.getUnitId()!=null){
 			String userName = CommonUtil.getCurrentUser().getUserName();
-			boolean isEntityLocked=entityLockService.isEntityLocked(unit.getUnitId(), AppConstants.entityType.UNIT.toString(), userName);
-			if(!isEntityLocked){
+			boolean isEntityLocked=entityLockService.isEntityLocked(unit.getUnitId(), AppConstants.EntityType.UNIT.toString(), userName);
+			if(isEntityLocked){
 				throw new EntityLockedException("Current user does not hold lock for this unit");
 			}
 		}
@@ -194,6 +204,7 @@ public class CustomerServiceImpl implements CustomerService{
 		Unit unitFromDB = customerManager.approveUnit(unit);
 		workItemService.closeAgreementApprovalWorkItem(unit.getUnitId());
 		workItemService.createWorkItemForServiceRenewal(unit);
+		complaintService.createPmsWorkItem(unit);
 		return unitFromDB;
 	}
 
@@ -233,19 +244,32 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public void deleteEquipmentDtlExclusion(
-			List<EquipmentDetail> equipmentDetails, Long unitId) {
-		customerManager.deleteEquipmentDtlExclusion(equipmentDetails, unitId);
+	public void deleteEquipmentDtlInclusion(List<EquipmentDetail> equipmentDetails,
+			Long unitId){
+		customerManager.deleteEquipmentDtlInclusion(equipmentDetails, unitId);
 	}
 
 	@Override
-	public void saveEquipment(EquipmentDetail equipmentDetail) {
-		customerManager.saveEquipment(equipmentDetail);
+	public Long saveEquipment(EquipmentDetail equipmentDetail) {
+		Long equipmentdtlId = customerManager.saveEquipment(equipmentDetail);
+		return equipmentdtlId;
 	}
 
 	@Override
-	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId) {
-		List<EquipmentDetail> equipmentDetails = customerManager.getEquipmentDetailByEquipmentId(equipDtlId);
+	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId) {
+		EquipmentDetail equipmentDetails = customerManager.getEquipmentDetailByEquipmentId(equipDtlId);
 		return equipmentDetails;
 		}
+
+	@Override
+	public Long saveUnit(Unit unit) {
+		Long unitId = customerManager.saveUnit(unit);
+		return unitId;
+	}
+
+	@Override
+	public UnitBasicInfo getUnitBasicInfo(Long unitId) {
+	UnitBasicInfo basicInfo = customerManager.getUnitBasicInfo(unitId);
+		return basicInfo;
+	}
 }

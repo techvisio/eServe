@@ -9,6 +9,7 @@ import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.Invoice;
 import com.techvisio.eserve.beans.InvoiceComponentAmountBean;
 import com.techvisio.eserve.manager.CacheManager;
+import com.techvisio.eserve.manager.impl.ClientConfiguration;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 
@@ -18,22 +19,21 @@ public class InvoiceGeneratorFactory {
 	@Autowired
 	CacheManager cacheManager;
 
-	
+	@Autowired
+	ClientConfiguration configPreferences;
+
+
 	public InvoiceGenerator getInstance(){
-		
-		Map<Long, Map<String, Object>> configMap = cacheManager.getConfigMap(CommonUtil.getCurrentClient().getClientId());
 
-		Map<String, Object> defaultMap = configMap.get(CommonUtil.getCurrentClient().getClientId());
+		Config config = configPreferences.getConfigObject(AppConstants.IS_TAX_INCLUDED);
 
-		Config config = (Config) defaultMap.get(AppConstants.IS_TAX_INCLUDED);
-		
 		if(config.getValue().equalsIgnoreCase("N")){
-		return new InvoiceTaxExcluded(cacheManager);
+			return new InvoiceTaxExcluded(cacheManager);
 		}
 		else
 		{
-		return new InvoiceTaxIncluded(cacheManager);
+			return new InvoiceTaxIncluded(cacheManager);
 		}
 	}
-	
+
 }

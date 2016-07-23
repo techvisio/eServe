@@ -16,7 +16,9 @@ complaintModule.service('complaintService', function($http, $q) {
 		lockEntity : lockEntity,
 		unlockEntity : unlockEntity,
 		getEquipments:getEquipments,
-		saveEquipment:saveEquipment
+		saveEquipment:saveEquipment,
+		getComplaintEquipment : getComplaintEquipment,
+		deleteEquipments:deleteEquipments
 	});
 
 	
@@ -199,13 +201,38 @@ complaintModule.service('complaintService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}	
 
-	function saveEquipment(equipment){
+	function saveEquipment(equipment, complaintId){
 		console.log('save equipment call in service');
 		var request = $http({
 			method : "post",
-			url : "../service/complaint/equipment",
+			url : "../service/complaint/equipment/" + complaintId,
 			params : "",
 			data: equipment
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+	
+	function getComplaintEquipment(complaintId){
+		console.log('getting getComplaintEquipment in service');
+
+		var request = $http({
+			method : "get",
+			url : "../service/complaint/complaintequipment/"+complaintId,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}	
+	
+	function deleteEquipments(equipments, unitId, complaintId){
+		console.log('delete equipment call in service');
+		var request = $http({
+			method : "post",
+			url : "../service/complaint/deleteequipment/" + unitId + "/" + complaintId,
+			params : "",
+			data: equipments
 
 		});
 		return (request.then(handleSuccess, handleError));

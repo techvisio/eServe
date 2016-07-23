@@ -22,6 +22,7 @@ import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicInfo;
 @Component
 public interface CustomerManager {
 
@@ -42,8 +43,10 @@ public interface CustomerManager {
 	public Customer getContactNo(String ContactNo);
 	public Unit rejectUnitApproval(Unit unit);
 	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId);
-	public void deleteEquipmentDtlExclusion(List<EquipmentDetail> equipmentDetails,
+	void deleteEquipmentDtlInclusion(List<EquipmentDetail> equipmentDetails,
 			Long unitId);
-	public void saveEquipment(EquipmentDetail equipmentDetail);
-	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId);
+	public Long saveEquipment(EquipmentDetail equipmentDetail);
+	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId);
+	public Long saveUnit(Unit unit);
+	public UnitBasicInfo getUnitBasicInfo(Long unitId);
 }

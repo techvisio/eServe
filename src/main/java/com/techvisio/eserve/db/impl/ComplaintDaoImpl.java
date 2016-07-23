@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.ComplaintAssignment;
+import com.techvisio.eserve.beans.ComplaintEquipment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
@@ -22,6 +23,7 @@ import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.db.ComplaintDao;
 import com.techvisio.eserve.factory.UniqueIdentifierGenerator;
 import com.techvisio.eserve.manager.CustomerManager;
@@ -143,8 +145,8 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 	public void saveComplaintAssignment(Long complaintId, ComplaintAssignment complaintAssignment) {
 		if(complaintAssignment.getComplaintId()==null){
 			CustomerComplaint complaint = getCustomerComplaint(complaintId);
-			if(complaint.getStatus()==null || complaint.getStatus().equals(AppConstants.complaintStatus.UNASSIGNED.name())){
-				complaint.setStatus(AppConstants.complaintStatus.ASSIGNED.name());
+			if(complaint.getStatus()==null || complaint.getStatus().equals(AppConstants.ComplaintStatus.UNASSIGNED.name())){
+				complaint.setStatus(AppConstants.ComplaintStatus.ASSIGNED.name());
 				saveComplaint(complaint);	
 			}
 
@@ -494,4 +496,22 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 		return queryString;
 	}
 
+	@Override
+	public void saveComplaintEquipments(ComplaintEquipment complaintEquipment){
+
+		if(complaintEquipment.getComplaintEquipmentId()==null){
+			getEntityManager().persist(complaintEquipment);
+		}
+	}
+
+	@Override
+	public List<ComplaintEquipment> getComplaintEquipments(Long complaintId){
+		
+		String queryString="FROM ComplaintEquipment ce where ce.complaintId = " + complaintId;
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<ComplaintEquipment> result= (List<ComplaintEquipment>)query.getResultList();
+		return result;
+	}
+	
 }

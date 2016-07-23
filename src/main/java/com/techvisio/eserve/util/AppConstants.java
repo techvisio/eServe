@@ -17,7 +17,6 @@ public interface AppConstants {
 	public static final char PENDING = 'P';
 	public static final char DRAFTSTATUS = 'D';
 
-	
 	public static final String CRITICAL = "C";
 	public static final String MEDIUM = "M";
 	public static final String HIGH = "H";
@@ -29,34 +28,48 @@ public interface AppConstants {
 	public static final String SLA_DAYS_MEDIUM = "SLA_DAYS_MEDIUM";
 	public static final String SERVICE_REMINDER = "SERVICE_REMINDER";
 	public static final String IS_TAX_INCLUDED = "IS_TAX_INCLUDED";
+	public static final String PMS_FREQUENCY = "PMS_FREQUENCY";
+	public static final String PMS_CACULATION_FREQUENCY = "PMS_CACULATION_FREQUENCY";
+	public static final String PMS_CALCULATION_DATA = "PMS_CALCULATION_DATA";
+	public static final String PMS_DUE_DATE_REMINDER = "PMS_DUE_DATE_REMINDER";
+
 	public static final String CONFIG = "CONFIG";
 
 	public static final Long BASE_AMOUNT_ID=9998L;
 	public static final Long TOTAL_AMOUNT_ID=9999L;
-	
+
 	public static final String WORK_ITEM_OPEN_STATUS = "OPEN";
 	public static final String WORK_ITEM_CLOSE_STATUS = "CLOSE";
 	public static final String CUSTOMER_DRAFT = "CUSTOMER_DRAFT";
 	public static final String RENEW_SERVICE_CALL = "RENEW SERVICE CALL";
+	public static final String PMS = "PMS";
 	public static final String UNIT_DRAFT = "UNIT_DRAFT";
 	public static final String PUBLISH = "PUBLISH";
 	public static final String APPROVALWORK = "APPROVAL";
 	public static final String PENDINGWORK = "AGREEMENT_APPROVAL";
 
-	public enum complaintStatus {
+	public static final String MONTH = "MONTH";
+	public static final String DAY = "DAY";
+	public static final String YEAR = "YEAR";
+
+	public enum ComplaintStatus {
 		ASSIGNED, UNASSIGNED, CLOSED
 	};
-	
-	public enum entityType {
+
+	public enum EntityType {
 		CUSTOMER, UNIT, USER, COMPLAINT
+	};
+
+	public enum CalculationFrequency {
+		MONTH,DAY,YEAR
 	};
 
 	public enum WorkItemType {
 		AGREEMENT_APPROVAL("unit", "APPROVE_SERVICE_AGREEMENT",
 				"AGREEMENT APPROVAL", "UNIT"), CUSTOMER_DRAFT("customer",
-				"CREATE_CUSTOMER", "CUSTOMER AS DRAFT", "CUSTOMER"), RENEW_SERVICE_AGREEMENT(
-				"unit", "RENEW_SERVICE_AGREEMENT", "RENEW SERVICE AGREEMENT",
-				"UNIT");
+						"CREATE_CUSTOMER", "CUSTOMER AS DRAFT", "CUSTOMER"), RENEW_SERVICE_AGREEMENT(
+								"unit", "RENEW_SERVICE_AGREEMENT", "RENEW SERVICE AGREEMENT",
+								"UNIT"), PMS("unit", "CREATE_COMPLAINT", "PMS","UNIT");
 		String url;
 		String privilege;
 		String workType;
@@ -93,17 +106,25 @@ public interface AppConstants {
 		public void setWorkType(String workType) {
 			this.workType = workType;
 		}
+		public String getEntityType() {
+			return entityType;
+		}
+
+		public void setEntityType(String entityType) {
+			this.entityType = entityType;
+		}
+
 	};
-	
-	 enum DateFormat{MM_dd_yyyy("MMMM d, yyyy");
-	 String pattern;
-	 DateFormat(String pattern){
-		 this.pattern=pattern;
-	 }
-	 
-	 public String getPattern(){
-		 return this.pattern;
-	 }
-	 };
+
+	enum DateFormat{MM_dd_yyyy("MMMM d, yyyy");
+	String pattern;
+	DateFormat(String pattern){
+		this.pattern=pattern;
+	}
+
+	public String getPattern(){
+		return this.pattern;
+	}
+	};
 
 }

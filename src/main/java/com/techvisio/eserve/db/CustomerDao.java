@@ -13,6 +13,7 @@ import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.UnitHistory;
 
 @Component
@@ -38,8 +39,9 @@ public interface CustomerDao {
 	public void saveUnitHistory(UnitHistory unitHistory);
 	public void saveEquipmentHistory(EquipmentHistory equipmentHistory);
 	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId);
-	public void deleteEquipmentDtlExclusion(List<EquipmentDetail> equipmentDetails,
+	public Long saveEquipment(EquipmentDetail equipmentDetail);
+	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId);
+	void deleteEquipmentDtlInclusion(List<EquipmentDetail> equipmentDetails,
 			Long unitId);
-	public void saveEquipment(EquipmentDetail equipmentDetail);
-	public List<EquipmentDetail> getEquipmentDetailByEquipmentId(Long equipDtlId);
+	public UnitBasicInfo getUnitBasicInfo(Long unitId);
 }

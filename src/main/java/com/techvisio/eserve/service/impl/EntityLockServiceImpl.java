@@ -66,11 +66,11 @@ public class EntityLockServiceImpl implements EntityLockService{
 				entityLocks.setLockedBy(CommonUtil.getCurrentUser().getUserName());
 				entityLocks.setLockedDate(new Date());
 				entityLockManager.saveEntityLock(entityLocks);
-				if(entityLocks.getEntityType().equalsIgnoreCase(AppConstants.entityType.CUSTOMER.toString())){
+				if(entityLocks.getEntityType().equalsIgnoreCase(AppConstants.EntityType.CUSTOMER.toString())){
 					Customer customerFromDB = customerService.getCustomer(entityLocks.getEntityId());
 					return customerFromDB;
 				}
-				else if(entityLocks.getEntityType().equalsIgnoreCase(AppConstants.entityType.UNIT.toString())){
+				else if(entityLocks.getEntityType().equalsIgnoreCase(AppConstants.EntityType.UNIT.toString())){
 					Unit unitFromDB = customerService.getUnit(entityLocks.getEntityId());
 					return unitFromDB;
 				}
@@ -97,20 +97,20 @@ public class EntityLockServiceImpl implements EntityLockService{
 			if(entityLocksFromDB.getLockedBy().equalsIgnoreCase(lockeBy)){
 				entityLockManager.deleteEntityLock(entityId, entityType, lockeBy);
 
-				if(entityType.equalsIgnoreCase(AppConstants.entityType.CUSTOMER.toString())){
+				if(entityType.equalsIgnoreCase(AppConstants.EntityType.CUSTOMER.toString())){
 					Customer customerFromDB = customerService.getCustomer(entityId);
 					return customerFromDB;
 				}
-				else if(entityType.equalsIgnoreCase(AppConstants.entityType.UNIT.toString())){
+				else if(entityType.equalsIgnoreCase(AppConstants.EntityType.UNIT.toString())){
 					Unit unitFromDB = customerService.getUnit(entityId);
 					return unitFromDB;
 				}
-				else if(entityType.equalsIgnoreCase(AppConstants.entityType.COMPLAINT.toString())){
+				else if(entityType.equalsIgnoreCase(AppConstants.EntityType.COMPLAINT.toString())){
 					CustomerComplaint complaintFromDB = complaintService.getCustomerComplaint(entityId);
 					return complaintFromDB;
 				}
 				
-				else if(entityType.equalsIgnoreCase(AppConstants.entityType.UNIT.toString())){
+				else if(entityType.equalsIgnoreCase(AppConstants.EntityType.UNIT.toString())){
 					User userFromDB = userService.getUser(entityId);
 					return userFromDB;
 				}

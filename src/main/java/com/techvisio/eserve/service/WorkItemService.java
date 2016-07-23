@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkItem;
 
 @Component
@@ -23,4 +24,9 @@ public interface WorkItemService {
 	public void createWorkItemForServiceRenewal(Unit unit);
 	public void workItemWorkForRejectApprovalChanges(Unit unit, String comment);
 	public void closeAgreementApprovalWorkItem(Long unitId);
+	public List<WorkItem> getWorkItemsByEntityIdAndEntityTypeAndWorkType(Long entityId,
+			String entityType, String workType);
+	public void saveWorkItem(WorkItem workItem);
+	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId, String workType);
+	UnitBasicInfo getUnitBasicInfo(Long unitId, String entityType);
 }
