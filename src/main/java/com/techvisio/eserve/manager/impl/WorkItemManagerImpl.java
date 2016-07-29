@@ -1,5 +1,6 @@
 package com.techvisio.eserve.manager.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.WorkItem;
 import com.techvisio.eserve.db.WorkItemDao;
@@ -85,4 +88,40 @@ public class WorkItemManagerImpl implements WorkItemManager{
 		
 	}
 
+	@Override
+	public WorkItem getWorkitemByWorkitemId(Long workitemId) {
+        WorkItem workItem = workItemDao.getWorkitemByWorkitemId(workitemId);
+		return workItem;
+	}
+
+
+	@Override
+	public List<Comment> saveComment(GenericRequest<WorkItem> request){
+		WorkItem frontWorkItem = request.getBussinessObject();
+		
+		Long workItemId = frontWorkItem.getWorkItemId();
+		String stringComment = request.getContextInfo().get("comment");
+		WorkItem workItem = workItemDao.getWorkItem(workItemId);
+		List<Comment> commentList= workItem.getComments();
+		if(commentList != null && commentList.size()>0){
+			Comment comment = new Comment();
+			comment.setComment(stringComment);
+			commentList.add(comment);
+			frontWorkItem.setComments(commentList);
+			workItemDao.saveWorkItem(frontWorkItem);
+			return commentList;
+		}
+		
+			List<Comment> newCommentList = new ArrayList<Comment>();
+			Comment comment = new Comment();
+			comment.setComment(stringComment);
+			newCommentList.add(comment);
+			frontWorkItem.setComments(newCommentList);
+			workItemDao.saveWorkItem(frontWorkItem);
+			return newCommentList;
+	
+		
+		
+		
+	};
 }

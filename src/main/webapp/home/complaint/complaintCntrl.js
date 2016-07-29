@@ -259,7 +259,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 
 	$scope.saveComplaint = function() {
 
-		if(!$scope.from.COMPLAINT.$valid){
+		if(!$scope.form.COMPLAINT.$valid){
 			$scope.alerts=[];
 			$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
 			return;

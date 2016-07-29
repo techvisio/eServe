@@ -18,7 +18,7 @@ complaintModule.service('complaintService', function($http, $q) {
 		getEquipments:getEquipments,
 		saveEquipment:saveEquipment,
 		getComplaintEquipment : getComplaintEquipment,
-		deleteEquipments:deleteEquipments
+		deleteEquipments:deleteEquipments,
 	});
 
 	

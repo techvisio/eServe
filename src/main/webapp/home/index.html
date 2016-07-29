@@ -33,41 +33,44 @@
 <script src="report/reportSrvc.js"></script>
 <script src="masterdata/masterDataSrvc.js"></script>
 <script src="masterdata/masterDataCntrl.js"></script>
+<script src="workitem/workItemCntrl.js"></script>
+<script src="workitem/workItemSrvc.js"></script>
 <script src="dashboard/stats.js"></script>
 <script src="app.js"></script>
 
 <link href="../static/css/bootstrap.min.css" rel="stylesheet"
 	type="text/css">
-<link href="../lib/ng-table/ng-table.css" rel="stylesheet" type="text/css">
+<link href="../lib/ng-table/ng-table.css" rel="stylesheet"
+	type="text/css">
 <link href="../static/css/app.css" rel="stylesheet" type="text/css">
-<link href="../static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="../static/css/font-awesome.min.css" rel="stylesheet"
+	type="text/css">
 <link rel="stylesheet" href="../lib/angular-chart/angular-chart.css">
 
 </head>
 
 <body ng-app="erp" ng-controller="ApplicationController">
 	<div class="page-topbar">
-	<div class="logo-area">
-	<div class="processing" ng-show="processingCount>0">
-			<h3>
-				<i class="fa fa-spinner fa-pulse"></i>
-			</h3>
-	</div>
-			<img src="../static/images/eserve-logo.png">
-	<span></span>
-	</div>
-	<div class="pagetitle">
-        <span class="line"></span>
-        <h1 class="ng-binding">{{heading}}</h1>
-        <div></div>
-    </div>
-		
+		<div class="logo-area">
+			<div class="processing" ng-show="processingCount>0">
+				<h3>
+					<i class="fa fa-spinner fa-pulse"></i>
+				</h3>
+			</div>
+			<img src="../static/images/eserve-logo.png"> <span></span>
+		</div>
+		<div class="pagetitle">
+			<span class="line"></span>
+			<h1 class="ng-binding">{{heading}}</h1>
+			<div></div>
+		</div>
+
 	</div>
 
-	<div class="wrapper">	
-			<div ng-include="'sidebar/sidebar.html'" class="page-sidebar"></div>
+	<div class="wrapper">
+		<div ng-include="'sidebar/sidebar.html'" class="page-sidebar"></div>
 		<div class="container">
-				<div ui-view></div>
+			<div ui-view></div>
 		</div>
 	</div>
 

@@ -9,9 +9,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat = "workItem in workItem">
+			<tr ng-repeat = "workItem in workItems">
 			<td><a herf=" "
-					ng-click="redirectfromWorkItemtoEntity(workItem.entityUrl,workItem.entityId)">{{workItem.entityCode}}
+					ng-click="redirectToWorkitemScreen(workItem.workItemId)">{{workItem.entityCode}}
 				</a></td>
 				<td>{{workItem.entityType}}</td>
 				<td>{{workItem.workType}}

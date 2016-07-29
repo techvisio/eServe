@@ -114,4 +114,29 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		query.executeUpdate();	
 	}
 
+	@Override
+	public WorkItem getWorkitemByWorkitemId(Long workitemId){
+		String queryString="FROM WorkItem wi WHERE wi.workItemId = "+workitemId;
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<WorkItem> workItems= (List<WorkItem>)query.getResultList();
+		if(workItems != null && workItems.size()>0){
+			return workItems.get(0);
+		}
+		return null;
+	}
+	
+	@Override
+	public WorkItem getWorkItem(Long workItemId) {
+		String queryString="FROM WorkItem wi WHERE wi.workItemId = "+workItemId; 
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<WorkItem> workItem= (List<WorkItem>)query.getResultList();
+		if(workItem != null && workItem.size()>0){
+			return workItem.get(0);
+		}
+		return null;
+		
+	}
+	
 }

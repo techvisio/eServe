@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.Customer;
+import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.User;
@@ -25,6 +28,7 @@ import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 
 @Component
+@Transactional
 public class WorkItemServiceImpl implements WorkItemService {
 
 	@Autowired
@@ -238,5 +242,17 @@ public class WorkItemServiceImpl implements WorkItemService {
 		}
 
 		return null;
+	}
+
+	@Override
+	public WorkItem getWorkitemByWorkitemId(Long workitemId) {
+		WorkItem workItem = workItemManager.getWorkitemByWorkitemId(workitemId);
+		return workItem;
+	}
+	
+	@Override
+	public List<Comment> saveComment(GenericRequest<WorkItem> request){
+		List<Comment> commentList = workItemManager.saveComment(request);
+		return commentList;
 	}
 }

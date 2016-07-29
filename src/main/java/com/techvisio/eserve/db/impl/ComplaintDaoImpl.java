@@ -18,6 +18,7 @@ import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.PmsComplaint;
 import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
@@ -360,7 +361,7 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 			complaintsearchdata.setStatus((String) result[7]);
 			complaintsearchdata.setPriority((String) result[8]);
 			if(result[9] != null){
-			complaintsearchdata.setAssignTo((String) result[9]);
+				complaintsearchdata.setAssignTo((String) result[9]);
 			}
 			complaints.add(complaintsearchdata);	
 		}
@@ -414,7 +415,7 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 			complaintsearchdata.setStatus((String) result[7]);
 			complaintsearchdata.setPriority((String) result[8]);
 			if(result[9] != null){
-			complaintsearchdata.setAssignTo((String) result[9]);
+				complaintsearchdata.setAssignTo((String) result[9]);
 			}
 			complaints.add(complaintsearchdata);
 
@@ -463,7 +464,7 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 			complaintsearchdata.setStatus((String) result[7]);
 			complaintsearchdata.setPriority((String) result[8]);
 			if(result[9] != null){
-			complaintsearchdata.setAssignTo((String) result[9]);
+				complaintsearchdata.setAssignTo((String) result[9]);
 			}
 			complaints.add(complaintsearchdata);
 
@@ -506,12 +507,30 @@ public class ComplaintDaoImpl extends BaseDao implements ComplaintDao{
 
 	@Override
 	public List<ComplaintEquipment> getComplaintEquipments(Long complaintId){
-		
+
 		String queryString="FROM ComplaintEquipment ce where ce.complaintId = " + complaintId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<ComplaintEquipment> result= (List<ComplaintEquipment>)query.getResultList();
 		return result;
 	}
-	
+
+	@Override
+	public void createPmsComplaint(PmsComplaint pmsComplaint){
+		if(pmsComplaint.getPmsComplaintId()==null){
+			getEntityManager().persist(pmsComplaint);
+		}
+	}
+
+	@Override
+	public PmsComplaint getPmsComplaint(Long workitemId){
+		String queryString="FROM PmsComplaint pc where pc.workitemId = " + workitemId;
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<PmsComplaint> result= (List<PmsComplaint>)query.getResultList();
+		if(result != null && result.size()>0){
+			return result.get(0);
+		}
+		return null;
+	}
 }

@@ -24,6 +24,7 @@ import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.service.ComplaintService;
 
 @RestController
@@ -181,6 +182,14 @@ public class ComplaintController {
 		List<ComplaintEquipment> complaintEquipments = complaintService.getComplaintEquipments(complaintId);
 		Response response=new Response();
 		response.setResponseBody(complaintEquipments);
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value ="/pmscomplaint/{workitemId}",method = RequestMethod.POST)
+	public ResponseEntity<Response> createComplaintByPms(@RequestBody UnitBasicInfo unitBasicInfo, @PathVariable Long workitemId) {
+		CustomerComplaint customerComplaint = complaintService.createComplaintByPms(workitemId, unitBasicInfo);
+		Response response=new Response();
+		response.setResponseBody(customerComplaint);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 }

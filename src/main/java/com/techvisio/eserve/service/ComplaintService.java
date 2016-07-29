@@ -18,6 +18,7 @@ import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicInfo;
 
 @Component
 @Transactional
@@ -48,4 +49,8 @@ public interface ComplaintService {
 	public void deleteEquipmentDtlInclusion(List<EquipmentDetail> equipmentDetails,
 			Long unitId, Long complaintId);
 	public void createPmsWorkItem(Unit unit);
+	public CustomerComplaint createComplaintByPms(Long workitemId,
+			UnitBasicInfo basicInfo);
+	
+	
 }

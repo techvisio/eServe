@@ -11,6 +11,7 @@ var erp = angular
                 'dashboardModule',
                 'activityModule',
                 'reportModule',
+                'workItemModule',
                 'masterModule',
                 'ngGrid',
                 'ngTable'
@@ -61,20 +62,14 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		}
 	})
 
-	.state('workItem',{
+	.state('workItemSearch',{
 
 		url: "/workitem",
 		templateUrl: 'customer/workItem.html',
-		controller:"customerController",
+		controller:"workItemController",
 		resolve:{
-			customer: ['$stateParams', function($stateParams){
+			workitem: ['$stateParams', function($stateParams){
 				return null;
-			}],
-			unit: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			isCustomerSearch: ['$stateParams', function($stateParams){
-				return 'workItem';
 			}]
 		}
 	})
@@ -219,23 +214,25 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 	})
 
 	.state('unit', {
-		url: "/unit/{entityId:[0-9]{1,8}}",
-		templateUrl: 'customer/unitApproval.html',
-		controller: "customerController",
+		url: "/unit/{entityId:[0-9]{1,8}}/:entityType",
+		templateUrl: 'workitem/workItemReminder.html',
+		controller: "workItemController",
 		resolve:{
-			unit: ['$stateParams','customerService', function($stateParams,customerService){
-				return customerService.getUnitForApproval($stateParams.entityId);
-			}],
-			customer: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			isCustomerSearch: ['$stateParams', function($stateParams){
-				return false;
+			unit: ['$stateParams','workItemService', function($stateParams,workItemService){
+				return workItemService.getUnitInfoByEntityIdAndEntityType($stateParams.entityId, $stateParams.entityType);
 			}]
 		}
 	})
-
-
+	.state('workitem', {
+		url: "/workitem/{workitemId:[0-9]{1,8}}",
+		templateUrl: 'workitem/workItemReminder.html',
+		controller: "workItemController",
+		resolve:{
+			workitem : ['$stateParams','workItemService', function($stateParams,workItemService){
+				return workItemService.getWorkItemByWorkitemId($stateParams.workitemId);
+			}]
+		}
+	})
 	.state('searchUser', {
 		url: "/user",
 		templateUrl: 'user/userSearch.html',
@@ -315,13 +312,13 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}]
 		}
 	})
-	
+
 	.state('masterData', {
 		url: "/masterData",
 		templateUrl: 'masterdata/MasterData.html',
 		controller:"masterController",
 		resolve:{
-			
+
 		}
 	});
 });

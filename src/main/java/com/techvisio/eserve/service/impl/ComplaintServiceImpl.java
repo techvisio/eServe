@@ -22,11 +22,13 @@ import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.EntityLocks;
 import com.techvisio.eserve.beans.EquipmentDetail;
+import com.techvisio.eserve.beans.PmsComplaint;
 import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkItem;
 import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.factory.WorkItemFactory;
@@ -276,5 +278,35 @@ public class ComplaintServiceImpl implements ComplaintService{
 			workItemService.saveWorkItem(workItem);
 		}
 	}
+
+	@Override
+	public CustomerComplaint createComplaintByPms(Long workitemId, UnitBasicInfo basicInfo){
+		PmsComplaint pmsComplaint = complaintManager.getPmsComplaint(workitemId);
+		CustomerComplaint complaintFromDB = null;
+		if(pmsComplaint == null){
+
+			CustomerComplaint complaint = new CustomerComplaint();
+			complaint.setContactNo(basicInfo.getContactNo());
+			complaint.setCustomerCode(basicInfo.getCustomerCode());
+			complaint.setCustomerId(basicInfo.getCustomerId());
+			complaint.setCustomerName(basicInfo.getCustomerName());
+			complaint.setEmailId(basicInfo.getEmailId());
+			complaint.setStatus("DRAFT");
+			Unit unit = customerService.getUnit(basicInfo.getUnitId());
+			complaint.setUnit(unit);
+			Long complaintId = complaintManager.saveComplaint(complaint);
+
+			pmsComplaint = new PmsComplaint();
+			pmsComplaint.setWorkitemId(workitemId);
+			pmsComplaint.setComplaintId(complaintId);
+			complaintManager.createPmsComplaint(pmsComplaint);
+			complaintFromDB = complaintManager.getCustomerComplaint(complaintId);
+			return complaintFromDB;
+		}
+
+		complaintFromDB = complaintManager.getCustomerComplaint(pmsComplaint.getComplaintId());
+		return complaintFromDB;
+	}
+
 }
 

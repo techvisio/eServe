@@ -14,6 +14,7 @@ import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.EquipmentDetail;
+import com.techvisio.eserve.beans.PmsComplaint;
 import com.techvisio.eserve.beans.SearchComplaint;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
@@ -69,22 +70,22 @@ public class ComplaintManagerImpl implements ComplaintManager{
 	private Date getSlaDateByPriority(String priority) {
 
 
-		if(priority.equalsIgnoreCase(AppConstants.CRITICAL)){
+		if(priority != null && priority.equalsIgnoreCase(AppConstants.CRITICAL)){
 			Date date = configPreferences.getSlaDateForCriticalIssue(CommonUtil.getCurrentClient().getClientId());		
 			return date;
 		}
 
-		if(priority.equalsIgnoreCase(AppConstants.HIGH)){
+		if(priority != null && priority.equalsIgnoreCase(AppConstants.HIGH)){
 			Date date = configPreferences.getSlaDateForHighIssue(CommonUtil.getCurrentClient().getClientId());
 			return date;
 		}
 
-		if(priority.equalsIgnoreCase(AppConstants.MEDIUM)){
+		if(priority != null && priority.equalsIgnoreCase(AppConstants.MEDIUM)){
 			Date date = configPreferences.getSlaDateForMediumIssue(CommonUtil.getCurrentClient().getClientId());
 			return date;
 		}
 
-		if(priority.equalsIgnoreCase(AppConstants.LOW)){
+		if(priority != null && priority.equalsIgnoreCase(AppConstants.LOW)){
 			Date date = configPreferences.getSlaDateForLowIssue(CommonUtil.getCurrentClient().getClientId());
 			return date;
 		}
@@ -185,5 +186,14 @@ public class ComplaintManagerImpl implements ComplaintManager{
 	public List<ComplaintEquipment> getComplaintEquipments(Long complaintId) {
 		List<ComplaintEquipment> complaintEquipments = complaintDao.getComplaintEquipments(complaintId);
 		return complaintEquipments;
+	}
+	@Override
+	public void createPmsComplaint(PmsComplaint pmsComplaint) {
+		complaintDao.createPmsComplaint(pmsComplaint);
+	}
+	@Override
+	public PmsComplaint getPmsComplaint(Long workitemId) {
+		PmsComplaint pmsComplaint = complaintDao.getPmsComplaint(workitemId);
+		return pmsComplaint;
 	}
 }

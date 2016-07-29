@@ -1,0 +1,54 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+	<section class="box ">
+		<header class="panel_header">
+			<h2 class="title pull-left">WORK ITEM</h2>
+			<div class="actions panel_actions pull-right">
+				<i class="box_toggle material-icons"></i> <i
+					class="box_setting material-icons"></i> <i
+					class="box_close material-icons"></i>
+			</div>
+		</header>
+		<div class="content-body">
+			<div class="row">
+
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Work Type</label>
+						<div class="controls">
+							<input type="text" class="form-control"
+								ng-model="workitem.workType">
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-1"></div>
+
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Entity Type</label>
+
+						<div class="controls">
+							<input type="text" class="form-control"
+								ng-model="workitem.entityType">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-5 col-sm-12 col-xs-12">
+					<div class="form-group">
+						<label class="form-label" for="formfield9">Entity Code</label>
+						<div class="controls">
+							<input type="text" class="form-control"
+								ng-model="workitem.entityCode">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+<div ng-include src="'../home/workitem/workItemUnit.html'"></div>
+<div ng-include src="'../home/workitem/workItemComment.html'"></div>

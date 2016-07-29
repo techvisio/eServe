@@ -19,4 +19,6 @@ public interface WorkItemDao {
 	public List<WorkItem> getWorkItemsByEntityIdAndEntityTypeAndWorkType(Long entityId,
 			String entityType, String workType);
 	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId, String workType);
+	public WorkItem getWorkitemByWorkitemId(Long workitemId);
+	public WorkItem getWorkItem(Long workItemId);
 }

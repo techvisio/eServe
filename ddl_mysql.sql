@@ -327,6 +327,8 @@
 
     drop table if exists TB_MODULE_LOG;
 
+    drop table if exists TB_PMS_COMPLAINT;
+
     drop table if exists TB_PRIVILEGE;
 
     drop table if exists TB_QUESTIONNAIRE_MASTER;
@@ -707,6 +709,13 @@
         workFlowOperation varchar(255),
         Client_Id bigint,
         primary key (id)
+    );
+
+    create table TB_PMS_COMPLAINT (
+        PMS_COMPLAINT_ID bigint not null auto_increment,
+        COMPLAINT_ID bigint,
+        WORKITEM_ID bigint,
+        primary key (PMS_COMPLAINT_ID)
     );
 
     create table TB_PRIVILEGE (

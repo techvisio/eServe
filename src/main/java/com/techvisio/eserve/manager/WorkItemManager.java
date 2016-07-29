@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.Comment;
+import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.WorkItem;
 
@@ -21,4 +23,6 @@ public interface WorkItemManager {
 	public List<WorkItem> getWorkItemsByEntityIdAndEntityTypeAndWorkType(Long entityId,
 			String entityType, String workType);
 	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId, String workType);
+	public WorkItem getWorkitemByWorkitemId(Long workitemId);
+	public List<Comment> saveComment(GenericRequest<WorkItem> request);
 }

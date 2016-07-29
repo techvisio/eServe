@@ -2,14 +2,19 @@ package com.techvisio.eserve.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.Customer;
+import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkItem;
 
 @Component
+@Transactional
 public interface WorkItemService {
 
 	public List<WorkItem> getWorkItemByUserId(Long userId);
@@ -28,5 +33,7 @@ public interface WorkItemService {
 			String entityType, String workType);
 	public void saveWorkItem(WorkItem workItem);
 	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId, String workType);
-	UnitBasicInfo getUnitBasicInfo(Long unitId, String entityType);
+	public UnitBasicInfo getUnitBasicInfo(Long unitId, String entityType);
+	public WorkItem getWorkitemByWorkitemId(Long workitemId);
+	public List<Comment> saveComment(GenericRequest<WorkItem> request);
 }
