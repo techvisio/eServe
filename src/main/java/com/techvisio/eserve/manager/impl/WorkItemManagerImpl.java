@@ -123,5 +123,11 @@ public class WorkItemManagerImpl implements WorkItemManager{
 		
 		
 		
+	}
+
+	@Override
+	public List<Comment> getCommentList(Long workItemId, Long clientId) {
+		List<Comment> comments = workItemDao.getCommentList(workItemId, clientId);
+		return comments;
 	};
 }

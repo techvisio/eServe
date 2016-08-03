@@ -1,6 +1,6 @@
 package com.techvisio.eserve.beans;
 
-public class ApproveUnitDtl {
+public class UnitBasicCustomer {
 
 	private String customerCode;
 	private String customerName;

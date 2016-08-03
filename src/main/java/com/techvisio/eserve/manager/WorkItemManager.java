@@ -25,4 +25,5 @@ public interface WorkItemManager {
 	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId, String workType);
 	public WorkItem getWorkitemByWorkitemId(Long workitemId);
 	public List<Comment> saveComment(GenericRequest<WorkItem> request);
+	public List<Comment> getCommentList(Long workItemId, Long clientId);
 }

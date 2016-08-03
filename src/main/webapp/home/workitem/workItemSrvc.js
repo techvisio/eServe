@@ -4,7 +4,8 @@ workItemModule.service('workItemService', function($http, $q) {
 		getUnitInfoByEntityIdAndEntityType:getUnitInfoByEntityIdAndEntityType,
 		createComplaintByPms : createComplaintByPms,
 		getWorkItemByWorkitemId : getWorkItemByWorkitemId,
-		saveComment : saveComment
+		saveComment : saveComment,
+		getCommentList : getCommentList
 	});
 
 	function getUnitInfoByEntityIdAndEntityType(entityId, entityType){
@@ -55,6 +56,19 @@ workItemModule.service('workItemService', function($http, $q) {
 			params : "",
 			data: genericRequest
 
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
+	function getCommentList(workItemId){
+		console.log('get all comments');
+
+		var request = $http({
+			method : "get",
+			url : "../service/workitem/getcomment/" + workItemId,
+			params : {
+				action : "get"
+			}
 		});
 		return (request.then(handleSuccess, handleError));
 	}

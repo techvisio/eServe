@@ -49,8 +49,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		return result;		
 	}
 
-	$scope.toggleReadOnly = function(form) {
-		if($scope.customer.edited){
+	$scope.toggleReadOnly = function(form,isEdit) {
+		if(!isEdit){
 			$('#' + form + ' *').attr('readonly',
 					true);
 			$('#' + form + ' select')
@@ -61,7 +61,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			.attr('disabled', true);
 			$('#' + form + ' input[type="button"]')
 			.attr('disabled', true);
-			$scope.customer.edited = !$scope.customer.edited;
 		}
 
 		else{
@@ -75,7 +74,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			.attr('disabled', false);
 			$('#' + form + ' input[type="button"]')
 			.attr('disabled', false);
-			$scope.customer.edited = !$scope.customer.edited;
 		}
 	};
 
@@ -107,6 +105,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			}
 		});
 		$scope.customer = customer;
+		$scope.toggleReadOnly('CUSTOMER',customer.edited);
 		$scope.$broadcast('dataloaded');
 	}
 
@@ -375,10 +374,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		})
 	}
 
-	$scope.saveUnit = function(object, context) {
+	$scope.saveUnit = function(object, context,formId) {
 		console.log('save unit called');
 
-		if(!$scope.UNIT.$valid){
+		if(!$scope.UNIT_+formId.$valid){
 
 			$scope.alerts=[];
 			$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
@@ -565,6 +564,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						} 
 					})
 				};
+				
+				$scope.closeModal=function(){
+					$rootScope.curModal.close();
+				}
 			},
 			backdrop:'static',
 			keyboard: false
@@ -595,6 +598,9 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						} 
 					})
 				};
+				$scope.closeModal=function(){
+					$rootScope.curModal.close();
+				}
 			},
 			backdrop:'static',
 			keyboard: false
@@ -628,6 +634,9 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						}
 					})
 				};
+				$scope.closeModal=function(){
+					$rootScope.curModal.close();
+				}
 			},
 			backdrop:'static',
 			keyboard: false
@@ -799,15 +808,16 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 					console.log(customer);
 					if (customer) {
 						$scope.customer=customer;
+						$scope.toggleReadOnly('CUSTOMER',customer.edited);
 					}
 				})
 
 	}
 
-	$scope.lockUnitEntity = function(unit)
+	$scope.lockUnitEntity = function(unitIndex,formId)
 	{
 		$scope.entityLock = {};
-		$scope.entityLock.entityId = unit.unitId;
+		$scope.entityLock.entityId = $scope.customer.units[unitIndex].unitId;
 		$scope.entityLock.entityType = 'UNIT';
 		customerService.lockEntity($scope.entityLock)
 		.then(
@@ -816,7 +826,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 					.log('Locking unit entity in controller');
 					console.log(unitFromDB);
 					if (unitFromDB) {
-						unit = unitFromDB;
+						$scope.customer.units[unitIndex] = unitFromDB;	
+						$scope.toggleReadOnly('UNIT_'+formId,unitFromDB.edited);
 					}
 				})
 
@@ -836,14 +847,15 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 					console.log(customer);
 					if (customer) {
 						$scope.customer=customer;
+						$scope.toggleReadOnly('CUSTOMER',customer.edited);
 					}
 				})
 	}
 
-	$scope.unlockUnitEntity = function(unit)
+	$scope.unlockUnitEntity = function(unitIndex,formId)
 	{
 		$scope.entityLock = {};
-		$scope.entityLock.entityId = unit.unitId;
+		$scope.entityLock.entityId =  $scope.customer.units[unitIndex].unitId;
 		$scope.entityLock.entityType = 'UNIT';
 
 		customerService.unlockEntity($scope.entityLock)
@@ -853,9 +865,46 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 					.log('Unlocking unit entity in controller');
 					console.log(unitFromDB);
 					if (unitFromDB) {
-						unit = unitFromDB;
+						$scope.customer.units[unitIndex] = unitFromDB;
+						$scope.toggleReadOnly('UNIT_'+formId,unitFromDB.edited);
 					}
 				})
 	}
 
+	$scope.makeAllReadOnly=function(formId){
+		$scope.toggleReadOnly('UNIT_'+formId,false);
+	}
+	
+	$scope.getClassForUnitStatus=function(status){
+		if(status==="R")
+		{
+			return "btn btn-danger btn-xs"
+		}
+		if(status==="A")
+		{
+			return "btn btn-success btn-xs"
+		}
+		if(status==="P")
+		{
+			return "btn btn-warning btn-xs"
+		}
+		
+		return "btn btn-info btn-xs"
+	}
+	
+	$scope.getUnitStatusText=function(status){
+		if(status==="R")
+		{
+			return "Rejected"
+		}
+		if(status==="A")
+		{
+			return "Approved"
+		}
+		if(status==="P")
+		{
+			return "Published"
+		}
+			return "Draft"
+	}
 } ]);

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.ApproveUnitDtl;
+import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.EquipmentHistory;
@@ -30,7 +30,7 @@ public interface CustomerDao {
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
 	//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
 	public Unit getUnit(Long unitId);
-	public ApproveUnitDtl getUnitForApproval(Long unitId);
+	public UnitBasicCustomer getUnitForApproval(Long unitId);
 	public void saveServiceAgreementHistory(ServiceAgreementHistory history);
 	public void saveServiceAgreementFinanceHistory(
 			ServiceAgreementFinanceHistory financeHistory);

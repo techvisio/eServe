@@ -13,14 +13,8 @@
 					<div class="actions panel_actions pull-right">
 
 						<div ng-show="!showAndHidePreview()">
-							<i class="fa fa-floppy-o" ng-show="customer.edited"
-								ng-click="saveAndUpdateCustomer('PUBLISH')"
-								ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i>
-							<i class="fa fa-times" ng-show="customer.edited"
-								ng-click="toggleReadOnly('CUSTOMER'); unlockCustomerEntity()"></i> <i
-								class="fa fa-pencil" ng-show="!customer.edited"
-								ng-click="toggleReadOnly('CUSTOMER'); lockCustomerEntity();" popover-placement="bottom"
-								popover="Click To Edit" popover-trigger="mouseenter"
+							<i></i> <i class="fa fa-pencil" ng-show="!customer.edited"
+								ng-click="lockCustomerEntity()"
 								ng-disabled="isCreateOrUpdatePrivileged()"></i>
 						</div>
 					</div>
@@ -89,7 +83,7 @@
 					</div>
 
 					<div class="row">
-						<div class="col-md-5 col-sm-12 col-xs-12">
+						<div class="col-md-6 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Customer Type</label>
 
@@ -102,9 +96,24 @@
 								</div>
 							</div>
 						</div>
+						<div class="col-md-6 col-sm-12 col-xs-12"></div>
+
 					</div>
 
+					<div class="row" ng-show="!showAndHidePreview()">
+						<button type="button" class="btn btn-primary child-right"
+							ng-show="customer.edited"
+							ng-click="saveAndUpdateCustomer('PUBLISH')"
+							ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">
+							<i class="fa fa-floppy-o" style="font-size: 13px"></i>&nbsp Save
 
+						</button>
+
+						<button type="button" class="btn btn-success child-right"
+							ng-show="customer.edited" ng-click="unlockCustomerEntity()">
+							<i class="fa fa-undo" style="font-size: 13px"></i> Cancel
+						</button>
+					</div>
 
 				</div>
 			</section>
@@ -190,7 +199,20 @@
 								</div>
 							</div>
 						</div>
+						<div class="row" ng-show="!showAndHidePreview()">
+							<button type="button" class="btn btn-primary child-right"
+								ng-show="customer.edited"
+								ng-click="saveAndUpdateCustomer('PUBLISH')"
+								ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">
+								<i class="fa fa-floppy-o" style="font-size: 13px"></i>&nbsp Save
 
+							</button>
+
+							<button type="button" class="btn btn-success child-right"
+								ng-show="customer.edited" ng-click="unlockCustomerEntity()">
+								<i class="fa fa-undo" style="font-size: 13px"></i> Cancel
+							</button>
+						</div>
 					</div>
 
 				</div>

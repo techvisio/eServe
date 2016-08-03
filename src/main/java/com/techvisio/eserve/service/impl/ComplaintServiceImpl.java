@@ -168,14 +168,14 @@ public class ComplaintServiceImpl implements ComplaintService{
 	@Override
 	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId){
 
-		List<EquipmentDetail> equipmentDetails= customerService.getEquipmentDetail(type, unitId);
+		List<EquipmentDetail> equipmentDetails= customerService.getAllEquipmentForUnitById(type, unitId);
 		return equipmentDetails;
 	}
 
 	@Override
 	public void saveEquipment(List<EquipmentDetail> equipmentDetails, Long complaintId) {
 		for(EquipmentDetail equipmentDetail:equipmentDetails){
-			Long equipmentdtlId = customerService.saveEquipment(equipmentDetail);
+			Long equipmentdtlId = customerService.saveEquipmentforUnit(equipmentDetail);
 			EquipmentDetail equipmentDetailFromDB = customerService.getEquipmentDetailByEquipmentId(equipmentdtlId);
 			saveComplaintEquipment(equipmentDetailFromDB, complaintId);
 		}
@@ -214,11 +214,11 @@ public class ComplaintServiceImpl implements ComplaintService{
 
 	}
 
-	@Override
-	public Long saveUnit(Unit unit) {
-		Long unitId = customerService.saveUnit(unit);
-		return unitId;
-	}
+//	@Override
+//	public Long saveUnit(Unit unit) {
+//		Long unitId = customerService.saveUnit(unit);
+//		return unitId;
+//	}
 
 	@Override
 	public List<ComplaintEquipment> getComplaintEquipments(Long complaintId) {
@@ -292,7 +292,7 @@ public class ComplaintServiceImpl implements ComplaintService{
 			complaint.setCustomerName(basicInfo.getCustomerName());
 			complaint.setEmailId(basicInfo.getEmailId());
 			complaint.setStatus("DRAFT");
-			Unit unit = customerService.getUnit(basicInfo.getUnitId());
+			Unit unit = customerService.getUnitById(basicInfo.getUnitId());
 			complaint.setUnit(unit);
 			Long complaintId = complaintManager.saveComplaint(complaint);
 

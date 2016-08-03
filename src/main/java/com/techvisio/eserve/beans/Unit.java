@@ -23,12 +23,13 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techvisio.eserve.interfaces.Lockable;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 
 @Entity
 @Table(name = "TB_UNIT_DETAIL")
-public class Unit extends BasicEntity{
+public class Unit extends BasicEntity implements Lockable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -169,5 +170,4 @@ public class Unit extends BasicEntity{
 	public void setLastApprovalDate(Date lastApprovalDate) {
 		this.lastApprovalDate = lastApprovalDate;
 	}
-
 }

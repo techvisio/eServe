@@ -36,4 +36,5 @@ public interface WorkItemService {
 	public UnitBasicInfo getUnitBasicInfo(Long unitId, String entityType);
 	public WorkItem getWorkitemByWorkitemId(Long workitemId);
 	public List<Comment> saveComment(GenericRequest<WorkItem> request);
+	public List<Comment> getCommentList(Long workItemId);
 }

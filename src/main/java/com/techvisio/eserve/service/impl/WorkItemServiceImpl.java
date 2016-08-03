@@ -103,11 +103,11 @@ public class WorkItemServiceImpl implements WorkItemService {
 	@Override
 	public void createWorkItemForUnitSave(String context, Long unitId,
 			String comment) {
-		Unit unitFromDB = customerService.getUnit(unitId);
+		Unit unitFromDB = customerService.getUnitById(unitId);
 
 		if (context.equalsIgnoreCase(AppConstants.CUSTOMER_DRAFT)) {
 
-			Customer customer = customerService.getCustomer(unitFromDB.getCustomerId());
+			Customer customer = customerService.getCustomerbyId(unitFromDB.getCustomerId());
 			createWorkItemForCustomerDraft(context, unitFromDB.getCustomerId(), customer.getCustomerCode());
 		}
 
@@ -237,7 +237,7 @@ public class WorkItemServiceImpl implements WorkItemService {
 	@Override
 	public UnitBasicInfo getUnitBasicInfo(Long entityId, String entityType) {
 		if(entityType.equalsIgnoreCase(AppConstants.WorkItemType.PMS.getEntityType())){
-			UnitBasicInfo basicInfo = customerService.getUnitBasicInfo(entityId);
+			UnitBasicInfo basicInfo = customerService.getUnitBasicInfoById(entityId);
 			return basicInfo;
 		}
 
@@ -254,5 +254,12 @@ public class WorkItemServiceImpl implements WorkItemService {
 	public List<Comment> saveComment(GenericRequest<WorkItem> request){
 		List<Comment> commentList = workItemManager.saveComment(request);
 		return commentList;
+	}
+
+	@Override
+	public List<Comment> getCommentList(Long workItemId) {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		List<Comment> comments = workItemManager.getCommentList(workItemId, clientId);
+		return comments;
 	}
 }

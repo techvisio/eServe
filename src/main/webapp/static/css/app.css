@@ -1250,3 +1250,18 @@ background-color: #F5F5F5;
 button-left {
 	float: left;
 }
+
+.fixed-add-icon img {
+	position: fixed;
+	top: 550px;
+	left: 1260px;
+}
+
+.workitem-comment{
+	
+	padding-left:15px;
+	font-style: italic;
+	padding-bottom: 15px;
+	color: blue;	
+	font-size: 17px;
+}

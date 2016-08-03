@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.ApproveUnitDtl;
+import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.ComplaintAssignment;
 import com.techvisio.eserve.beans.ComplaintResolution;
 import com.techvisio.eserve.beans.Customer;
@@ -37,7 +37,7 @@ public interface CustomerManager {
 	public Unit getUnit(Long unitId);
 	public Unit approveUnit(Unit unit);
 	//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
-	public ApproveUnitDtl getUnitForApproval(Long unitId);
+	public UnitBasicCustomer getUnitForApproval(Long unitId);
 	public Long saveCustomer(Customer customer);
 	public Customer getEmailId(String EmailId);
 	public Customer getContactNo(String ContactNo);

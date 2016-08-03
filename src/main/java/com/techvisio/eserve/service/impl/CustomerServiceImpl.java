@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.ApproveUnitDtl;
+import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerComplaint;
 import com.techvisio.eserve.beans.EntityLocks;
@@ -21,6 +21,7 @@ import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.db.impl.ComplaintDaoImpl;
 import com.techvisio.eserve.exception.EntityLockedException;
+import com.techvisio.eserve.icc.CustomerServiceICC;
 import com.techvisio.eserve.manager.CustomerManager;
 import com.techvisio.eserve.service.ActivityService;
 import com.techvisio.eserve.service.ComplaintService;
@@ -46,50 +47,42 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Autowired
 	EntityLockService entityLockService;
-	
+
 	@Autowired
 	ServiceLocator servicelocator;
 
 	@Autowired
 	ComplaintService complaintService;
 	@Override
-	public List<Customer> getCustomers() {
+	public List<Customer> retrieveAllCustomer() {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customerServiceICC.preRetrieveAllCustomers();
+
 		List<Customer> customers = customerManager.getCustomers();
+
+		customers=customerServiceICC.postRetrieveAllCustomers(customers);
+
 		return customers;
 	}
 
 	@Override
-	public Customer getCustomer(Long customerId) {
-//		System.out.println(servicelocator.getService(ComplaintDaoImpl.class));
+	public Customer getCustomerbyId(Long customerId) {
 		Customer customer = customerManager.getCustomer(customerId);
-		EntityLocks entityLocks  = entityLockService.getEntity(customerId, AppConstants.EntityType.CUSTOMER.toString());
-		if(entityLocks!=null){
-			customer.setEdited(true);
-		}
-		else{
-			customer.setEdited(false);
-		}
 		return customer;
 	}
 
 	@Override
-	public Long saveCustomer(Customer customer) {
-		String userName = CommonUtil.getCurrentUser().getUserName();
-		boolean isEntityLocked=entityLockService.isEntityLocked(customer.getCustomerId(), AppConstants.EntityType.CUSTOMER.toString(), userName);
-		if(isEntityLocked){
-			throw new EntityLockedException("Current user does not hold lock for this customer");
-		}
-
-		else{
-			Long customerId = customerManager.saveCustomer(customer);
-			entityLockService.unlockEntity("CUSTOMER", customerId);
-			return customerId;
-		}
+	public Long saveCustomerDirect(Customer customer) {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customer=customerServiceICC.preSaveCustomerDirect(customer);
+		Long customerId = customerManager.saveCustomer(customer);
+		customer=customerServiceICC.postSaveCustomerDirect(customer);
+		return customerId;
 
 	}
 
 	@Override
-	public Long saveCustomer(GenericRequest<Customer> request, String context) {
+	public Long saveCustomerWizard(GenericRequest<Customer> request, String context) {
 
 		Customer customer=request.getBussinessObject();
 		String comment = request.getContextInfo().get("comment");
@@ -101,13 +94,13 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 
-	@Override
-	public void saveUnit(List<Unit> units, Long customerId) {
-		customerManager.saveUnit(units, customerId);
-	}
+	//	@Override
+	//	public void saveUnit(List<Unit> units, Long customerId) {
+	//		customerManager.saveUnit(units, customerId);
+	//	}
 
 	@Override
-	public Long saveUnit(GenericRequest<Unit> request, String context) {
+	public Long saveUnitWizard(GenericRequest<Unit> request, String context) {
 
 		Unit unit=request.getBussinessObject();
 		if(unit.getUnitId()!=null){
@@ -128,7 +121,7 @@ public class CustomerServiceImpl implements CustomerService{
 
 
 	@Override
-	public List<Unit> getUnits(Long customerId) {
+	public List<Unit> getAllUnitForCustomerById(Long customerId) {
 		List<Unit> units = customerManager.getUnits(customerId);
 		return units;
 	}
@@ -193,13 +186,13 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Unit getUnit(Long unitId) {
+	public Unit getUnitById(Long unitId) {
 		Unit unit = customerManager.getUnit(unitId);
 		return unit;
 	}
 
 	@Override
-	public Unit approveUnit(Unit unit) {
+	public Unit updateUnitForApproval(Unit unit) {
 
 		Unit unitFromDB = customerManager.approveUnit(unit);
 		workItemService.closeAgreementApprovalWorkItem(unit.getUnitId());
@@ -209,25 +202,25 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public ApproveUnitDtl getUnitForApproval(Long unitId) {
-		ApproveUnitDtl approveUnitDtl = customerManager.getUnitForApproval(unitId);
+	public UnitBasicCustomer getUnitWithBasicCustomerDetais(Long unitId) {
+		UnitBasicCustomer approveUnitDtl = customerManager.getUnitForApproval(unitId);
 		return approveUnitDtl;
 	}
 
 	@Override
-	public Customer getEmailId(String emailId) {
+	public Customer getCustomerByEmailId(String emailId) {
 		Customer customer = customerManager.getEmailId(emailId);
 		return customer;
 	}
 
 	@Override
-	public Customer getContactNo(String contactNo)  {
+	public Customer getCustomerByContactNo(String contactNo)  {
 		Customer customer = customerManager.getContactNo(contactNo);
 		return customer;
 	}
 
 	@Override
-	public Unit rejectUnitApproval(GenericRequest<Unit> request) {
+	public Unit updateUnitForRejection(GenericRequest<Unit> request) {
 		Unit unit = request.getBussinessObject();
 		String comment = request.getContextInfo().get("comment");
 		Unit unitFromDB = customerManager.rejectUnitApproval(unit);
@@ -237,7 +230,7 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId){
+	public List<EquipmentDetail> getAllEquipmentForUnitById(String type, Long unitId){
 
 		List<EquipmentDetail> equipmentDetails= customerManager.getEquipmentDetail(type, unitId);
 		return equipmentDetails;
@@ -250,7 +243,7 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Long saveEquipment(EquipmentDetail equipmentDetail) {
+	public Long saveEquipmentforUnit(EquipmentDetail equipmentDetail) {
 		Long equipmentdtlId = customerManager.saveEquipment(equipmentDetail);
 		return equipmentdtlId;
 	}
@@ -259,17 +252,17 @@ public class CustomerServiceImpl implements CustomerService{
 	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId) {
 		EquipmentDetail equipmentDetails = customerManager.getEquipmentDetailByEquipmentId(equipDtlId);
 		return equipmentDetails;
-		}
-
-	@Override
-	public Long saveUnit(Unit unit) {
-		Long unitId = customerManager.saveUnit(unit);
-		return unitId;
 	}
 
+	//	@Override
+	//	public Long saveUnit(Unit unit) {
+	//		Long unitId = customerManager.saveUnit(unit);
+	//		return unitId;
+	//	}
+
 	@Override
-	public UnitBasicInfo getUnitBasicInfo(Long unitId) {
-	UnitBasicInfo basicInfo = customerManager.getUnitBasicInfo(unitId);
+	public UnitBasicInfo getUnitBasicInfoById(Long unitId) {
+		UnitBasicInfo basicInfo = customerManager.getUnitBasicInfo(unitId);
 		return basicInfo;
 	}
 }

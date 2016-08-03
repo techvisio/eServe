@@ -1,11 +1,16 @@
 package com.techvisio.eserve.beans;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "TB_COMMENT")
@@ -19,6 +24,27 @@ public class Comment extends BasicFileds{
 	private String comment;
 	@Column(name="WORKITEM_ID")
 	private Long workItemId;
+
+	@Transient
+	private String commentDateString;
+	
+	public String getCommentDateString() {
+		
+		Date commentDate = getCreatedOn();
+		if (commentDate == null)
+			return null;
+
+		try {
+
+			DateFormat outputFormatter = new SimpleDateFormat("MMM dd,yyyy hh:mm");
+			String startDateString = outputFormatter.format(commentDate);
+			return startDateString;
+
+		} catch (Exception e) {
+
+		}
+		return null;
+	}
 	public Long getCommentId() {
 		return commentId;
 	}
@@ -37,5 +63,6 @@ public class Comment extends BasicFileds{
 	public void setWorkItemId(Long workItemId) {
 		this.workItemId = workItemId;
 	}
+
 	
 }

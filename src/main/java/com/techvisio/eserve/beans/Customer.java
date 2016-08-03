@@ -19,9 +19,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import com.techvisio.eserve.interfaces.Lockable;
+
 @Entity
 @Table(name = "TB_CUSTOMER_DETAIL",  uniqueConstraints = @UniqueConstraint(columnNames = {"CONTACT_NO", "EMAIL_ID"}))    
-public class Customer extends BasicEntity{
+public class Customer extends BasicEntity implements Lockable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

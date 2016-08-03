@@ -1,21 +1,14 @@
 package com.techvisio.eserve.db.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerReport;
-import com.techvisio.eserve.beans.EquipmentDetail;
-import com.techvisio.eserve.beans.UnitBasicInfo;
+import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.WorkItem;
 import com.techvisio.eserve.db.WorkItemDao;
-import com.techvisio.eserve.util.AppConstants;
-import com.techvisio.eserve.util.DateUtil;
 @Component
 public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 
@@ -138,5 +131,16 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		return null;
 		
 	}
+
 	
+	@Override
+	public List<Comment> getCommentList(Long workItemId, Long clientId){
+		String queryString="FROM Comment c WHERE c.workItemId = "+workItemId+" "+" and c.client.clientId = "+clientId +" ORDER BY c.createdOn desc"; 
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<Comment> comment= (List<Comment>)query.getResultList();
+		return comment;
+		
+	}
+
 }

@@ -215,11 +215,11 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 
 	.state('unit', {
 		url: "/unit/{entityId:[0-9]{1,8}}/:entityType",
-		templateUrl: 'workitem/workItemReminder.html',
-		controller: "workItemController",
+		templateUrl: 'customer/unitApproval.html',
+		controller: "customerController",
 		resolve:{
-			unit: ['$stateParams','workItemService', function($stateParams,workItemService){
-				return workItemService.getUnitInfoByEntityIdAndEntityType($stateParams.entityId, $stateParams.entityType);
+			customer: ['$stateParams','customerService', function($stateParams,customerService){
+				return customerService.getUnitForApproval($stateParams.entityId);
 			}]
 		}
 	})

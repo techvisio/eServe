@@ -94,6 +94,10 @@ workItemModule
 			 $scope.redirectToWorkitemScreen=function(currentWorkitemId){
 				 $state.go('workitem',{workitemId:currentWorkitemId});
 			 }
+			 
+			 $scope.redirectToUnit=function(unitId){
+				 $state.go('unit',{entityId:unitId} );
+			 }
 
 			 $scope.addComment = function() {
 
@@ -111,7 +115,7 @@ workItemModule
 								 console.log('comment Data received from service : ');
 								 console.log(response);
 								 if (response) {
-									 $scope.commentList = response;
+									 $scope.workitem.comments = response;
 									 $rootScope.curModal.close();
 									 alert("Comment Saved Successfully")
 								 } 
@@ -127,4 +131,15 @@ workItemModule
 				 });
 			 };
 
+			 $scope.getCommentList = function(){
+					workItemService.getCommentList($scope.workitem.workItemId)
+					.then(function(response) {
+						console.log('getting all comments  received in controller : ');
+						console.log(response);
+						if (response) {
+							$scope.workitem.comments = response;
+						} 
+					})
+				};
+			 
 		 } ]);

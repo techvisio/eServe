@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.AgreementDuration;
-import com.techvisio.eserve.beans.ApproveUnitDtl;
+import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.EquipmentHistory;
@@ -385,7 +385,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public ApproveUnitDtl getUnitForApproval(Long unitId){
+	public UnitBasicCustomer getUnitForApproval(Long unitId){
 
 
 		Unit unit = getUnit(unitId);
@@ -395,7 +395,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		}
 		Customer customer = getCustomer(unit.getCustomerId());
 
-		ApproveUnitDtl unitDtl = new ApproveUnitDtl();
+		UnitBasicCustomer unitDtl = new UnitBasicCustomer();
 
 		unitDtl.setUnit(unit);
 		unitDtl.setCustomerCode(customer.getCustomerCode());

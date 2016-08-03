@@ -44,7 +44,7 @@ public interface ComplaintService {
 	public void saveEquipment(List<EquipmentDetail> equipmentDetail, Long complaintId);
 	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId);
 	public void saveComplaintEquipments(ComplaintEquipment complaintEquipment);
-	public Long saveUnit(Unit unit);
+//	public Long saveUnit(Unit unit);
 	public List<ComplaintEquipment> getComplaintEquipments(Long complaintId);
 	public void deleteEquipmentDtlInclusion(List<EquipmentDetail> equipmentDetails,
 			Long unitId, Long complaintId);

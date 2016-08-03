@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techvisio.eserve.beans.ApproveUnitDtl;
 import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.Response;
@@ -59,6 +58,14 @@ public class WorkItemController {
 		Response response=new Response();
 		List<Comment> commentList = workItemService.saveComment(request);
 		response.setResponseBody(commentList);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+
+	@RequestMapping(value="/getcomment/{workItemId}",method = RequestMethod.GET)
+	public ResponseEntity<Response> getCommentList(@PathVariable Long workItemId) {  
+		Response response=new Response();
+		List<Comment> comment = workItemService.getCommentList(workItemId);
+		response.setResponseBody(comment);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 }

@@ -13,6 +13,7 @@ import com.techvisio.eserve.beans.EntityLocks;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.exception.EntityLockedException;
+import com.techvisio.eserve.interfaces.Lockable;
 import com.techvisio.eserve.manager.EntityLockManager;
 import com.techvisio.eserve.service.ComplaintService;
 import com.techvisio.eserve.service.CustomerService;
@@ -36,7 +37,7 @@ public class EntityLockServiceImpl implements EntityLockService{
 	@Autowired
 	ComplaintService complaintService;
 
-	
+
 	@Override
 	public EntityLocks getEntity(Long entityId, String entityType) {
 		EntityLocks entityLocks = entityLockManager.getEntity(entityId, entityType);
@@ -53,37 +54,35 @@ public class EntityLockServiceImpl implements EntityLockService{
 
 		EntityLocks entityLocksFromDB = entityLockManager.getEntity(entityLocks.getEntityId(), entityLocks.getEntityType());
 
-		boolean entityLockBySameUser = isEntityLocked(entityLocks.getEntityId(), entityLocks.getEntityType(), CommonUtil.getCurrentUser().getUserName());
-
-		//		temprory work
-		if(entityLockBySameUser){
-			unlockEntity(entityLocks.getEntityType(), entityLocks.getEntityId());
+		Lockable lockedObject=null;
+		if(entityLocksFromDB==null){
+			entityLocks.setLockedBy(CommonUtil.getCurrentUser().getUserName());
+			entityLocks.setLockedDate(new Date());
+			entityLockManager.saveEntityLock(entityLocks);
 		}
-		//
-
-		else{	
-			if(entityLocksFromDB==null){
-				entityLocks.setLockedBy(CommonUtil.getCurrentUser().getUserName());
-				entityLocks.setLockedDate(new Date());
-				entityLockManager.saveEntityLock(entityLocks);
-				if(entityLocks.getEntityType().equalsIgnoreCase(AppConstants.EntityType.CUSTOMER.toString())){
-					Customer customerFromDB = customerService.getCustomer(entityLocks.getEntityId());
-					return customerFromDB;
-				}
-				else if(entityLocks.getEntityType().equalsIgnoreCase(AppConstants.EntityType.UNIT.toString())){
-					Unit unitFromDB = customerService.getUnit(entityLocks.getEntityId());
-					return unitFromDB;
-				}
-				else{
-					User userFromDB = userService.getUser(entityLocks.getEntityId());
-					return userFromDB;
-				}	
-			}
-			else {
+		else {
+			if(!entityLocksFromDB.getLockedBy().equalsIgnoreCase(CommonUtil.getCurrentUser().getUserName())){
 				throw new EntityLockedException("This entity is already being edited by " + entityLocksFromDB.getLockedBy());
 			}
 		}
-		return entityLockBySameUser;
+
+		if(entityLocks.getEntityType().equalsIgnoreCase(AppConstants.EntityType.CUSTOMER.toString())){
+			lockedObject = customerService.getCustomerbyId(entityLocks.getEntityId());
+		}
+		else if(entityLocks.getEntityType().equalsIgnoreCase(AppConstants.EntityType.UNIT.toString())){
+			lockedObject = customerService.getUnitById(entityLocks.getEntityId());
+		}
+		else{
+			User userFromDB = userService.getUser(entityLocks.getEntityId());
+			return userFromDB;
+		}	
+
+		lockedObject.setEdited(true);
+
+
+		return lockedObject;
+
+
 	}
 
 	@Override
@@ -98,23 +97,23 @@ public class EntityLockServiceImpl implements EntityLockService{
 				entityLockManager.deleteEntityLock(entityId, entityType, lockeBy);
 
 				if(entityType.equalsIgnoreCase(AppConstants.EntityType.CUSTOMER.toString())){
-					Customer customerFromDB = customerService.getCustomer(entityId);
+					Customer customerFromDB = customerService.getCustomerbyId(entityId);
 					return customerFromDB;
 				}
 				else if(entityType.equalsIgnoreCase(AppConstants.EntityType.UNIT.toString())){
-					Unit unitFromDB = customerService.getUnit(entityId);
+					Unit unitFromDB = customerService.getUnitById(entityId);
 					return unitFromDB;
 				}
 				else if(entityType.equalsIgnoreCase(AppConstants.EntityType.COMPLAINT.toString())){
 					CustomerComplaint complaintFromDB = complaintService.getCustomerComplaint(entityId);
 					return complaintFromDB;
 				}
-				
+
 				else if(entityType.equalsIgnoreCase(AppConstants.EntityType.UNIT.toString())){
 					User userFromDB = userService.getUser(entityId);
 					return userFromDB;
 				}
-				
+
 				else{
 					return null;
 				}	
@@ -134,9 +133,7 @@ public class EntityLockServiceImpl implements EntityLockService{
 		if(entityLocksFromDB!=null && entityLocksFromDB.getLockedBy().equalsIgnoreCase(userName)){
 			return true; 
 		}
-		else{
-			return false;
-		}
+		return false;
 	}
 
 }

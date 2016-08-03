@@ -54,8 +54,8 @@ public class ComplaintManagerImpl implements ComplaintManager{
 		customerComplaint.setSlaDate(slaDate);
 		if(customerComplaint.getCustomerId()==null){
 			Customer customer = customerService.createCustomerfromComplaint(customerComplaint);
-			Long customerId = customerService.saveCustomer(customer);
-			Customer customerFromDB = customerService.getCustomer(customerId);
+			Long customerId = customerService.saveCustomerDirect(customer);
+			Customer customerFromDB = customerService.getCustomerbyId(customerId);
 
 			customerComplaint.setCustomerCode(customerFromDB.getCustomerCode());
 			customerComplaint.setCustomerId(customerFromDB.getCustomerId());

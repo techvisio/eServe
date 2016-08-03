@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.ApproveUnitDtl;
+import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.CompositeKeyEquipmentHistory;
 import com.techvisio.eserve.beans.CompositeKeyUnitHistory;
 import com.techvisio.eserve.beans.Customer;
@@ -250,8 +250,8 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 
 	@Override
-	public ApproveUnitDtl getUnitForApproval(Long unitId) {
-		ApproveUnitDtl approveUnitDtl = customerDao.getUnitForApproval(unitId);
+	public UnitBasicCustomer getUnitForApproval(Long unitId) {
+		UnitBasicCustomer approveUnitDtl = customerDao.getUnitForApproval(unitId);
 		return approveUnitDtl;
 	}
 
