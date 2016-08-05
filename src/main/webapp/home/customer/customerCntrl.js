@@ -1,7 +1,7 @@
 var customerModule = angular.module('customerModule', []);
 
-customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','customer','unit','masterdataService','userService','complaintService','$modal','$http','NgTableParams','isCustomerSearch',
-                                                 function($scope,$window,$rootScope,customerService,$state,filter,customer,unit,masterdataService,userService,complaintService,$modal,$http,NgTableParams,isCustomerSearch) {
+customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','contextObject','Operation','masterdataService','complaintService','$modal','$http','NgTableParams',
+                                                 function($scope,$window,$rootScope,customerService,$state,filter,contextObject,Operation,masterdataService,complaintService,$modal,$http,NgTableParams) {
 
 
 	$scope.form={};
@@ -24,11 +24,11 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.searchCriteria = {};
 	$scope.dummyEquipmentDetails ={};
 	$scope.unit = {
-			"equipmentDetails" : [ {} ]
+			"equipmentDetails" : []
 	};
 
 	$scope.dummyUnit ={
-			"equipmentDetails" : [ {} ]
+			"equipmentDetails" : []
 	};
 
 	$scope.customer.address = {};
@@ -39,15 +39,15 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.customer.units=[];
 
-	$scope.isPrivileged = function(role){
-
-		var userPrivilege = $rootScope.user.privileges;
-		var result=false;
-		angular.forEach(userPrivilege, function(privilege) {
-			if (privilege.privilege.privilege===role) result= true;
-		});
-		return result;		
-	}
+//	$scope.isPrivileged = function(role){
+//
+//		var userPrivilege = $rootScope.user.privileges;
+//		var result=false;
+//		angular.forEach(userPrivilege, function(privilege) {
+//			if (privilege.privilege.privilege===role) result= true;
+//		});
+//		return result;		
+//	}
 
 	$scope.toggleReadOnly = function(form,isEdit) {
 		if(!isEdit){
@@ -77,43 +77,15 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		}
 	};
 
-	if(!customer && !unit){
-		if(isCustomerSearch==="workItem"){
-			$rootScope.heading = 'Workitem';
-		}
-	}
-
-	if(!customer && !unit){
-		if(isCustomerSearch){
-			$rootScope.heading = 'Search Customer';
-		}
-		else{
-			$rootScope.heading = 'Create Customer'
-		}
-	}
-
-	if(customer){
-//		$scope.getAllComplaints = true;
-		$rootScope.heading = 'Customer';
-		$scope.customer.edited = customer.edited;
-		$scope.isEdit = true;
-		$scope.isNew=false;
-		angular.forEach(customer.units, function(unit) {
-			if (unit.equipmentDetails.length<=0){
-				unit.equipmentDetails.push(angular
-						.copy($scope.dummyEquipmentDetails));
-			}
-		});
-		$scope.customer = customer;
-		$scope.toggleReadOnly('CUSTOMER',customer.edited);
-		$scope.$broadcast('dataloaded');
+	
+	if(Operation && Operation == 'viewCustomer'){
+		$scope.customer = contextObject;
+		$scope.toggleReadOnly('CUSTOMER',contextObject.edited);
 	}
 
 
-	if(unit){
-		$rootScope.heading = 'Unit Approval';
-		$scope.customerScreen = false;
-		$scope.unitApproval = unit;
+	if(Operation && Operation == 'unitApproval'){
+		$scope.unitApproval = contextObject;
 	}
 
 	$scope.init = function() {
@@ -135,25 +107,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.toggleReadOnly('CUSTOMER');
 		$scope.toggleReadOnly('UNIT');
 	};
-
-	$scope.getUsers = function() {
-		console
-		.log('getting users for customer');
-
-		userService
-		.getUsers()
-		.then(
-				function(data) {
-					console.log(data);
-					if (data) {
-						$scope.users = data;
-					} else {
-						console.log('error');
-					}
-				})
-	};
-
-
 
 	$scope.getServiceAgreementHistoryForUnit = function(unitId){
 
@@ -218,17 +171,17 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.redirectToCustomerDtlScreen=function(currentCustomerId){
 		$scope.alerts=[];
-		$state.go('customer',{entityId:currentCustomerId});
+		$state.go('viewCustomer',{entityId:currentCustomerId});
 	}
 
 	$scope.redirectfromWorkItemtoEntity=function(url,entityId){
 		$state.go(url,{entityId:entityId});
 	}
 
-	if($scope.isPrivileged("VIEW_COMPLAINT") || $scope.isPrivileged("CREATE_COMPLAINT")){
+	
 		$scope.redirectToComplaintScreen=function(currentComplaintId ){
-
-			$state.go('complaintScreen',{entityId:currentComplaintId});
+			if($rootScope.isPrivileged("VIEW_COMPLAINT") || $rootScope.isPrivileged("CREATE_COMPLAINT")){
+			$state.go('viewComplaint',{entityId:currentComplaintId});
 		}
 	}
 
@@ -239,7 +192,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			$scope.alerts.push({msg: 'Non Of Details Are Saved For This Unit'})
 			return;
 		}
-		$state.go('customerToComplaint',{entityId:currentUnitId});
+		$state.go('newComplaintFromUnit',{entityId:currentUnitId});
 	}
 
 	$scope.getCustomerByCriteria=function(){
@@ -341,18 +294,18 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		})
 	};
 
-	$scope.rejectUnitApproval= function(unit){
-
-		customerService.rejectUnitApproval(unit)
-		.then(function(response) {
-			console.log('reject unit called in controller ');
-			console.log(response);
-			if (response) {
-				unit= response;
-				$scope.redirectToCustomerDtlScreen(unit.customerId);
-			} 
-		})
-	}
+//	$scope.rejectUnitApproval= function(unit){
+//
+//		customerService.rejectUnitApproval(unit)
+//		.then(function(response) {
+//			console.log('reject unit called in controller ');
+//			console.log(response);
+//			if (response) {
+//				unit= response;
+//				$scope.redirectToCustomerDtlScreen(unit.customerId);
+//			} 
+//		})
+//	}
 
 	$scope.countUnit = function(customer) {
 		var count = 0;
@@ -412,7 +365,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 //	} 
 //	})
 //	}
-//	}
+//	}
+
 	$scope.getWorkItemByUserIdAndWorkType = function(){
 		console.log('getting work Item');
 		if(angular.isUndefined($scope.workItem.workType)){
@@ -456,11 +410,11 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	}
 
 	$scope.isCreateOrUpdatePrivileged=function(){
-		return !($scope.isPrivileged('CREATE_CUSTOMER'));
+		return !($rootScope.isPrivileged('CREATE_CUSTOMER'));
 	}
 
 	$scope.isViewPrivileged=function(){
-		return !($scope.isPrivileged('CREATE_CUSTOMER')) && !($scope.isPrivileged('VIEW_CUSTOMER'));
+		return !($rootScope.isPrivileged('CREATE_CUSTOMER')) && !($rootScope.isPrivileged('VIEW_CUSTOMER'));
 	}
 
 	$scope.navigationContextNext = {'customer':'unitDtl', 
@@ -545,15 +499,14 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.showRejectionCommentBox = function(unit) {
 
 		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/RejectionComment.html',
+			templateUrl: 'customer/Comment_Box_Reject_Unit.html',
 			scope:$scope,
 			controller: function (customerService,$scope) {
 
 				$scope.comment = "";
 
-				var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
-
 				$scope.rejectUnitApproval = function() {
+					var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
 					customerService.rejectUnitApproval(genericRequest)
 					.then(function(response) {
 						console.log('reject approval called from service : ');
@@ -578,7 +531,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.showCommentBoxUnitPublish = function(unit) {
 
 		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/UnitCommentBox.html',
+			templateUrl: 'customer/Comment_Box_Unit_Publish.html',
 			scope:$scope,
 			controller: function (customerService,$scope) {
 
@@ -611,7 +564,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.showCommentBoxCustomerPublish = function() {
 
 		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/CustomerCommentBox.html',
+			templateUrl: 'customer/Comment_Box_Customer_Publish.html',
 			scope:$scope,
 			controller: function (customerService,$scope) {
 
@@ -646,7 +599,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.showUnitExpireModal = function(unit) {
 
 		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/unitExpiration.html',
+			templateUrl: 'customer/Unit_Expiration_Model.html',
 			controller: function (customerService, masterdataService) {
 				$scope.serviceRenewalBean = unit.serviceAgreement;
 			},
@@ -665,7 +618,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.showAddEquipmentModel = function(object, editEquipment) {
 		$scope.dummyEquipmentDetails={};
 		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/addEquipment.html',
+			templateUrl: 'customer/Equipment_Model.html',
 			controller: function (customerService, masterdataService) {
 
 				if(editEquipment==='true'){
@@ -748,9 +701,9 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.filterCustomer = function() {
 
 		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/customerSearchCriteria.html',
+			templateUrl: 'customer/Customer_Search_Filter_Model.html',
 			scope:$scope,
-			controller: function (userService,$scope) {
+			controller: function ($scope) {
 
 				$scope.getCustomerByCriteria = function(){
 					$scope.tableParams.reload();
@@ -907,4 +860,23 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		}
 			return "Draft"
 	}
+	
+	$scope.addUnitPopup = function(){
+		$rootScope.curModal = $modal.open({
+			templateUrl: 'customer/unit.html',
+			controller: function (customerService, masterdataService) {
+
+				
+				
+			},
+			scope:$scope,
+			backdrop:'static',
+			keyboard: false,
+			size:'lg'
+		});
+		
+		
+	};
+	
+	
 } ]);

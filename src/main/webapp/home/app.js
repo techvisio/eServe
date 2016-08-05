@@ -79,147 +79,131 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 //	templateUrl: 'index.html',
 //	})
 
-	.state('complaint', {
+	.state('createNewComplaint', {
 		url: "/complaint",
-		templateUrl: 'complaint/sampleComplaint.html',
+		templateUrl: 'complaint/Complaint.html',
 		controller:"complaintController",
 		resolve:{
-			complaint: ['$stateParams', function($stateParams){
+			contextObject: ['$stateParams', function($stateParams){
 				return null;
 			}],
-			unitComplaint: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			isComplaintSearch: ['$stateParams', function($stateParams){
-				return false;
+			
+			Operation: ['$stateParams', function($stateParams){
+				return 'createNewComplaint';
 			}]
 		}
 	})
 
-//	.state('amcMain', {
-//	url: "/customer/new",
-//	templateUrl: 'customer/amcMain.html',
-//	controller:"customerController",
-//	resolve:{
-//	customer: ['$stateParams', function($stateParams){
-//	return null;
-//	}],
-
-//	unitApproval: ['$stateParams', function($stateParams){
-//	return null;
-//	}]
-//	}
-//	})
-
-	.state('newcustomer', {
+	.state('createNewCustomer', {
 		url: "/customer/new",
-		templateUrl: 'customer/slideScreenCustomer.html',
+		templateUrl: 'customer/Create_Customer_Wizard.html',
 		controller:"customerController",
 		resolve:{
-			customer: ['$stateParams', function($stateParams){
+			contextObject: ['$stateParams', function($stateParams){
 				return null;
 			}],
-			unit: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			isCustomerSearch: ['$stateParams', function($stateParams){
-				return false;
+			Operation: ['$stateParams', function($stateParams){
+				return "createNewCustomer";
 			}]
 		}
 	})
 
-	.state('customerToComplaint', {
+	.state('newComplaintFromUnit', {
 		url: "/complaint/unit/{entityId:[0-9]{1,8}}",
-		templateUrl: 'complaint/sampleComplaint.html',
+		templateUrl: 'complaint/Complaint.html',
 		controller: "complaintController",
 		resolve:{
-			unitComplaint: ['$stateParams','complaintService', function($stateParams,complaintService){
+			contextObject: ['$stateParams','complaintService', function($stateParams,complaintService){
 				return complaintService.getUnitForComplaint($stateParams.entityId);
 			}],
-			complaint: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			isComplaintSearch: ['$stateParams', function($stateParams){
-				return false;
+			Operation: ['$stateParams', function($stateParams){
+				return 'newComplaintFromUnit';
 			}]
 		}
 	})
 
-	.state('complaintScreen', {
+	.state('viewComplaint', {
 		url: "/complaint/{entityId:[0-9]{1,8}}",
-		templateUrl: 'complaint/sampleComplaint.html',
+		templateUrl: 'complaint/Complaint.html',
 		controller: "complaintController",
 		resolve:{
-			complaint: ['$stateParams','complaintService', function($stateParams,complaintService){
+			
+			contextObject: ['$stateParams','complaintService', function($stateParams,complaintService){
 				return complaintService.getCustomerComplaint($stateParams.entityId);
 			}],
-			unitComplaint: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			isComplaintSearch: ['$stateParams', function($stateParams){
-				return false;
+			Operation: ['$stateParams', function($stateParams){
+				return 'viewComplaint';
 			}]
 		}
 	})
 
-	.state('searchcustomer', {
+		.state('pmsComplaint', {
+		url: "/complaint/{entityId:[0-9]{1,8}}",
+		templateUrl: 'complaint/Complaint.html',
+		controller: "complaintController",
+		resolve:{
+			
+			contextObject: ['$stateParams','complaintService', function($stateParams,complaintService){
+				return complaintService.getCustomerComplaint($stateParams.entityId);
+			}],
+			Operation: ['$stateParams', function($stateParams){
+				return 'pmsComplaint';
+			}]
+		}
+	})
+	
+	.state('searchCustomer', {
 		url: "/customer",
-		templateUrl: 'customer/customerSearch.html',
+		templateUrl: 'customer/Customer_Search.html',
 		controller:"customerController",
 		resolve:{
-			customer: ['$stateParams','customerService', function($stateParams){
+			contextObject: ['$stateParams','customerService', function($stateParams){
 				return null;
 			}],
-			unit: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			isCustomerSearch: ['$stateParams', function($stateParams){
-				return true;
+			Operation: ['$stateParams', function($stateParams){
+				return 'searchCustomer';
 			}]
 		}
 	})
 
-	.state('searchcomplaint', {
+	.state('searchComplaint', {
 		url: "/search/complaint",
-		templateUrl: 'complaint/complaintSearch.html',
+		templateUrl: 'complaint/Complaint_Search.html',
 		controller:"complaintController",
 		resolve:{
-			complaint: ['$stateParams', function($stateParams){
+			contextObject: ['$stateParams', function($stateParams){
 				return null;
 			}],
-			unitComplaint: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			isComplaintSearch: ['$stateParams', function($stateParams){
-				return true;
+			Operation: ['$stateParams', function($stateParams){
+				return 'searchComplaint';
 			}]
 		}
 	})
 
-	.state('customer', {
+	.state('viewCustomer', {
 		url: "/customer/{entityId:[0-9]{1,8}}",
-		templateUrl: 'customer/amcMain.html',
+		templateUrl: 'customer/Customer_Main.html',
 		controller: "customerController",
 		resolve:{
-			customer: ['$stateParams','customerService', function($stateParams,customerService){
+			contextObject: ['$stateParams','customerService', function($stateParams,customerService){
 				return customerService.getCustomer($stateParams.entityId);
 			}],
-			unit: ['$stateParams', function($stateParams){
-				return null;
-			}],
-			isCustomerSearch: ['$stateParams', function($stateParams){
-				return false;
+			Operation: ['$stateParams', function($stateParams){
+				return 'viewCustomer';
 			}]
 		}
 	})
 
-	.state('unit', {
+	.state('unitApproval', {
 		url: "/unit/{entityId:[0-9]{1,8}}/:entityType",
-		templateUrl: 'customer/unitApproval.html',
+		templateUrl: 'customer/Unit_Detail_Single.html',
 		controller: "customerController",
 		resolve:{
-			customer: ['$stateParams','customerService', function($stateParams,customerService){
+			contextObject: ['$stateParams','customerService', function($stateParams,customerService){
 				return customerService.getUnitForApproval($stateParams.entityId);
+			}],
+			Operation: ['$stateParams', function($stateParams){
+				return 'unitApproval';
 			}]
 		}
 	})
@@ -240,37 +224,28 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			user: ['$stateParams','userService', function($stateParams,userService){
 				return null;
-			}],
-			isUserSearch: ['$stateParams', function($stateParams){
-				return true;
 			}]
 		}
 	})
 
-	.state('user', {
+	.state('viewUser', {
 		url: "/user/{entityId:[0-9]{1,8}}",
 		templateUrl: 'user/user.html',
 		controller: "userController",
 		resolve:{
 			user: ['$stateParams','userService', function($stateParams,userService){
 				return userService.getUserwithprivileges($stateParams.entityId);
-			}],
-			isUserSearch: ['$stateParams', function($stateParams){
-				return false;
 			}]
 		}
 	})
 
-	.state('createUser', {
+	.state('createNewUser', {
 		url: "/user/new",
 		templateUrl: 'user/user.html',
 		controller: "userController",
 		resolve:{
 			user: ['$stateParams', function($stateParams){
 				return null;
-			}],
-			isUserSearch: ['$stateParams', function($stateParams){
-				return false;
 			}]
 		}
 	})
@@ -282,10 +257,6 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			user: ['$stateParams', function($stateParams){
 				return {};
-			}],
-
-			isUserSearch: ['$stateParams', function($stateParams){
-				return false;
 			}]
 		}
 	})
@@ -403,8 +374,59 @@ erp.controller('ApplicationController',
 						}
 				);
 			});
+			
+			$rootScope.$on('$stateChangeStart', 
+					function(event, toState, toParams, fromState, fromParams, options){
+				$rootScope.heading = 'Dashboard';
+				
+				if(toState.name=='createNewCustomer'){
+					$rootScope.heading = 'Create Customer';
+				}
+				if(toState.name=='searchCustomer'){
+					$rootScope.heading = 'Search Customer';
+				}
+				if(toState.name=='viewCustomer'){
+					$rootScope.heading = 'Customer';
+				}
+				if(toState.name=='unitApproval'){
+					$rootScope.heading = 'Unit Approval';
+				}
+				if(toState.name=='createNewComplaint'){
+					$rootScope.heading = 'Create Complaint';
+				}
+				if(toState.name=='newComplaintFromUnit'){
+					$rootScope.heading = 'Create Complaint';
+				}
+				if(toState.name=='viewComplaint'){
+					$rootScope.heading = 'Complaint';
+				}
+				if(toState.name=='searchComplaint'){
+					$rootScope.heading = 'Search Complaint';
+				}
+				if(toState.name=='searchUser'){
+					$rootScope.heading = 'Search user';
+				}
+				if(toState.name=='viewUser'){
+					$rootScope.heading = 'User';
+				}
+				if(toState.name=='createNewUser'){
+					$rootScope.heading = 'Create user';
+				}
+				if(toState.name=='complaintGraph'){
+					$rootScope.heading = 'Dashboard';
+				}
+				if(toState.name=='customerReport'){
+					$rootScope.heading = 'Customer Report';
+				}
+				if(toState.name=='workItemSearch'){
+					$rootScope.heading = 'Search Workitem';
+				}
+				if(toState.name=='workitem'){
+					$rootScope.heading = 'workitem';
+				}
+			});
 
-			$scope.isPrivileged = function(role){
+			$rootScope.isPrivileged = function(role){
 
 				var result=false;
 				if($rootScope.user && $rootScope.user.privileges){
@@ -416,11 +438,7 @@ erp.controller('ApplicationController',
 				return result;		
 			}
 
-			$scope.newCustomer = function(){
-				$state.go("newcustomer");
-			}
-
-
+			
 		}]);
 
 erp.config(['$httpProvider', '$sceProvider',

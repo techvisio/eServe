@@ -1,7 +1,7 @@
 var complaintModule = angular.module('complaintModule', []);
 
-complaintModule.controller('complaintController', ['$scope','$window','$rootScope','complaintService','$state','$filter','unitComplaint','complaint','masterdataService','userService','isComplaintSearch','$modal',
-                                                   function($scope,$window,$rootScope,complaintService,$state,filter,unitComplaint,complaint,masterdataService,userService,isComplaintSearch,$modal) {
+complaintModule.controller('complaintController', ['$scope','$window','$rootScope','complaintService','$state','$filter','contextObject','Operation','masterdataService','$modal',
+                                                   function($scope,$window,$rootScope,complaintService,$state,filter,contextObject,Operation,masterdataService,$modal) {
 
 
 	$scope.form={};
@@ -58,26 +58,25 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	};
 
 	$scope.isCreateOrUpdatePrivileged=function(){
-		return !($scope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !(!$scope.isNew && $scope.isPrivileged('CREATE_COMPLAINT'));
+		return !($rootScope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !(!$scope.isNew && $rootScope.isPrivileged('CREATE_COMPLAINT'));
 	}
 
 	$scope.isViewPrivileged=function(){
-		return !($scope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !($scope.isPrivileged('CREATE_COMPLAINT')) && !($scope.isPrivileged('VIEW_COMPLAINT'));
+		return !($rootScope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !($rootScope.isPrivileged('CREATE_COMPLAINT')) && !($rootScope.isPrivileged('VIEW_COMPLAINT'));
 	}
 
-	$scope.isPrivileged = function(role){
-
-		var userPrivilege = $rootScope.user.privileges;
-		var result=false;
-		angular.forEach(userPrivilege, function(privilege) {
-			if (privilege.privilege.privilege===role) result= true;
-		});
-		return result;		
-	}
-
-
+//	$scope.isPrivileged = function(role){
+//
+//		var userPrivilege = $rootScope.user.privileges;
+//		var result=false;
+//		angular.forEach(userPrivilege, function(privilege) {
+//			if (privilege.privilege.privilege===role) result= true;
+//		});
+//		return result;		
+//	}
+//
 	$scope.getCustomerForComplaint = function(){
-		complaintService.getCustomerForComplaint(unitComplaint.customerId)
+		complaintService.getCustomerForComplaint(contextObject.customerId)
 		.then(function(response) {
 			console.log('customer Data received in controller : ');
 			console.log(response);
@@ -92,29 +91,21 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		})
 	}
 
-	if(unitComplaint){
+	if(Operation && Operation == 'newComplaintFromUnit'){
 
 		$scope.getCustomerForComplaint();
 		$scope.newComplaint = true;
 		$scope.isEdit=true;
 		$scope.isNew = false;
-		$scope.customerComplaint.unit = unitComplaint;
+		$scope.customerComplaint.unit = contextObject;
 	}
 
-	if(!complaint){
-		if(isComplaintSearch){$rootScope.heading='Search Complaint'}
-		else{
-			$rootScope.heading='Create Complaint';
-		}
-	}		
-
-	if(complaint){
-		$rootScope.heading='Complaint';
+	if(Operation && Operation =='viewComplaint'){
 		$scope.newComplaint=false;
 		$scope.showStatus = true;
 		$scope.isEdit = true;
 		$scope.isNew = false;
-		$scope.customerComplaint = complaint;
+		$scope.customerComplaint = contextObject;
 		$scope.toggleReadOnly('COMPLAINT');
 	}
 
@@ -135,55 +126,39 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 				})
 	};
 
-	$scope.getUsers = function() {
-		console
-		.log('getting users for customer');
-
-		userService
-		.getUsers()
-		.then(
-				function(data) {
-					console.log(data);
-					if (data) {
-						$scope.users = data;
-					} else {
-						console.log('error');
-					}
-				})
-	};
-
 	$scope.resetAlert = function(){
 		$scope.alerts=[];	 
 	}
 
-	if($scope.isPrivileged("VIEW_CUSTOMER") || $scope.isPrivileged("CREATE_CUSTOMER")){
-		$scope.redirectToCustomerDtlScreen=function(currentCustomerId){
+
+	$scope.redirectToCustomerDtlScreen=function(currentCustomerId){
+		if($rootScope.isPrivileged("VIEW_CUSTOMER") || $rootScope.isPrivileged("CREATE_CUSTOMER")){
 			$scope.alerts=[];
-			$state.go('customer',{entityId:currentCustomerId});
+			$state.go('viewCustomer',{entityId:currentCustomerId});
 		}
 	}
 
-	if($scope.isPrivileged("VIEW_COMPLAINT") || $scope.isPrivileged("CREATE_COMPLAINT")){
-		$scope.redirectToComplaintScreen=function(currentComplaintId ){
 
-			$state.go('complaintScreen',{entityId:currentComplaintId});
+	$scope.redirectToComplaintScreen=function(currentComplaintId ){
+		if($rootScope.isPrivileged("VIEW_COMPLAINT") || $rootScope.isPrivileged("CREATE_COMPLAINT")){
+			$state.go('viewComplaint',{entityId:currentComplaintId});
 		}
 	}
 
 	$scope.redirectToComplaint=function(){
-		$state.go('complaint');
+		$state.go('createNewComplaint');
 	}
 
 
-	if($scope.isPrivileged("CREATE_COMPLAINT")){
-		$scope.redirectToComplaintScreenByUnitId=function(unit, currentUnitId ){
 
+	$scope.redirectToComplaintScreenByUnitId=function(unit, currentUnitId ){
+		if($rootScope.isPrivileged("CREATE_COMPLAINT")){
 			if(unit.unitCode==null){
 				$scope.alerts=[];
 				$scope.alerts.push({msg: 'Non Of Details Are Saved For This Unit'})
 				return;
 			}
-			$state.go('customerToComplaint',{entityId:currentUnitId});
+			$state.go('newComplaintFromUnit',{entityId:currentUnitId});
 		}
 	}
 
@@ -390,23 +365,11 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 
 	}
 
-	$scope.showEquipmentModel = function(size) {
-		$rootScope.curModal = $modal.open({
-			templateUrl: 'complaint/equipmentPopup.html',
-			controller: function (customerService, masterdataService) {
-			},
-			size:size,
-			scope:$scope,
-			backdrop:'static',
-			keyboard: false
-		});
-	};
-
 	$scope.showAddEquipmentModel = function(object, editEquipment) {
 		$scope.customerComplaint.unit.equipmentDetails=[];
 		$rootScope.curModal = $modal.open({
 
-			templateUrl: 'complaint/addEquipmentComplaint.html',
+			templateUrl: 'complaint/Equipment_Complaint_Model.html',
 			controller: function (complaintService, masterdataService) {
 
 				$scope.getEquipments = function(equipType){
@@ -484,7 +447,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		if(ComplaintEquipments.length<=0 || angular.isUndefined($scope.ComplaintEquipments)){
 			return true;
 		} 
-		
+
 		else{
 			return false;
 		}

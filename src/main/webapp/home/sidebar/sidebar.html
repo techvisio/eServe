@@ -23,7 +23,7 @@
 				class="collapsed"><a ><i
 					class="fa fa-globe fa-lg"></i> Services <span class="arrow"></span></a>
 				<ul class="sub-menu collapse" id="service">
-					<li><a ui-sref="searchcomplaint"> Complaint </a></li>
+					<li><a ui-sref="searchComplaint"> Complaint </a></li>
 				</ul></li>
 
 			<li data-toggle="collapse" data-target="#new"
@@ -31,8 +31,8 @@
 					class="fa fa-car fa-lg"></i> Customer <span class="arrow"></span></a>
 
 				<ul class="sub-menu collapse" id="new">
-					<li><a ui-sref="searchcustomer"> Customer Search </a></li>
-					<li><a herf="#" ng-click="newCustomer()"
+					<li><a ui-sref="searchCustomer"> Customer Search </a></li>
+					<li><a herf="#" ui-sref="createNewCustomer"
 						ng-show="isPrivileged('CREATE_CUSTOMER')"> Add Customer </a></li>
 				</ul></li>
 
@@ -42,7 +42,7 @@
 					class="arrow"></span></a>
 				<ul class="sub-menu collapse" id="userAdmin">
 					<li><a ui-sref="searchUser"> Search User </a></li>
-					<li><a ui-sref="createUser"> Add User </a></li>
+					<li><a ui-sref="createNewUser"> Add User </a></li>
 				</ul></li>
 
 			<li data-toggle="collapse" data-target="#workItem"

@@ -1,4 +1,7 @@
-<div  ng-switch on="selection">
+<div ng-switch on="selection">
+
+	<div ng-include
+		src="'../home/customer/Customer_Create_Progress_Bar.html'"></div>
 
 	<div ng
 		show="alerts..length>0 || !$scope.form.CUSTOMER.$valid || !$scope.form.UNIT.$valid">
@@ -7,7 +10,8 @@
 	</div>
 	<div class="animate-switch" ng-animate="animate" ng-switch-default>
 		<form name="form.CUSTOMER">
-			<div ng-include src="'../home/customer/fixedCustomerInfo.html'">
+			<div ng-include
+				src="'../home/customer/Create_Customer_Wizard_Customer_Info.html'">
 			</div>
 		</form>
 	</div>
@@ -15,20 +19,20 @@
 	<div class="animate-switch" ng-switch-when="unitDtl"
 		ng-animate="animate">
 		<form name="form.UNIT">
-			<div ng-include src="'../home/customer/individualUnit.html'"></div>
+			<div ng-include src="'../home/customer/Individual_Unit.html'"></div>
 		</form>
 	</div>
 	<!-- 	<div class="animate-switch" ng-switch-when="siteAdd" -->
 	<!-- 		ng-animate="animate"> -->
-	<!-- 		<div ng-include src="'../home/customer/siteAddress.html'"></div> -->
+	<!-- 		<div ng-include src="'../home/customer/Site_Address.html'"></div> -->
 	<!-- 	</div> -->
 	<div class="animate-switch" ng-switch-when="equipmntDtl"
 		ng-animate="animate">
-		<div ng-include src="'../home/customer/equipment.html'"></div>
+		<div ng-include src="'../home/customer/Equipment.html'"></div>
 	</div>
 	<div class="animate-switch" ng-switch-when="preview"
 		ng-animate="animate">
-		<div ng-include src="'../home/customer/amcMain.html'"></div>
+		<div ng-include src="'../home/customer/Customer_Main.html'"></div>
 	</div>
 </div>
 

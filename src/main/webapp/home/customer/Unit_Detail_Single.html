@@ -243,18 +243,18 @@
 				<div class="tab-separator">
 					<tabset justified="true"> <tab heading="SITE ADDRESS">
 					<div ng-include
-						src="'../home/customer/approveUnitSiteAddress.html'"></div>
+						src="'../home/customer/Approval_Site_Address.html'"></div>
 					</tab> <tab heading="EQUIPMENTS">
 					<div ng-include
-						src="'../home/customer/approveUnitEquipmentDtl.html'"></div>
+						src="'../home/customer/Approval_Equipment_Dtl.html'"></div>
 					</tab> <tab heading="SERVICE HISTORY"
 						ng-click="getServiceAgreementHistoryForUnit(unitApproval.unit.unitId)"
 						disabled="!unitApproval.unit.unitId">
-					<div ng-include src="'../home/customer/serviceHistory.html'"></div>
+					<div ng-include src="'../home/customer/Service_History.html'"></div>
 					</tab> <tab heading="COMPLAINTS"
 						ng-click="getAllComplaintsForUnit(unitApproval.unit.unitId)"
 						disabled="!unitApproval.unit.unitId">
-					<div ng-include src="'../home/customer/customerComplaint.html'"></div>
+					<div ng-include src="'../home/customer/Customer_Complaint.html'"></div>
 					</tab> </tabset>
 				</div>
 

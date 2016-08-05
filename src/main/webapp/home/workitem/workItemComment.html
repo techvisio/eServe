@@ -1,4 +1,4 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 "
+<div class="work-item-comment col-lg-12 col-md-12 col-sm-12 col-xs-12 "
 	ng-init="getCommentList()">
 	<section class="box ">
 		<header class="panel_header">
@@ -14,13 +14,31 @@
 			</div>
 		</header>
 		<div class="content-body">
-
-			<div class="row" ng-repeat="comment in workitem.comments">
+			<div ng-show="showAllComments==false"><!-- Single comment div  -->
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="form-group element-size">
-							<label class="desc" for="formfield9">commented on
-								{{comment.commentDateString}} by {{comment.createdBy}}</label>
+							<label class="desc" for="formfield9">
+								 <span class="workitem-user">{{workitem.comments[0].createdBy}}</span>  {{workitem.comments[0].commentDateString}}</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<span class="workitem-comment">{{workitem.comments[0].comment}}</span>
+						</div>
+					</div>
+				</div>
+				<a ng-click="showAllComments=true">Show all comments...</a>
+			</div>
+			<div ng-show="showAllComments==true">
+			<div class="row" ng-repeat="comment in workitem.comments" >
+				<div class="row">
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group element-size">
+							<label class="desc" for="formfield9">
+								 <span class="workitem-user">{{comment.createdBy}}</span>  {{comment.commentDateString}}</label>
 						</div>
 					</div>
 				</div>
@@ -33,6 +51,9 @@
 						</div>
 					</div>
 				</div>
+				<hr>
+			</div>
+			<a ng-click="showAllComments=false">Show latest only...</a>
 			</div>
 		</div>
 	</section>

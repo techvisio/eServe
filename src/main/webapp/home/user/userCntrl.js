@@ -9,13 +9,11 @@ userModule
 		 '$rootScope',
 		 'userService',
 		 'user',
-		 'isUserSearch',
 		 'masterdataService',
 		 '$modal',
 		 '$http',
 		 'NgTableParams',
-		 function($scope, $state, $rootScope,userService,user,isUserSearch,masterdataService,$modal,$http,NgTableParams) {
-			 $rootScope.heading='Search User';
+		 function($scope, $state, $rootScope,userService,user,masterdataService,$modal,$http,NgTableParams) {
 			 $scope.form={};
 //			 $scope.isUserCollapsed= true;
 //			 $scope.isPrivilegesCollapsed= false;
@@ -39,15 +37,15 @@ userModule
 
 			 $scope.allUserRoles=[];
 
-			 $scope.isPrivileged = function(role){
-
-				 var userPrivilege = $rootScope.user.privileges;
-				 var result=false;
-				 angular.forEach(userPrivilege, function(privilege) {
-					 if (privilege.privilege.privilege===role) result= true;
-				 });
-				 return result;		
-			 }
+//			 $scope.isPrivileged = function(role){
+//
+//				 var userPrivilege = $rootScope.user.privileges;
+//				 var result=false;
+//				 angular.forEach(userPrivilege, function(privilege) {
+//					 if (privilege.privilege.privilege===role) result= true;
+//				 });
+//				 return result;		
+//			 }
 
 			 $scope.createPriviledgeGrp=function(priviledgesList){
 				 $scope.priviledgeGrp={};
@@ -70,10 +68,6 @@ userModule
 			 }
 
 			 if(!user){
-				 if(isUserSearch){$rootScope.heading='Search User'}
-				 else{
-					 $rootScope.heading='Create User';
-				 }
 				 userService.getUserprivileges()
 				 .then(
 						 function(userPrivileges) {
@@ -88,7 +82,6 @@ userModule
 			 }			 
 
 			 if(user){
-				 $rootScope.heading='User';
 				 $scope.isEdit = true;
 				 $scope.isNew = false;
 				 $scope.user = user;
@@ -99,9 +92,10 @@ userModule
 				 userService.authenticateUser($scope.form);
 			 }
 
-			 if($scope.isPrivileged('VIEW_USER') || $scope.isPrivileged('CREATE_USER')){
+
 				 $scope.redirectToUser=function(currentUserId){
-					 $state.go('user',{entityId:currentUserId});
+					 if($rootScope.isPrivileged('VIEW_USER') || $rootScope.isPrivileged('CREATE_USER')){
+					 $state.go('viewUser',{entityId:currentUserId});
 				 }
 			 }
 
@@ -438,11 +432,11 @@ userModule
 			 $scope.toggleReadOnly('USER');
 
 			 $scope.isCreateOrUpdatePrivileged=function(){
-				 return !($scope.isPrivileged('CREATE_USER'));
+				 return !($rootScope.isPrivileged('CREATE_USER'));
 			 }
 
 			 $scope.isViewPrivileged=function(){
-				 return !($scope.isPrivileged('CREATE_USER')) && !($scope.isPrivileged('VIEW_USER')) && !($scope.isPrivileged('USER_ADMINISTRATION'));
+				 return !($rootScope.isPrivileged('CREATE_USER')) && !($rootScope.isPrivileged('VIEW_USER')) && !($rootScope.isPrivileged('USER_ADMINISTRATION'));
 			 }
 
 			 $scope.filterUser = function() {

@@ -106,7 +106,7 @@ public class CustomerServiceImpl implements CustomerService{
 		if(unit.getUnitId()!=null){
 			String userName = CommonUtil.getCurrentUser().getUserName();
 			boolean isEntityLocked=entityLockService.isEntityLocked(unit.getUnitId(), AppConstants.EntityType.UNIT.toString(), userName);
-			if(isEntityLocked){
+			if(!isEntityLocked){
 				throw new EntityLockedException("Current user does not hold lock for this unit");
 			}
 		}

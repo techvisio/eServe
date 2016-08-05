@@ -24,7 +24,8 @@ public class Comment extends BasicFileds{
 	private String comment;
 	@Column(name="WORKITEM_ID")
 	private Long workItemId;
-
+	@Column(name="COMMENT_TYPE")
+	private String commentType;
 	@Transient
 	private String commentDateString;
 	
@@ -63,6 +64,14 @@ public class Comment extends BasicFileds{
 	public void setWorkItemId(Long workItemId) {
 		this.workItemId = workItemId;
 	}
-
+	public String getCommentType() {
+		return commentType;
+	}
+	public void setCommentType(String commentType) {
+		this.commentType = commentType;
+	}
+	public void setCommentDateString(String commentDateString) {
+		this.commentDateString = commentDateString;
+	}
 	
 }

@@ -15,10 +15,12 @@ workItemModule
 		 'workitem',
 		 function($scope, $state, $rootScope,workItemService,customerService,$modal,$http,masterdataService,workitem) {
 
-			 $scope.workItemReminder = {};
 			 $scope.workItems = [];
 			 $scope.workitem = {};
-
+			 $scope.workItemSearchCriteria={};
+			 $scope.workItemSearchCriteria.workType="";
+			 $scope.workItemSearchCriteria.status="";
+			 $scope.showAllComments=false;
 
 			 $scope.getUnitInfoByEntityIdAndEntityType = function(entityId, entityType){
 				 console.log('getting units');
@@ -59,14 +61,16 @@ workItemModule
 
 			 $scope.getWorkItemByUserIdAndWorkType = function(){
 				 console.log('getting work Item');
-				 if(angular.isUndefined($scope.workitem.workType)){
-					 $scope.workitem.workType = "";
+				 var workItemType=$scope.workItemSearchCriteria.workType;
+				 var workItemStatus=$scope.workItemSearchCriteria.status;
+				 if(angular.isUndefined(workItemType)){
+					 workItemType = "";
 				 }
-				 if(angular.isUndefined($scope.workitem.status)){
-					 $scope.workitem.status = "";
+				 if(angular.isUndefined(workItemStatus)){
+					 workItemStatus = "";
 				 }
 
-				 customerService.getWorkItemByUserIdAndWorkType($rootScope.user.userId, $scope.workitem.workType, $scope.workitem.status)
+				 customerService.getWorkItemByUserIdAndWorkType($rootScope.user.userId, workItemType, workItemStatus)
 				 .then(function(response) {
 					 console.log(response);
 					 if (response) {
@@ -88,7 +92,7 @@ workItemModule
 			 }
 
 			 $scope.redirectToComplaintScreen=function(complaintId){
-				 $state.go('complaintScreen',{entityId:complaintId} );
+				 $state.go('pmsComplaint',{entityId:complaintId} );
 			 }
 
 			 $scope.redirectToWorkitemScreen=function(currentWorkitemId){
@@ -96,7 +100,7 @@ workItemModule
 			 }
 			 
 			 $scope.redirectToUnit=function(unitId){
-				 $state.go('unit',{entityId:unitId} );
+				 $state.go('unitApproval',{entityId:unitId} );
 			 }
 
 			 $scope.addComment = function() {

@@ -189,17 +189,17 @@
 							<br>
 							<div class="tab-separator min-height">
 								<tabset justified="true"> <tab heading="SITE ADDRESS">
-								<div ng-include src="'../home/customer/siteAddress.html'"></div>
+								<div ng-include src="'../home/customer/Site_Address.html'"></div>
 								</tab> <tab heading="EQUIPMENTS">
-								<div ng-include src="'../home/customer/equipment.html'"></div>
+								<div ng-include src="'../home/customer/Equipment.html'"></div>
 								</tab> <tab heading="SERVICE HISTORY"
 									ng-click="getServiceAgreementHistoryForUnit(unit.unitId)"
 									disabled="!unit.unitId">
-								<div ng-include src="'../home/customer/serviceHistory.html'"></div>
+								<div ng-include src="'../home/customer/Service_History.html'"></div>
 								</tab> <tab heading="COMPLAINTS"
 									ng-click="getAllComplaintsForUnit(unit.unitId)"
 									disabled="!unit.unitId">
-								<div ng-include src="'../home/customer/customerComplaint.html'"></div>
+								<div ng-include src="'../home/customer/Customer_Complaint.html'"></div>
 								</tab> <tab heading="ACTION ITEMS" disabled="!unit.unitId">
 								<div ng-include src=" "></div>
 								</tab> <tab heading="CALL" disabled="!unit.unitId">

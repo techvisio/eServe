@@ -1223,7 +1223,7 @@ background-color: #F5F5F5;
 
 /* css for user privileges */
 
-.form-group.privilege-header-font{
+.form-group.privilege-header-font span{
 	
     display: inline-block;
     margin-bottom: 5px;
@@ -1233,6 +1233,7 @@ background-color: #F5F5F5;
     font-size: 12px;
     line-height: 1.42857143;
     color: #333;
+    padding-left: 10px;
 }
 
 .margin-top-privilege{
@@ -1257,11 +1258,58 @@ button-left {
 	left: 1260px;
 }
 
+
 .workitem-comment{
 	
 	padding-left:15px;
-	font-style: italic;
-	padding-bottom: 15px;
-	color: blue;	
-	font-size: 17px;
+	padding-bottom: 15px;	
+	font-size: 15px;
 }
+
+.workitem-user{
+	color: lightblue;	
+	font-size: 12px;
+}
+
+.work-item-comment a{
+	padding-left: 10px;
+	cursor: pointer;
+}
+
+/* progress bar */
+#box {
+    width: 275px;
+    height: 40px;
+    background-color:#428bca;
+    float:left;
+    line-height: 40px;
+    color:white;
+    text-align: center;
+}
+#box1 {
+    
+    height: 0px;
+    border-width: 20px;
+    border-style: solid;
+    border-color: transparent transparent transparent #428bca;
+float:left;
+}
+
+#box2 {
+    
+    height: 0px;
+    border-width: 20px;
+    border-style: solid;
+    border-color: #428bca #428bca #428bca transparent ;
+float:left;
+}
+.active #box{
+	background-color: #5cb85c;
+}
+.active #box1{
+	 border-color: transparent transparent transparent #5cb85c;
+}
+.active #box2{
+	border-color: #5cb85c #5cb85c #5cb85c transparent ;
+}
+

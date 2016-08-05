@@ -447,6 +447,7 @@
         CREATED_BY varchar(255),
         CREATED_ON datetime,
         COMMENT varchar(255),
+        COMMENT_TYPE varchar(255),
         WORKITEM_ID bigint,
         Client_Id bigint,
         primary key (COMMENT_ID)
