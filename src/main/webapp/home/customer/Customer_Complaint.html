@@ -9,9 +9,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="complaint in customerComplaints">
+			<tr ng-repeat="complaint in workOrders">
 				<td><a herf="#"
-					ng-click="redirectToComplaintScreen(complaint.complaintId)">{{complaint.complaintCode}}
+					ng-click="redirectToComplaintScreen(complaint.workOrderId)">{{complaint.workOrderNo}}
 				</a></td>
 				</td>
 				<td>{{complaint.customerName}}</td>

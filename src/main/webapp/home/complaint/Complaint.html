@@ -14,11 +14,11 @@
 				<header class="panel_header">
 					<h2 class="title pull-left">Complaint Information</h2>
 					<div class="actions panel_actions pull-right">
-						<i class="fa fa-floppy-o" ng-click="saveAndUpdateComplaint()" ng-show="customerComplaint.edited"
-							ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i> <i
-							class="fa fa-times" ng-show="customerComplaint.edited"
+						<i class="fa fa-floppy-o" ng-click="saveAndUpdateComplaint()" ng-show="workOrder.edited"
+							ng-disabled="isProcessing"></i> <i
+							class="fa fa-times" ng-show="workOrder.edited"
 							ng-click="toggleReadOnly('COMPLAINT'); unlockComplaintEntity()"></i>
-						<i class="fa fa-pencil" ng-show="!customerComplaint.edited"
+						<i class="fa fa-pencil" ng-show="!workOrder.edited"
 							ng-click="toggleReadOnly('COMPLAINT'); lockComplaintEntity();"
 							ng-disabled="isCreateOrUpdatePrivileged()"></i> <i
 							class="fa fa-chevron-up"
@@ -36,7 +36,7 @@
 								<label class="form-label" for="formfield9">Work Order No</label>
 								<div class="controls">
 									<input type="text" class="form-control" type="text"
-										ng-model="customerComplaint.complaintCode" disabled>
+										ng-model="workOrder.workOrderNo" disabled>
 								</div>
 							</div>
 						</div>
@@ -58,7 +58,7 @@
 								<label class="form-label" for="formfield9">Priority</label>
 								<div class="controls">
 									<select class="form-control"
-										ng-model="customerComplaint.priority">
+										ng-model="workOrder.priority">
 										<option></option>
 										<option value="C">Critical</option>
 										<option value="H">High</option>
@@ -74,7 +74,7 @@
 								<label class="form-label" for="formfield9">Status</label>
 								<div class="controls">
 									<input type="text" class="form-control" disabled
-										ng-model="customerComplaint.status">
+										ng-model="workOrder.status">
 								</div>
 							</div>
 						</div>
@@ -86,7 +86,7 @@
 								<label class="form-label" for="formfield9">Sla Date</label>
 								<div class="controls">
 									<input type="text" class="form-control datepicker"
-										ng-model="customerComplaint.slaDateString"
+										ng-model="workOrder.slaDateString"
 										name="requestDueDate" datepicker-popup="{{'MMM dd yyyy'}}"
 										disabled>
 								</div>

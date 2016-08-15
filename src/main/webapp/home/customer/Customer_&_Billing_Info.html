@@ -14,8 +14,7 @@
 
 						<div ng-show="!showAndHidePreview()">
 							<i></i> <i class="fa fa-pencil" ng-show="!customer.edited"
-								ng-click="lockCustomerEntity()"
-								ng-disabled="isCreateOrUpdatePrivileged()"></i>
+								ng-click="lockCustomerEntity()"></i>
 						</div>
 					</div>
 				</header>
@@ -83,7 +82,7 @@
 					</div>
 
 					<div class="row">
-						<div class="col-md-6 col-sm-12 col-xs-12">
+						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Customer Type</label>
 
@@ -104,7 +103,7 @@
 						<button type="button" class="btn btn-primary child-right"
 							ng-show="customer.edited"
 							ng-click="saveAndUpdateCustomer('PUBLISH')"
-							ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">
+							ng-disabled="isProcessing">
 							<i class="fa fa-floppy-o" style="font-size: 13px"></i>&nbsp Save
 
 						</button>
@@ -203,7 +202,7 @@
 							<button type="button" class="btn btn-primary child-right"
 								ng-show="customer.edited"
 								ng-click="saveAndUpdateCustomer('PUBLISH')"
-								ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">
+								ng-disabled="isProcessing">
 								<i class="fa fa-floppy-o" style="font-size: 13px"></i>&nbsp Save
 
 							</button>

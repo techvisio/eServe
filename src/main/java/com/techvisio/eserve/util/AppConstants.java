@@ -116,7 +116,7 @@ public interface AppConstants {
 
 	};
 
-	enum DateFormat{MM_dd_yyyy("MMMM d, yyyy");
+	enum DateFormat{MM_dd_yyyy("MMM dd, yyyy");
 	String pattern;
 	DateFormat(String pattern){
 		this.pattern=pattern;

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.GraphData;
 import com.techvisio.eserve.beans.Response;
-import com.techvisio.eserve.service.ComplaintService;
+import com.techvisio.eserve.service.WorkOrderService;
 import com.techvisio.eserve.service.DashBordService;
 @RestController
 @RequestMapping("service/dashbord")
@@ -24,7 +24,7 @@ public class DashBordController {
 	@Autowired
 	DashBordService dashBoardService;
 	@Autowired
-	ComplaintService complaintservice;
+	WorkOrderService complaintservice;
 	
 	@RequestMapping(value="/totalcount/",method = RequestMethod.GET)
 	public ResponseEntity<Response> getcount() {  

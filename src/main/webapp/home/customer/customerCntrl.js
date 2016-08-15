@@ -1,7 +1,7 @@
 var customerModule = angular.module('customerModule', []);
 
-customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','contextObject','Operation','masterdataService','complaintService','$modal','$http','NgTableParams',
-                                                 function($scope,$window,$rootScope,customerService,$state,filter,contextObject,Operation,masterdataService,complaintService,$modal,$http,NgTableParams) {
+customerModule.controller('customerController', ['$scope','$window','$rootScope','customerService','$state','$filter','contextObject','Operation','masterdataService','complaintService','$modal','$http','NgTableParams','alertModal','$filter',
+                                                 function($scope,$window,$rootScope,customerService,$state,filter,contextObject,Operation,masterdataService,complaintService,$modal,$http,NgTableParams,alertModal,$filter) {
 
 
 	$scope.form={};
@@ -39,15 +39,19 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.customer.units=[];
 
-//	$scope.isPrivileged = function(role){
-//
-//		var userPrivilege = $rootScope.user.privileges;
-//		var result=false;
-//		angular.forEach(userPrivilege, function(privilege) {
-//			if (privilege.privilege.privilege===role) result= true;
-//		});
-//		return result;		
-//	}
+	$scope.makeAllFieldReadOnly = function(form) {
+		$('#' + form + ' *').attr('readonly',
+				true);
+		$('#' + form + ' select')
+		.attr('disabled', true);
+		$('#' + form + ' input[type="radio"]')
+		.attr('disabled', true);
+		$('#' + form + ' input[type="checkbox"]')
+		.attr('disabled', true);
+		$('#' + form + ' input[type="button"]')
+		.attr('disabled', true);
+	};
+
 
 	$scope.toggleReadOnly = function(form,isEdit) {
 		if(!isEdit){
@@ -77,7 +81,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		}
 	};
 
-	
+
 	if(Operation && Operation == 'viewCustomer'){
 		$scope.customer = contextObject;
 		$scope.toggleReadOnly('CUSTOMER',contextObject.edited);
@@ -87,6 +91,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	if(Operation && Operation == 'unitApproval'){
 		$scope.unitApproval = contextObject;
 	}
+
+
 
 	$scope.init = function() {
 		console
@@ -103,9 +109,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						console.log('error');
 					}
 				});
-
-		$scope.toggleReadOnly('CUSTOMER');
-		$scope.toggleReadOnly('UNIT');
 	};
 
 	$scope.getServiceAgreementHistoryForUnit = function(unitId){
@@ -137,7 +140,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			console.log('getting all Complaint for single unit in controller : ');
 			console.log(response);
 			if (response) {
-				$scope.customerComplaints = response;
+				$scope.workOrders = response;
 			} 
 		})
 	}
@@ -170,29 +173,43 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	};
 
 	$scope.redirectToCustomerDtlScreen=function(currentCustomerId){
-		$scope.alerts=[];
-		$state.go('viewCustomer',{entityId:currentCustomerId});
+		if($rootScope.isPrivileged("VIEW_CUSTOMER") || $rootScope.isPrivileged("CREATE_CUSTOMER")){
+			$scope.alerts=[];
+			$state.go('viewCustomer',{entityId:currentCustomerId});
+		}
+
+		else{
+			$rootScope.showNotHavePrivilegeModel();
+		}
 	}
 
 	$scope.redirectfromWorkItemtoEntity=function(url,entityId){
 		$state.go(url,{entityId:entityId});
 	}
 
-	
-		$scope.redirectToComplaintScreen=function(currentComplaintId ){
-			if($rootScope.isPrivileged("VIEW_COMPLAINT") || $rootScope.isPrivileged("CREATE_COMPLAINT")){
+
+	$scope.redirectToComplaintScreen=function(currentComplaintId ){
+		if($rootScope.isPrivileged("VIEW_COMPLAINT") || $rootScope.isPrivileged("CREATE_COMPLAINT")){
 			$state.go('viewComplaint',{entityId:currentComplaintId});
 		}
+		else{
+			$rootScope.showNotHavePrivilegeModel();
+		}	
 	}
 
 	$scope.redirectToComplaintScreenByUnitId=function(unit, currentUnitId ){
 
-		if(unit.unitCode==null){
-			$scope.alerts=[];
-			$scope.alerts.push({msg: 'Non Of Details Are Saved For This Unit'})
-			return;
+		if($rootScope.isPrivileged("CREATE_COMPLAINT")){
+			if(unit.unitCode==null){
+				$scope.alerts=[];
+				$scope.alerts.push({msg: 'Non Of Details Are Saved For This Unit'})
+				return;
+			}
+			$state.go('newComplaintFromUnit',{entityId:currentUnitId});
 		}
-		$state.go('newComplaintFromUnit',{entityId:currentUnitId});
+		else{
+			$rootScope.showNotHavePrivilegeModel();
+		}
 	}
 
 	$scope.getCustomerByCriteria=function(){
@@ -249,7 +266,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			if (response) {
 				$scope.customer = response;
 				$scope.alerts=[];
-				alert("Customer Saved Successfully");
+				$rootScope.showAlertModel('Customer Saved Successfully With Customer Code '+ $scope.customer.customerCode, 'Operation Successful')
 				$scope.redirectToCustomerDtlScreen($scope.customer.customerId);
 			}
 		})
@@ -274,7 +291,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			if (response) {
 				$scope.customer = response;
 				$scope.alerts=[];
-				alert("Customer Updated Successfully");
+				$rootScope.showAlertModel('Customer Updated Successfully With Customer Code '+ $scope.customer.customerCode, 'Operation Successful')
 				$scope.redirectToCustomerDtlScreen($scope.customer.customerId);
 			}
 		})
@@ -289,22 +306,23 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			console.log(response);
 			if (response) {
 				unit= response;
+				$rootScope.showAlertModel('Unit Approved Successfully', 'Operation Successful')
 				$scope.redirectToCustomerDtlScreen(unit.customerId);
 			} 
 		})
 	};
 
 //	$scope.rejectUnitApproval= function(unit){
-//
-//		customerService.rejectUnitApproval(unit)
-//		.then(function(response) {
-//			console.log('reject unit called in controller ');
-//			console.log(response);
-//			if (response) {
-//				unit= response;
-//				$scope.redirectToCustomerDtlScreen(unit.customerId);
-//			} 
-//		})
+
+//	customerService.rejectUnitApproval(unit)
+//	.then(function(response) {
+//	console.log('reject unit called in controller ');
+//	console.log(response);
+//	if (response) {
+//	unit= response;
+//	$scope.redirectToCustomerDtlScreen(unit.customerId);
+//	} 
+//	})
 //	}
 
 	$scope.countUnit = function(customer) {
@@ -349,7 +367,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			if (response) {
 				$scope.customer.units = response;
 				$scope.alerts=[];
-				alert("Unit Saved Successfully")
+				$rootScope.showAlertModel('Unit Saved Successfully ', 'Operation Successful')
 			} 
 		})
 	};
@@ -361,7 +379,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 //	console.log('getting all complaints in controller : ');
 //	console.log(response);
 //	if (response) {
-//	$scope.customerComplaints = response;
+//	$scope.workOrders = response;
 //	} 
 //	})
 //	}
@@ -410,11 +428,11 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	}
 
 	$scope.isCreateOrUpdatePrivileged=function(){
-		return !($rootScope.isPrivileged('CREATE_CUSTOMER'));
+		return ($rootScope.isPrivileged('CREATE_CUSTOMER'));
 	}
 
 	$scope.isViewPrivileged=function(){
-		return !($rootScope.isPrivileged('CREATE_CUSTOMER')) && !($rootScope.isPrivileged('VIEW_CUSTOMER'));
+		return ($rootScope.isPrivileged('CREATE_CUSTOMER')) || ($rootScope.isPrivileged('VIEW_CUSTOMER'));
 	}
 
 	$scope.navigationContextNext = {'customer':'unitDtl', 
@@ -499,7 +517,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.showRejectionCommentBox = function(unit) {
 
 		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/Comment_Box_Reject_Unit.html',
+			templateUrl: 'customer/popup boxes/Comment_Box_Reject_Unit.html',
 			scope:$scope,
 			controller: function (customerService,$scope) {
 
@@ -514,10 +532,11 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						if (response) {
 							unit= response;
 							$rootScope.curModal.close();
+							$scope.redirectToCustomerDtlScreen(unit.customerId);
 						} 
 					})
 				};
-				
+
 				$scope.closeModal=function(){
 					$rootScope.curModal.close();
 				}
@@ -530,8 +549,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.showCommentBoxUnitPublish = function(unit) {
 
-		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/Comment_Box_Unit_Publish.html',
+		$scope.curModal = $modal.open({
+			templateUrl: 'customer/popup boxes/Comment_Box_Unit_Publish.html',
 			scope:$scope,
 			controller: function (customerService,$scope) {
 
@@ -546,13 +565,14 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						console.log(response);
 						if (response) {
 							$scope.customer.units = response;
+							$scope.curModal.close();
 							$rootScope.curModal.close();
-							alert("Unit Saved Successfully")
+							$rootScope.showAlertModel('Unit Saved Successfully ', 'Operation Successful')
 						} 
 					})
 				};
 				$scope.closeModal=function(){
-					$rootScope.curModal.close();
+					$scope.curModal.close();
 				}
 			},
 			backdrop:'static',
@@ -564,7 +584,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.showCommentBoxCustomerPublish = function() {
 
 		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/Comment_Box_Customer_Publish.html',
+			templateUrl: 'customer/popup boxes/Comment_Box_Customer_Publish.html',
 			scope:$scope,
 			controller: function (customerService,$scope) {
 
@@ -582,7 +602,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 							$scope.customer = response;
 							$scope.alerts=[];
 							$rootScope.curModal.close();
-							alert("Customer Saved Successfully");
+							$rootScope.showAlertModel('Customer Saved Successfully With Customer Code '+ $scope.customer.customerCode, 'Operation Successful')
 							$scope.redirectToCustomerDtlScreen($scope.customer.customerId);
 						}
 					})
@@ -598,8 +618,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.showUnitExpireModal = function(unit) {
 
-		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/Unit_Expiration_Model.html',
+		$scope.curModal = $modal.open({
+			templateUrl: 'customer/popup boxes/Unit_Expiration_Model.html',
 			controller: function (customerService, masterdataService) {
 				$scope.serviceRenewalBean = unit.serviceAgreement;
 			},
@@ -608,17 +628,17 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			keyboard: false
 		});
 
-		$scope.updateServiceAgreement = function(){
-			$rootScope.curModal.close();
-		};
+		$scope.closeModal=function(){
+			$scope.curModal.close();
+		}
 
 	};
 
 
 	$scope.showAddEquipmentModel = function(object, editEquipment) {
 		$scope.dummyEquipmentDetails={};
-		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/Equipment_Model.html',
+		$scope.curModal = $modal.open({
+			templateUrl: 'customer/popup boxes/Equipment_Model.html',
 			controller: function (customerService, masterdataService) {
 
 				if(editEquipment==='true'){
@@ -631,24 +651,26 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		});
 
 		$scope.closeModal=function(){
-			$rootScope.curModal.close();
+			$scope.curModal.close();
 		}
 
 		$scope.addMachine = function() {
 
 			if(editEquipment==='true'){
-				$rootScope.curModal.close();
+				$scope.curModal.close();
 			}
 
 			else{
 				var equipmentDetail = angular
 				.copy($scope.dummyEquipmentDetails);
+
+				equipmentDetail.installationDateString = $filter('date')(equipmentDetail.installationDate, "MMM dd, yyyy");
 				equipmentDetail.unitId = object.unitId;
 				object.equipmentDetails
 				.push(equipmentDetail);
 
 				$scope.dummyEquipmentDetails={};
-				$rootScope.curModal.close();
+				$scope.curModal.close();
 			};
 		}
 
@@ -699,19 +721,23 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	}
 
 	$scope.filterCustomer = function() {
+		if($scope.isViewPrivileged){
+			$rootScope.curModal = $modal.open({
+				templateUrl: 'customer/popup boxes/Customer_Search_Filter_Model.html',
+				scope:$scope,
+				controller: function ($scope) {
 
-		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/Customer_Search_Filter_Model.html',
-			scope:$scope,
-			controller: function ($scope) {
+					$scope.getCustomerByCriteria = function(){
+						$scope.tableParams.reload();
+						$rootScope.curModal.close();
+					}
 
-				$scope.getCustomerByCriteria = function(){
-					$scope.tableParams.reload();
-					$rootScope.curModal.close();
-				}
-
-			},
-		});
+				},
+			});
+		}
+		else{
+			$rootScope.showNotHavePrivilegeModel();
+		}
 	};
 
 	$scope.tableParams = new NgTableParams({}, {
@@ -792,17 +818,22 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.entityLock.entityId = $scope.customer.customerId;
 		$scope.entityLock.entityType = 'CUSTOMER';
 
-		customerService.unlockEntity($scope.entityLock)
-		.then(
-				function(customer) {
-					console
-					.log('Unlocking customer entity in controller');
-					console.log(customer);
-					if (customer) {
-						$scope.customer=customer;
-						$scope.toggleReadOnly('CUSTOMER',customer.edited);
-					}
-				})
+		if($scope.isCreateOrUpdatePrivileged){
+			customerService.unlockEntity($scope.entityLock)
+			.then(
+					function(customer) {
+						console
+						.log('Unlocking customer entity in controller');
+						console.log(customer);
+						if (customer) {
+							$scope.customer=customer;
+							$scope.toggleReadOnly('CUSTOMER',customer.edited);
+						}
+					})
+		}
+		else{
+			$rootScope.showNotHavePrivilegeModel();
+		}
 	}
 
 	$scope.unlockUnitEntity = function(unitIndex,formId)
@@ -827,7 +858,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.makeAllReadOnly=function(formId){
 		$scope.toggleReadOnly('UNIT_'+formId,false);
 	}
-	
+
 	$scope.getClassForUnitStatus=function(status){
 		if(status==="R")
 		{
@@ -841,10 +872,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		{
 			return "btn btn-warning btn-xs"
 		}
-		
+
 		return "btn btn-info btn-xs"
 	}
-	
+
 	$scope.getUnitStatusText=function(status){
 		if(status==="R")
 		{
@@ -858,25 +889,51 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		{
 			return "Published"
 		}
-			return "Draft"
+		return "Draft"
 	}
-	
+
 	$scope.addUnitPopup = function(){
 		$rootScope.curModal = $modal.open({
-			templateUrl: 'customer/unit.html',
+			templateUrl: 'customer/popup boxes/Add_New_Unit_Model.html',
 			controller: function (customerService, masterdataService) {
 
-				
-				
+				$scope.closeUnitModal=function(){
+					$rootScope.curModal.close();
+				}
+
+
 			},
 			scope:$scope,
 			backdrop:'static',
 			keyboard: false,
 			size:'lg'
 		});
-		
-		
 	};
-	
-	
+
+	$scope.getUnitActionItems = function(entityId){
+		customerService.getUnitActionItems(entityId)
+		.then(
+				function(actionItems) {
+					console
+					.log('getting action items in controller : ');
+					console.log(actionItems);
+					if (actionItems) {
+						$scope.actionItems=actionItems;
+					}
+				})
+	}
+
+	$scope.getLatestCommentBycommentType =  function(entityId, entityType, commentType){
+
+		customerService.getLatestCommentBycommentType(entityId, entityType, commentType)
+		.then(function(response) {
+			console.log('getting latest comment based on comment type in controller');
+			console.log(response);
+			if (response) {
+				$scope.comment = response;
+			} 
+		})
+	}
+
+
 } ]);

@@ -86,14 +86,18 @@ angular.module('erp.services',[])
  *      });
  *  }
  */
-    .factory('alertModal', function ($modal) {
-        return alertModal;
+    .service('alertModal', function ($modal) {
+    	return ({
+    		showAlert  : showAlert
+    	});
 
-        function alertModal(content, title){
+        function showAlert(content, title){
             var _modalInstance;
 
             _modalInstance = $modal.open({
                 templateUrl: './modals/alertModal.html',
+                backdrop:'static',
+                keyboard:false,
                 controller: function ($scope, $modalInstance) {
                     $scope.content = content;
                     $scope.title = title || 'Please pay attention';
@@ -117,10 +121,12 @@ angular.module('erp.services',[])
  *      });
  *  }
  */
-    .factory('confirmModal', function ($modal) {
-        return confirmModal;
+    .service('confirmModal', function ($modal) {
+    	return ({
+    		showConfirmModal  : showConfirmModal
+    	});
 
-        function confirmModal(content, title){
+        function showConfirmModal(content, title){
             var _modalInstance;
 
             _modalInstance = $modal.open({
@@ -128,7 +134,7 @@ angular.module('erp.services',[])
                 controller: function ($scope, $modalInstance) {
                     $scope.content = content;
                     $scope.title = title || 'Confirm please';
-                    $scope.yes = $modalInstance.close;
+                    $scope.yes = $modalInstance.close; 
                     $scope.no = $modalInstance.dismiss;
                 }
             });

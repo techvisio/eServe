@@ -10,7 +10,7 @@ public class SearchComplaintUnit {
 	private String externalId;
 	private String serviceParty;
 	private String unitCategory;
-	private List<SearchComplaint> complaints;
+	private List<SearchWorkOrder> complaints;
 	
 	public String getUnitCode() {
 		return unitCode;
@@ -48,10 +48,10 @@ public class SearchComplaintUnit {
 	public void setUnitId(Long unitId) {
 		this.unitId = unitId;
 	}
-	public List<SearchComplaint> getComplaints() {
+	public List<SearchWorkOrder> getComplaints() {
 		return complaints;
 	}
-	public void setComplaints(List<SearchComplaint> complaints) {
+	public void setComplaints(List<SearchWorkOrder> complaints) {
 		this.complaints = complaints;
 	}
 

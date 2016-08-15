@@ -5,12 +5,7 @@
 				<h2 class=" pull-left"></h2>
 				<div class="actions panel_actions pull-right">
 					<i class="fa fa-filter" aria-hidden="true" ng-click="filterUser()">&nbspFilter</i>
-					<i class="box_setting material-icons"></i> 
-
-
-
-
-
+					<i class="box_setting material-icons"></i>
 				</div>
 			</header>
 			<div class="content-body">
@@ -23,12 +18,15 @@
 								class="table table-condensed table-bordered table-striped">
 								<tr ng-repeat="row in $data">
 									<td data-title="'User Name'" sortable="'userName'"
-										class="col-sm-2 col-md-2 col-lg-2"><a href="" ng-click="redirectToUser(row.userId)">{{row.userName}}</a></td>
-									<td data-title="'Last Name'" sortable="'lastName'">{{row.lastName}}</td>
+										class="col-sm-2 col-md-2 col-lg-2"><a href=""
+										ng-click="redirectToUser(row.userId)">{{row.userName}}</a></td>
 									<td data-title="'First Name'" sortable="'firstName'">{{row.firstName}}</td>
+									<td data-title="'Last Name'" sortable="'lastName'">{{row.lastName}}</td>
 									<td data-title="'Email Id'" sortable="'emailId'">{{row.emailId}}</td>
 									<td data-title="'Department'" sortable="'departmentId'">{{row.department.department}}</td>
 									<td data-title="'Designation'" sortable="'designationId'">{{row.designation.designation}}</td>
+									<td data-title="'Action'"><button type="button"
+											class="btn btn-primary btn-xs" ng-click="resetPassword(row)">Reset</button></td>
 								</tr>
 							</table>
 						</div>

@@ -8,15 +8,10 @@
 					<i class="fa fa-chevron-up"
 						ng-class="{'fa-chevron-down':isUserCollapsed}"
 						ng-click="isUserCollapsed=!isUserCollapsed"></i> <i
-						class="fa fa-floppy-o" ng-show="isNew || isEdit"
-						ng-click="saveAndUpdateUser()"
-						ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"></i> <i
-						class="fa fa-times" ng-show="!isNew && isEdit"
-						ng-click="toggleReadOnly('USER'); unlockUserEntity()"></i> <i class="fa fa-pencil"
-						ng-show="!isEdit" popover-placement="bottom"
-						popover="Click To Edit" popover-trigger="mouseenter"
-						ng-click="toggleReadOnly('USER'); lockUserEntity()"
-						ng-disabled="isCreateOrUpdatePrivileged()""></i>
+						class="fa fa-pencil" ng-show="!user.edited"
+						popover-placement="bottom" popover="Click To Edit"
+						popover-trigger="mouseenter" ng-click="lockUserEntity()"
+						ng-disabled="isCreateOrUpdatePrivileged()"></i>
 				</div>
 			</header>
 			<div class="content-body">
@@ -61,8 +56,8 @@
 								<div class="controls">
 									<input type="text" class="form-control datepicker"
 										required="required" name="requestDueDate"
-										ng-model="user.dobString" datepicker-popup="{{'MMM dd yyyy'}}"
-										is-open="openedFrom"
+										ng-model="user.dobString"
+										datepicker-popup="{{'MMM dd, yyyy'}}" is-open="openedFrom"
 										ng-click="openedFrom = !openedFrom; $event.stopPropagation();"
 										show-button-bar="false" placeholder="Date of Birth">
 								</div>
@@ -74,10 +69,13 @@
 								<label class="form-label" for="formfield9">Email Id</label> <span
 									class="desc">e.g. "asd@asd.com"</span>
 								<div class="controls">
-									<input type="email" class="form-control"
+									<i class="fa fa-times" ng-show="emailError"
+										popover-placement="left" popover="Email Id Already Exist"
+										popover-trigger="mouseenter"></i> <input type="email"
+										class="form-control"
 										ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
 										ng-model="user.emailId" ng-click="resetAlert()"
-										required="required">
+										required="required" ng-blur="getEmailId()">
 								</div>
 							</div>
 						</div>
@@ -90,12 +88,16 @@
 							<div class="form-group">
 								<label class="form-label" for="formfield9">User Name</label>
 								<div class="controls">
-									<input type="text" class="form-control"
-										ng-pattern="/^[a-zA-_-Z0-9]+$/i" ng-model="user.userName"
-										required="required" ng-click="resetAlert()">
+									<i class="fa fa-times" ng-show="userNameError"
+										popover-placement="left" popover="User Name. Already Exist"
+										popover-trigger="mouseenter"></i> <input type="text"
+										class="form-control" ng-pattern="/^[a-zA-_-Z0-9]+$/i"
+										ng-model="user.userName" required="required"
+										ng-click="resetAlert()" ng-blur="getUserName()">
 								</div>
 							</div>
 						</div>
+
 						<div class="col-md-1"></div>
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
@@ -139,6 +141,20 @@
 								</div>
 							</div>
 						</div>
+					</div>
+
+					<div class="row">
+						<button type="button" class="btn btn-primary child-right"
+							ng-show="user.edited" ng-click="saveAndUpdateUser()"
+							ng-disabled="isProcessing">
+							<i class="fa fa-floppy-o"></i> &nbsp Save
+
+						</button>
+
+						<button type="button" class="btn btn-success child-right"
+							ng-show="user.edited" ng-click="unlockUserEntity()">
+							<i class="fa fa-times"></i> Cancel
+						</button>
 					</div>
 				</div>
 			</div>

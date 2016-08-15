@@ -8,13 +8,13 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.UnitBasicCustomer;
-import com.techvisio.eserve.beans.ComplaintAssignment;
-import com.techvisio.eserve.beans.ComplaintResolution;
+import com.techvisio.eserve.beans.WorkOrderAssignment;
+import com.techvisio.eserve.beans.WorkOrderResolution;
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.GenericRequest;
-import com.techvisio.eserve.beans.SearchComplaint;
+import com.techvisio.eserve.beans.SearchWorkOrder;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
@@ -46,7 +46,7 @@ public interface CustomerService {
 	public Unit updateUnitForRejection(GenericRequest<Unit> request);
 	public UnitBasicCustomer getUnitWithBasicCustomerDetais(Long unitId);
 	//TODO:Use save customer instead by creating customer from calling method
-	public Customer createCustomerfromComplaint(CustomerComplaint customerComplaint);
+	public Customer createCustomerfromComplaint(WorkOrder customerComplaint);
 	public Customer getCustomerByEmailId(String emailId);
 	public Customer getCustomerByContactNo(String contactNo);
 	public List<EquipmentDetail> getAllEquipmentForUnitById(String type, Long unitId);

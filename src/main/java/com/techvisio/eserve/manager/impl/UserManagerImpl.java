@@ -47,8 +47,8 @@ public class UserManagerImpl implements UserManager{
 	}
 
 	@Override
-	public List<User> getUsers(){
-		List<User> users = userDao.getUsers();
+	public List<User> getUsers(Long clientId){
+		List<User> users = userDao.getUsers(clientId);
 		return users;
 	}
 
@@ -126,12 +126,12 @@ public class UserManagerImpl implements UserManager{
 	}
 
 	@Override
-	public Map<String, Object> saveUser(User user) {
+	public Map<String, Object> saveUser(User user, Long clientId) {
 		Map<String,Object> result=new HashMap<String, Object>();
 
 		if(user.getUserId()==null){
 
-			boolean isUserExists = userDao.isUserExists(user);
+			boolean isUserExists = userDao.isUserExists(user,clientId);
 			if(isUserExists){
 				result.put("existingUser", null);
 				result.put("success", false);
@@ -181,7 +181,7 @@ public class UserManagerImpl implements UserManager{
 			for(UserPrivilege privilege : userPrivileges){
 				privilege.setGranted(true);
 			}
-			saveUser(user);
+			userDao.saveUser(user);
 
 			result.put("passwordMatch", true);
 			result.put("success", true);
@@ -203,8 +203,20 @@ public class UserManagerImpl implements UserManager{
 	}
 
 	@Override
-	public User getUserByUserName(String userName){
-		User user = userDao.getUserByUserName(userName); 
+	public User getUserByUserName(String userName, Long clientId){
+		User user = userDao.getUserByUserName(userName, clientId); 
+		return user;
+	}
+
+	@Override
+	public User getEmailId(String EmailId, Long clientId) {
+		User user = userDao.getEmailId(EmailId, clientId);
+		return user;
+	}
+
+	@Override
+	public User getUserName(String UserName, Long clientId) {
+		User user = userDao.getUserName(UserName, clientId);
 		return user;
 	}
 

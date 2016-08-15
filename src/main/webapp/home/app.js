@@ -87,7 +87,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			contextObject: ['$stateParams', function($stateParams){
 				return null;
 			}],
-			
+
 			Operation: ['$stateParams', function($stateParams){
 				return 'createNewComplaint';
 			}]
@@ -127,9 +127,9 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		templateUrl: 'complaint/Complaint.html',
 		controller: "complaintController",
 		resolve:{
-			
+
 			contextObject: ['$stateParams','complaintService', function($stateParams,complaintService){
-				return complaintService.getCustomerComplaint($stateParams.entityId);
+				return complaintService.getWorkOrder($stateParams.entityId);
 			}],
 			Operation: ['$stateParams', function($stateParams){
 				return 'viewComplaint';
@@ -137,21 +137,21 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		}
 	})
 
-		.state('pmsComplaint', {
+	.state('pmsComplaint', {
 		url: "/complaint/{entityId:[0-9]{1,8}}",
 		templateUrl: 'complaint/Complaint.html',
 		controller: "complaintController",
 		resolve:{
-			
+
 			contextObject: ['$stateParams','complaintService', function($stateParams,complaintService){
-				return complaintService.getCustomerComplaint($stateParams.entityId);
+				return complaintService.getWorkOrder($stateParams.entityId);
 			}],
 			Operation: ['$stateParams', function($stateParams){
 				return 'pmsComplaint';
 			}]
 		}
 	})
-	
+
 	.state('searchCustomer', {
 		url: "/customer",
 		templateUrl: 'customer/Customer_Search.html',
@@ -222,8 +222,12 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		templateUrl: 'user/userSearch.html',
 		controller:"userController",
 		resolve:{
-			user: ['$stateParams','userService', function($stateParams,userService){
+			
+			contextObject: ['$stateParams', function($stateParams){
 				return null;
+			}],
+			Operation: ['$stateParams', function($stateParams){
+				return 'SearchUser';
 			}]
 		}
 	})
@@ -233,8 +237,12 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		templateUrl: 'user/user.html',
 		controller: "userController",
 		resolve:{
-			user: ['$stateParams','userService', function($stateParams,userService){
+			
+			contextObject: ['$stateParams','userService', function($stateParams,userService){
 				return userService.getUserwithprivileges($stateParams.entityId);
+			}],
+			Operation: ['$stateParams', function($stateParams){
+				return 'viewUser';
 			}]
 		}
 	})
@@ -244,8 +252,11 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		templateUrl: 'user/user.html',
 		controller: "userController",
 		resolve:{
-			user: ['$stateParams', function($stateParams){
+			contextObject: ['$stateParams', function($stateParams){
 				return null;
+			}],
+			Operation: ['$stateParams', function($stateParams){
+				return 'createNewUser';
 			}]
 		}
 	})
@@ -255,8 +266,11 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		templateUrl: 'user/resetPassword.html',
 		controller: "userController",
 		resolve:{
-			user: ['$stateParams', function($stateParams){
-				return {};
+			contextObject: ['$stateParams', function($stateParams){
+				return null;
+			}],
+			Operation: ['$stateParams', function($stateParams){
+				return 'resetpassword';
 			}]
 		}
 	})
@@ -296,8 +310,8 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 
 
 erp.controller('ApplicationController',
-		['$scope', '$rootScope', '$timeout', '$modal','$http','$state','userService',
-		 function ($scope, $rootScope, $timeout, $modal,$http,$state,userService) {
+		['$scope', '$rootScope', '$timeout', '$modal','$http','$state','userService','alertModal','confirmModal',
+		 function ($scope, $rootScope, $timeout, $modal,$http,$state,userService,alertModal,confirmModal) {
 
 			$rootScope.user=null;
 			$rootScope.heading = 'Dashboard';
@@ -317,11 +331,12 @@ erp.controller('ApplicationController',
 										templateUrl: 'user/resetPassword.html',
 										controller: 'userController',
 										resolve: {
-											user: ['$stateParams', function($stateParams){
+											
+											contextObject: ['$stateParams', function($stateParams){
 												return angular.copy($rootScope.user);
 											}],
-											isUserSearch: ['$stateParams', function($stateParams){
-												return false;
+											Operation: ['$stateParams', function($stateParams){
+												return 'passresetmodal';
 											}]
 										},
 
@@ -374,11 +389,11 @@ erp.controller('ApplicationController',
 						}
 				);
 			});
-			
+
 			$rootScope.$on('$stateChangeStart', 
 					function(event, toState, toParams, fromState, fromParams, options){
 				$rootScope.heading = 'Dashboard';
-				
+
 				if(toState.name=='createNewCustomer'){
 					$rootScope.heading = 'Create Customer';
 				}
@@ -426,6 +441,12 @@ erp.controller('ApplicationController',
 				}
 			});
 
+			$scope.logout=function(){
+
+				window.location=document.getElementById('logout').href;
+			}
+
+
 			$rootScope.isPrivileged = function(role){
 
 				var result=false;
@@ -438,6 +459,49 @@ erp.controller('ApplicationController',
 				return result;		
 			}
 
+			$rootScope.showNotHavePrivilegeModel = function(){
+				alertModal.showAlert('You dont have required permission. Please contact system administrator','Permission Denied');
+			}
+
+			$rootScope.showAlertModel = function(content, title){
+				alertModal.showAlert(content,title);
+			};
+			
+			$rootScope.showConfirmModal = function(content, title){
+				confirmModal.showConfirmModal(content,title);
+			};
+			
+			$rootScope.redirectToComplaint=function(){
+				if($rootScope.isPrivileged("CREATE_COMPLAINT(PAID ONLY)")){
+					$state.go('createNewComplaint');
+				}
+				else{
+					$rootScope.showNotHavePrivilegeModel();
+				}		
+
+			}
+			
+			$scope.createUser=function(){
+			
+				if($rootScope.isPrivileged('CREATE_USER')){
+					$state.go('createNewUser');
+				}
+				else{
+					$rootScope.showNotHavePrivilegeModel();
+				}
+			}
+			$scope.createCustomer=function(){
+				if($rootScope.isPrivileged('CREATE_CUSTOMER')){
+					$state.go('createNewCustomer');
+				}
+				else{
+					$rootScope.showNotHavePrivilegeModel();
+				}
+			}
+
+			$rootScope.closeModal=function(){
+				$rootScope.curModal.close();
+			}
 			
 		}]);
 

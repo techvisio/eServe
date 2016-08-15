@@ -45,7 +45,7 @@
 	</div>
 	<div class="col-sm-2">
 		<button class="btn-primary" ng-click="getComplaintByCriteria()"
-			ng-disabled="isViewPrivileged() || isProcessing">Search</button>
+			ng-disabled="isProcessing">Search</button>
 		</a>
 	</div>
 </div>
@@ -56,7 +56,7 @@
 
 		<div class="col-sm-2">
 			<i class="fa fa-plus" ng-class="{'fa-minus':!isUnitCollapsed}"
-				ng-click="isUnitCollapsed = !isUnitCollapsed"></i> <a herf="#"
+				ng-click="isUnitCollapsed = !isUnitCollapsed"></i> <a herf=""
 				ng-click="redirectToCustomerDtlScreen(customer.customerId)">{{customer.customerCode}}
 			</a>
 		</div>

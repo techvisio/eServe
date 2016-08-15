@@ -16,7 +16,9 @@ userModule.service('userService', function($http, $q) {
 		getCurrentPassword :getCurrentPassword,
 		resetPassword : resetPassword,
 		lockEntity : lockEntity,
-		unlockEntity : unlockEntity
+		unlockEntity : unlockEntity,
+		getEmailId : getEmailId,
+		getUserName:getUserName
 	});
 
 	function authenticateUser(form) {
@@ -227,7 +229,32 @@ userModule.service('userService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	
+	function getEmailId(emailId){
+		console.log('get all users data');
+
+		var request = $http({
+			method : "get",
+			url : "../service/user/emailId?emailId="+emailId,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
+	function getUserName(userName){
+		console.log('get all users data');
+
+		var request = $http({
+			method : "get",
+			url : "../service/user/userName?userName="+userName,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
 	
 	function handleError(response) {
 		console.log('Error occured while calling service');

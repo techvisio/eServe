@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -182,6 +183,21 @@ public class UserController {
 		User userFromDB = userService.getUser(user.getUserId());
 		response.setResponseBody(userFromDB);
 
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	@RequestMapping(value="/emailId",method = RequestMethod.GET)
+	public ResponseEntity<Response> getEmailId(@RequestParam(value="emailId", defaultValue="")String emailId) {  
+		Response response=new Response();
+		User user = userService.getEmailId(emailId);
+		response.setResponseBody(user);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+
+	@RequestMapping(value="/userName",method = RequestMethod.GET)
+	public ResponseEntity<Response> getUserName(@RequestParam(value="userName", defaultValue="")String userName) {  
+		Response response=new Response();
+		User user = userService.getUserName(userName);
+		response.setResponseBody(user);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 }

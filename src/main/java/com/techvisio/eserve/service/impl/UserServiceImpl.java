@@ -36,15 +36,16 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Map<String, Object> saveUser(User user) {
 		String userName = CommonUtil.getCurrentUser().getUserName();
-
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		if(user.getUserId()!=null){
 			boolean isEntityLocked=entityLockService.isEntityLocked(user.getUserId(), AppConstants.EntityType.USER.toString(), userName);
-			if(isEntityLocked){
+			if(!isEntityLocked){
 				throw new EntityLockedException("Current user does not hold lock for this user");
 			}
 		}
 
-		Map<String, Object> userMap = userManager.saveUser(user);
+		Map<String, Object> userMap = userManager.saveUser(user,clientId);
+		entityLockService.unlockEntity("USER", user.getUserId());
 		return userMap;
 	}
 
@@ -80,9 +81,11 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<User> getUsers() {
-		List<User> users = userManager.getUsers();
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		List<User> users = userManager.getUsers(clientId);
 		return users;
 	}
+
 
 	@Override
 	public void saveUserPrivileges(List<Privilege> privileges) {
@@ -132,7 +135,22 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User getUserByUserName(String userName) {
-		User user = userManager.getUserByUserName(userName);
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		User user = userManager.getUserByUserName(userName, clientId);
+		return user;
+	}
+
+	@Override
+	public User getEmailId(String emailId) {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		User user = userManager.getEmailId(emailId, clientId);
+		return user;
+	}
+
+	@Override
+	public User getUserName(String userName)  {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		User user = userManager.getUserName(userName, clientId);
 		return user;
 	}
 

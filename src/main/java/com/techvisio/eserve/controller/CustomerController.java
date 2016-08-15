@@ -120,7 +120,7 @@ public class CustomerController {
 	}
 
 	@RequestMapping(value ="/approveunit/", method = RequestMethod.PUT)
-	public ResponseEntity<Response> getServiceAgreementHistoryForUnit(@RequestBody Unit unit) {
+	public ResponseEntity<Response> updateUnitForApproval(@RequestBody Unit unit) {
 		Response response=new Response();
 		Unit unitFromDB = customerService.updateUnitForApproval(unit);
 		response.setResponseBody(unitFromDB);

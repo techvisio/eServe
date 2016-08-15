@@ -16,11 +16,13 @@ public interface WorkItemDao {
 	public List<WorkItem> getWorkItembyUserandType(Long userId, String type,
 			String status);
 	public void updateWorkItemStatus(Long entityId,String status);
-	public List<WorkItem> getWorkItemsByEntityId(Long entityId);
+	public List<WorkItem> getWorkItemsByEntityIdAndEntityType(Long entityId, String entityType);
 	public List<WorkItem> getWorkItemsByEntityIdAndEntityTypeAndWorkType(Long entityId,
 			String entityType, String workType);
 	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId, String workType);
 	public WorkItem getWorkitemByWorkitemId(Long workitemId);
 	public WorkItem getWorkItem(Long workItemId);
 	public List<Comment> getCommentList(Long workItemId, Long clientId);
+	public Comment getLatestCommentBycommentType(Long entityId, String entityType,
+			String commentType);
 }

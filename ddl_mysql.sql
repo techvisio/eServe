@@ -23,6 +23,10 @@
         drop 
         foreign key FK_ar2h6nye7rlkto1n333dh674e;
 
+    alter table TB_AGREEMENT_INVOICE 
+        drop 
+        foreign key FK_r3pkhmiil3a81x6nsjhovna2l;
+
     alter table TB_COMMENT 
         drop 
         foreign key FK_2a6hdwvdyrou7hjk59lmgok04;
@@ -31,34 +35,6 @@
         drop 
         foreign key FK_i5onl4rqdykxqkef27t8ybhya;
 
-    alter table TB_COMPLAINT_ASSIGNMENT 
-        drop 
-        foreign key FK_efy1rj6xyhvfpslvetcmak7cv;
-
-    alter table TB_COMPLAINT_ASSIGNMENT 
-        drop 
-        foreign key FK_j3o67txjumuedjphkx9f7xlf2;
-
-    alter table TB_COMPLAINT_ASSIGNMENT 
-        drop 
-        foreign key FK_nuwbb7pohotx6gbai57ly13f8;
-
-    alter table TB_COMPLAINT_EQUIPMENT 
-        drop 
-        foreign key FK_6fjq83hiqier4rf46p7mjlmnv;
-
-    alter table TB_COMPLAINT_RESOLUTION 
-        drop 
-        foreign key FK_b7c34492wmue9o8hovw0y4361;
-
-    alter table TB_COMPLAINT_RESOLUTION 
-        drop 
-        foreign key FK_d7cm5awc490s4lnensj6uvdid;
-
-    alter table TB_COMPLAINT_RESOLUTION 
-        drop 
-        foreign key FK_n33dxsve4d1x71cfm46fxjjl1;
-
     alter table TB_CONFIG 
         drop 
         foreign key FK_bu8i693dhiy4sbl9tucpiwfht;
@@ -66,18 +42,6 @@
     alter table TB_CONTACT 
         drop 
         foreign key FK_l20ivw566rigcc8o90gloybi0;
-
-    alter table TB_CUSTOMER_COMPLAINT 
-        drop 
-        foreign key FK_n124pnn94fdds0dcr8faj05aw;
-
-    alter table TB_CUSTOMER_COMPLAINT 
-        drop 
-        foreign key FK_ivbs4lvovumsgq6p8xi6eokpj;
-
-    alter table TB_CUSTOMER_COMPLAINT 
-        drop 
-        foreign key FK_5swkjwe8343mp2aghxtbj9hvs;
 
     alter table TB_CUSTOMER_DETAIL 
         drop 
@@ -271,9 +235,45 @@
         drop 
         foreign key FK_nmbk6k9titb9n861bcpl602i8;
 
-    alter table TB__AGREEMENT_INVOICE 
+    alter table TB_WORK_ORDER 
         drop 
-        foreign key FK_al7xrotox8lkfq7l7pxv4m517;
+        foreign key FK_pg0nvhuhq1k9mak0i02knhf70;
+
+    alter table TB_WORK_ORDER 
+        drop 
+        foreign key FK_4xyromgsudnejcy4kdvos2ahp;
+
+    alter table TB_WORK_ORDER 
+        drop 
+        foreign key FK_bpf3qp8h0td0ti2xca9necf7l;
+
+    alter table TB_WORK_ORDER_ASSIGNMENT 
+        drop 
+        foreign key FK_11jy07bdvlttgq2aok2bekxfb;
+
+    alter table TB_WORK_ORDER_ASSIGNMENT 
+        drop 
+        foreign key FK_6ykvvbh3wbg02ho7d7brqg698;
+
+    alter table TB_WORK_ORDER_ASSIGNMENT 
+        drop 
+        foreign key FK_d3x31wehaioewoy4bwm1ry89f;
+
+    alter table TB_WORK_ORDER_EQUIPMENT 
+        drop 
+        foreign key FK_r6qvnp0hom43d263ailps40uv;
+
+    alter table TB_WORK_ORDER_RESOLUTION 
+        drop 
+        foreign key FK_63iljwsxnoe9i56ha19u9wiwv;
+
+    alter table TB_WORK_ORDER_RESOLUTION 
+        drop 
+        foreign key FK_m770l0t4rcfpg0hokqr8gkuic;
+
+    alter table TB_WORK_ORDER_RESOLUTION 
+        drop 
+        foreign key FK_pkycjo4sm79kambypsg1sn6m1;
 
     drop table if exists QUESTIONNNAIRE_ANSWER_OPTION;
 
@@ -285,21 +285,15 @@
 
     drop table if exists TB_AGREEMENT_DURATION;
 
+    drop table if exists TB_AGREEMENT_INVOICE;
+
     drop table if exists TB_CLIENT_MASTER;
 
     drop table if exists TB_COMMENT;
 
-    drop table if exists TB_COMPLAINT_ASSIGNMENT;
-
-    drop table if exists TB_COMPLAINT_EQUIPMENT;
-
-    drop table if exists TB_COMPLAINT_RESOLUTION;
-
     drop table if exists TB_CONFIG;
 
     drop table if exists TB_CONTACT;
-
-    drop table if exists TB_CUSTOMER_COMPLAINT;
 
     drop table if exists TB_CUSTOMER_DETAIL;
 
@@ -327,7 +321,7 @@
 
     drop table if exists TB_MODULE_LOG;
 
-    drop table if exists TB_PMS_COMPLAINT;
+    drop table if exists TB_PMS_WORK_ORDER;
 
     drop table if exists TB_PRIVILEGE;
 
@@ -367,7 +361,13 @@
 
     drop table if exists TB_WORK_ITEM;
 
-    drop table if exists TB__AGREEMENT_INVOICE;
+    drop table if exists TB_WORK_ORDER;
+
+    drop table if exists TB_WORK_ORDER_ASSIGNMENT;
+
+    drop table if exists TB_WORK_ORDER_EQUIPMENT;
+
+    drop table if exists TB_WORK_ORDER_RESOLUTION;
 
     create table QUESTIONNNAIRE_ANSWER_OPTION (
         OPTION_ID bigint not null auto_increment,
@@ -429,6 +429,18 @@
         primary key (AGREEMENT_DURATION_ID)
     );
 
+    create table TB_AGREEMENT_INVOICE (
+        AGREEMENT_INVOICE_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        AGREEMENT_ID bigint,
+        INVOICE_ID bigint,
+        Client_Id bigint,
+        primary key (AGREEMENT_INVOICE_ID)
+    );
+
     create table TB_CLIENT_MASTER (
         CLIENT_ID bigint not null auto_increment,
         ADDRESS varchar(255),
@@ -451,45 +463,6 @@
         WORKITEM_ID bigint,
         Client_Id bigint,
         primary key (COMMENT_ID)
-    );
-
-    create table TB_COMPLAINT_ASSIGNMENT (
-        COMPLAINT_ID bigint not null,
-        CREATED_BY varchar(255),
-        CREATED_ON datetime,
-        UPDATED_BY varchar(255),
-        UPDATED_ON datetime,
-        Client_Id bigint,
-        USER_ID bigint,
-        primary key (COMPLAINT_ID)
-    );
-
-    create table TB_COMPLAINT_EQUIPMENT (
-        COMPLAINT_EQUIPMENT_ID bigint not null auto_increment,
-        COMPLAINT_ID bigint,
-        IS_DELETED bit,
-        EQUIPMENT_DTL_ID bigint,
-        INSTALLATION_DATE date,
-        INVOICE_NO bigint,
-        SERIAL_NO varchar(255),
-        TYPE varchar(255),
-        IS_UNDER_WARRANTY bit,
-        UNIT_ID bigint,
-        WARRANTY_UNDER varchar(255),
-        EQUIPMENT_ID bigint,
-        primary key (COMPLAINT_EQUIPMENT_ID)
-    );
-
-    create table TB_COMPLAINT_RESOLUTION (
-        COMPLAINT_ID bigint not null,
-        CREATED_BY varchar(255),
-        CREATED_ON datetime,
-        UPDATED_BY varchar(255),
-        UPDATED_ON datetime,
-        DESCRIPTION varchar(255),
-        Client_Id bigint,
-        RESOLUTION_ID bigint,
-        primary key (COMPLAINT_ID)
     );
 
     create table TB_CONFIG (
@@ -515,32 +488,6 @@
         EMAIL_ID varchar(255),
         Client_Id bigint,
         primary key (CONTACT_ID)
-    );
-
-    create table TB_CUSTOMER_COMPLAINT (
-        COMPLAINT_ID bigint not null auto_increment,
-        CREATED_BY varchar(255),
-        CREATED_ON datetime,
-        UPDATED_BY varchar(255),
-        UPDATED_ON datetime,
-        ALTERNATE_MOBILE_NO varchar(255),
-        COMPLAINT_CODE varchar(255),
-        CONTACT_NO varchar(255),
-        CONTACT_PERSON varchar(255),
-        CUSTOMER_CODE varchar(255),
-        CUSTOMER_ID bigint,
-        CUSTOMER_NAME varchar(255),
-        DESCRIPTION varchar(255),
-        EMAIL_ID varchar(255),
-        LANDLINE_NO varchar(255),
-        PARENT_COMPLAINT_ID bigint,
-        PRIORITY varchar(255),
-        SLA_DATE datetime,
-        STATUS varchar(255),
-        Client_Id bigint,
-        ISSUE_ID bigint,
-        UNIT_ID bigint,
-        primary key (COMPLAINT_ID)
     );
 
     create table TB_CUSTOMER_DETAIL (
@@ -607,7 +554,7 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
-        INSTALLATION_DATE date,
+        INSTALLATION_DATE datetime,
         INVOICE_NO bigint,
         SERIAL_NO varchar(255),
         TYPE varchar(255),
@@ -712,11 +659,11 @@
         primary key (id)
     );
 
-    create table TB_PMS_COMPLAINT (
-        PMS_COMPLAINT_ID bigint not null auto_increment,
-        COMPLAINT_ID bigint,
+    create table TB_PMS_WORK_ORDER (
+        PMS_WORK_ORDER_ID bigint not null auto_increment,
+        WORK_ORDER_ID bigint,
         WORKITEM_ID bigint,
-        primary key (PMS_COMPLAINT_ID)
+        primary key (PMS_WORK_ORDER_ID)
     );
 
     create table TB_PRIVILEGE (
@@ -977,16 +924,70 @@
         primary key (WORKITEM_ID)
     );
 
-    create table TB__AGREEMENT_INVOICE (
-        AGREEMENT_INVOICE_ID bigint not null auto_increment,
+    create table TB_WORK_ORDER (
+        WORK_ORDER_ID bigint not null auto_increment,
         CREATED_BY varchar(255),
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
-        AGREEMENT_ID bigint,
-        INVOICE_ID bigint,
+        ALTERNATE_MOBILE_NO varchar(255),
+        CONTACT_NO varchar(255),
+        CONTACT_PERSON varchar(255),
+        CUSTOMER_CODE varchar(255),
+        CUSTOMER_ID bigint,
+        CUSTOMER_NAME varchar(255),
+        DESCRIPTION varchar(255),
+        EMAIL_ID varchar(255),
+        LANDLINE_NO varchar(255),
+        PARENT_COMPLAINT_ID bigint,
+        PRIORITY varchar(255),
+        SLA_DATE datetime,
+        STATUS varchar(255),
+        WORK_ORDER_NO varchar(255),
+        WORK_ORDER_TYPE varchar(255),
         Client_Id bigint,
-        primary key (AGREEMENT_INVOICE_ID)
+        ISSUE_ID bigint,
+        UNIT_ID bigint,
+        primary key (WORK_ORDER_ID)
+    );
+
+    create table TB_WORK_ORDER_ASSIGNMENT (
+        WORK_ORDER_ID bigint not null,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        Client_Id bigint,
+        USER_ID bigint,
+        primary key (WORK_ORDER_ID)
+    );
+
+    create table TB_WORK_ORDER_EQUIPMENT (
+        WORK_ORDER_EQUIPMENT_ID bigint not null auto_increment,
+        IS_DELETED bit,
+        EQUIPMENT_DTL_ID bigint,
+        INSTALLATION_DATE date,
+        INVOICE_NO bigint,
+        SERIAL_NO varchar(255),
+        TYPE varchar(255),
+        IS_UNDER_WARRANTY bit,
+        UNIT_ID bigint,
+        WARRANTY_UNDER varchar(255),
+        WORK_ORDER_ID bigint,
+        EQUIPMENT_ID bigint,
+        primary key (WORK_ORDER_EQUIPMENT_ID)
+    );
+
+    create table TB_WORK_ORDER_RESOLUTION (
+        WORK_ORDER_ID bigint not null,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        DESCRIPTION varchar(255),
+        Client_Id bigint,
+        RESOLUTION_ID bigint,
+        primary key (WORK_ORDER_ID)
     );
 
     alter table TB_CUSTOMER_DETAIL 
@@ -1022,6 +1023,11 @@
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 
+    alter table TB_AGREEMENT_INVOICE 
+        add constraint FK_r3pkhmiil3a81x6nsjhovna2l 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
     alter table TB_COMMENT 
         add constraint FK_2a6hdwvdyrou7hjk59lmgok04 
         foreign key (Client_Id) 
@@ -1032,41 +1038,6 @@
         foreign key (WORKITEM_ID) 
         references TB_WORK_ITEM (WORKITEM_ID);
 
-    alter table TB_COMPLAINT_ASSIGNMENT 
-        add constraint FK_efy1rj6xyhvfpslvetcmak7cv 
-        foreign key (Client_Id) 
-        references TB_CLIENT_MASTER (CLIENT_ID);
-
-    alter table TB_COMPLAINT_ASSIGNMENT 
-        add constraint FK_j3o67txjumuedjphkx9f7xlf2 
-        foreign key (USER_ID) 
-        references TB_USER (USER_ID);
-
-    alter table TB_COMPLAINT_ASSIGNMENT 
-        add constraint FK_nuwbb7pohotx6gbai57ly13f8 
-        foreign key (COMPLAINT_ID) 
-        references TB_CUSTOMER_COMPLAINT (COMPLAINT_ID);
-
-    alter table TB_COMPLAINT_EQUIPMENT 
-        add constraint FK_6fjq83hiqier4rf46p7mjlmnv 
-        foreign key (EQUIPMENT_ID) 
-        references TB_EQUIPMENT_MASTER (EQUIPMENT_ID);
-
-    alter table TB_COMPLAINT_RESOLUTION 
-        add constraint FK_b7c34492wmue9o8hovw0y4361 
-        foreign key (Client_Id) 
-        references TB_CLIENT_MASTER (CLIENT_ID);
-
-    alter table TB_COMPLAINT_RESOLUTION 
-        add constraint FK_d7cm5awc490s4lnensj6uvdid 
-        foreign key (RESOLUTION_ID) 
-        references TB_RESOLUTION_MASTER (RESOLUTION_ID);
-
-    alter table TB_COMPLAINT_RESOLUTION 
-        add constraint FK_n33dxsve4d1x71cfm46fxjjl1 
-        foreign key (COMPLAINT_ID) 
-        references TB_CUSTOMER_COMPLAINT (COMPLAINT_ID);
-
     alter table TB_CONFIG 
         add constraint FK_bu8i693dhiy4sbl9tucpiwfht 
         foreign key (Client_Id) 
@@ -1076,21 +1047,6 @@
         add constraint FK_l20ivw566rigcc8o90gloybi0 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
-
-    alter table TB_CUSTOMER_COMPLAINT 
-        add constraint FK_n124pnn94fdds0dcr8faj05aw 
-        foreign key (Client_Id) 
-        references TB_CLIENT_MASTER (CLIENT_ID);
-
-    alter table TB_CUSTOMER_COMPLAINT 
-        add constraint FK_ivbs4lvovumsgq6p8xi6eokpj 
-        foreign key (ISSUE_ID) 
-        references TB_ISSUE_MASTER (ISSUE_ID);
-
-    alter table TB_CUSTOMER_COMPLAINT 
-        add constraint FK_5swkjwe8343mp2aghxtbj9hvs 
-        foreign key (UNIT_ID) 
-        references TB_UNIT_DETAIL (UNIT_ID);
 
     alter table TB_CUSTOMER_DETAIL 
         add constraint FK_tljo0rst9x21wgr6b980g1vuf 
@@ -1332,7 +1288,52 @@
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 
-    alter table TB__AGREEMENT_INVOICE 
-        add constraint FK_al7xrotox8lkfq7l7pxv4m517 
+    alter table TB_WORK_ORDER 
+        add constraint FK_pg0nvhuhq1k9mak0i02knhf70 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_WORK_ORDER 
+        add constraint FK_4xyromgsudnejcy4kdvos2ahp 
+        foreign key (ISSUE_ID) 
+        references TB_ISSUE_MASTER (ISSUE_ID);
+
+    alter table TB_WORK_ORDER 
+        add constraint FK_bpf3qp8h0td0ti2xca9necf7l 
+        foreign key (UNIT_ID) 
+        references TB_UNIT_DETAIL (UNIT_ID);
+
+    alter table TB_WORK_ORDER_ASSIGNMENT 
+        add constraint FK_11jy07bdvlttgq2aok2bekxfb 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_WORK_ORDER_ASSIGNMENT 
+        add constraint FK_6ykvvbh3wbg02ho7d7brqg698 
+        foreign key (USER_ID) 
+        references TB_USER (USER_ID);
+
+    alter table TB_WORK_ORDER_ASSIGNMENT 
+        add constraint FK_d3x31wehaioewoy4bwm1ry89f 
+        foreign key (WORK_ORDER_ID) 
+        references TB_WORK_ORDER (WORK_ORDER_ID);
+
+    alter table TB_WORK_ORDER_EQUIPMENT 
+        add constraint FK_r6qvnp0hom43d263ailps40uv 
+        foreign key (EQUIPMENT_ID) 
+        references TB_EQUIPMENT_MASTER (EQUIPMENT_ID);
+
+    alter table TB_WORK_ORDER_RESOLUTION 
+        add constraint FK_63iljwsxnoe9i56ha19u9wiwv 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_WORK_ORDER_RESOLUTION 
+        add constraint FK_m770l0t4rcfpg0hokqr8gkuic 
+        foreign key (RESOLUTION_ID) 
+        references TB_RESOLUTION_MASTER (RESOLUTION_ID);
+
+    alter table TB_WORK_ORDER_RESOLUTION 
+        add constraint FK_pkycjo4sm79kambypsg1sn6m1 
+        foreign key (WORK_ORDER_ID) 
+        references TB_WORK_ORDER (WORK_ORDER_ID);

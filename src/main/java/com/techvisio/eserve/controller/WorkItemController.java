@@ -53,7 +53,7 @@ public class WorkItemController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);		
 	}
 	
-	@RequestMapping(value="/savecomment/", method = RequestMethod.POST)
+	@RequestMapping(value="/comment/", method = RequestMethod.POST)
 	public ResponseEntity<Response> saveUnit(@RequestBody GenericRequest<WorkItem> request) {  
 		Response response=new Response();
 		List<Comment> commentList = workItemService.saveComment(request);
@@ -61,10 +61,26 @@ public class WorkItemController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
-	@RequestMapping(value="/getcomment/{workItemId}",method = RequestMethod.GET)
+	@RequestMapping(value="/comment/{workItemId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getCommentList(@PathVariable Long workItemId) {  
 		Response response=new Response();
 		List<Comment> comment = workItemService.getCommentList(workItemId);
+		response.setResponseBody(comment);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/unitworkitem/{entityId}",method = RequestMethod.GET)
+	public ResponseEntity<Response> getUnitWorkItemsByEntityIdAndEntityType(@PathVariable Long entityId) {  
+		Response response=new Response();
+		List<WorkItem> workItems = workItemService.getUnitWorkItemsByEntityIdAndEntityType(entityId);
+		response.setResponseBody(workItems);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+
+	@RequestMapping(value="/latestcomment/{entityId}/{entityType}/{commentType}",method = RequestMethod.GET)
+	public ResponseEntity<Response> getLatestCommentBycommentType(@PathVariable Long entityId, @PathVariable String entityType, @PathVariable String commentType) {  
+		Response response=new Response();
+		Comment comment = workItemService.getLatestCommentBycommentType(entityId, entityType, commentType);
 		response.setResponseBody(comment);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

@@ -16,6 +16,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import com.techvisio.eserve.util.AppConstants;
+
 @Entity
 @Table(name = "TB_SERVICE_AGREEMENT_HISTORY")
 public class ServiceAgreementHistory extends BasicEntity{
@@ -70,7 +72,7 @@ public class ServiceAgreementHistory extends BasicEntity{
 
 		try {
 			
-			DateFormat outputFormatter = new SimpleDateFormat("MM/dd/yyyy");
+			DateFormat outputFormatter = new SimpleDateFormat(AppConstants.DateFormat.MM_dd_yyyy.getPattern());
 			String startDateString = outputFormatter.format(this.startDate);
 			return startDateString;
 
@@ -91,7 +93,7 @@ public class ServiceAgreementHistory extends BasicEntity{
 			return null;
 
 		try {
-			DateFormat outputFormatter = new SimpleDateFormat("MM/dd/yyyy");
+			DateFormat outputFormatter = new SimpleDateFormat(AppConstants.DateFormat.MM_dd_yyyy.getPattern());
 			String endDateString = outputFormatter.format(this.endDate);
 			return endDateString;
 

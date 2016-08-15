@@ -1,29 +1,26 @@
 package com.techvisio.eserve.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.ComplaintAssignment;
-import com.techvisio.eserve.beans.ComplaintEquipment;
-import com.techvisio.eserve.beans.ComplaintResolution;
+import com.techvisio.eserve.beans.WorkOrderAssignment;
+import com.techvisio.eserve.beans.WorkOrderEquipment;
+import com.techvisio.eserve.beans.WorkOrderResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
 import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.beans.EntityLocks;
 import com.techvisio.eserve.beans.EquipmentDetail;
-import com.techvisio.eserve.beans.PmsComplaint;
-import com.techvisio.eserve.beans.SearchComplaint;
+import com.techvisio.eserve.beans.PmsWorkOrder;
+import com.techvisio.eserve.beans.SearchWorkOrder;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
@@ -32,10 +29,9 @@ import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkItem;
 import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.factory.WorkItemFactory;
-import com.techvisio.eserve.manager.CacheManager;
-import com.techvisio.eserve.manager.ComplaintManager;
+import com.techvisio.eserve.manager.WorkOrderManager;
 import com.techvisio.eserve.manager.impl.ClientConfiguration;
-import com.techvisio.eserve.service.ComplaintService;
+import com.techvisio.eserve.service.WorkOrderService;
 import com.techvisio.eserve.service.CustomerService;
 import com.techvisio.eserve.service.EntityLockService;
 import com.techvisio.eserve.service.WorkItemService;
@@ -44,10 +40,10 @@ import com.techvisio.eserve.util.CommonUtil;
 
 @Component
 @Transactional
-public class ComplaintServiceImpl implements ComplaintService{
+public class WorkOrderServiceImpl implements WorkOrderService{
 
 	@Autowired
-	ComplaintManager complaintManager;
+	WorkOrderManager workOrderManager;
 
 	@Autowired
 	EntityLockService entityLockService;
@@ -61,107 +57,109 @@ public class ComplaintServiceImpl implements ComplaintService{
 	@Autowired
 	WorkItemService workItemService;
 
-
 	@Override
-	public Long saveComplaint(CustomerComplaint customerComplaint) {
+	public Long saveWorkOrder(WorkOrder workOrder) {
 
 		String userName = CommonUtil.getCurrentUser().getUserName();
-		if(customerComplaint.getComplaintId()!=null){
-			boolean isEntityLocked=entityLockService.isEntityLocked(customerComplaint.getComplaintId(), AppConstants.EntityType.COMPLAINT.toString(), userName);
-			if(isEntityLocked){
+		if(workOrder.getWorkOrderId()!=null){
+			boolean isEntityLocked=entityLockService.isEntityLocked(workOrder.getWorkOrderId(), AppConstants.EntityType.COMPLAINT.toString(), userName);
+			if(!isEntityLocked){
 				throw new EntityLockedException("Current user does not hold lock for this complaint");
 			}
 		}
-
-		Long complaintId = complaintManager.saveComplaint(customerComplaint);		
-		return complaintId;
+		if(workOrder.getWorkOrderType()==null){
+			workOrder.setWorkOrderType("Complaint");
+		}
+		Long workOrderId = workOrderManager.saveWorkOrder(workOrder);		
+		return workOrderId;
 	}
 
 	@Override
-	public CustomerComplaint getCustomerComplaint(Long complaintId) {
-		CustomerComplaint customerComplaint = complaintManager.getCustomerComplaint(complaintId);
-		EntityLocks entityLocks  = entityLockService.getEntity(complaintId, AppConstants.EntityType.COMPLAINT.toString());
+	public WorkOrder getWorkOrder(Long workOrderId) {
+		WorkOrder workOrder = workOrderManager.getWorkOrder(workOrderId);
+		EntityLocks entityLocks  = entityLockService.getEntity(workOrderId, AppConstants.EntityType.COMPLAINT.toString());
 		if(entityLocks!=null){
-			customerComplaint.setEdited(true);
+			workOrder.setEdited(true);
 		}
 		else{
-			customerComplaint.setEdited(false);
+			workOrder.setEdited(false);
 		}
-		return customerComplaint;
+		return workOrder;
 	}
 
 	@Override
 	public Customer getCustomerBasicInfo(Long customerId) {
-		Customer customer =  complaintManager.getCustomerBasicInfo(customerId);
+		Customer customer =  workOrderManager.getCustomerBasicInfo(customerId);
 		return customer;
 	}
 
 	@Override
 	public Unit getUnitBasicInfo(Long unitId) {
-		Unit unit = complaintManager.getUnitBasicInfo(unitId);
+		Unit unit = workOrderManager.getUnitBasicInfo(unitId);
 		return unit;
 	}
 
 	@Override
-	public List<CustomerComplaint> getCustomerComplaints(Long customerId) {
-		List<CustomerComplaint> complaints = complaintManager.getCustomerComplaints(customerId);
-		return complaints;
+	public List<WorkOrder> getWorkOrders(Long workOrderId) {
+		List<WorkOrder> workOrders = workOrderManager.getWorkOrders(workOrderId);
+		return workOrders;
 	}
 
 	@Override
-	public void saveComplaintResolution(Long complaintId,
-			ComplaintResolution complaintResolution) {
-		complaintManager.saveComplaintResolution(complaintId, complaintResolution);
+	public void saveWorkOrderResolution(Long workOrderId,
+			WorkOrderResolution workOrderResolution) {
+		workOrderManager.saveWorkOrderResolution(workOrderId, workOrderResolution);
 	}
 
 	@Override
-	public ComplaintResolution getComplaintResolution(Long complaintId) {
-		ComplaintResolution complaintResolution = complaintManager.getComplaintResolution(complaintId);
-		return complaintResolution;
+	public WorkOrderResolution getWorkOrderResolution(Long workOrderId) {
+		WorkOrderResolution workOrderResolution = workOrderManager.getWorkOrderResolution(workOrderId);
+		return workOrderResolution;
 	}
 
 	@Override
-	public void saveComplaintAssignment(Long complaintId,
-			ComplaintAssignment complaintAssignment) {
-		complaintManager.saveComplaintAssignment(complaintId, complaintAssignment);
+	public void saveWorkOrderAssignment(Long workOrderId,
+			WorkOrderAssignment workOrderAssignment) {
+		workOrderManager.saveWorkOrderAssignment(workOrderId, workOrderAssignment);
 
 	}
 
 	@Override
-	public ComplaintAssignment getComplaintAssignment(Long complaintId) {
-		ComplaintAssignment assignment = complaintManager.getComplaintAssignment(complaintId);
+	public WorkOrderAssignment getWorkOrderAssignment(Long workOrderId) {
+		WorkOrderAssignment assignment = workOrderManager.getWorkOrderAssignment(workOrderId);
 		return assignment;
 	}
 
 	@Override
 	public List<SearchComplaintCustomer> getCustomerForComplaintByCriteria(
 			SearchCriteria searchCriteria) {
-		List<SearchComplaintCustomer> complaintCustomers = complaintManager.getCustomerForComplaintByCriteria(searchCriteria);
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		List<SearchComplaintCustomer> complaintCustomers = workOrderManager.getCustomerForComplaintByCriteria(searchCriteria, clientId);
 		return complaintCustomers;
 	}
 
 	@Override
 	public List<SearchComplaintUnit> getSearchUnitByCustomerId(Long customerId) {
-		List<SearchComplaintUnit> complaintUnits = complaintManager.getSearchUnitByCustomerId(customerId);
+		List<SearchComplaintUnit> complaintUnits = workOrderManager.getSearchUnitByCustomerId(customerId);
 		return complaintUnits;
 	}
 
 	@Override
-	public List<SearchComplaint> getComplaintSearchByUnitId(Long unitId) {
-		List<SearchComplaint> complaints = complaintManager.getComplaintSearchByUnitId(unitId);
-		return complaints;
+	public List<SearchWorkOrder> getComplaintSearchByUnitId(Long unitId) {
+		List<SearchWorkOrder> searchWorkOrders = workOrderManager.getComplaintSearchByUnitId(unitId);
+		return searchWorkOrders;
 	}
 
 	@Override
-	public List<CustomerComplaint> getAllComplaintsForUnit(Long unitId) {
-		List<CustomerComplaint> complaints= complaintManager.getAllComplaintsForUnit(unitId);
+	public List<WorkOrder> getAllComplaintsForUnit(Long unitId) {
+		List<WorkOrder> complaints= workOrderManager.getAllComplaintsForUnit(unitId);
 		return complaints;
 	}
 
 	@Override
 	public List<ComplaintSearchData> getComplaintDataforDashboard(String type,String code) {
 		Long clientId=CommonUtil.getCurrentClient().getClientId();
-		List<ComplaintSearchData> complaints= complaintManager.getComplaintDataforDashboard( clientId,type,code);
+		List<ComplaintSearchData> complaints= workOrderManager.getComplaintDataforDashboard( clientId,type,code);
 		return complaints;
 	}
 
@@ -182,8 +180,8 @@ public class ComplaintServiceImpl implements ComplaintService{
 	}
 
 	private void saveComplaintEquipment(EquipmentDetail equipmentDetail, Long complaintId) {
-		ComplaintEquipment complaintEquipment = new ComplaintEquipment();
-		complaintEquipment.setComplaintId(complaintId);
+		WorkOrderEquipment complaintEquipment = new WorkOrderEquipment();
+		complaintEquipment.setWorkOrderId(complaintId);
 		complaintEquipment.setEquipment(equipmentDetail.getEquipment());
 		complaintEquipment.setEquipmentDtlId(equipmentDetail.getEquipmentDtlId());
 		complaintEquipment.setInstallationDate(equipmentDetail.getInstallationDate());
@@ -199,7 +197,7 @@ public class ComplaintServiceImpl implements ComplaintService{
 			complaintEquipment.setDeleted(true);
 		}
 
-		complaintManager.saveComplaintEquipments(complaintEquipment);
+		workOrderManager.saveWorkOrderEquipments(complaintEquipment);
 	}
 
 	@Override
@@ -209,21 +207,21 @@ public class ComplaintServiceImpl implements ComplaintService{
 	}
 
 	@Override
-	public void saveComplaintEquipments(ComplaintEquipment complaintEquipment) {
-		complaintManager.saveComplaintEquipments(complaintEquipment);
+	public void saveWorkOrderEquipments(WorkOrderEquipment orderEquipment) {
+		workOrderManager.saveWorkOrderEquipments(orderEquipment);
 
 	}
 
-//	@Override
-//	public Long saveUnit(Unit unit) {
-//		Long unitId = customerService.saveUnit(unit);
-//		return unitId;
-//	}
+	//	@Override
+	//	public Long saveUnit(Unit unit) {
+	//		Long unitId = customerService.saveUnit(unit);
+	//		return unitId;
+	//	}
 
 	@Override
-	public List<ComplaintEquipment> getComplaintEquipments(Long complaintId) {
-		List<ComplaintEquipment> complaintEquipments = complaintManager.getComplaintEquipments(complaintId);
-		return complaintEquipments;
+	public List<WorkOrderEquipment> getWorkOrderEquipments(Long workOrderId) {
+		List<WorkOrderEquipment> workOrderEquipments = workOrderManager.getWorkOrderEquipments(workOrderId);
+		return workOrderEquipments;
 	}
 
 	@Override
@@ -280,32 +278,33 @@ public class ComplaintServiceImpl implements ComplaintService{
 	}
 
 	@Override
-	public CustomerComplaint createComplaintByPms(Long workitemId, UnitBasicInfo basicInfo){
-		PmsComplaint pmsComplaint = complaintManager.getPmsComplaint(workitemId);
-		CustomerComplaint complaintFromDB = null;
-		if(pmsComplaint == null){
+	public WorkOrder createWorkOrderByPms(Long workitemId, UnitBasicInfo basicInfo){
+		PmsWorkOrder pmsWorkOrder = workOrderManager.getPmsWorkOrder(workitemId);
+		WorkOrder workOrderFromDB = null;
+		if(pmsWorkOrder == null){
 
-			CustomerComplaint complaint = new CustomerComplaint();
-			complaint.setContactNo(basicInfo.getContactNo());
-			complaint.setCustomerCode(basicInfo.getCustomerCode());
-			complaint.setCustomerId(basicInfo.getCustomerId());
-			complaint.setCustomerName(basicInfo.getCustomerName());
-			complaint.setEmailId(basicInfo.getEmailId());
-			complaint.setStatus("DRAFT");
+			WorkOrder workOrder = new WorkOrder();
+			workOrder.setContactNo(basicInfo.getContactNo());
+			workOrder.setCustomerCode(basicInfo.getCustomerCode());
+			workOrder.setCustomerId(basicInfo.getCustomerId());
+			workOrder.setCustomerName(basicInfo.getCustomerName());
+			workOrder.setEmailId(basicInfo.getEmailId());
+			workOrder.setWorkOrderType("PMS");
+			workOrder.setStatus("DRAFT");
 			Unit unit = customerService.getUnitById(basicInfo.getUnitId());
-			complaint.setUnit(unit);
-			Long complaintId = complaintManager.saveComplaint(complaint);
+			workOrder.setUnit(unit);
+			Long workOrderId = workOrderManager.saveWorkOrder(workOrder);
 
-			pmsComplaint = new PmsComplaint();
-			pmsComplaint.setWorkitemId(workitemId);
-			pmsComplaint.setComplaintId(complaintId);
-			complaintManager.createPmsComplaint(pmsComplaint);
-			complaintFromDB = complaintManager.getCustomerComplaint(complaintId);
-			return complaintFromDB;
+			pmsWorkOrder = new PmsWorkOrder();
+			pmsWorkOrder.setWorkitemId(workitemId);
+			pmsWorkOrder.setWorkOrderId(workOrderId);
+			workOrderManager.createPmsComplaint(pmsWorkOrder);
+			workOrderFromDB = workOrderManager.getWorkOrder(workOrderId);
+			return workOrderFromDB;
 		}
 
-		complaintFromDB = complaintManager.getCustomerComplaint(pmsComplaint.getComplaintId());
-		return complaintFromDB;
+		workOrderFromDB = workOrderManager.getWorkOrder(pmsWorkOrder.getWorkOrderId());
+		return workOrderFromDB;
 	}
 
 }

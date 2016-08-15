@@ -52,7 +52,7 @@ workItemModule.service('workItemService', function($http, $q) {
 		console.log('save comment');
 		var request = $http({
 			method : "post",
-			url : "../service/workitem/savecomment/",
+			url : "../service/workitem/comment/",
 			params : "",
 			data: genericRequest
 
@@ -65,7 +65,7 @@ workItemModule.service('workItemService', function($http, $q) {
 
 		var request = $http({
 			method : "get",
-			url : "../service/workitem/getcomment/" + workItemId,
+			url : "../service/workitem/comment/" + workItemId,
 			params : {
 				action : "get"
 			}

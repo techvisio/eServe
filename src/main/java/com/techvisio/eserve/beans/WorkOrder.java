@@ -23,15 +23,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.techvisio.eserve.util.AppConstants;
 
 @Entity
-@Table(name = "TB_CUSTOMER_COMPLAINT")
-public class CustomerComplaint extends BasicEntity{
+@Table(name = "TB_WORK_ORDER")
+public class WorkOrder extends BasicEntity{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="COMPLAINT_ID")
-	private Long complaintId;
-	@Column(name="COMPLAINT_CODE")
-	private String complaintCode;
+	@Column(name="WORK_ORDER_ID")
+	private Long workOrderId;
+	@Column(name="WORK_ORDER_NO")
+	private String workOrderNo;
+	@Column(name="WORK_ORDER_TYPE")
+	private String workOrderType;
 	@Column(name="PARENT_COMPLAINT_ID")
 	private Long parentComplaintId;
 	@Column(name="CUSTOMER_ID")
@@ -65,12 +67,12 @@ public class CustomerComplaint extends BasicEntity{
 	private String slaDateString;
 
 	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "customerComplaint", fetch = FetchType.LAZY)
-	private ComplaintResolution complaintResolution;
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "workOrder", fetch = FetchType.LAZY)
+	private WorkOrderResolution workOrderResolution;
 
 	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "customerComplaint", fetch = FetchType.LAZY)
-	private ComplaintAssignment complaintAssignment;
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "workOrder", fetch = FetchType.LAZY)
+	private WorkOrderAssignment workOrderAssignment;
 
 	@OneToOne(fetch=FetchType.EAGER )
 	@JoinColumn(name="UNIT_ID")
@@ -79,11 +81,11 @@ public class CustomerComplaint extends BasicEntity{
 	@Transient
 	private boolean edited = false;
 	
-	public Long getComplaintId() {
-		return complaintId;
+	public Long getWorkOrderId() {
+		return workOrderId;
 	}
-	public void setComplaintId(Long complaintId) {
-		this.complaintId = complaintId;
+	public void setWorkOrderId(Long workOrderId) {
+		this.workOrderId = workOrderId;
 	}
 	public String getCustomerCode() {
 		return customerCode;
@@ -122,7 +124,6 @@ public class CustomerComplaint extends BasicEntity{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public Unit getUnit() {
 		return unit;
 	}
@@ -142,11 +143,11 @@ public class CustomerComplaint extends BasicEntity{
 		this.status = status;
 	}
 	@JsonProperty
-	public ComplaintResolution getComplaintResolution() {
-		return complaintResolution;
+	public WorkOrderResolution getWorkOrderResolution() {
+		return workOrderResolution;
 	}
-	public void setComplaintResolution(ComplaintResolution complaintResolution) {
-		this.complaintResolution = complaintResolution;
+	public void setWorkOrderResolution(WorkOrderResolution workOrderResolution) {
+		this.workOrderResolution = workOrderResolution;
 	}
 	public Long getParentComplaintId() {
 		return parentComplaintId;
@@ -155,11 +156,11 @@ public class CustomerComplaint extends BasicEntity{
 		this.parentComplaintId = parentComplaintId;
 	}
 	@JsonProperty
-	public ComplaintAssignment getComplaintAssignment() {
-		return complaintAssignment;
+	public WorkOrderAssignment getWorkOrderAssignment() {
+		return workOrderAssignment;
 	}
-	public void setComplaintAssignment(ComplaintAssignment complaintAssignment) {
-		this.complaintAssignment = complaintAssignment;
+	public void setWorkOrderAssignment(WorkOrderAssignment workOrderAssignment) {
+		this.workOrderAssignment = workOrderAssignment;
 	}
 	public String getPriority() {
 		return priority;
@@ -196,12 +197,6 @@ public class CustomerComplaint extends BasicEntity{
 			this.slaDate = parser2.parseDateTime(slaDateString).toDate();
 		}
 	}
-	public String getComplaintCode() {
-		return complaintCode;
-	}
-	public void setComplaintCode(String complaintCode) {
-		this.complaintCode = complaintCode;
-	}
 	public String getContactPerson() {
 		return contactPerson;
 	}
@@ -225,6 +220,18 @@ public class CustomerComplaint extends BasicEntity{
 	}
 	public void setEdited(boolean edited) {
 		this.edited = edited;
+	}
+	public String getWorkOrderType() {
+		return workOrderType;
+	}
+	public void setWorkOrderType(String workOrderType) {
+		this.workOrderType = workOrderType;
+	}
+	public String getWorkOrderNo() {
+		return workOrderNo;
+	}
+	public void setWorkOrderNo(String workOrderNo) {
+		this.workOrderNo = workOrderNo;
 	}
 
 }

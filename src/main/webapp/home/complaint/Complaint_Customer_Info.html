@@ -8,7 +8,7 @@
 				<div class="form-group">
 					<label class="form-label" for="formfield9">Customer Name</label>
 					<div class="controls">
-						<input class="form-control" type="text" ng-model="customerComplaint.customerName" disabled>
+						<input class="form-control" type="text" ng-model="workOrder.customerName" disabled>
 					</div>
 				</div>
 			</div>
@@ -53,7 +53,7 @@
 					<label class="form-label" for="formfield9">Location</label>
 
 					<div class="controls">
-						<input class="form-control" type="text" ng-model="customerComplaint.unit.address.city"/>
+						<input class="form-control" type="text" ng-model="workOrder.unit.address.city"/>
 					</div>
 				</div>
 			</div>
@@ -79,7 +79,7 @@
 					<label class="form-label" for="formfield9">Address</label>
 
 					<div class="controls">
-						<input class="form-control" type="text" ng-model="customerComplaint.unit.address.address"/>
+						<input class="form-control" type="text" ng-model="workOrder.unit.address.address"/>
 					</div>
 				</div>
 			</div>
@@ -94,7 +94,7 @@
 					<label class="form-label" for="formfield9">Mobile No</label>
 					<div class="controls">
 						<input class="form-control" type="text"
-					ng-model="customerComplaint.contactNo" required="required"
+					ng-model="workOrder.contactNo" required="required"
 					ng-click="resetAlert()"
 					ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/"  />
 					</div>

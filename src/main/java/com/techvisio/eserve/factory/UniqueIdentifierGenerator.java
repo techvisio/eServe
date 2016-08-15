@@ -1,7 +1,7 @@
 package com.techvisio.eserve.factory;
 
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.beans.Unit;
 
 public interface UniqueIdentifierGenerator {
@@ -10,6 +10,6 @@ public interface UniqueIdentifierGenerator {
 
     public String getUniqueIdentifierForUnit(Unit unit);
 
-	public String getUniqueIdentifierForComplaint(CustomerComplaint customerComplaint);	
+	public String getUniqueIdentifierForComplaint(WorkOrder customerComplaint);	
 
 }

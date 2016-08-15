@@ -121,11 +121,17 @@ workItemModule
 								 if (response) {
 									 $scope.workitem.comments = response;
 									 $rootScope.curModal.close();
-									 alert("Comment Saved Successfully")
+									 alert("Comment Saved Successfully");
+									 $scope.redirectToworkItemScreen($scope.workitem.workItemId);
 								 } 
 							 })
 						 };
 
+						 $scope.redirectToworkItemScreen = function(currentWorkitemId){
+								$state.reload('workitem',{workitemId:currentWorkitemId});
+								 
+							}
+						 
 						 $scope.closePopup = function(){
 							 $rootScope.curModal.close();
 						 }

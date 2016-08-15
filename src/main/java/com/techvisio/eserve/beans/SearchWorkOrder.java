@@ -1,10 +1,10 @@
 package com.techvisio.eserve.beans;
 
 
-public class SearchComplaint {
+public class SearchWorkOrder {
 
-	private Long complaintId;
-	private String complaintCode;
+	private Long workOrderId;
+	private String workOrderNo;
 	private String status;
 	private String priority;
 	private String slaDate;
@@ -17,17 +17,17 @@ public class SearchComplaint {
 	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
-	public Long getComplaintId() {
-		return complaintId;
+	public Long getWorkOrderId() {
+		return workOrderId;
 	}
-	public void setComplaintId(Long complaintId) {
-		this.complaintId = complaintId;
+	public void setWorkOrderId(Long workOrderId) {
+		this.workOrderId = workOrderId;
 	}
-	public String getComplaintCode() {
-		return complaintCode;
+	public String getWorkOrderNo() {
+		return workOrderNo;
 	}
-	public void setComplaintCode(String complaintCode) {
-		this.complaintCode = complaintCode;
+	public void setWorkOrderNo(String workOrderNo) {
+		this.workOrderNo = workOrderNo;
 	}
 	public String getStatus() {
 		return status;

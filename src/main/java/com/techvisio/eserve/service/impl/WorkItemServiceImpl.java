@@ -79,9 +79,9 @@ public class WorkItemServiceImpl implements WorkItemService {
 	}
 
 	@Override
-	public List<WorkItem> getWorkItemsByEntityId(Long entityId) {
-		List<WorkItem> workItems = workItemManager
-				.getWorkItemsByEntityId(entityId);
+	public List<WorkItem> getUnitWorkItemsByEntityIdAndEntityType(Long entityId) {
+		String entityType = "UNIT";
+		List<WorkItem> workItems = workItemManager.getWorkItemsByEntityIdAndEntityType(entityId, entityType);
 		return workItems;
 	}
 
@@ -144,7 +144,14 @@ public class WorkItemServiceImpl implements WorkItemService {
 			WorkItemFactory factory = new WorkItemFactory();
 			workItem = factory.getWorkItem(context);
 		}
+		
+		Comment commentFromDB = workItemManager.getLatestCommentBycommentType(unitFromDB.getUnitId(), "UNIT", "Reject");
+		if(commentFromDB!=null){
+			User user = userService	.getUserByUserName(commentFromDB.getCreatedBy());
+			workItem.setAssigneeId(user.getUserId());
+		}
 		Comment unitPublishComment = new Comment();
+		unitPublishComment.setCommentType("Publish");
 		unitPublishComment.setComment(comment);
 		List<Comment> comments = workItem.getComments();
 		comments.add(unitPublishComment);
@@ -187,12 +194,13 @@ public class WorkItemServiceImpl implements WorkItemService {
 						.getWorkType());
 		if(workItems != null && workItems.size()>0){
 			WorkItem workItemFromDB = workItems.get(0);
-			User user = userService
-					.getUserByUserName(workItemFromDB.getUpdatedBy());
+			Comment commentFromDB = workItemManager.getLatestCommentBycommentType(unit.getUnitId(), "UNIT", "Publish");
+			User user = userService	.getUserByUserName(commentFromDB.getCreatedBy());
 			workItemFromDB.setAssigneeId(user.getUserId());
 			workItemFromDB.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
 			Comment rejectionComment = new Comment();
 			rejectionComment.setComment(comment);
+			rejectionComment.setCommentType("Reject");
 			List<Comment> comments = workItemFromDB.getComments();
 			comments.add(rejectionComment);
 			workItemFromDB.setComments(comments);
@@ -249,7 +257,7 @@ public class WorkItemServiceImpl implements WorkItemService {
 		WorkItem workItem = workItemManager.getWorkitemByWorkitemId(workitemId);
 		return workItem;
 	}
-	
+
 	@Override
 	public List<Comment> saveComment(GenericRequest<WorkItem> request){
 		List<Comment> commentList = workItemManager.saveComment(request);
@@ -261,5 +269,12 @@ public class WorkItemServiceImpl implements WorkItemService {
 		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		List<Comment> comments = workItemManager.getCommentList(workItemId, clientId);
 		return comments;
+	}
+
+	@Override
+	public Comment getLatestCommentBycommentType(Long entityId,
+			String entityType, String commentType) {
+		Comment comment = workItemManager.getLatestCommentBycommentType(entityId, entityType, commentType);
+		return comment;
 	}
 }

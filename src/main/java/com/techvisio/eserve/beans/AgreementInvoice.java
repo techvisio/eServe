@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TB__AGREEMENT_INVOICE")
+@Table(name = "TB_AGREEMENT_INVOICE")
 public class AgreementInvoice extends BasicEntity{
 
 	@Id

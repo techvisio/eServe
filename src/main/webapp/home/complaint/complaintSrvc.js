@@ -2,13 +2,13 @@ complaintModule.service('complaintService', function($http, $q) {
 
 	// Return public API.
 	return ({
-		saveComplaint : saveComplaint,
-		updateComplaint : updateComplaint,
+		saveWorkOrder : saveWorkOrder,
+		updateWorkOrder : updateWorkOrder,
 		getCustomerForComplaint : getCustomerForComplaint,
 		getUnitForComplaint : getUnitForComplaint,
-		getCustomerComplaint : getCustomerComplaint,
-		saveComplaintAssignment :saveComplaintAssignment,
-		saveComplaintResolution :saveComplaintResolution,
+		getWorkOrder : getWorkOrder,
+		saveWorkOrderAssignment :saveWorkOrderAssignment,
+		saveWorkOrderResolution :saveWorkOrderResolution,
 		getComplaintByCriteria : getComplaintByCriteria,
 		getSearchUnitByCustomerId : getSearchUnitByCustomerId,
 		getComplaintByUnitId : getComplaintByUnitId,
@@ -17,7 +17,7 @@ complaintModule.service('complaintService', function($http, $q) {
 		unlockEntity : unlockEntity,
 		getEquipments:getEquipments,
 		saveEquipment:saveEquipment,
-		getComplaintEquipment : getComplaintEquipment,
+		getWorkOrderEquipment : getWorkOrderEquipment,
 		deleteEquipments:deleteEquipments,
 	});
 
@@ -36,25 +36,25 @@ complaintModule.service('complaintService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function saveComplaint(customerComplaint){
+	function saveWorkOrder(workOrder){
 		console.log('save complaint call in service');
 		var request = $http({
 			method : "post",
 			url : "../service/complaint",
 			params : "",
-			data: customerComplaint
+			data: workOrder
 
 		});
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function updateComplaint(customerComplaint){
+	function updateWorkOrder(workOrder){
 		console.log('update complaint call in service');
 		var request = $http({
 			method : "put",
 			url : "../service/complaint",
 			params : "",
-			data: customerComplaint
+			data: workOrder
 
 		});
 		return (request.then(handleSuccess, handleError));
@@ -86,12 +86,12 @@ complaintModule.service('complaintService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function getCustomerComplaint(complaintId){
+	function getWorkOrder(workOrderId){
 		console.log('getting customer complaint in service');
 
 		var request = $http({
 			method : "get",
-			url : "../service/complaint/"+complaintId,
+			url : "../service/complaint/"+workOrderId,
 			params : {
 				action : "get"
 			}
@@ -140,25 +140,25 @@ complaintModule.service('complaintService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}	
 
-	function saveComplaintResolution(complaintId,complaintResolution){
-		console.log('save ComplaintResolution call in service');
+	function saveWorkOrderResolution(workOrderId,workOrderResolution){
+		console.log('save workOrderResolution call in service');
 		var request = $http({
 			method : "post",
-			url : "../service/complaint/complaintresolution/"+complaintId,
+			url : "../service/complaint/complaintresolution/"+workOrderId,
 			params : "",
-			data: complaintResolution
+			data: workOrderResolution
 
 		});
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function saveComplaintAssignment(complaintId, complaintAssignment){
-		console.log('save CustomerComplaint call in service');
+	function saveWorkOrderAssignment(workOrderId, workOrderAssignment){
+		console.log('save workOrderAssignment call in service');
 		var request = $http({
 			method : "post",
-			url : "../service/complaint/complaintassignment/"+complaintId,
+			url : "../service/complaint/complaintassignment/"+workOrderId,
 			params : "",
-			data: complaintAssignment
+			data: workOrderAssignment
 
 		});
 		return (request.then(handleSuccess, handleError));
@@ -213,12 +213,12 @@ complaintModule.service('complaintService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 	
-	function getComplaintEquipment(complaintId){
+	function getWorkOrderEquipment(workOrderId){
 		console.log('getting getComplaintEquipment in service');
 
 		var request = $http({
 			method : "get",
-			url : "../service/complaint/complaintequipment/"+complaintId,
+			url : "../service/complaint/complaintequipment/"+workOrderId,
 			params : {
 				action : "get"
 			}

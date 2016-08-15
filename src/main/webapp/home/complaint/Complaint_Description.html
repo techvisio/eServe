@@ -13,7 +13,7 @@
 		<div class="row">
 			<div class="col-md-8 col-sm-12 col-xs-12">
 				<select class="form-control"
-					ng-model="customerComplaint.issue.issueId"
+					ng-model="workOrder.issue.issueId"
 					ng-options="item.issueId*1 as item.value for item in serverModelData.ISSUE"
 					required>
 				</select>
@@ -29,7 +29,7 @@
 		<div class="row">
 			<div class="col-md-8 col-sm-12 col-xs-12">
 				<textarea rows="3" cols="30" class="form-control"
-					ng-model="customerComplaint.description" required></textarea>
+					ng-model="workOrder.description" required></textarea>
 			</div>
 		</div>
 	</div>

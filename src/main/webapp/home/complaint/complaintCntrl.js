@@ -16,10 +16,10 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	$scope.complaintCustomers = [];
 	$scope.customers=[];
 	$scope.searchCriteria = {};
-	$scope.customerComplaint = {};
-	$scope.customerComplaints = [];
-	$scope.complaintResolution={};
-	$scope.complaintAssignment={};
+	$scope.workOrder = {};
+	$scope.workOrders = [];
+	$scope.workOrderResolution={};
+	$scope.workOrderAssignment={};
 	$scope.dummyEquipmentDetails ={};
 	$scope.equipment={};
 	$scope.replaceEquip = false;
@@ -28,7 +28,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 
 	$scope.toggleReadOnly = function(form) {
 
-		if($scope.customerComplaint.edited){
+		if($scope.workOrder.edited){
 			$('#' + form + ' *').attr('readonly',
 					true);
 			$('#' + form + ' select')
@@ -39,7 +39,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			.attr('disabled', true);
 			$('#' + form + ' input[type="button"]')
 			.attr('disabled', true);
-			$scope.customerComplaint.edited = !$scope.customerComplaint.edited;
+			$scope.workOrder.edited = !$scope.workOrder.edited;
 		}
 
 		else{
@@ -53,28 +53,18 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			.attr('disabled', false);
 			$('#' + form + ' input[type="button"]')
 			.attr('disabled', false);
-			$scope.customerComplaint.edited = !$scope.customerComplaint.edited;
+			$scope.workOrder.edited = !$scope.workOrder.edited;
 		}
 	};
 
 	$scope.isCreateOrUpdatePrivileged=function(){
-		return !($rootScope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !(!$scope.isNew && $rootScope.isPrivileged('CREATE_COMPLAINT'));
+		return ($rootScope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) || (!$scope.isNew && $rootScope.isPrivileged('CREATE_COMPLAINT'));
 	}
 
 	$scope.isViewPrivileged=function(){
-		return !($rootScope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) && !($rootScope.isPrivileged('CREATE_COMPLAINT')) && !($rootScope.isPrivileged('VIEW_COMPLAINT'));
+		return ($rootScope.isPrivileged('CREATE_COMPLAINT(PAID ONLY)')) || ($rootScope.isPrivileged('CREATE_COMPLAINT')) || ($rootScope.isPrivileged('VIEW_COMPLAINT'));
 	}
 
-//	$scope.isPrivileged = function(role){
-//
-//		var userPrivilege = $rootScope.user.privileges;
-//		var result=false;
-//		angular.forEach(userPrivilege, function(privilege) {
-//			if (privilege.privilege.privilege===role) result= true;
-//		});
-//		return result;		
-//	}
-//
 	$scope.getCustomerForComplaint = function(){
 		complaintService.getCustomerForComplaint(contextObject.customerId)
 		.then(function(response) {
@@ -82,11 +72,11 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			console.log(response);
 			if (response) {
 				$scope.customer = response;
-				$scope.customerComplaint.customerId = $scope.customer.customerId;
-				$scope.customerComplaint.customerCode = $scope.customer.customerCode;
-				$scope.customerComplaint.contactNo = $scope.customer.contactNo;
-				$scope.customerComplaint.emailId = $scope.customer.emailId;
-				$scope.customerComplaint.customerName = $scope.customer.customerName;
+				$scope.workOrder.customerId = $scope.customer.customerId;
+				$scope.workOrder.customerCode = $scope.customer.customerCode;
+				$scope.workOrder.contactNo = $scope.customer.contactNo;
+				$scope.workOrder.emailId = $scope.customer.emailId;
+				$scope.workOrder.customerName = $scope.customer.customerName;
 			} 
 		})
 	}
@@ -97,7 +87,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		$scope.newComplaint = true;
 		$scope.isEdit=true;
 		$scope.isNew = false;
-		$scope.customerComplaint.unit = contextObject;
+		$scope.workOrder.unit = contextObject;
 	}
 
 	if(Operation && Operation =='viewComplaint'){
@@ -105,7 +95,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		$scope.showStatus = true;
 		$scope.isEdit = true;
 		$scope.isNew = false;
-		$scope.customerComplaint = contextObject;
+		$scope.workOrder = contextObject;
 		$scope.toggleReadOnly('COMPLAINT');
 	}
 
@@ -136,6 +126,10 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			$scope.alerts=[];
 			$state.go('viewCustomer',{entityId:currentCustomerId});
 		}
+
+		else{
+			$rootScope.showNotHavePrivilegeModel();
+		}
 	}
 
 
@@ -143,10 +137,19 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		if($rootScope.isPrivileged("VIEW_COMPLAINT") || $rootScope.isPrivileged("CREATE_COMPLAINT")){
 			$state.go('viewComplaint',{entityId:currentComplaintId});
 		}
+		else{
+			$rootScope.showNotHavePrivilegeModel();
+		}
 	}
 
 	$scope.redirectToComplaint=function(){
-		$state.go('createNewComplaint');
+		if($rootScope.isPrivileged("CREATE_COMPLAINT(PAID ONLY)")){
+			$state.go('createNewComplaint');
+		}
+		else{
+			$rootScope.showNotHavePrivilegeModel();
+		}		
+
 	}
 
 
@@ -160,16 +163,22 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			}
 			$state.go('newComplaintFromUnit',{entityId:currentUnitId});
 		}
+		else{
+			$rootScope.showNotHavePrivilegeModel();
+		}
 	}
 
 	$scope.showconfirmboxComplaint = function () {
-		if ($window.confirm("No Record Found ! Want To Create New Complaint?")){
+		if ($rootScope.showConfirmModal('No Record Found ! Want To Create New Complaint?', 'No Complaint Found')){
+			
 			$scope.redirectToComplaint();
 		}
 	}
 
 
 	$scope.getComplaintByCriteria=function(){
+		
+		if($scope.isViewPrivileged){
 		complaintService.getComplaintByCriteria($scope.searchCriteria)
 		.then(
 				function(customers) {
@@ -183,6 +192,10 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 						}
 					}
 				})
+	}
+		else{
+			$rootScope.showNotHavePrivilegeModel();
+		}
 	}
 
 
@@ -204,8 +217,8 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			console.log('get SearchComplaint by unitId in controller : ');
 			console.log(response);
 			if (response) {
-				$scope.customerComplaints = response;
-				unit.complaints = $scope.customerComplaints;
+				$scope.workOrders = response;
+				unit.complaints = $scope.workOrders;
 			} 
 		})
 	}
@@ -216,7 +229,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			console.log('getting all Complaint for single unit in controller : ');
 			console.log(response);
 			if (response) {
-				$scope.customerComplaints = response;
+				$scope.workOrders = response;
 			} 
 		})
 	}
@@ -232,7 +245,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		})
 	}
 
-	$scope.saveComplaint = function() {
+	$scope.saveWorkOrder = function() {
 
 		if(!$scope.form.COMPLAINT.$valid){
 			$scope.alerts=[];
@@ -245,68 +258,75 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		}
 
 		console.log('save complaint called in controller');
-		complaintService.saveComplaint($scope.customerComplaint)
+		complaintService.saveWorkOrder($scope.workOrder)
 		.then(function(response) {
 			console.log('complaint Data received from service : ');
 			console.log(response);
 			if (response) {
-				$scope.customerComplaint = response;
-				alert("Complaint Saved Successfully");
-				$state.go('complaintScreen',{entityId:$scope.customerComplaint.complaintId});
+				$scope.workOrder = response;
+				$rootScope.showAlertModel('Complaint Saved Successfully With Complaint Code '+ $scope.workOrder.complaintCode, 'Operation Successful')
+				$state.go('complaintScreen',{entityId:$scope.workOrder.workOrderId});
 			} 
 		})
 	};
 
-	$scope.updateComplaint = function() {
+	$scope.updateWorkOrder = function() {
 
 		console.log('update complaint called in controller');
-		complaintService.updateComplaint($scope.customerComplaint)
+		complaintService.updateWorkOrder($scope.workOrder)
 		.then(function(response) {
 			console.log('update Data received from service : ');
 			console.log(response);
 			if (response) {
-				$scope.customerComplaint = response;
+				$scope.workOrder = response;
 				$scope.showStatus = true;
-				alert("Complaint Updated Successfully");
-				$scope.redirectToComplaintScreen($scope.customerComplaint.complaintId);
+				$rootScope.showAlertModel('Complaint Updated Successfully With Complaint Code '+ $scope.workOrder.complaintCode, 'Operation Successful')
+				$scope.redirectToComplaintScreen($scope.workOrder.workOrderId);
 			} 
 		})
 	};
 
 	$scope.saveAndUpdateComplaint = function(){
 
-		if(!$scope.customerComplaint.complaintId){
-			$scope.saveComplaint();			
+		if($scope.isCreateOrUpdatePrivileged){
+
+			if(!$scope.workOrder.workOrderId){
+				$scope.saveWorkOrder();			
+			}
+			else{
+				$scope.updateWorkOrder();
+			}
 		}
+
 		else{
-			$scope.updateComplaint();
+			$rootScope.showNotHavePrivilegeModel();
 		}
 	}
 
-	$scope.saveComplaintResolution = function() {
-		console.log('save complaintResolution called in controller');
-		complaintService.saveComplaintResolution($scope.customerComplaint.complaintId,$scope.customerComplaint.complaintResolution)
+	$scope.saveWorkOrderResolution = function() {
+		console.log('save workOrderResolution called in controller');
+		complaintService.saveworkOrderResolution($scope.workOrder.workOrderId,$scope.workOrder.workOrderResolution)
 		.then(function(response) {
-			console.log('complaintResolution Data received from service : ');
+			console.log('workOrderResolution Data received from service : ');
 			console.log(response);
 			if (response) {
-				$scope.customerComplaint = response;
-				alert("Complaint Resolution Saved Successfully")
+				$scope.workOrder = response;
+				$rootScope.showAlertModel('Complaint Resolution Saved Successfully', 'Operation Successful')
 			} 
 		})
 	};
 
-	$scope.saveComplaintAssignment = function() {
-		console.log('save complaintAssignment called in controller');
-		complaintService.saveComplaintAssignment($scope.customerComplaint.complaintId,$scope.customerComplaint.complaintAssignment)
+	$scope.saveWorkOrderAssignment = function() {
+		console.log('save workOrderAssignment called in controller');
+		complaintService.saveWorkOrderAssignment($scope.workOrder.workOrderId,$scope.workOrder.workOrderAssignment)
 		.then(function(response) {
-			console.log('complaintAssignment Data received from service : ');
+			console.log('workOrderAssignment Data received from service : ');
 			console.log(response);
 			if (response) {
-				$scope.customerComplaint = response;
+				$scope.workOrder = response;
 				$scope.newComplaint=false;
-				var name = $scope.customerComplaint.complaintAssignment.user.firstName +" "+ $scope.customerComplaint.complaintAssignment.user.lastName;
-				alert('Complaint Assign To : ' + name);
+				var name = $scope.workOrder.workOrderAssignment.user.firstName +" "+ $scope.workOrder.workOrderAssignment.user.lastName;
+				$rootScope.showAlertModel('Complaint Assign To : ' + name, 'Operation Successful')
 			} 
 		})
 	};
@@ -314,7 +334,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	$scope.lockComplaintEntity = function()
 	{
 		$scope.entityLock = {};
-		$scope.entityLock.entityId = $scope.customerComplaint.complaintId;
+		$scope.entityLock.entityId = $scope.workOrder.workOrderId;
 		$scope.entityLock.entityType = 'COMPLAINT';
 		complaintService.lockEntity($scope.entityLock)
 		.then(
@@ -323,7 +343,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 					.log('Locking complaint entity in controller');
 					console.log(complaintFromDB);
 					if (complaintFromDB) {
-						$scope.customerComplaint = complaintFromDB;
+						$scope.workOrder = complaintFromDB;
 					}
 				})
 
@@ -332,7 +352,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	$scope.unlockComplaintEntity = function()
 	{
 		$scope.entityLock = {};
-		$scope.entityLock.entityId = $scope.customerComplaint.complaintId;
+		$scope.entityLock.entityId = $scope.workOrder.workOrderId;
 		$scope.entityLock.entityType = 'COMPLAINT';
 
 		complaintService.unlockEntity($scope.entityLock)
@@ -342,7 +362,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 					.log('Unlocking complaint entity in controller');
 					console.log(complaint);
 					if (complaint) {
-						$scope.customerComplaint=complaint;
+						$scope.workOrder=complaint;
 					}
 				})
 	}
@@ -357,7 +377,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 					.log('getting equipments in controller : ');
 					console.log(equipments);
 					if (equipments) {
-						$scope.customerComplaint.unit.equipmentDetails = equipments;
+						$scope.workOrder.unit.equipmentDetails = equipments;
 
 						$scope.showEquipmentModel('lg');
 					}
@@ -366,7 +386,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 	}
 
 	$scope.showAddEquipmentModel = function(object, editEquipment) {
-		$scope.customerComplaint.unit.equipmentDetails=[];
+		$scope.workOrder.unit.equipmentDetails=[];
 		$rootScope.curModal = $modal.open({
 
 			templateUrl: 'complaint/Equipment_Complaint_Model.html',
@@ -381,7 +401,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 								.log('getting equipments in controller : ');
 								console.log(equipments);
 								if (equipments) {
-									$scope.customerComplaint.unit.equipmentDetails = equipments;
+									$scope.workOrder.unit.equipmentDetails = equipments;
 								}
 							})
 				}
@@ -404,14 +424,14 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 
 				$scope.saveEquipment = function() {
 
-					complaintService.saveEquipment($scope.equipments, $scope.customerComplaint.complaintId)
+					complaintService.saveEquipment($scope.equipments, $scope.workOrder.workOrderId)
 					.then(function(response) {
 						console.log('equipment Data received from service : ');
 						console.log(equipment);
 						if (equipment) {
 							$scope.ComplaintEquipments = equipment;
 							$scope.alerts=[];
-							alert("equipment Saved Successfully")
+							$rootScope.showAlertModel('equipment Saved Successfully', 'Operation Successful')
 						} 
 					})
 				};
@@ -419,7 +439,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 
 
 				$scope.deleteEquipments = function() {
-					complaintService.deleteEquipments($scope.customerComplaint.unit.equipmentDetails, object.unitId, $scope.customerComplaint.complaintId)
+					complaintService.deleteEquipments($scope.workOrder.unit.equipmentDetails, object.unitId, $scope.workOrder.workOrderId)
 					.then(function(response) {
 						console.log('delete Equipments Data received from service : ');
 						console.log(equipment);
@@ -453,12 +473,12 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 		}
 	};
 
-	$scope.getComplaintEquipment =  function(){
+	$scope.getWorkOrderEquipment =  function(){
 
-		if($scope.customerComplaint.complaintId){
-			complaintService.getComplaintEquipment($scope.customerComplaint.complaintId)
+		if($scope.workOrder.workOrderId){
+			complaintService.getWorkOrderEquipment($scope.workOrder.workOrderId)
 			.then(function(response) {
-				console.log('getComplaintEquipment Data received from service : ');
+				console.log('getWorkOrderEquipment Data received from service : ');
 				console.log(response);
 				if (response) {
 					$scope.ComplaintEquipments = response;
@@ -466,5 +486,5 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			})
 		}
 	}
-
+	
 } ]);

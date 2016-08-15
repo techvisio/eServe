@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.manager.CacheManager;
 import com.techvisio.eserve.util.CommonUtil;
@@ -55,7 +55,7 @@ public class UniqueIdentifierFactory implements UniqueIdentifierGenerator {
 	}
 	
 	@Override
-	public String getUniqueIdentifierForComplaint(CustomerComplaint customerComplaint) {
+	public String getUniqueIdentifierForComplaint(WorkOrder customerComplaint) {
 
 		String complaintCode = CommonUtil.getCurrentClient().getClientCode()+"/"+"C";
 

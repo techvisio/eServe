@@ -19,11 +19,13 @@ public interface WorkItemManager {
 	public List<WorkItem> getWorkItembyUserandType(Long userId, String type,
 			String status);
 	public void updateWorkItemStatus(Long entityId, String status);
-	public List<WorkItem> getWorkItemsByEntityId(Long entityId);
+	public List<WorkItem> getWorkItemsByEntityIdAndEntityType(Long entityId, String entityType);
 	public List<WorkItem> getWorkItemsByEntityIdAndEntityTypeAndWorkType(Long entityId,
 			String entityType, String workType);
 	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId, String workType);
 	public WorkItem getWorkitemByWorkitemId(Long workitemId);
 	public List<Comment> saveComment(GenericRequest<WorkItem> request);
 	public List<Comment> getCommentList(Long workItemId, Long clientId);
+	public Comment getLatestCommentBycommentType(Long entityId, String entityType,
+			String commentType);
 }

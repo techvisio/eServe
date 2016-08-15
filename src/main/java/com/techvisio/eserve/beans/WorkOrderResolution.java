@@ -14,19 +14,19 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "TB_COMPLAINT_RESOLUTION")
-public class ComplaintResolution extends BasicEntity{
+@Table(name = "TB_WORK_ORDER_RESOLUTION")
+public class WorkOrderResolution extends BasicEntity{
 
 	
-	@Column(name="COMPLAINT_ID")
+	@Column(name="WORK_ORDER_ID")
 	@Id
-	private Long complaintId;
+	private Long workOrderId;
 
 	@JsonIgnore
 	@MapsId
-	@JoinColumn(name = "COMPLAINT_ID", referencedColumnName = "COMPLAINT_ID")
+	@JoinColumn(name = "WORK_ORDER_ID", referencedColumnName = "WORK_ORDER_ID")
 	@OneToOne(optional = false, fetch = FetchType.LAZY)
-	private CustomerComplaint customerComplaint;
+	private WorkOrder workOrder;
 
 
 	@OneToOne
@@ -34,17 +34,17 @@ public class ComplaintResolution extends BasicEntity{
 	private Resolution resolution;
 	@Column(name="DESCRIPTION")
 	private String description;
-	public Long getComplaintId() {
-		return complaintId;
+	public Long getWorkOrderId() {
+		return workOrderId;
 	}
-	public void setComplaintId(Long complaintId) {
-		this.complaintId = complaintId;
+	public void setWorkOrderId(Long workOrderId) {
+		this.workOrderId = workOrderId;
 	}
-	public CustomerComplaint getCustomerComplaint() {
-		return customerComplaint;
+	public WorkOrder getWorkOrder() {
+		return workOrder;
 	}
-	public void setCustomerComplaint(CustomerComplaint customerComplaint) {
-		this.customerComplaint = customerComplaint;
+	public void setWorkOrder(WorkOrder workOrder) {
+		this.workOrder = workOrder;
 	}
 	public Resolution getResolution() {
 		return resolution;

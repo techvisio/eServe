@@ -262,15 +262,15 @@
 				<div class="row">
 					<button type="button" class="btn btn-success btn-sm child-right"
 						ng-click="approveUnit(unitApproval.unit)"
-						ng-disabled="isProcessing || unitApproval.unit.approvalStatus==='A'">Approve
+						ng-disabled="isProcessing || unitApproval.unit.approvalStatus==='A' || unitApproval.unit.approvalStatus==='R'"">Approve
 						Unit</button>
 
-					<button type="button" class="btn btn-success btn-sm child-right"
+					<button type="button" class="btn btn-danger btn-sm child-right"
 						ng-click="showRejectionCommentBox(unitApproval.unit)"
 						ng-disabled="isProcessing || unitApproval.unit.approvalStatus==='A' || unitApproval.unit.approvalStatus==='R'">Reject
 						Changes</button>
 
-					<button type="button" class="btn btn-primary child-right"
+					<button type="button" class="btn btn-primary btn-sm child-right"
 						ng-click="showUnitExpireModal(unitApproval.unit)"
 						ng-show="unitApproval.unit.unitId"
 						ng-disabled="!isPrivileged('AGREEMENT_APPROVAL') || isProcessing">Show

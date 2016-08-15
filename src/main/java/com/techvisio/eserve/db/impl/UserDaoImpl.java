@@ -60,8 +60,8 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 	}
 
 	@Override
-	public User getUserByUserName(String userName) {
-		String queryString="FROM User u WHERE u.userName = "+ "'"+userName +"'";
+	public User getUserByUserName(String userName, Long clientId) {
+		String queryString="FROM User u WHERE u.userName = "+ " '"+userName +"' and u.client.clientId = "+clientId;
 		Query query= getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<User> result= (List<User>)query.getResultList();
@@ -84,8 +84,8 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 	}
 
 	@Override
-	public List<User> getUsers() {
-		String queryString="FROM User";
+	public List<User> getUsers(Long clientId) {
+		String queryString="FROM User u WHERE u.client.clientId = "+clientId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<User> result= (List<User>)query.getResultList();
@@ -105,10 +105,10 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String queryString="select USER_ID,CREATED_BY,CREATED_ON,UPDATED_BY,UPDATED_ON,DOB,IS_ACTIVE,EMAIL_ID,FIRST_NAME,FORCE_PASSWORD_CHANGE,LAST_NAME,PASSWORD,USER_NAME ,Client_Id,DEPARTMENT_ID,DESIGNATION_ID from tb_User WHERE client_Id = coalesce(:client_Id, client_Id) and user_Id = coalesce(:user_Id, user_Id) and department_Id = coalesce(:department_Id, department_Id) and designation_Id = coalesce(:designation_Id, designation_Id) and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(first_Name) LIKE :first_Name and lower(last_Name) Like :last_Name and lower(user_Name) Like :user_Name ORDER BY  "+sortBy +" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
+		String queryString="select USER_ID,CREATED_BY,CREATED_ON,UPDATED_BY,UPDATED_ON,DOB,IS_ACTIVE,EMAIL_ID,FIRST_NAME,FORCE_PASSWORD_CHANGE,LAST_NAME,PASSWORD,USER_NAME ,Client_Id,DEPARTMENT_ID,DESIGNATION_ID from TB_USER WHERE client_Id = coalesce(:client_Id, client_Id) and user_Id = coalesce(:user_Id, user_Id) and department_Id = coalesce(:department_Id, department_Id) and designation_Id = coalesce(:designation_Id, designation_Id) and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(first_Name) LIKE :first_Name and lower(last_Name) Like :last_Name and lower(user_Name) Like :user_Name ORDER BY  "+sortBy +" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
 		Query query=getEntityManager().createNativeQuery(queryString, User.class);
 
-		String queryString1="SELECT count(*),'totalCount' FROM (select * from tb_User WHERE client_Id = coalesce(:client_Id, client_Id) and user_Id = coalesce(:user_Id, user_Id) and department_Id = coalesce(:department_Id, department_Id) and designation_Id = coalesce(:designation_Id, designation_Id) and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(first_Name) LIKE :first_Name and lower(last_Name) Like :last_Name and lower(user_Name) Like :user_Name)a";
+		String queryString1="SELECT count(*),'totalCount' FROM (select * from TB_USER WHERE client_Id = coalesce(:client_Id, client_Id) and user_Id = coalesce(:user_Id, user_Id) and department_Id = coalesce(:department_Id, department_Id) and designation_Id = coalesce(:designation_Id, designation_Id) and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(first_Name) LIKE :first_Name and lower(last_Name) Like :last_Name and lower(user_Name) Like :user_Name)a";
 		Query query1=getEntityManager().createNativeQuery(queryString1);
 
 		String firstName = StringUtils.isEmpty(searchCriteria.getFirstName())?"":searchCriteria.getFirstName().toLowerCase();
@@ -172,9 +172,9 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 	}
 
 	@Override
-	public boolean isUserExists(User user) {
+	public boolean isUserExists(User user, Long clientId) {
 
-		String queryString="from User WHERE lower(emailId) = coalesce(:emailId, emailId) or lower(userName) = coalesce(:userName, userName)";
+		String queryString="from User u WHERE lower(emailId) = coalesce(:emailId, emailId) or lower(userName) = coalesce(:userName, userName) and u.client.clientId = "+clientId;
 		Query query= getEntityManager().createQuery(queryString);
 
 		SearchCriteria searchCriteria = new SearchCriteria();
@@ -199,7 +199,7 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 
 	@Override
 	public List<Role> getUserRole(Long userId) {
-		String queryString="select Role_Id,Role_Name,Description,created_By,created_on,updated_by,updated_on,case when exists(select 1 from tb_user_role ur where ur.role_id=rm.role_id and ur.user_id="+userId+") then 1 else 0 end as selected from tb_role_master rm" ;
+		String queryString="select Role_Id,Role_Name,Description,created_By,created_on,updated_by,updated_on,case when exists(select 1 from TB_USER_ROLE ur where ur.role_id=rm.role_id and ur.user_id="+userId+") then 1 else 0 end as selected from TB_ROLE_MASTER rm" ;
 		Query query=getEntityManager().createNativeQuery(queryString,Role.class);
 		List<Role> userRoles = (List<Role>)query.getResultList();
 
@@ -234,7 +234,7 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 
 	//	@Override
 	//	public List<Privilege> getUserPrivileges(Long userId) {
-	//		String queryString="select "+userId + " user_id,Privilege_Id,client_Id,Created_By,Created_On,Updated_By,Updated_On,Description,Privilege,Type, case when exists (select 1 from tb_user_privilege up where up.privilege_id=pm.privilege_id and up.User_Id="+userId+") then 1 else 0 end is_Granted from tb_privilege pm" ;
+	//		String queryString="select "+userId + " user_id,Privilege_Id,client_Id,Created_By,Created_On,Updated_By,Updated_On,Description,Privilege,Type, case when exists (select 1 from TB_USER_PRIVILEGE up where up.privilege_id=pm.privilege_id and up.User_Id="+userId+") then 1 else 0 end is_Granted from TB_PRIVILEGE pm" ;
 	//		SQLQuery query=getCurrentSession().createSQLQuery(queryString);
 	//		query.addEntity(Privilege.class);
 	//		List<Privilege> userPrivileges = (List<Privilege>)query.list();
@@ -351,9 +351,35 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 			}
 		}
 
-		String deleteQuery = "Delete from tb_user_privilege where USER_ID =:USER_ID and USER_PRVLG_ID not in :USER_PRVLG_ID";
+		String deleteQuery = "Delete from TB_USER_PRIVILEGE where USER_ID =:USER_ID and USER_PRVLG_ID not in :USER_PRVLG_ID";
 
 		Query query=(Query) getEntityManager().createNativeQuery(deleteQuery).setParameter("USER_ID", userId).setParameter("USER_PRVLG_ID", userPrivilegeId);
 		query.executeUpdate();	}
+
+
+	@Override
+	public User getEmailId(String EmailId, Long clientId) {
+		String queryString="FROM User u WHERE u.emailId = "+" '" + EmailId +" ' "+" and u.client.clientId = "+clientId;
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<User> users= (List<User>)query.getResultList();
+
+		if(users != null && users.size()>0){
+			return users.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	public User getUserName(String UserName, Long clientId) {
+		String queryString="FROM User u WHERE u.userName = "+" '" + UserName +" ' "+" and u.client.clientId = "+clientId;
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<User> users= (List<User>)query.getResultList();
+		if(users != null && users.size()>0){
+			return users.get(0);
+		}
+		return null;
+	}
 
 }

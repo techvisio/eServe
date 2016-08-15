@@ -5,63 +5,55 @@
 
 	<div class="menu-list">
 		<div class="user-image">
-		<img src="../static/images/userImage.jpg">
-		<span>{{user.firstName}} {{user.lastName}}</span>
-		<br>
-		<span class="user-dept">{{user.designation.designation}}, {{user.department.department}}</span>
+			<img src="../static/images/user.jpg"> <span>{{user.firstName}}
+				{{user.lastName}}</span> <br> <span class="user-dept">{{user.designation.designation}},
+				{{user.department.department}}</span>
 		</div>
 		<ul id="menu-content" class="menu-content collapse out">
 			<li><a href="#"> <i class="fa fa-dashboard fa-lg"></i>
 					Dashboard
 			</a></li>
 
-			<li data-toggle="collapse" data-target="#myProfile"
-				class="collapsed"><a herf="#"><i class="fa fa-user fa-lg"></i>My
-				Profile</a></li>
+			<li data-toggle="collapse" data-target="#myProfile" class="collapsed"><a
+				herf="#"><i class="fa fa-user fa-lg"></i>My Profile</a></li>
 
-			<li data-toggle="collapse" data-target="#service"
-				class="collapsed"><a ><i
+			<li data-toggle="collapse" data-target="#service" class="collapsed"><a><i
 					class="fa fa-globe fa-lg"></i> Services <span class="arrow"></span></a>
 				<ul class="sub-menu collapse" id="service">
 					<li><a ui-sref="searchComplaint"> Complaint </a></li>
 				</ul></li>
 
-			<li data-toggle="collapse" data-target="#new"
-				class="collapsed"><a ><i
+			<li data-toggle="collapse" data-target="#new" class="collapsed"><a><i
 					class="fa fa-car fa-lg"></i> Customer <span class="arrow"></span></a>
 
 				<ul class="sub-menu collapse" id="new">
 					<li><a ui-sref="searchCustomer"> Customer Search </a></li>
-					<li><a herf="#" ui-sref="createNewCustomer"
-						ng-show="isPrivileged('CREATE_CUSTOMER')"> Add Customer </a></li>
+					<li><a ng-click="createCustomer()"> Add Customer </a></li>
 				</ul></li>
 
-			<li data-toggle="collapse" data-target="#userAdmin"
-				class="collapsed"><a ><i
+			<li data-toggle="collapse" data-target="#userAdmin" class="collapsed"><a><i
 					class="fa fa-globe fa-lg"></i> User Administration <span
 					class="arrow"></span></a>
 				<ul class="sub-menu collapse" id="userAdmin">
 					<li><a ui-sref="searchUser"> Search User </a></li>
-					<li><a ui-sref="createNewUser"> Add User </a></li>
+					<li><a ng-click="createUser()"> Add User </a></li>
 				</ul></li>
 
-			<li data-toggle="collapse" data-target="#workItem"
-				class="collapsed"><a ><i
+			<li data-toggle="collapse" data-target="#workItem" class="collapsed"><a><i
 					class="fa fa-globe fa-lg"></i> WorkItem <span class="arrow"></span></a>
 				<ul class="sub-menu collapse" id="workItem">
 					<li><a ui-sref="workItemSearch"> View WorkItem </a></li>
 				</ul></li>
 
-			<li data-toggle="collapse" data-target="#report"
-				class="collapsed"><a ><i
+			<li data-toggle="collapse" data-target="#report" class="collapsed"><a><i
 					class="fa fa-globe fa-lg"></i> Reports <span class="arrow"></span></a>
 				<ul class="sub-menu collapse" id="report">
 					<li><a ui-sref="customerReport"> Customer Report </a></li>
 				</ul></li>
-				
+
 			<li data-toggle="collapse" data-target="#masterdata"
-				class="collapsed"><a ><i
-					class="fa fa-globe fa-lg"></i> MasterData <span class="arrow"></span></a>
+				class="collapsed"><a><i class="fa fa-globe fa-lg"></i>
+					MasterData <span class="arrow"></span></a>
 				<ul class="sub-menu collapse" id="masterdata">
 					<li><a ui-sref="masterData"> Master Data</a></li>
 				</ul></li>

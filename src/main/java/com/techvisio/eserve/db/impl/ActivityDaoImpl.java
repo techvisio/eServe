@@ -42,7 +42,7 @@ public class ActivityDaoImpl extends BaseDao implements ActivityDao {
 		Date toDate = null;
 		fromDate= DateUtil.convertStringToSqlDate(fromDateString);
 		toDate=DateUtil.convertStringToSqlDate(toDateString);
-		String queryString="select Client_Id, CREATED_BY, CREATED_ON,ACTIVITY_ID,ACTIVITY,ACTIVITY_DATE,DESCRIPTION,USERNAME from tb_activity where ACTIVITY_DATE between '"+ fromDate +"' and '"+toDate +"' and Client_Id="+ClientId;
+		String queryString="select Client_Id, CREATED_BY, CREATED_ON,ACTIVITY_ID,ACTIVITY,ACTIVITY_DATE,DESCRIPTION,USERNAME from TB_ACTIVITY where ACTIVITY_DATE between '"+ fromDate +"' and '"+toDate +"' and Client_Id="+ClientId;
 		Query query=getEntityManager().createNativeQuery(queryString, Activity.class);
 		@SuppressWarnings("unchecked")
 		List<Activity> activities= (List<Activity>)query.getResultList();

@@ -8,12 +8,13 @@ userModule
 		 '$state',
 		 '$rootScope',
 		 'userService',
-		 'user',
+		 'contextObject',
+		 'Operation',
 		 'masterdataService',
 		 '$modal',
 		 '$http',
 		 'NgTableParams',
-		 function($scope, $state, $rootScope,userService,user,masterdataService,$modal,$http,NgTableParams) {
+		 function($scope, $state, $rootScope,userService,contextObject,Operation,masterdataService,$modal,$http,NgTableParams) {
 			 $scope.form={};
 //			 $scope.isUserCollapsed= true;
 //			 $scope.isPrivilegesCollapsed= false;
@@ -35,17 +36,38 @@ userModule
 			 $scope.searchCriteria = {};
 			 $scope.verifiedUser = {};
 
-			 $scope.allUserRoles=[];
 
-//			 $scope.isPrivileged = function(role){
-//
-//				 var userPrivilege = $rootScope.user.privileges;
-//				 var result=false;
-//				 angular.forEach(userPrivilege, function(privilege) {
-//					 if (privilege.privilege.privilege===role) result= true;
-//				 });
-//				 return result;		
-//			 }
+			 $scope.toggleReadOnly = function(form,isEdit) {
+				 if(!isEdit){
+					 $('#' + form + ' *').attr('readonly',
+							 true);
+					 $('#' + form + ' select')
+					 .attr('disabled', true);
+					 $('#' + form + ' input[type="radio"]')
+					 .attr('disabled', true);
+					 $('#' + form + ' input[type="checkbox"]')
+					 .attr('disabled', true);
+					 $('#' + form + ' input[type="button"]')
+					 .attr('disabled', true);
+				 }
+
+				 else{
+					 $('#' + form + ' *').attr('readonly',
+							 false);
+					 $('#' + form + ' select')
+					 .attr('disabled', false);
+					 $('#' + form + ' input[type="radio"]')
+					 .attr('disabled', false);
+					 $('#' + form + ' input[type="checkbox"]')
+					 .attr('disabled', false);
+					 $('#' + form + ' input[type="button"]')
+					 .attr('disabled', false);
+				 }
+			 };
+
+
+
+			 $scope.allUserRoles=[];
 
 			 $scope.createPriviledgeGrp=function(priviledgesList){
 				 $scope.priviledgeGrp={};
@@ -67,35 +89,48 @@ userModule
 				 });
 			 }
 
-			 if(!user){
-				 userService.getUserprivileges()
-				 .then(
-						 function(userPrivileges) {
-							 console
-							 .log('user privilegs received from service in controller : ');
-							 console.log(userPrivileges);
-							 if (userPrivileges) {
-								 $scope.user.privileges=userPrivileges;
-								 $scope.createPriviledgeGrp(userPrivileges);
-							 }
-						 })
-			 }			 
+			 if(Operation && Operation=='createNewUser' ){
+				 if(!contextObject){
+					 userService.getUserprivileges()
+					 .then(
+							 function(userPrivileges) {
+								 console
+								 .log('user privilegs received from service in controller : ');
+								 console.log(userPrivileges);
+								 if (userPrivileges) {
+									 $scope.user.privileges=userPrivileges;
+									 $scope.createPriviledgeGrp(userPrivileges);
+								 }
+							 })
+				 }			 
+			 }
 
-			 if(user){
-				 $scope.isEdit = true;
-				 $scope.isNew = false;
-				 $scope.user = user;
-				 $scope.createPriviledgeGrp(user.privileges);
-			 }			 
+			 if(Operation && Operation=='passresetmodal' ){
+				 if(contextObject){
+					 $scope.user = contextObject;
+					 $scope.toggleReadOnly('USER', contextObject.edited);
+				 }
+			 }
+
+			 if(Operation && Operation=='viewUser' ){
+				 if(contextObject){
+					 $scope.isEdit = true;
+					 $scope.isNew = false;
+					 $scope.user = contextObject;
+					 $scope.createPriviledgeGrp(contextObject.privileges);
+				 }			 
+			 }
 
 			 $scope.authenticateUser=function(){
 				 userService.authenticateUser($scope.form);
 			 }
 
-
-				 $scope.redirectToUser=function(currentUserId){
-					 if($rootScope.isPrivileged('VIEW_USER') || $rootScope.isPrivileged('CREATE_USER')){
+			 $scope.redirectToUser=function(currentUserId){
+				 if($rootScope.isPrivileged('VIEW_USER') || $rootScope.isPrivileged('CREATE_USER')){
 					 $state.go('viewUser',{entityId:currentUserId});
+				 }
+				 else{
+					 $rootScope.showNotHavePrivilegeModel();
 				 }
 			 }
 
@@ -156,26 +191,6 @@ userModule
 						 })
 			 }
 
-
-			 $scope.addUser=function(){
-
-				 if($scope.user.password != $scope.confirmPassword){
-					 $scope.wrongConfirmPass = true;
-					 return;
-				 }
-				 userService.addUser($scope.user)
-				 .then(
-						 function(savedUser) {
-							 console
-							 .log('saving New User in controller : ');
-							 console.log(savedUser);
-							 if (savedUser) {
-								 $scope.user=savedUser;
-							 }
-
-						 })
-			 }
-
 			 $scope.getUserprivileges = function(){
 
 				 userService.getUserprivileges()
@@ -203,7 +218,6 @@ userModule
 								 // $scope.getUserPrivileges();
 								 $scope.redirectToUser($scope.user.userId)
 							 }
-
 						 })
 			 }
 
@@ -249,17 +263,21 @@ userModule
 			 }
 
 			 $scope.resetPassword=function(user){
-				 userService.resetPassword(user)
-				 .then(
-						 function(user) {
-							 console
-							 .log('reset user password in controller : ');
-							 console.log(user);
-							 if (user) {
-								 $scope.user=user;
-								 alert("Resetting User Password Is Done");
-							 }
-						 })
+				 if($rootScope.isPrivileged('USER_ADMINISTRATION')){
+					 userService.resetPassword(user)
+					 .then(
+							 function(user) {
+								 console
+								 .log('reset user password in controller : ');
+								 console.log(user);
+								 if (user) {
+									 $scope.user=user;
+									 alert("Resetting User Password Is Done");
+								 }
+							 })}
+				 else{
+					 $rootScope.showNotHavePrivilegeModel();
+				 }
 			 }
 
 			 $scope.logout=function(){
@@ -326,7 +344,7 @@ userModule
 								 if(success){
 									 $scope.user = response.user;
 									 $scope.alerts=[];
-									 alert("User Saved Successfully");
+									 $rootScope.showAlertModel('User Saved Successfully', 'Operation Successful');
 									 $scope.redirectToUser($scope.user.userId);
 								 }
 
@@ -354,19 +372,24 @@ userModule
 									 $scope.user = response.user;
 									 $scope.isEdit = false;
 									 $scope.alerts=[];
-									 alert("User Updated Successfully");
+									 $rootScope.showAlertModel('User Updated Successfully', 'Operation Successful')
+									 $state.reload('viewUser',{entityId:$scope.user.userId});
 								 }
 							 }
 						 })
 			 }
 
 			 $scope.saveAndUpdateUser = function(){
-
-				 if(!$scope.user.userId){
-					 $scope.saveUser();
+				 if($scope.isCreateOrUpdatePrivileged()){
+					 if(!$scope.user.userId){
+						 $scope.saveUser();
+					 }
+					 else{
+						 $scope.updateUser();
+					 }
 				 }
 				 else{
-					 $scope.updateUser();
+					 $rootScope.showNotHavePrivilegeModel();
 				 }
 			 }
 
@@ -398,61 +421,34 @@ userModule
 //			 }
 
 
-			 $scope.toggleReadOnly = function(form) {
-
-				 if($scope.isEdit){
-					 $('#' + form + ' *').attr('readonly',
-							 true);
-					 $('#' + form + ' select')
-					 .attr('disabled', true);
-					 $('#' + form + ' input[type="radio"]')
-					 .attr('disabled', true);
-					 $('#' + form + ' input[type="checkbox"]')
-					 .attr('disabled', true);
-					 $('#' + form + ' input[type="button"]')
-					 .attr('disabled', true);
-					 $scope.isEdit = !$scope.isEdit;
-				 }
-
-				 else{
-					 $('#' + form + ' *').attr('readonly',
-							 false);
-					 $('#' + form + ' select')
-					 .attr('disabled', false);
-					 $('#' + form + ' input[type="radio"]')
-					 .attr('disabled', false);
-					 $('#' + form + ' input[type="checkbox"]')
-					 .attr('disabled', false);
-					 $('#' + form + ' input[type="button"]')
-					 .attr('disabled', false);
-					 $scope.isEdit = !$scope.isEdit;
-				 }
-			 };
-
-			 $scope.toggleReadOnly('USER');
-
 			 $scope.isCreateOrUpdatePrivileged=function(){
-				 return !($rootScope.isPrivileged('CREATE_USER'));
+				 return ($rootScope.isPrivileged('CREATE_USER'));
 			 }
 
 			 $scope.isViewPrivileged=function(){
-				 return !($rootScope.isPrivileged('CREATE_USER')) && !($rootScope.isPrivileged('VIEW_USER')) && !($rootScope.isPrivileged('USER_ADMINISTRATION'));
+				 return ($rootScope.isPrivileged('CREATE_USER')) || ($rootScope.isPrivileged('VIEW_USER')) || ($rootScope.isPrivileged('USER_ADMINISTRATION'));
 			 }
 
 			 $scope.filterUser = function() {
 
-				 $rootScope.curModal = $modal.open({
-					 templateUrl: 'user/userCriteria.html',
-					 scope:$scope,
-					 controller: function (userService,$scope) {
+				 if(isViewPrivileged){
+					 $rootScope.curModal = $modal.open({
+						 templateUrl: 'user/userCriteria.html',
+						 scope:$scope,
+						 controller: function (userService,$scope) {
 
-						 $scope.getUserByCriteria = function(){
-							 $scope.tableParams.reload();
-							 $rootScope.curModal.close();
-						 }
+							 $scope.getUserByCriteria = function(){
+								 $scope.tableParams.reload();
+								 $rootScope.curModal.close();
+							 }
 
-					 },
-				 });
+						 },
+					 });
+				 }
+
+				 else{
+					 $rootScope.showNotHavePrivilegeModel();
+				 }
 			 };
 
 
@@ -497,35 +493,86 @@ userModule
 				 $scope.entityLock.entityId = $scope.user.userId;
 				 $scope.entityLock.entityType = 'USER';
 
-				 userService.lockEntity($scope.entityLock)
-				 .then(
-						 function(customer) {
-							 console
-							 .log('Locking customer entity in controller');
-							 console.log(customer);
-							 if (customer) {
-								 $scope.customer=customer;
-							 }
-						 })
+				 if($scope.isCreateOrUpdatePrivileged){
+					 userService.lockEntity($scope.entityLock)
+					 .then(
+							 function(user) {
+								 console
+								 .log('Locking user entity in controller');
+								 console.log(user);
+								 if (user) {
+									 $scope.user=user;
+									 $scope.toggleReadOnly('USER', $scope.user.edited);
+								 }
+							 })
+				 }
+				 else{
+					 $rootScope.showNotHavePrivilegeModel();					 
+				 }
 			 }
 
-			 $scope.unlockUserEntity = function()
-			 {
+			 $scope.unlockUserEntity = function(){
+
 				 $scope.entityLock = {};
 				 $scope.entityLock.entityId = $scope.user.userId;
 				 $scope.entityLock.entityType = 'USER';
 
 				 userService.unlockEntity($scope.entityLock)
 				 .then(
-						 function(customer) {
+						 function(user) {
 							 console
-							 .log('Unlocking customer entity in controller');
-							 console.log(customer);
-							 if (customer) {
-								 $scope.customer=customer;
+							 .log('Unlocking user entity in controller');
+							 console.log(user);
+							 if (user) {
+								 $scope.user=user;
+								 $scope.toggleReadOnly('USER', $scope.user.edited);
 							 }
 						 })
 			 }
+
+				$scope.getEmailId = function(){
+					userService.getEmailId($scope.user.emailId)
+					.then(function(response) {
+						console.log('getting user by emailId in controller : ');
+						console.log(response);
+						if (response) {
+							$scope.userForEmail = response;
+
+							if(angular.isUndefined($scope.user.userId) || $scope.userForEmail.userId != $scope.user.userId){
+								$scope.emailError=true;
+								$scope.alerts=[];
+								$scope.alerts.push({msg: 'EMAIL ID ALREADY EXIST, TRY ANOTHER ONE!!'})
+							}
+						} 
+
+						else{
+							$scope.emailError=false;
+							$scope.alerts=[];
+						}
+					})
+				}
+
+				$scope.getUserName = function(){
+					userService.getUserName($scope.user.userName)
+					.then(function(response) {
+						console.log('all users Data received in controller : ');
+						console.log(response);
+						if (response) {
+							$scope.userForUserName = response;
+
+							if(angular.isUndefined($scope.user.userId) || $scope.userForUserName.userId != $scope.user.userId){
+								$scope.userNameError=true;
+								$scope.alerts=[];
+								$scope.alerts.push({msg: 'USER NAME EXIST, TRY ANOTHER ONE!!'})
+							}
+						} 
+						else{
+							$scope.userNameError=false;
+							$scope.alerts=[];
+						}
+
+					})
+				}
 
 
 		 } ]);

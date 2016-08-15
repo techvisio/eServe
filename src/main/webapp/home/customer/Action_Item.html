@@ -1,0 +1,24 @@
+<div class="form-group col-lg-9 col-md-12 col-sm-12 col-xs-12"
+			ng-show="actionItems.length<=0">
+			<h3 class="desc" style="font-size: 16px">No Action Item For This
+				Unit</h3>
+		</div>
+<div ng-show="actionItems.length>0">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Entity Code</th>
+				<th>Work Type</th>
+				<th>Due Date</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="actionItem in actionItems">
+				<td>{{actionItem.entityCode}}</td>
+				<td>{{actionItem.workType}}</td>
+				<td>{{actionItem.status}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

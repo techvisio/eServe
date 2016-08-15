@@ -8,26 +8,24 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerComplaint;
-import com.techvisio.eserve.beans.EntityLocks;
 import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.UnitBasicInfo;
-import com.techvisio.eserve.db.impl.ComplaintDaoImpl;
+import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.icc.CustomerServiceICC;
 import com.techvisio.eserve.manager.CustomerManager;
 import com.techvisio.eserve.service.ActivityService;
-import com.techvisio.eserve.service.ComplaintService;
 import com.techvisio.eserve.service.CustomerService;
 import com.techvisio.eserve.service.EntityLockService;
 import com.techvisio.eserve.service.WorkItemService;
+import com.techvisio.eserve.service.WorkOrderService;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 import com.techvisio.eserve.util.ServiceLocator;
@@ -52,13 +50,13 @@ public class CustomerServiceImpl implements CustomerService{
 	ServiceLocator servicelocator;
 
 	@Autowired
-	ComplaintService complaintService;
+	WorkOrderService complaintService;
 	@Override
 	public List<Customer> retrieveAllCustomer() {
 		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
 		customerServiceICC.preRetrieveAllCustomers();
-
-		List<Customer> customers = customerManager.getCustomers();
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		List<Customer> customers = customerManager.getCustomers(clientId);
 
 		customers=customerServiceICC.postRetrieveAllCustomers(customers);
 
@@ -152,13 +150,13 @@ public class CustomerServiceImpl implements CustomerService{
 	//	
 
 	@Override
-	public Customer createCustomerfromComplaint(CustomerComplaint customerComplaint) {
+	public Customer createCustomerfromComplaint(WorkOrder workOrder) {
 		Customer customer = new Customer();
-		customer.setCustomerName(customerComplaint.getCustomerName());
-		customer.setContactNo(customerComplaint.getContactNo());
-		customer.setEmailId(customerComplaint.getEmailId());
+		customer.setCustomerName(workOrder.getCustomerName());
+		customer.setContactNo(workOrder.getContactNo());
+		customer.setEmailId(workOrder.getEmailId());
 		List<Unit> units = new ArrayList<Unit>();
-		units.add(customerComplaint.getUnit());
+		units.add(workOrder.getUnit());
 
 		customer.setUnits(units);
 		return customer;
@@ -209,13 +207,15 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public Customer getCustomerByEmailId(String emailId) {
-		Customer customer = customerManager.getEmailId(emailId);
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		Customer customer = customerManager.getEmailId(emailId, clientId);
 		return customer;
 	}
 
 	@Override
 	public Customer getCustomerByContactNo(String contactNo)  {
-		Customer customer = customerManager.getContactNo(contactNo);
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		Customer customer = customerManager.getContactNo(contactNo,clientId);
 		return customer;
 	}
 
@@ -223,9 +223,8 @@ public class CustomerServiceImpl implements CustomerService{
 	public Unit updateUnitForRejection(GenericRequest<Unit> request) {
 		Unit unit = request.getBussinessObject();
 		String comment = request.getContextInfo().get("comment");
+		workItemService.workItemWorkForRejectApprovalChanges(unit, comment);
 		Unit unitFromDB = customerManager.rejectUnitApproval(unit);
-
-		workItemService.workItemWorkForRejectApprovalChanges(unitFromDB, comment);
 		return unitFromDB;
 	}
 

@@ -21,17 +21,18 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techvisio.eserve.util.AppConstants;
 
 @Entity
-@Table(name = "TB_COMPLAINT_EQUIPMENT")
-public class ComplaintEquipment {
+@Table(name = "TB_WORK_ORDER_EQUIPMENT")
+public class WorkOrderEquipment {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="COMPLAINT_EQUIPMENT_ID")
-	private Long ComplaintEquipmentId;
-	@Column(name="COMPLAINT_ID")
-	private Long complaintId;
+	@Column(name="WORK_ORDER_EQUIPMENT_ID")
+	private Long workOrderEquipmentId;
+	@Column(name="WORK_ORDER_ID")
+	private Long workOrderId;
 	@Column(name="IS_DELETED")
 	private boolean deleted;
 	@Column(name="EQUIPMENT_DTL_ID")
@@ -124,7 +125,7 @@ public class ComplaintEquipment {
 
 		try {
 
-			DateFormat outputFormatter = new SimpleDateFormat("MM/dd/yyyy");
+			DateFormat outputFormatter = new SimpleDateFormat(AppConstants.DateFormat.MM_dd_yyyy.getPattern());
 			String startDateString = outputFormatter.format(this.installationDate);
 			return startDateString;
 
@@ -139,17 +140,17 @@ public class ComplaintEquipment {
 			this.installationDate = parser2.parseDateTime(installationDateString).toDate();
 		}
 	}
-	public Long getComplaintEquipmentId() {
-		return ComplaintEquipmentId;
+	public Long getWorkOrderEquipmentId() {
+		return workOrderEquipmentId;
 	}
-	public void setComplaintEquipmentId(Long complaintEquipmentId) {
-		ComplaintEquipmentId = complaintEquipmentId;
+	public void setWorkOrderEquipmentId(Long workOrderEquipmentId) {
+		this.workOrderEquipmentId = workOrderEquipmentId;
 	}
-	public Long getComplaintId() {
-		return complaintId;
+	public Long getWorkOrderId() {
+		return workOrderId;
 	}
-	public void setComplaintId(Long complaintId) {
-		this.complaintId = complaintId;
+	public void setWorkOrderId(Long workOrderId) {
+		this.workOrderId = workOrderId;
 	}
 	public boolean isDeleted() {
 		return deleted;

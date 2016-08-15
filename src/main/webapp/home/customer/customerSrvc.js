@@ -19,7 +19,9 @@ customerModule.service('customerService', function($http, $q) {
 		getContactNo : getContactNo,
 		rejectUnitApproval : rejectUnitApproval,
 		lockEntity : lockEntity,
-		unlockEntity:unlockEntity
+		unlockEntity:unlockEntity,
+		getUnitActionItems : getUnitActionItems,	
+		getLatestCommentBycommentType : getLatestCommentBycommentType
 	});
 
 
@@ -227,7 +229,20 @@ customerModule.service('customerService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
+	
+	function getUnitActionItems(entityId){
+		console.log('get action items in service');
 
+		var request = $http({
+			method : "get",
+			url : "../service/workitem/unitworkitem/"+entityId,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}	
+	
 	function lockEntity(entityLock){
 		console.log('lock entity');
 		var request = $http({
@@ -251,6 +266,20 @@ customerModule.service('customerService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
+
+	function getLatestCommentBycommentType(entityId, entityType, commentType){
+		console.log('get latest comment in service');
+
+		var request = $http({
+			method : "get",
+			url : "../service/workitem/latestcomment/" + entityId +"/"+entityType+"/"+commentType ,
+			params : {
+				action : "get"
+			}
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
 	
 	function handleError(response) {
 		console.log('Error occured while calling service');

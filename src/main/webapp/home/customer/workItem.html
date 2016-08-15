@@ -7,10 +7,11 @@
 			<label for="inputlg">Select Work Item Type</label>
 		</div>
 		<div class="col-sm-3">
-			<select class="form-control" ng-model="workItemSearchCriteria.workType">
-				<option>DRAFT AGREEMENT</option>
-				<option>AGREEMENT APPROVAL</option>
-				<option>RENEW SERVICE CALL</option>
+			<select class="form-control" ng-model="workItemSearchCriteria.workType" ng-change="getWorkItemByUserIdAndWorkType()">
+				<option value="CUSTOMER AS DRAFT">DRAFT AGREEMENT</option>
+				<option value="AGREEMENT APPROVAL">AGREEMENT APPROVAL</option>
+				<option value="RENEW SERVICE AGREEMENT">RENEW SERVICE CALL</option>
+				<option value="PMS">PMS</option>
 			</select>
 		</div>
 		
@@ -18,9 +19,9 @@
 			<label for="inputlg">Select Work Item Status</label>
 		</div>
 		<div class="col-sm-3">
-			<select class="form-control" ng-model="workItemSearchCriteria.status">
-				<option>Open</option>
-				<option>Close</option>
+			<select class="form-control" ng-model="workItemSearchCriteria.status" ng-change="getWorkItemByUserIdAndWorkType()">
+				<option value="OPEN">Open</option>
+				<option value="CLOSE">Close</option>
 			</select>
 		</div>
 	</div>

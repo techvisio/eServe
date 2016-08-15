@@ -29,10 +29,11 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techvisio.eserve.interfaces.Lockable;
 
 @Entity
 @Table(name = "TB_USER")
-public class User extends BasicEntity {
+public class User extends BasicEntity implements Lockable{
 
 	/**
 	 * 
@@ -99,6 +100,13 @@ public class User extends BasicEntity {
 
 	@Transient
 	private boolean edited = false;
+	
+	public boolean isEdited() {
+		return edited;
+	}
+	public void setEdited(boolean edited) {
+		this.edited = edited;
+	}
 	
 	public Long getUserId() {
 		return userId;
@@ -241,14 +249,6 @@ public class User extends BasicEntity {
 
 	public void setPrivileges(List<UserPrivilege> privileges) {
 		this.privileges = privileges;
-	}
-
-	public boolean isEdited() {
-		return edited;
-	}
-
-	public void setEdited(boolean edited) {
-		this.edited = edited;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.techvisio.eserve.beans;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +16,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+
+import com.techvisio.eserve.util.AppConstants;
 
 @Entity
 @Table(name = "TB_WORK_ITEM")
@@ -49,6 +58,8 @@ public class WorkItem extends BasicEntity{
 	@Column(name="STATUS")
 	private String status;
 
+	@Transient
+	private String dueDateString;
 	public Long getWorkItemId() {
 		return workItemId;
 	}
@@ -129,5 +140,18 @@ public class WorkItem extends BasicEntity{
 	public void setEntityCode(String entityCode) {
 		this.entityCode = entityCode;
 	}
+	
+	public String getDueDateString() {
+		if (this.dueDate == null)
+			return null;
 
+		try {
+			DateFormat outputFormatter = new SimpleDateFormat(AppConstants.DateFormat.MM_dd_yyyy.getPattern());
+			String endDateString = outputFormatter.format(this.dueDate);
+			return endDateString;
+		} catch (Exception e) {
+		}
+		return null;
+	}
+	
 }

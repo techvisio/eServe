@@ -5,12 +5,11 @@
 				<div class="col-md-12 col-sm-12 col-xs-12">
 					<div class="form-group element-size">
 						<label class="form-label element-size-label" for="formfield9">Please
-							Provide Comment</label>
+							Provide Reason To Reject Approval</label>
 					</div>
 				</div>
 			</div>
-
-			<div class="row">
+			<div class="row comment-padding">
 				<div class="col-md-12 col-sm-12 col-xs-12">
 					<div class="form-group element-size">
 						<textarea type="text" class="form-control" ng-model="comment"
@@ -21,7 +20,8 @@
 			<br>
 			<div class="row">
 				<button type="button" class="btn btn-success button child-right"
-					ng-click="saveUnit('PUBLISH')">Post</button>
+					ng-click="rejectUnitApproval()">Post</button>
+
 				<button type="button" class="btn btn-success button child-right"
 					ng-click="closeModal()">Cancel</button>
 			</div>

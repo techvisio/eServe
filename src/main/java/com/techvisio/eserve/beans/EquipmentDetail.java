@@ -1,5 +1,7 @@
 package com.techvisio.eserve.beans;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -19,6 +21,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techvisio.eserve.util.AppConstants;
 
 @Entity
 @Table(name = "TB_EQUIPMENT_DETAIL")
@@ -45,9 +48,7 @@ public class EquipmentDetail extends BasicEntity{
 	@Column(name="IS_UNDER_WARRANTY")
 	private boolean underWarranty;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="INSTALLATION_DATE")
-	@JsonIgnore
 	private Date installationDate;
 
 	@Transient
@@ -105,11 +106,9 @@ public class EquipmentDetail extends BasicEntity{
 		this.underWarranty = underWarranty;
 	}
 
-	@JsonIgnore
 	public Date getInstallationDate() {
 		return installationDate;
 	}
-	@JsonIgnore
 	public void setInstallationDate(Date installationDate) {
 		this.installationDate = installationDate;
 	}
@@ -118,20 +117,22 @@ public class EquipmentDetail extends BasicEntity{
 			return null;
 
 		try {
-			DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
-			return fmt.print(this.installationDate.getTime());
+			DateFormat outputFormatter = new SimpleDateFormat(AppConstants.DateFormat.MM_dd_yyyy.getPattern());
+			String endDateString = outputFormatter.format(this.installationDate);
+			return endDateString;
 
 		} catch (Exception e) {
 
 		}
 		return null;
+
 	}
-	public void setInstallationDateString(String installationDateString) {
-		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
-		if(!StringUtils.isEmpty(installationDateString)){
-			this.installationDate = parser2.parseDateTime(installationDateString).toDate();
-		}
-	}
+//	public void setInstallationDateString(String installationDateString) {
+//		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
+//		if(!StringUtils.isEmpty(installationDateString)){
+//			this.installationDate = parser2.parseDateTime(installationDateString).toDate();
+//		}
+//	}
 	public boolean isDeleted() {
 		return deleted;
 	}

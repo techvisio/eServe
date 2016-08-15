@@ -1,6 +1,5 @@
 package com.techvisio.eserve.beans;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,22 +12,22 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "TB_COMPLAINT_ASSIGNMENT")
-public class ComplaintAssignment extends BasicEntity{
+@Table(name = "TB_WORK_ORDER_ASSIGNMENT")
+public class WorkOrderAssignment extends BasicEntity{
 
 	@OneToOne
 	@JoinColumn(name="USER_ID")
 	private User user;
 	
-	@Column(name="COMPLAINT_ID")
+	@Column(name="WORK_ORDER_ID")
 	@Id
-	private Long complaintId;
+	private Long workOrderId;
 
 	@JsonIgnore
 	@MapsId
-	@JoinColumn(name = "COMPLAINT_ID", referencedColumnName = "COMPLAINT_ID")
+	@JoinColumn(name = "WORK_ORDER_ID", referencedColumnName = "WORK_ORDER_ID")
 	@OneToOne(optional = false, fetch = FetchType.LAZY)
-	private CustomerComplaint customerComplaint;
+	private WorkOrder workOrder;
 
 	public User getUser() {
 		return user;
@@ -38,20 +37,20 @@ public class ComplaintAssignment extends BasicEntity{
 		this.user = user;
 	}
 
-	public Long getComplaintId() {
-		return complaintId;
+	public Long getWorkOrderId() {
+		return workOrderId;
 	}
 
-	public void setComplaintId(Long complaintId) {
-		this.complaintId = complaintId;
+	public void setWorkOrderId(Long workOrderId) {
+		this.workOrderId = workOrderId;
 	}
 
-	public CustomerComplaint getCustomerComplaint() {
-		return customerComplaint;
+	public WorkOrder getWorkOrder() {
+		return workOrder;
 	}
 
-	public void setCustomerComplaint(CustomerComplaint customerComplaint) {
-		this.customerComplaint = customerComplaint;
+	public void setWorkOrder(WorkOrder workOrder) {
+		this.workOrder = workOrder;
 	}
 
 }

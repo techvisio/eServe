@@ -79,9 +79,9 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 	}
 
 	@Override
-	public List<WorkItem> getWorkItemsByEntityId(Long entityId){ 
+	public List<WorkItem> getWorkItemsByEntityIdAndEntityType(Long entityId,String entityType){ 
 
-		String queryString="FROM WorkItem wi WHERE wi.entityId = "+entityId;
+		String queryString="FROM WorkItem wi WHERE wi.entityType = "+"'"+entityType+"'"+" and wi.entityId = "+entityId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<WorkItem> workItems= (List<WorkItem>)query.getResultList();
@@ -102,7 +102,7 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 
 	@Override
 	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId, String workType) {
-		String deleteQuery = "Delete from tb_work_item where ENTITY_ID =:ENTITY_ID and WORKTYPE = :WORKTYPE";
+		String deleteQuery = "Delete from TB_WORK_ITEM where ENTITY_ID =:ENTITY_ID and WORKTYPE = :WORKTYPE";
 		Query query=(Query) getEntityManager().createNativeQuery(deleteQuery).setParameter("ENTITY_ID", entityId).setParameter("WORKTYPE", workType);
 		query.executeUpdate();	
 	}
@@ -118,7 +118,7 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		}
 		return null;
 	}
-	
+
 	@Override
 	public WorkItem getWorkItem(Long workItemId) {
 		String queryString="FROM WorkItem wi WHERE wi.workItemId = "+workItemId; 
@@ -129,10 +129,10 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 			return workItem.get(0);
 		}
 		return null;
-		
+
 	}
 
-	
+
 	@Override
 	public List<Comment> getCommentList(Long workItemId, Long clientId){
 		String queryString="FROM Comment c WHERE c.workItemId = "+workItemId+" "+" and c.client.clientId = "+clientId +" ORDER BY c.createdOn desc"; 
@@ -140,7 +140,24 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		@SuppressWarnings("unchecked")
 		List<Comment> comment= (List<Comment>)query.getResultList();
 		return comment;
-		
+	}
+
+	@Override
+	public Comment getLatestCommentBycommentType(Long entityId, String entityType, String commentType){
+
+		Comment comment = null;
+		String queryString="select cm.COMMENT_ID, cm.CREATED_BY, cm.CREATED_ON, cm.WORKITEM_ID, cm.Client_Id, cm.COMMENT_TYPE, cm.COMMENT "
+				+ "from tb_work_item wi join tb_comment cm on wi.WORKITEM_ID = cm.WORKITEM_ID "
+				+ "where wi.ENTITY_ID = " + entityId + " and wi.ENTITY_TYPE = "+ "'"+ entityType +"'" + " and cm.COMMENT_TYPE ="+ "'"+ commentType +"'"+ 
+				" order by cm.CREATED_ON desc limit 1" ;
+		Query query=getEntityManager().createNativeQuery(queryString, Comment.class);
+
+		List<Comment> comments = (List<Comment>)query.getResultList();
+
+		if(comments!=null && comments.size()>0){
+			comment = comments.get(0);
+		}
+		return comment;
 	}
 
 }

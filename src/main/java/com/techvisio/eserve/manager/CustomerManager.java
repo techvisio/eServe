@@ -8,12 +8,12 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.UnitBasicCustomer;
-import com.techvisio.eserve.beans.ComplaintAssignment;
-import com.techvisio.eserve.beans.ComplaintResolution;
+import com.techvisio.eserve.beans.WorkOrderAssignment;
+import com.techvisio.eserve.beans.WorkOrderResolution;
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.beans.EquipmentDetail;
-import com.techvisio.eserve.beans.SearchComplaint;
+import com.techvisio.eserve.beans.SearchWorkOrder;
 import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
@@ -26,7 +26,7 @@ import com.techvisio.eserve.beans.UnitBasicInfo;
 @Component
 public interface CustomerManager {
 
-	public List<Customer> getCustomers();
+	public List<Customer> getCustomers(Long clientId);
 	public Customer getCustomer(Long customerId);
 	public Long saveCustomer(Customer customer, String context);
 	public void saveUnit(List<Unit> units,  Long customerId);
@@ -39,8 +39,8 @@ public interface CustomerManager {
 	//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
 	public UnitBasicCustomer getUnitForApproval(Long unitId);
 	public Long saveCustomer(Customer customer);
-	public Customer getEmailId(String EmailId);
-	public Customer getContactNo(String ContactNo);
+	public Customer getEmailId(String EmailId, Long clientId);
+	public Customer getContactNo(String ContactNo, Long clientId);
 	public Unit rejectUnitApproval(Unit unit);
 	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId);
 	void deleteEquipmentDtlInclusion(List<EquipmentDetail> equipmentDetails,

@@ -25,7 +25,7 @@ public interface UserDao {
 
 	SecurityQuestion getSecurityQuestion(Long questionId);
 
-	public List<User> getUsers();
+	public List<User> getUsers(Long clientId);
 	
 //	public List<Privilege> getPrivileges();
 
@@ -39,7 +39,7 @@ public interface UserDao {
 
 	User getCurrentPassword(Long userId);
 
-	boolean isUserExists(User user);
+	boolean isUserExists(User user, Long clientId);
 
 	List<UserPrivilege> getAllUserPrivileges(User user);
 
@@ -51,6 +51,10 @@ public interface UserDao {
 
 	public List<UserPrivilege> getUserPrivilegesSet();
 
-	public User getUserByUserName(String userName);
+	public User getUserByUserName(String userName, Long clientId);
+
+	public User getUserName(String UserName, Long clientId);
+
+	public User getEmailId(String EmailId, Long clientId);
 
 }

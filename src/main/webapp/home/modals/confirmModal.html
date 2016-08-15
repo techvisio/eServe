@@ -1,9 +1,20 @@
-<div class="modal-header">
-    <h3 class="modal-title" ng-bind-html="title | unsafe"></h3>
-</div>
-<!--<div class="modal-body" compile ng-bind-html="content | unsafe"></div>-->
-<div class="modal-body" ng-bind-html="content | unsafe"></div>
-<div class="modal-footer">
-    <button class="btn btn-primary btn-xs" ng-click="yes()">Yes</button>
-    <button class="btn btn-error btn-xs" ng-click="no()">No</button>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 box-align">
+	<section class="box">
+		<div class="content-body">
+
+			<h5>{{title}}</h5>
+			<hr>
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+					<span>{{content}}</span>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<button class="btn btn-primary btn-xs child-right"
+					ng-click="yes();redirectToComplaint()">Yes</button>
+				<button class="btn btn-error btn-xs child-right" ng-click="no()">No</button>
+			</div>
+		</div>
+	</section>
 </div>

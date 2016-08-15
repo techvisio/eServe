@@ -55,8 +55,8 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public List<Customer> getCustomers() {
-		String queryString="FROM Customer";
+	public List<Customer> getCustomers(Long clientId) {
+		String queryString="FROM Customer c WHERE c.client.clientId = "+clientId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<Customer> customers= (List<Customer>)query.getResultList();
@@ -77,10 +77,10 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 			e.printStackTrace();
 		}
 
-		String queryString="select CUSTOMER_ID,CREATED_BY,CREATED_ON,UPDATED_BY,UPDATED_ON,CONTACT_NO,CUSTOMER_CODE,CUSTOMER_NAME,EMAIL_ID,Client_Id,ADDRESS_ID,CUSTOMER_TYPE_ID from tb_customer_detail WHERE client_Id = coalesce(:client_Id, client_Id) and lower(contact_No) = coalesce(:contact_No, contact_No) and lower(customer_Code) = coalesce(:customer_Code, customer_Code)  and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(customer_Name) LIKE :customer_Name ORDER BY  "+sortBy +" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
+		String queryString="select CUSTOMER_ID,CREATED_BY,CREATED_ON,UPDATED_BY,UPDATED_ON,CONTACT_NO,CUSTOMER_CODE,CUSTOMER_NAME,EMAIL_ID,Client_Id,ADDRESS_ID,CUSTOMER_TYPE_ID from TB_CUSTOMER_DETAIL WHERE client_Id = coalesce(:client_Id, client_Id) and lower(contact_No) = coalesce(:contact_No, contact_No) and lower(customer_Code) = coalesce(:customer_Code, customer_Code)  and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(customer_Name) LIKE :customer_Name ORDER BY  "+sortBy +" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
 		Query query= getEntityManager().createNativeQuery(queryString, Customer.class);
 
-		String queryString1="SELECT count(*),'totalCount' FROM (select * from tb_customer_detail WHERE client_Id = coalesce(:client_Id, client_Id) and lower(contact_No) = coalesce(:contact_No, contact_No) and lower(customer_Code) = coalesce(:customer_Code, customer_Code)  and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(customer_Name) LIKE :customer_Name)a";
+		String queryString1="SELECT count(*),'totalCount' FROM (select * from TB_CUSTOMER_DETAIL WHERE client_Id = coalesce(:client_Id, client_Id) and lower(contact_No) = coalesce(:contact_No, contact_No) and lower(customer_Code) = coalesce(:customer_Code, customer_Code)  and lower(email_Id) = coalesce(:email_Id, email_Id) and  lower(customer_Name) LIKE :customer_Name)a";
 		Query query1= getEntityManager().createNativeQuery(queryString1);
 
 		String customerName = StringUtils.isEmpty(searchCriteria.getCustomerName())?"":searchCriteria.getCustomerName().toLowerCase();
@@ -263,7 +263,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 			}
 		}
 
-		String deleteQuery = "Delete from tb_equipment_detail where UNIT_ID =:UNIT_ID and EQUIPMENT_DTL_ID not in :EQUIPMENT_DTL_ID";
+		String deleteQuery = "Delete from TB_EQUIPMENT_DETAIL where UNIT_ID =:UNIT_ID and EQUIPMENT_DTL_ID not in :EQUIPMENT_DTL_ID";
 
 		Query query=(Query) getEntityManager().createNativeQuery(deleteQuery).setParameter("UNIT_ID", unitId).setParameter("EQUIPMENT_DTL_ID", equipmentDtlId);
 		query.executeUpdate();	
@@ -271,9 +271,9 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public boolean isCustomerExists(Customer customer) {
+	public boolean isCustomerExists(Customer customer, Long clientId) {
 
-		String queryString="from Customer WHERE lower(emailId) = coalesce(:emailId, emailId) or lower(contactNo) = coalesce(:contactNo, contactNo)";
+		String queryString="from Customer WHERE client.clientId = coalesce(:clientId, client.clientId) and lower(emailId) = coalesce(:emailId, emailId) or lower(contactNo) = coalesce(:contactNo, contactNo)";
 		Query query= getEntityManager().createQuery(queryString);
 
 		SearchCriteria searchCriteria = new SearchCriteria();
@@ -408,8 +408,8 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public Customer getEmailId(String EmailId) {
-		String queryString="FROM Customer cus WHERE cus.emailId = "+" '" + EmailId +" ' ";
+	public Customer getEmailId(String EmailId, Long clientId) {
+		String queryString="FROM Customer cus WHERE cus.emailId = "+" '" + EmailId +" ' "+" and cus.client.clientId = "+clientId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<Customer> customers= (List<Customer>)query.getResultList();
@@ -421,8 +421,8 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public Customer getContactNo(String ContactNo) {
-		String queryString="FROM Customer cus WHERE cus.contactNo = "+" '" + ContactNo +" ' ";
+	public Customer getContactNo(String ContactNo, Long clientId) {
+		String queryString="FROM Customer cus WHERE cus.contactNo = "+" '" + ContactNo +" ' "+" and cus.client.clientId = "+clientId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<Customer> customers= (List<Customer>)query.getResultList();
@@ -490,7 +490,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 			}
 		}
 
-		String deleteQuery = "Delete from tb_equipment_detail where UNIT_ID =:UNIT_ID and EQUIPMENT_DTL_ID = :EQUIPMENT_DTL_ID";
+		String deleteQuery = "Delete from TB_EQUIPMENT_DETAIL where UNIT_ID =:UNIT_ID and EQUIPMENT_DTL_ID = :EQUIPMENT_DTL_ID";
 
 		Query query=(Query) getEntityManager().createNativeQuery(deleteQuery).setParameter("UNIT_ID", unitId).setParameter("EQUIPMENT_DTL_ID", equipmentDtlId);
 		query.executeUpdate();	
@@ -502,10 +502,10 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 
 		String queryString="select Cd.CUSTOMER_ID,Cd.CUSTOMER_NAME,Cd.CONTACT_NO,Cd.CUSTOMER_CODE,Cd.EMAIL_ID,ctm.CUSTOMER_TYPE,Un.UNIT_ID,Un.UNIT_CODE,Un.ASSET_NO,Un.MACHINE_SERIAL_NO,Un.MODEL_NO,ucm.UNIT_TYPE,sg.CONTRACT_EXPIRE_ON,sg.CONTRACT_START_ON,"
 				+ "sg.SERVICE_CATEGORY,sp.SERVICE_PROVIDER,Ad.ADDRESS,Ad.CITY,"
-				+ "Ad.PINCODE,sm.STATE_NAME from tb_unit_detail Un join tb_customer_detail Cd on Cd.CUSTOMER_ID = Un.CUSTOMER_ID join tb_customer_type_master ctm "
-				+ "on Cd.CUSTOMER_TYPE_ID = ctm.CUSTOMER_TYPE_ID join tb_unit_category_master ucm on ucm.UNIT_CATEGORY_ID = Un.UNIT_CATEGORY_ID join tb_service_agreement sg "
-				+ "on Un.UNIT_ID = sg.UNIT_ID join tb_agreement_duration AgD on AgD.AGREEMENT_DURATION_ID = sg.AGREEMENT_DURATION_ID join tb_service_provider_master sp "
-				+ "on sg.SERVICE_PROVIDER_ID = sp.SERVICE_PROVIDER_ID join tb_address_detail Ad on Ad.ADDRESS_ID = Un.ADDRESS_ID join tb_state_master sm on sm.STATE_ID = Ad.STATE_ID where Un.UNIT_ID = "+unitId;
+				+ "Ad.PINCODE,sm.STATE_NAME from TB_UNIT_DETAIL Un join TB_CUSTOMER_DETAIL Cd on Cd.CUSTOMER_ID = Un.CUSTOMER_ID join TB_CUSTOMER_TYPE_MASTER ctm "
+				+ "on Cd.CUSTOMER_TYPE_ID = ctm.CUSTOMER_TYPE_ID join TB_UNIT_CATEGORY_MASTER ucm on ucm.UNIT_CATEGORY_ID = Un.UNIT_CATEGORY_ID join TB_SERVICE_AGREEMENT sg "
+				+ "on Un.UNIT_ID = sg.UNIT_ID join TB_AGREEMENT_DURATION AgD on AgD.AGREEMENT_DURATION_ID = sg.AGREEMENT_DURATION_ID join TB_SERVICE_PROVIDER_MASTER sp "
+				+ "on sg.SERVICE_PROVIDER_ID = sp.SERVICE_PROVIDER_ID join TB_ADDRESS_DETAIL Ad on Ad.ADDRESS_ID = Un.ADDRESS_ID join TB_STATE_MASTER sm on sm.STATE_ID = Ad.STATE_ID where Un.UNIT_ID = "+unitId;
 		Query query= getEntityManager().createNativeQuery(queryString);
 		List<Object[]> results = query.getResultList();
 		UnitBasicInfo unitBasicInfo = putDataInUnitBasicInfoFromResultSet(results);

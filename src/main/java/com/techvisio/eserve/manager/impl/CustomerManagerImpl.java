@@ -132,8 +132,8 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 
 	@Override
-	public List<Customer> getCustomers() {
-		List<Customer> customers = customerDao.getCustomers();
+	public List<Customer> getCustomers(Long clientId) {
+		List<Customer> customers = customerDao.getCustomers(clientId);
 		return customers;
 	}
 
@@ -256,14 +256,14 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 
 	@Override
-	public Customer getEmailId(String EmailId) {
-		Customer customer = customerDao.getEmailId(EmailId);
+	public Customer getEmailId(String EmailId, Long clientId) {
+		Customer customer = customerDao.getEmailId(EmailId, clientId);
 		return customer;
 	}
 
 	@Override
-	public Customer getContactNo(String ContactNo) {
-		Customer customer = customerDao.getContactNo(ContactNo);
+	public Customer getContactNo(String ContactNo, Long clientId) {
+		Customer customer = customerDao.getContactNo(ContactNo, clientId);
 		return customer;
 	}
 

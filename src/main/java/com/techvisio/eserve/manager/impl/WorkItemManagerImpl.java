@@ -63,13 +63,13 @@ public class WorkItemManagerImpl implements WorkItemManager{
 
 	@Override
 	public void updateWorkItemStatus(Long entityId, String status) {
-	workItemDao.updateWorkItemStatus(entityId, status);
-		
+		workItemDao.updateWorkItemStatus(entityId, status);
+
 	}
 
 	@Override
-	public List<WorkItem> getWorkItemsByEntityId(Long entityId) {
-		List<WorkItem> workItems = workItemDao.getWorkItemsByEntityId(entityId);
+	public List<WorkItem> getWorkItemsByEntityIdAndEntityType(Long entityId, String entityType){
+		List<WorkItem> workItems = workItemDao.getWorkItemsByEntityIdAndEntityType(entityId, entityType);
 		return workItems;
 	}
 
@@ -85,12 +85,12 @@ public class WorkItemManagerImpl implements WorkItemManager{
 	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId,
 			String workType) {
 		workItemDao.deleteWorkItemsByEntityIdAndWorkType(entityId, workType);
-		
+
 	}
 
 	@Override
 	public WorkItem getWorkitemByWorkitemId(Long workitemId) {
-        WorkItem workItem = workItemDao.getWorkitemByWorkitemId(workitemId);
+		WorkItem workItem = workItemDao.getWorkitemByWorkitemId(workitemId);
 		return workItem;
 	}
 
@@ -98,7 +98,7 @@ public class WorkItemManagerImpl implements WorkItemManager{
 	@Override
 	public List<Comment> saveComment(GenericRequest<WorkItem> request){
 		WorkItem frontWorkItem = request.getBussinessObject();
-		
+
 		Long workItemId = frontWorkItem.getWorkItemId();
 		String stringComment = request.getContextInfo().get("comment");
 		WorkItem workItem = workItemDao.getWorkItem(workItemId);
@@ -111,23 +111,27 @@ public class WorkItemManagerImpl implements WorkItemManager{
 			workItemDao.saveWorkItem(frontWorkItem);
 			return commentList;
 		}
-		
-			List<Comment> newCommentList = new ArrayList<Comment>();
-			Comment comment = new Comment();
-			comment.setComment(stringComment);
-			newCommentList.add(comment);
-			frontWorkItem.setComments(newCommentList);
-			workItemDao.saveWorkItem(frontWorkItem);
-			return newCommentList;
-	
-		
-		
-		
+
+		List<Comment> newCommentList = new ArrayList<Comment>();
+		Comment comment = new Comment();
+		comment.setComment(stringComment);
+		newCommentList.add(comment);
+		frontWorkItem.setComments(newCommentList);
+		workItemDao.saveWorkItem(frontWorkItem);
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		return getCommentList(workItemId, clientId);
 	}
 
 	@Override
 	public List<Comment> getCommentList(Long workItemId, Long clientId) {
 		List<Comment> comments = workItemDao.getCommentList(workItemId, clientId);
 		return comments;
+	}
+
+	@Override
+	public Comment getLatestCommentBycommentType(Long entityId,
+			String entityType, String commentType) {
+		Comment comment = workItemDao.getLatestCommentBycommentType(entityId, entityType, commentType);
+		return comment;
 	};
 }

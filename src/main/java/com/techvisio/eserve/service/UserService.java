@@ -49,4 +49,8 @@ public interface UserService {
 	public void resetPassword(User user);
 
 	public User getUserByUserName(String userName);
+
+	public User getUserName(String userName);
+
+	public User getEmailId(String emailId);
 }

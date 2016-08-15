@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.CustomerComplaint;
+import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.beans.EntityLocks;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.interfaces.Lockable;
 import com.techvisio.eserve.manager.EntityLockManager;
-import com.techvisio.eserve.service.ComplaintService;
+import com.techvisio.eserve.service.WorkOrderService;
 import com.techvisio.eserve.service.CustomerService;
 import com.techvisio.eserve.service.EntityLockService;
 import com.techvisio.eserve.service.UserService;
@@ -35,7 +35,7 @@ public class EntityLockServiceImpl implements EntityLockService{
 	UserService userService;
 
 	@Autowired
-	ComplaintService complaintService;
+	WorkOrderService complaintService;
 
 
 	@Override
@@ -73,8 +73,7 @@ public class EntityLockServiceImpl implements EntityLockService{
 			lockedObject = customerService.getUnitById(entityLocks.getEntityId());
 		}
 		else{
-			User userFromDB = userService.getUser(entityLocks.getEntityId());
-			return userFromDB;
+			lockedObject = userService.getUser(entityLocks.getEntityId());
 		}	
 
 		lockedObject.setEdited(true);
@@ -105,11 +104,11 @@ public class EntityLockServiceImpl implements EntityLockService{
 					return unitFromDB;
 				}
 				else if(entityType.equalsIgnoreCase(AppConstants.EntityType.COMPLAINT.toString())){
-					CustomerComplaint complaintFromDB = complaintService.getCustomerComplaint(entityId);
+					WorkOrder complaintFromDB = complaintService.getWorkOrder(entityId);
 					return complaintFromDB;
 				}
 
-				else if(entityType.equalsIgnoreCase(AppConstants.EntityType.UNIT.toString())){
+				else if(entityType.equalsIgnoreCase(AppConstants.EntityType.USER.toString())){
 					User userFromDB = userService.getUser(entityId);
 					return userFromDB;
 				}

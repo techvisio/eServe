@@ -1,7 +1,8 @@
-<div ng-switch on="selection">
 
+<div ng-switch on="selection">
+<div class="fix-button">
 	<div ng-include
-		src="'../home/customer/Customer_Create_Progress_Bar.html'"></div>
+		src="'../home/customer/Customer_Create_Progress_Bar.html'" ng-hide="selection==='preview'"></div>
 
 	<div ng
 		show="alerts..length>0 || !$scope.form.CUSTOMER.$valid || !$scope.form.UNIT.$valid">
@@ -35,8 +36,9 @@
 		<div ng-include src="'../home/customer/Customer_Main.html'"></div>
 	</div>
 </div>
+</div>
 
-<div class="fix-button">
+<div class="fix-button-bottom-margin">
 	<button type="button" class="btn btn-primary child-left"
 		ng-click="switchToPreviousPage()"
 		ng-hide="selection==='customer' || selection==='preview'"
@@ -45,19 +47,18 @@
 		<i class="fa fa-arrow-left" style="font-size: 13px"></i>&nbsp Previous
 	</button>
 
-	<button type="button" class="btn btn-primary child-right"
-		ng-click="selection = 'equipmntDtl'" ng-show="selection==='preview'"
-		ng-disabled="isProcessing">Close</button>
-
-	<button type="button" class="btn btn-primary"
+	<button type="button" class="btn btn-primary child-left"
 		ng-click="addMoreUnit(); selection = 'unitDtl'"
 		ng-show="selection==='equipmntDtl'" ng-disabled="isProcessing">
 		Add More Unit</button>
-	<button type="button" class="btn btn-primary"
+	<button type="button" class="btn btn-primary child-left"
 		ng-click="addcurrentUnittoCustomer();selection='preview'"
 		ng-show="selection==='equipmntDtl'" ng-disabled="isProcessing">
 		<i class="fa fa-eye" style="font-size: 13px"></i> Preview
 	</button>
+	<button type="button" class="btn btn-primary child-right"
+		ng-click="selection = 'equipmntDtl'" ng-show="selection==='preview'"
+		ng-disabled="isProcessing">Close</button>
 	<button type="button" class="btn btn-primary child-right"
 		ng-click="saveAndUpdateCustomer('CUSTOMER_DRAFT')"
 		ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"

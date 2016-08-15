@@ -5,18 +5,17 @@
 				ng-init="makeAllReadOnly($id)">
 				<section class="box ">
 					<header class="panel_header">
-						<h2 class="title pull-left">Unit No({{unit.machineSerialNo}})&nbsp<button type="button" ng-class="getClassForUnitStatus(unit.approvalStatus)">{{getUnitStatusText(unit.approvalStatus)}}</button></h2>
+						<h2 class="title pull-left">Unit No({{unit.machineSerialNo}})&nbsp<button type="button" ng-click="getLatestCommentBycommentType(unit.unitId,'UNIT','Reject')" ng-class="getClassForUnitStatus(unit.approvalStatus)">{{getUnitStatusText(unit.approvalStatus)}}</button></h2>
 						<div class="actions panel_actions pull-right">
+						<i></i><i></i><i></i>
 							<i class="fa fa-pencil icon"
 								ng-click="lockUnitEntity($index,$id)"
 								ng-disabled="isCreateOrUpdatePrivileged()"
-								ng-show="!unit.edited"></i> <i class="fa fa-trash-o"
-								ng-click="removeUnit($index)" ng-show="$index>0"
-								ng-disabled="isCreateOrUpdatePrivileged()"></i> <img
+								ng-show="!unit.edited"></i> <img
 								ng-show="unit.edited" src="../static/images/complaint.png"
 								height="25" width="25"
-								ng-click="(!isPrivileged('CREATE_COMPLAINT')) || redirectToComplaintScreenByUnitId(unit,unit.unitId)"
-								ng-disabled="(!isPrivileged('CREATE_COMPLAINT')) || isProcessing" />
+								ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)"
+								ng-disabled="isProcessing" />
 							<i class="fa fa-chevron-up"
 								ng-class="{'fa-chevron-down':isCollapsed}"
 								ng-click="isCollapsed=!isCollapsed"></i>
@@ -200,8 +199,8 @@
 									ng-click="getAllComplaintsForUnit(unit.unitId)"
 									disabled="!unit.unitId">
 								<div ng-include src="'../home/customer/Customer_Complaint.html'"></div>
-								</tab> <tab heading="ACTION ITEMS" disabled="!unit.unitId">
-								<div ng-include src=" "></div>
+								</tab> <tab heading="ACTION ITEMS" ng-click="getUnitActionItems(unit.unitId)" disabled="!unit.unitId">
+								<div ng-include src="'../home/customer/Action_Item.html'"></div>
 								</tab> <tab heading="CALL" disabled="!unit.unitId">
 								<div ng-include src=" "></div>
 								</tab> </tabset>

@@ -8,23 +8,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TB_PMS_COMPLAINT")
-public class PmsComplaint {
+@Table(name = "TB_PMS_WORK_ORDER")
+public class PmsWorkOrder {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="PMS_COMPLAINT_ID")
-	private Long pmsComplaintId;
+	@Column(name="PMS_WORK_ORDER_ID")
+	private Long pmsWorkOrderId;
 	@Column(name="WORKITEM_ID")
 	private Long workitemId;
-	@Column(name="COMPLAINT_ID")
-	private Long complaintId;
+	@Column(name="WORK_ORDER_ID")
+	private Long workOrderId;
 	
-	public Long getPmsComplaintId() {
-		return pmsComplaintId;
+	public Long getPmsWorkOrderId() {
+		return pmsWorkOrderId;
 	}
-	public void setPmsComplaintId(Long pmsComplaintId) {
-		this.pmsComplaintId = pmsComplaintId;
+	public void setPmsWorkOrderId(Long pmsWorkOrderId) {
+		this.pmsWorkOrderId = pmsWorkOrderId;
 	}
 	public Long getWorkitemId() {
 		return workitemId;
@@ -32,11 +32,11 @@ public class PmsComplaint {
 	public void setWorkitemId(Long workitemId) {
 		this.workitemId = workitemId;
 	}
-	public Long getComplaintId() {
-		return complaintId;
+	public Long getWorkOrderId() {
+		return workOrderId;
 	}
-	public void setComplaintId(Long complaintId) {
-		this.complaintId = complaintId;
+	public void setWorkOrderId(Long workOrderId) {
+		this.workOrderId = workOrderId;
 	}
 	
 }
