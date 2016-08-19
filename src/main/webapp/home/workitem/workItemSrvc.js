@@ -5,7 +5,8 @@ workItemModule.service('workItemService', function($http, $q) {
 		createComplaintByPms : createComplaintByPms,
 		getWorkItemByWorkitemId : getWorkItemByWorkitemId,
 		saveComment : saveComment,
-		getCommentList : getCommentList
+		getCommentList : getCommentList,
+		createWorkItemForSalesRenewal : createWorkItemForSalesRenewal
 	});
 
 	function getUnitInfoByEntityIdAndEntityType(entityId, entityType){
@@ -72,6 +73,21 @@ workItemModule.service('workItemService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
+	
+	
+	
+	function createWorkItemForSalesRenewal(unitInfo){
+		console.log('creating workitem for sales renewal service');
+		var request = $http({
+			method : "post",
+			url : "../service/workitem/salesrenewal",
+			params : "",
+			data: unitInfo
+
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+
 
 	function handleError(response) {
 		console.log('Error occured while calling service');

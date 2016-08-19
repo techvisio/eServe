@@ -206,6 +206,10 @@
 					ng-click="createComplaintByPms()" ng-show="workitem.workType=='PMS'">Create Job</button>
 				<button type="button" class="btn btn-primary child-right"
 					ng-click="redirectToUnit(unitInfo.unitId)" ng-show="workitem.workType=='AGREEMENT APPROVAL'">View and Approve</button>
+					<button type="button" class="btn btn-primary child-right"
+					ng-click="createWorkItemForSalesRenewal(unitInfo)" ng-show="workitem.workType=='FOLLOWUP RENEWAL SERVICE'">Create Lead</button>
+					<button type="button" class="btn btn-primary child-right"
+					ng-click="redirectToUnit(unitInfo.unitId)" ng-show="workitem.workType=='SALES RENEWAL AGREEMENT'">View And Renew</button>
 			</div>
 		</div>
 	</section>

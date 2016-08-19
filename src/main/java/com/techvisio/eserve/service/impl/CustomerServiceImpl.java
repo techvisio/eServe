@@ -13,6 +13,7 @@ import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SearchResultData;
+import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicCustomer;
@@ -162,19 +163,10 @@ public class CustomerServiceImpl implements CustomerService{
 		return customer;
 	}
 
-	//	@Override
-	//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId) {
-	//		customerManager.updateServiceAgreement(agreement, unitId);
-	//	    Unit unit = getUnit(agreement.getUnitId());
-	//	    createWorkItemWithRenewService(unit);
-	//	}
-
 	//	private void createWorkItemWithRenewService(Unit unit) {
-	//		
-	////	    if(unit.getApprovalStatus() == AppConstants.APPROVED){
-	////
-	////            workItemService.createWorkItemForUnit(AppConstants.PUBLISH, unit.getUnitId(),);
-	////	    }
+	//	    if(unit.getApprovalStatus() == AppConstants.APPROVED){
+	//            workItemService.createWorkItemForUnit(AppConstants.PUBLISH, unit.getUnitId());
+	//	    }
 	//	}
 
 	@Override
@@ -264,4 +256,15 @@ public class CustomerServiceImpl implements CustomerService{
 		UnitBasicInfo basicInfo = customerManager.getUnitBasicInfo(unitId);
 		return basicInfo;
 	}
+
+	@Override
+	public Unit renewSalesAgreement(GenericRequest<Unit> request, String context, Long unitId){
+		Unit unit=request.getBussinessObject();
+		String comment = request.getContextInfo().get("comment");
+		Unit unitFromDB = customerManager.renewSalesAgreement(unit, unitId);
+        workItemService.createWorkItemForUnitSave(context, unitId, comment);
+        workItemService.updateWorkItemStatus(unitId,"CLOSE", "UNIT", "SALES RENEWAL AGREEMENT");
+        return unit;
+	}
+
 }

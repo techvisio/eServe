@@ -18,7 +18,7 @@ public interface WorkItemManager {
 	public List<WorkItem> getWorkItemByWorkType(String workType);
 	public List<WorkItem> getWorkItembyUserandType(Long userId, String type,
 			String status);
-	public void updateWorkItemStatus(Long entityId, String status);
+	public void updateWorkItemStatus(Long entityId, String status,String workType, String entityType);
 	public List<WorkItem> getWorkItemsByEntityIdAndEntityType(Long entityId, String entityType);
 	public List<WorkItem> getWorkItemsByEntityIdAndEntityTypeAndWorkType(Long entityId,
 			String entityType, String workType);

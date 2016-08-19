@@ -73,8 +73,8 @@ public class WorkItemServiceImpl implements WorkItemService {
 	}
 
 	@Override
-	public void updateWorkItemStatus(Long entityId, String status) {
-		workItemManager.updateWorkItemStatus(entityId, status);
+	public void updateWorkItemStatus(Long entityId, String status,String workType, String entityType) {
+		workItemManager.updateWorkItemStatus(entityId, status,workType,entityType );
 
 	}
 
@@ -174,10 +174,9 @@ public class WorkItemServiceImpl implements WorkItemService {
 		}
 		if (workItem == null) {
 			WorkItemFactory factory = new WorkItemFactory();
-			workItem = factory.getWorkItem(AppConstants.RENEW_SERVICE_CALL);
+			workItem = factory.getWorkItem(AppConstants.FOLLOWUP_RENEWAL_SERVICE);
 		}
 		workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
-		workItem.setDueDate(dueDate);
 		workItem.setEntityId(unit.getUnitId());
 		workItem.setEntityCode(unit.getUnitCode());
 		workItem.setDueDate(dueDate);
@@ -276,5 +275,23 @@ public class WorkItemServiceImpl implements WorkItemService {
 			String entityType, String commentType) {
 		Comment comment = workItemManager.getLatestCommentBycommentType(entityId, entityType, commentType);
 		return comment;
+	}
+
+	@Override
+	public void createWorkItemForSalesRenewal(UnitBasicInfo unitInfo) {
+		List<WorkItem> workItems = workItemManager.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unitInfo.getUnitId(), "UNIT", "SALES RENEWAL AGREEMENT");
+		WorkItem workItem = null;
+		if(workItems != null && workItems.size()>0){
+			workItem = workItems.get(0);
+		}
+		if (workItem == null) {
+			WorkItemFactory factory = new WorkItemFactory();
+			workItem = factory.getWorkItem(AppConstants.SALES_RENEWAL_AGREEMENT);
+		}
+		workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
+		workItem.setEntityId(unitInfo.getUnitId());
+		workItem.setEntityCode(unitInfo.getUnitCode());
+		workItemManager.saveWorkItem(workItem);
+		updateWorkItemStatus(unitInfo.getUnitId(), "CLOSE", AppConstants.FOLLOWUP_RENEWAL_SERVICE, "UNIT");
 	}
 }

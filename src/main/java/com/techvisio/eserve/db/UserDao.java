@@ -53,8 +53,6 @@ public interface UserDao {
 
 	public User getUserByUserName(String userName, Long clientId);
 
-	public User getUserName(String UserName, Long clientId);
-
 	public User getEmailId(String EmailId, Long clientId);
 
 }

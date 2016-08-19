@@ -40,9 +40,6 @@
                                 <label class="form-label" for="formfield9">Contact No</label>
                                 
                                 <div class="controls">
-                                	<i class="fa fa-times" ng-show="contactNoError"
-									popover-placement="left" popover="Contact No. Already Exist"
-									popover-trigger="mouseenter"></i>
                                     <input type="text" class="form-control"  required="required" 
                                     ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/"
 									ng-model="customer.contactNo" type="text"
@@ -57,9 +54,6 @@
                                 <label class="form-label" for="formfield9">Email Id</label>
                                 <span class="desc">e.g. "abc@xyz.com"</span>
                                 <div class="controls">
-                                <i class="fa fa-times" ng-show="emailError"
-								popover-placement="left" popover="Email Id Already Exist"
-								popover-trigger="mouseenter"></i>
 								<input type="text" class="form-control"  ng-model="customer.emailId"
 								required="required" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
 								type="email" ng-blur="getEmailId()" ng-click="resetAleart()">

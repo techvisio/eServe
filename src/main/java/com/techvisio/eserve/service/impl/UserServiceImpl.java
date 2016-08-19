@@ -16,6 +16,7 @@ import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.SecurityQuestion;
 import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
+import com.techvisio.eserve.exception.DuplicateEntityException;
 import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.manager.UserManager;
 import com.techvisio.eserve.service.EntityLockService;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService{
 	EntityLockService entityLockService;
 
 	@Override
-	public Map<String, Object> saveUser(User user) {
+	public Long saveUser(User user) {
 		String userName = CommonUtil.getCurrentUser().getUserName();
 		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		if(user.getUserId()!=null){
@@ -44,9 +45,9 @@ public class UserServiceImpl implements UserService{
 			}
 		}
 
-		Map<String, Object> userMap = userManager.saveUser(user,clientId);
+		Long userId = userManager.saveUser(user,clientId);
 		entityLockService.unlockEntity("USER", user.getUserId());
-		return userMap;
+		return userId;
 	}
 
 	@Override
@@ -144,13 +145,6 @@ public class UserServiceImpl implements UserService{
 	public User getEmailId(String emailId) {
 		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		User user = userManager.getEmailId(emailId, clientId);
-		return user;
-	}
-
-	@Override
-	public User getUserName(String userName)  {
-		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		User user = userManager.getUserName(userName, clientId);
 		return user;
 	}
 

@@ -21,7 +21,7 @@ public interface WorkItemService {
 	public List<WorkItem> getWorkItemByPrivilege(Long privilegeId);
 	public List<WorkItem>  getWorkItemByWorkType(String workType);
 	public List<WorkItem> getWorkItembyUserandType(Long userId,String type, String status);
-	public void updateWorkItemStatus(Long entityId,String status);
+	public void updateWorkItemStatus(Long entityId,String status,String workType, String entityType);
 	public List<WorkItem> getUnitWorkItemsByEntityIdAndEntityType(Long entityId);
 	public void createWorkItemForCustomerSave(String context,
 			Customer customer, String comment);
@@ -39,4 +39,5 @@ public interface WorkItemService {
 	public List<Comment> getCommentList(Long workItemId);
 	public Comment getLatestCommentBycommentType(Long entityId, String entityType,
 			String commentType);
+	public void createWorkItemForSalesRenewal(UnitBasicInfo unitInfo);
 }

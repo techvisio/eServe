@@ -98,6 +98,7 @@ userModule
 								 .log('user privilegs received from service in controller : ');
 								 console.log(userPrivileges);
 								 if (userPrivileges) {
+									 $scope.isNew = true;
 									 $scope.user.privileges=userPrivileges;
 									 $scope.createPriviledgeGrp(userPrivileges);
 								 }
@@ -107,6 +108,7 @@ userModule
 
 			 if(Operation && Operation=='passresetmodal' ){
 				 if(contextObject){
+					 $scope.isNew = false;
 					 $scope.user = contextObject;
 					 $scope.toggleReadOnly('USER', contextObject.edited);
 				 }
@@ -114,10 +116,10 @@ userModule
 
 			 if(Operation && Operation=='viewUser' ){
 				 if(contextObject){
-					 $scope.isEdit = true;
 					 $scope.isNew = false;
 					 $scope.user = contextObject;
 					 $scope.createPriviledgeGrp(contextObject.privileges);
+					 $scope.toggleReadOnly('USER',false);
 				 }			 
 			 }
 
@@ -330,29 +332,18 @@ userModule
 			 $scope.saveUser=function(){
 
 				 if(!$scope.USER.$valid){
-
 					 $scope.alerts=[];
 					 $scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
 					 return;
 				 }
-
 				 userService.saveUser($scope.user)
 				 .then(
 						 function(response) {
 							 if(response){
-								 var success=response.success;
-								 if(success){
-									 $scope.user = response.user;
-									 $scope.alerts=[];
-									 $rootScope.showAlertModel('User Saved Successfully', 'Operation Successful');
-									 $scope.redirectToUser($scope.user.userId);
-								 }
-
-								 if(!success){
-									 $scope.alerts=[];
-									 $scope.alerts.push({msg: 'This User Name Or Email Id Already Exists!! Choose Different User Name Or Email Id'});
-									 return;
-								 }
+								 $scope.user = response;
+								 $scope.alerts=[];
+								 $rootScope.showAlertModel('User Saved Successfully With User Name '+ $scope.user.userName, 'Operation Successful');
+								 $scope.redirectToUser($scope.user.userId);
 							 }
 						 })
 			 };
@@ -367,14 +358,10 @@ userModule
 				 .then(
 						 function(response) {
 							 if(response){
-								 var success=response.success;
-								 if(success){
-									 $scope.user = response.user;
-									 $scope.isEdit = false;
-									 $scope.alerts=[];
-									 $rootScope.showAlertModel('User Updated Successfully', 'Operation Successful')
-									 $state.reload('viewUser',{entityId:$scope.user.userId});
-								 }
+								 $scope.user = response;
+								 $scope.alerts=[];
+								 $rootScope.showAlertModel('User Updated Successfully With User Name '+$scope.user.userName, 'Operation Successful')
+								 $state.reload('viewUser',{entityId:$scope.user.userId});
 							 }
 						 })
 			 }
@@ -431,7 +418,7 @@ userModule
 
 			 $scope.filterUser = function() {
 
-				 if(isViewPrivileged){
+				 if($scope.isViewPrivileged){
 					 $rootScope.curModal = $modal.open({
 						 templateUrl: 'user/userCriteria.html',
 						 scope:$scope,
@@ -502,6 +489,7 @@ userModule
 								 console.log(user);
 								 if (user) {
 									 $scope.user=user;
+									 $scope.createPriviledgeGrp($scope.user.privileges);
 									 $scope.toggleReadOnly('USER', $scope.user.edited);
 								 }
 							 })
@@ -525,54 +513,43 @@ userModule
 							 console.log(user);
 							 if (user) {
 								 $scope.user=user;
+								 $scope.createPriviledgeGrp($scope.user.privileges);
 								 $scope.toggleReadOnly('USER', $scope.user.edited);
 							 }
 						 })
 			 }
 
-				$scope.getEmailId = function(){
-					userService.getEmailId($scope.user.emailId)
-					.then(function(response) {
-						console.log('getting user by emailId in controller : ');
-						console.log(response);
-						if (response) {
-							$scope.userForEmail = response;
+			 $scope.getEmailId = function(){
+				 userService.getEmailId($scope.user.emailId)
+				 .then(function(response) {
+					 console.log('getting user by emailId in controller : ');
+					 console.log(response);
+					 if (response) {
+						 $scope.userForEmail = response;
 
-							if(angular.isUndefined($scope.user.userId) || $scope.userForEmail.userId != $scope.user.userId){
-								$scope.emailError=true;
-								$scope.alerts=[];
-								$scope.alerts.push({msg: 'EMAIL ID ALREADY EXIST, TRY ANOTHER ONE!!'})
-							}
-						} 
+						 if(angular.isUndefined($scope.user.userId) || $scope.userForEmail.userId != $scope.user.userId){
+							 $rootScope.showAlertModel('This Email Id is Already Exists, Choose Different Email Id', 'Duplicate Record');
+							 return;
+						 }
+					 } 
+				 })
+			 }
 
-						else{
-							$scope.emailError=false;
-							$scope.alerts=[];
-						}
-					})
-				}
+			 $scope.getUserName = function(){
+				 userService.getUserName($scope.user.userName)
+				 .then(function(response) {
+					 console.log('all users Data received in controller : ');
+					 console.log(response);
+					 if (response) {
+						 $scope.userForUserName = response;
 
-				$scope.getUserName = function(){
-					userService.getUserName($scope.user.userName)
-					.then(function(response) {
-						console.log('all users Data received in controller : ');
-						console.log(response);
-						if (response) {
-							$scope.userForUserName = response;
-
-							if(angular.isUndefined($scope.user.userId) || $scope.userForUserName.userId != $scope.user.userId){
-								$scope.userNameError=true;
-								$scope.alerts=[];
-								$scope.alerts.push({msg: 'USER NAME EXIST, TRY ANOTHER ONE!!'})
-							}
-						} 
-						else{
-							$scope.userNameError=false;
-							$scope.alerts=[];
-						}
-
-					})
-				}
+						 if(angular.isUndefined($scope.user.userId) || $scope.userForUserName.userId != $scope.user.userId){
+							 $rootScope.showAlertModel('This User Name is Already Exists, Choose Different User Name', 'Duplicate Record');
+							 return;
+						 }
+					 } 
+				 })
+			 }
 
 
 		 } ]);

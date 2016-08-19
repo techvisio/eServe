@@ -1,4 +1,5 @@
 <form name='USER' id="USER">
+
 	<div ng-init="init()">
 
 		<section class="box ">
@@ -8,7 +9,7 @@
 					<i class="fa fa-chevron-up"
 						ng-class="{'fa-chevron-down':isUserCollapsed}"
 						ng-click="isUserCollapsed=!isUserCollapsed"></i> <i
-						class="fa fa-pencil" ng-show="!user.edited"
+						class="fa fa-pencil" ng-show="!user.edited && !isNew"
 						popover-placement="bottom" popover="Click To Edit"
 						popover-trigger="mouseenter" ng-click="lockUserEntity()"
 						ng-disabled="isCreateOrUpdatePrivileged()"></i>
@@ -69,9 +70,7 @@
 								<label class="form-label" for="formfield9">Email Id</label> <span
 									class="desc">e.g. "asd@asd.com"</span>
 								<div class="controls">
-									<i class="fa fa-times" ng-show="emailError"
-										popover-placement="left" popover="Email Id Already Exist"
-										popover-trigger="mouseenter"></i> <input type="email"
+								<input type="email"
 										class="form-control"
 										ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
 										ng-model="user.emailId" ng-click="resetAlert()"
@@ -88,9 +87,7 @@
 							<div class="form-group">
 								<label class="form-label" for="formfield9">User Name</label>
 								<div class="controls">
-									<i class="fa fa-times" ng-show="userNameError"
-										popover-placement="left" popover="User Name. Already Exist"
-										popover-trigger="mouseenter"></i> <input type="text"
+									 <input type="text"
 										class="form-control" ng-pattern="/^[a-zA-_-Z0-9]+$/i"
 										ng-model="user.userName" required="required"
 										ng-click="resetAlert()" ng-blur="getUserName()">
@@ -145,14 +142,14 @@
 
 					<div class="row">
 						<button type="button" class="btn btn-primary child-right"
-							ng-show="user.edited" ng-click="saveAndUpdateUser()"
+							ng-show="user.edited || isNew" ng-click="saveAndUpdateUser()"
 							ng-disabled="isProcessing">
 							<i class="fa fa-floppy-o"></i> &nbsp Save
 
 						</button>
 
 						<button type="button" class="btn btn-success child-right"
-							ng-show="user.edited" ng-click="unlockUserEntity()">
+							ng-show="user.edited && !isNew" ng-click="unlockUserEntity()">
 							<i class="fa fa-times"></i> Cancel
 						</button>
 					</div>
@@ -188,7 +185,7 @@
 									<div class="">
 										<input type="checkbox" class="faChkSqr"
 											ng-model="priviledge.granted" id="chk_{{$id}}"><span
-											for="chk_{{$id}}" class="privilege-header-font">&nbsp
+											for="chk_{{$id}}" class="privilege-desc">&nbsp
 											{{priviledge.privilege.description}}</span>
 
 									</div>

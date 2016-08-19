@@ -1048,7 +1048,7 @@ input.faChkRnd:checked:after, input.faChkRnd:after, input.faChkSqr:checked:after
 	width: 17px;
 	position: relative;
 	top: 15px;
-	left: -10px;
+/* 	left: -10px; */
 	background-color: #FFF;
 	display: inline-block;
 	color: #28B78D;
@@ -1224,7 +1224,7 @@ input.faChkSqr:after {
 }
 
 /* css for user privileges */
-.form-group.privilege-header-font span {
+span.privilege-desc {
 	display: inline-block;
 	margin-bottom: 5px;
 	font-weight: 600;

@@ -61,7 +61,7 @@
 		ng-disabled="isProcessing">Close</button>
 	<button type="button" class="btn btn-primary child-right"
 		ng-click="saveAndUpdateCustomer('CUSTOMER_DRAFT')"
-		ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"
+		ng-disabled="!isCreateOrUpdatePrivileged() || isProcessing"
 		ng-show="selection==='equipmntDtl'|| selection==='preview'">
 		<i class="fa fa-floppy-o" style="font-size: 13px"></i>&nbsp Save As
 		Draft
@@ -69,7 +69,7 @@
 	<button type="button" class="btn btn-success child-right"
 		ng-show="selection==='equipmntDtl' || selection==='preview'"
 		ng-click="showCommentBoxCustomerPublish()"
-		ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">
+		ng-disabled="!isCreateOrUpdatePrivileged() || isProcessing">
 		<i class="fa fa-paper-plane" style="font-size: 12px"></i>&nbsp Publish
 	</button>
 

@@ -364,9 +364,9 @@ erp.controller('ApplicationController',
 				$rootScope.curModal = $modal.open({
 					templateUrl: 'modals/errorModalContent.html',
 					controller: function ($scope) {
-						var title = "Failed to Load Data";
-						$scope._errorCode = type;
-						$scope._errorTitle = title + " (HTTP: " + type + ")";
+						var title = "Operation Failed";
+						//$scope._errorCode = type;
+						$scope._errorTitle = title ;//+ " (HTTP: " + type + ")";
 						$scope._errorMessage = e.data ? e.data : (e.message ? e.message : e);
 						$scope.resetCurModal = function(time) {
 							$timeout(function () {

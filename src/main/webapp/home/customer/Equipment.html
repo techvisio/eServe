@@ -47,7 +47,7 @@
 					ng-show="!isNew || isEdit || selection !='preview'">
 					<button type="button" class="btn btn-primary btn-sm padding-non"
 						ng-click="editEquipment='false'; showAddEquipmentModel(unit,editEquipment )"
-						ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Add
+						ng-disabled="!isCreateOrUpdatePrivileged() || isProcessing">Add
 						Equipment</button>
 				</div>
 			</div>

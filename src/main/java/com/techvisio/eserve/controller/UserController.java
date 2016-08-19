@@ -113,10 +113,10 @@ public class UserController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> saveUser(@RequestBody User user){
 
-		Map<String, Object> result = userService.saveUser(user);
-		user = (User) result.get("user");
+		Long userId = userService.saveUser(user);
+		User userFromDB = userService.getUser(userId);
 		Response response=new Response();
-		response.setResponseBody(result);
+		response.setResponseBody(userFromDB);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
@@ -125,14 +125,14 @@ public class UserController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public ResponseEntity<Response> updateUser(@RequestBody User user){
 
-		Map<String, Object> result = userService.saveUser(user);
-		user = (User) result.get("user");
-		if(user!=null){
-			List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(user);
-			user.setPrivileges(userPrivileges);
+		Long userId = userService.saveUser(user);
+		User userFromDB =  userService.getUser(userId);
+		if(userFromDB!=null){
+			List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(userFromDB);
+			userFromDB.setPrivileges(userPrivileges);
 		}
 		Response response=new Response();
-		response.setResponseBody(result);
+		response.setResponseBody(userFromDB);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}	
@@ -196,7 +196,7 @@ public class UserController {
 	@RequestMapping(value="/userName",method = RequestMethod.GET)
 	public ResponseEntity<Response> getUserName(@RequestParam(value="userName", defaultValue="")String userName) {  
 		Response response=new Response();
-		User user = userService.getUserName(userName);
+		User user = userService.getUserByUserName(userName);
 		response.setResponseBody(user);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

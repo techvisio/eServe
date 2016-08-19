@@ -85,8 +85,8 @@ workItemModule
 				 .then(function(response) {
 					 console.log(response);
 					 if (response) {
-						 $scope.customerComplaint = response;
-						 $scope.redirectToComplaintScreen($scope.customerComplaint.complaintId);
+						 $scope.pmsWorkOrder = response;
+						 $scope.redirectToComplaintScreen($scope.pmsWorkOrder.workOrderId);
 					 } 
 				 })	
 			 }
@@ -152,4 +152,7 @@ workItemModule
 					})
 				};
 			 
+				$scope.createWorkItemForSalesRenewal = function(unitInfo){
+					workItemService.createWorkItemForSalesRenewal(unitInfo);
+				}
 		 } ]);

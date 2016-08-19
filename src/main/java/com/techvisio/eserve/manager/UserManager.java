@@ -17,7 +17,7 @@ import com.techvisio.eserve.beans.UserPrivilege;
 @Component
 public interface UserManager {
 
-	public Map<String, Object> saveUser(User user, Long clientId);
+	public Long saveUser(User user, Long clientId);
 	
 	public User getUser(Long userId);
 
@@ -50,8 +50,4 @@ public interface UserManager {
 	public User getUserByUserName(String userName,Long clientId);
 
 	public User getEmailId(String EmailId, Long clientId);
-
-	public User getUserName(String UserName, Long clientId);
-
-	
 }

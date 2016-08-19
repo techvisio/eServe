@@ -116,7 +116,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		if(!unitId){
 			return;
 		}
-
 		customerService.getServiceAgreementHistoryForUnit(unitId)
 		.then(function(response) {
 			console.log('getting Service Agreement History for single unit in controller : ');
@@ -250,7 +249,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.saveCustomer = function(context) {
 
-
 		$scope.addcurrentUnittoCustomer();
 
 		console.log('save customer called');
@@ -258,7 +256,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.comment = "";
 
 		var genericRequest={"bussinessObject":$scope.customer,"contextInfo":{"comment":$scope.comment}};
-
 		customerService.saveCustomer(genericRequest, context)
 		.then(function(response) {
 			console.log('customer Data received from service : ');
@@ -368,6 +365,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				$scope.customer.units = response;
 				$scope.alerts=[];
 				$rootScope.showAlertModel('Unit Saved Successfully ', 'Operation Successful')
+				$rootScope.curModal.close();
 			} 
 		})
 	};
@@ -478,16 +476,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				$scope.customerForEmail = response;
 
 				if(angular.isUndefined($scope.customer.customerId) || $scope.customerForEmail.customerId != $scope.customer.customerId){
-					$scope.emailError=true;
-					$scope.alerts=[];
-					$scope.alerts.push({msg: 'EMAIL ID ALREADY EXIST, TRY ANOTHER ONE!!'})
+					$rootScope.showAlertModel('This Email Id is Already Exists, Choose Different Email Id', 'Duplicate Record');
+					return;
 				}
 			} 
-
-			else{
-				$scope.emailError=false;
-				$scope.alerts=[];
-			}
 		})
 	}
 
@@ -500,15 +492,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				$scope.customerForContactNo = response;
 
 				if(angular.isUndefined($scope.customer.customerId) || $scope.customerForContactNo.customerId != $scope.customer.customerId){
-					$scope.contactNoError=true;
-					$scope.alerts=[];
-					$scope.alerts.push({msg: 'CONTACT NUMBER EXIST, TRY ANOTHER ONE!!'})
+					$rootScope.showAlertModel('This Contact No is Already Exists, Choose Different Contact No', 'Duplicate Record');
+					return;
 				}
 			} 
-			else{
-				$scope.contactNoError=false;
-				$scope.alerts=[];
-			}
 
 		})
 	}
@@ -593,7 +580,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				$scope.saveCustomer = function(context) {
 					$scope.addcurrentUnittoCustomer();
 					var genericRequest={"bussinessObject":$scope.customer,"contextInfo":{"comment":$scope.comment}};
-
 					customerService.saveCustomer(genericRequest, context)
 					.then(function(response) {
 						console.log('customer Data received from service : ');
@@ -628,12 +614,44 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			keyboard: false
 		});
 
-		$scope.closeModal=function(){
+		$scope.updateServiceAgreement = function(){
 			$scope.curModal.close();
-		}
+		};
+		
+		$scope.showCommentBoxRenewAgreementPublish = function() {
 
+			$scope.curModal = $modal.open({
+				templateUrl: 'customer/popup boxes/Comment_Box_Renew_Sales_Agreement.html',
+				scope:$scope,
+				controller: function (customerService,$scope) {
+					$scope.serviceRenewalBean = unit.serviceAgreement;
+					$scope.comment = "";
+
+					$scope.updateSalesAgreement = function(context) {
+						var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
+						customerService.updateSalesAgreement(genericRequest, unit.unitId, context)
+						.then(function(response) {
+							console.log('updateSalesAgreement received from service : ');
+							console.log(response);
+							if (response) {
+								object = response;
+								$scope.alerts=[];
+								$rootScope.showAlertModel('Agreement Updated Successfully ', 'Operation Successful')
+								$rootScope.curModal.close();
+							} 
+						})
+					};
+					$scope.closeModal=function(){
+						$scope.curModal.close();
+					}
+				},
+				backdrop:'static',
+				keyboard: false
+			});
+		};
 	};
 
+	
 
 	$scope.showAddEquipmentModel = function(object, editEquipment) {
 		$scope.dummyEquipmentDetails={};
@@ -695,7 +713,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.addcurrentUnittoCustomer();
 
 		$scope.unit = {
-				"equipmentDetails" : [ {} ]
+				"equipmentDetails" : []
 		};
 	};
 
@@ -911,6 +929,9 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	};
 
 	$scope.getUnitActionItems = function(entityId){
+		if(!entityId){
+			return;
+		}
 		customerService.getUnitActionItems(entityId)
 		.then(
 				function(actionItems) {
@@ -934,6 +955,5 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			} 
 		})
 	}
-
 
 } ]);

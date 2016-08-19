@@ -36,7 +36,6 @@ public interface CustomerManager {
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
 	public Unit getUnit(Long unitId);
 	public Unit approveUnit(Unit unit);
-	//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
 	public UnitBasicCustomer getUnitForApproval(Long unitId);
 	public Long saveCustomer(Customer customer);
 	public Customer getEmailId(String EmailId, Long clientId);
@@ -49,4 +48,5 @@ public interface CustomerManager {
 	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId);
 	public Long saveUnit(Unit unit);
 	public UnitBasicInfo getUnitBasicInfo(Long unitId);
+	public Unit renewSalesAgreement(Unit unit, Long unitId);
 }

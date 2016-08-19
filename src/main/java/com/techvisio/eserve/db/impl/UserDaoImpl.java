@@ -370,16 +370,4 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 		return null;
 	}
 
-	@Override
-	public User getUserName(String UserName, Long clientId) {
-		String queryString="FROM User u WHERE u.userName = "+" '" + UserName +" ' "+" and u.client.clientId = "+clientId;
-		Query query=getEntityManager().createQuery(queryString);
-		@SuppressWarnings("unchecked")
-		List<User> users= (List<User>)query.getResultList();
-		if(users != null && users.size()>0){
-			return users.get(0);
-		}
-		return null;
-	}
-
 }

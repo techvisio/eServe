@@ -33,13 +33,13 @@ public class WorkItemFactory {
 			workItem.setPrivilegeId(9L);
 			break;
 
-		case AppConstants.RENEW_SERVICE_CALL:
+		case AppConstants.FOLLOWUP_RENEWAL_SERVICE:
 
 			workItem = new WorkItem();
-			workItem.setWorkType(AppConstants.WorkItemType.RENEW_SERVICE_AGREEMENT.getWorkType());
-			workItem.setEntityUrl(AppConstants.WorkItemType.RENEW_SERVICE_AGREEMENT.getUrl());
+			workItem.setWorkType(AppConstants.WorkItemType.FOLLOWUP_RENEWAL_SERVICE.getWorkType());
+			workItem.setEntityUrl(AppConstants.WorkItemType.FOLLOWUP_RENEWAL_SERVICE.getUrl());
 			workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS); 
-			workItem.setEntityType(AppConstants.WorkItemType.RENEW_SERVICE_AGREEMENT.getEntityType());
+			workItem.setEntityType(AppConstants.WorkItemType.FOLLOWUP_RENEWAL_SERVICE.getEntityType());
 			//TODO:Change with privilege from Enum
 			workItem.setPrivilegeId(10L);
 			break;
@@ -55,6 +55,16 @@ public class WorkItemFactory {
 			workItem.setPrivilegeId(7L);
 			break;
 
+		case AppConstants.SALES_RENEWAL_AGREEMENT:
+
+			workItem = new WorkItem();
+			workItem.setWorkType(AppConstants.WorkItemType.SALES_RENEWAL_AGREEMENT.getWorkType());
+			workItem.setEntityUrl(AppConstants.WorkItemType.SALES_RENEWAL_AGREEMENT.getUrl());
+			workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS); 
+			workItem.setEntityType(AppConstants.WorkItemType.SALES_RENEWAL_AGREEMENT.getEntityType());
+			//TODO:Change with privilege from Enum
+			workItem.setPrivilegeId(11L);
+			break;
 		default:	
 
 		}

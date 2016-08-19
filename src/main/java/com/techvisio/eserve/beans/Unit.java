@@ -14,18 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techvisio.eserve.interfaces.Lockable;
-import com.techvisio.eserve.util.AppConstants;
-import com.techvisio.eserve.util.CommonUtil;
 
 @Entity
 @Table(name = "TB_UNIT_DETAIL")

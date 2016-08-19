@@ -18,7 +18,7 @@ import com.techvisio.eserve.beans.UserPrivilege;
 @Transactional
 public interface UserService {
 
-	public Map<String, Object> saveUser(User user);
+	public Long saveUser(User user);
 	
 	public User getUser(Long userId);
 
@@ -49,8 +49,6 @@ public interface UserService {
 	public void resetPassword(User user);
 
 	public User getUserByUserName(String userName);
-
-	public User getUserName(String userName);
 
 	public User getEmailId(String emailId);
 }

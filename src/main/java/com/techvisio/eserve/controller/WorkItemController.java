@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techvisio.eserve.beans.Comment;
@@ -84,4 +85,13 @@ public class WorkItemController {
 		response.setResponseBody(comment);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
+	
+	
+	
+	@RequestMapping(value="/salesrenewal",method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
+	public void createWorkItemForSalesRenewal(@RequestBody UnitBasicInfo unitInfo) {  
+		workItemService.createWorkItemForSalesRenewal(unitInfo);
+	}
+	
 }

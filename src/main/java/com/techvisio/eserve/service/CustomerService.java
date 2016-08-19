@@ -57,4 +57,7 @@ public interface CustomerService {
 	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId);
 //	public Long saveUnit(Unit unit);
 	public UnitBasicInfo getUnitBasicInfoById(Long unitId);
+	public Unit renewSalesAgreement(GenericRequest<Unit> request, String context,
+			Long unitId);
 }
+

@@ -273,8 +273,13 @@
 					<button type="button" class="btn btn-primary btn-sm child-right"
 						ng-click="showUnitExpireModal(unitApproval.unit)"
 						ng-show="unitApproval.unit.unitId"
-						ng-disabled="!isPrivileged('AGREEMENT_APPROVAL') || isProcessing">Show
+						ng-disabled="isProcessing">Show
 						Agreement</button>
+						
+						<button type="button" class="btn btn-primary btn-sm child-right"
+						ng-click="showUnitExpireModal(unitApproval.unit)"
+						ng-show="unitApproval.unit.unitId"
+						ng-disabled=" isProcessing">Renew Agreement</button>
 				</div>
 			</div>
 		</section>

@@ -62,8 +62,8 @@ public class WorkItemManagerImpl implements WorkItemManager{
 	}
 
 	@Override
-	public void updateWorkItemStatus(Long entityId, String status) {
-		workItemDao.updateWorkItemStatus(entityId, status);
+	public void updateWorkItemStatus(Long entityId, String status, String workType, String entityType) {
+		workItemDao.updateWorkItemStatus(entityId, status, workType, entityType);
 
 	}
 

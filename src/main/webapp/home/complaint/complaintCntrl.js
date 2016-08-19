@@ -425,7 +425,7 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 				$scope.saveEquipment = function() {
 
 					complaintService.saveEquipment($scope.equipments, $scope.workOrder.workOrderId)
-					.then(function(response) {
+					.then(function(equipment) {
 						console.log('equipment Data received from service : ');
 						console.log(equipment);
 						if (equipment) {

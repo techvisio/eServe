@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Query;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.CompositeKeyEquipmentHistory;
 import com.techvisio.eserve.beans.CompositeKeyUnitHistory;
 import com.techvisio.eserve.beans.Customer;
@@ -17,13 +14,16 @@ import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.EquipmentHistory;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SearchResultData;
+import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.UnitHistory;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
+import com.techvisio.eserve.exception.DuplicateEntityException;
 import com.techvisio.eserve.manager.CustomerManager;
 import com.techvisio.eserve.manager.InvoiceManager;
 import com.techvisio.eserve.util.AppConstants;
@@ -55,23 +55,29 @@ public class CustomerManagerImpl implements CustomerManager {
 
 	@Override
 	public Long saveCustomer(Customer customer) {
+		Customer customerByEmailId = customerDao.getEmailId(customer.getEmailId(), CommonUtil.getCurrentClient().getClientId());
+		if(customerByEmailId!=null && customerByEmailId.getCustomerId() != customer.getCustomerId()){
+			throw new DuplicateEntityException("This Email Id is Already Exists, Choose Different EmailId");
+		}
+		Customer customerByContactNo = customerDao.getContactNo(customer.getContactNo(), CommonUtil.getCurrentClient().getClientId());
+		if(customerByContactNo!=null && customerByContactNo.getCustomerId() != customer.getCustomerId()){
+			throw new DuplicateEntityException("This Contact No is Already Exists, Choose Different Contact No");
+		}
 		Long customerId = customerDao.saveCustomer(customer);
 		return customerId;
 	}
 
 	@Override
 	public Long saveCustomer(Customer customer, String context) {
-		//		Map<String,Object> result=new HashMap<String, Object>();
-		//
-		//		if(customer.getCustomerId()==null){
-		//
-		//			boolean isCustomerExists = customerDao.isCustomerExists(customer);
-		//			if(isCustomerExists){
-		//				result.put("existingCustomer", null);
-		//				result.put("success", false);
-		//				return result;
-		//			}
-		//		}
+
+		Customer customerByEmailId = customerDao.getEmailId(customer.getEmailId(), CommonUtil.getCurrentClient().getClientId());
+		if(customerByEmailId!=null){
+			throw new DuplicateEntityException("This Email Id is Already Exists, Choose Different EmailId");
+		}
+		Customer customerByContactNo = customerDao.getContactNo(customer.getContactNo(), CommonUtil.getCurrentClient().getClientId());
+		if(customerByContactNo!=null){
+			throw new DuplicateEntityException("This Contact No is Already Exists, Choose Different Contact No");
+		}
 
 		List<Unit> units = customer.getUnits();
 
@@ -87,6 +93,7 @@ public class CustomerManagerImpl implements CustomerManager {
 		}
 
 		customer.setClient(CommonUtil.getCurrentClient());		
+
 
 		Long customerId = customerDao.saveCustomer(customer);	
 
@@ -124,7 +131,7 @@ public class CustomerManagerImpl implements CustomerManager {
 		return unitId;
 	}
 
-	
+
 	@Override
 	public List<Unit> getUnits(Long customerId) {
 		List<Unit> units = customerDao.getUnits(customerId);
@@ -136,11 +143,6 @@ public class CustomerManagerImpl implements CustomerManager {
 		List<Customer> customers = customerDao.getCustomers(clientId);
 		return customers;
 	}
-
-	//	@Override
-	//	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId){
-	//		customerDao.updateServiceAgreement(agreement, unitId);
-	//	}
 
 	@Override
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId) {
@@ -304,13 +306,20 @@ public class CustomerManagerImpl implements CustomerManager {
 
 	@Override
 	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId) {
-	EquipmentDetail equipmentDetails = customerDao.getEquipmentDetailByEquipmentId(equipDtlId);
+		EquipmentDetail equipmentDetails = customerDao.getEquipmentDetailByEquipmentId(equipDtlId);
 		return equipmentDetails;
 	}
 
 	@Override
 	public UnitBasicInfo getUnitBasicInfo(Long unitId) {
-	UnitBasicInfo basicInfo = customerDao.getUnitBasicInfo(unitId);
+		UnitBasicInfo basicInfo = customerDao.getUnitBasicInfo(unitId);
 		return basicInfo;
+	}
+
+	@Override
+	public Unit renewSalesAgreement(Unit unit, Long unitId){
+        customerDao.saveUnit(unit);
+        Unit unitFromDB = customerDao.getUnit(unitId);
+		return unitFromDB;
 	}
 }

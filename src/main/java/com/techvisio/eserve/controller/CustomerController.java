@@ -13,19 +13,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.EntityLocks;
-import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.Response;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SearchResultData;
+import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.service.CustomerService;
-import com.techvisio.eserve.service.EntityLockService;
-import com.techvisio.eserve.util.AppConstants;
 
 @RestController
 @RequestMapping("service/customer")
@@ -100,16 +97,6 @@ public class CustomerController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
-	//	@RequestMapping(value ="/renewService/{unitId}", method = RequestMethod.PUT)
-	//	public ResponseEntity<Response> renewService(@PathVariable Long unitId, @RequestBody ServiceAgreement agreement) {
-	//		Response response=new Response();
-	//		customerService.updateServiceAgreement(agreement, unitId);
-	//		Unit unitFromDB = customerService.getUnit(unitId);
-	//		response.setResponseBody(unitFromDB);
-	//
-	//		return new ResponseEntity<Response>(response,HttpStatus.OK);
-	//	}
-
 	@RequestMapping(value ="/servicehistory/{unitId}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getServiceAgreementHistoryForUnit(@PathVariable Long unitId) {
 		Response response=new Response();
@@ -158,6 +145,14 @@ public class CustomerController {
 		Response response=new Response();
 		Customer customer = customerService.getCustomerByContactNo(contactNo);
 		response.setResponseBody(customer);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+
+	@RequestMapping(value ="/renewsalesagreement/{unitId}/{context}", method = RequestMethod.PUT)
+	public ResponseEntity<Response> renewSalesAgreement( @RequestBody GenericRequest<Unit> request, @PathVariable String context, @PathVariable Long unitId) {
+		Response response=new Response();
+		customerService.renewSalesAgreement(request, context, unitId);
+
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 

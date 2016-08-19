@@ -1,14 +1,15 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 box-align">
 	<section class="box">
 		<div class="content-body">
-			<div class="modal-header" ng-if="_errorCode != 403">
+			<div ng-if="_errorCode != 403">
 
 				<button type="button" class="close" ng-click="closeErrorModal()">
 					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 				</button>
-				<h3 class="modal-title" ng-bind="_errorTitle"></h3>
+				<h3 ng-bind="_errorTitle"></h3>
 			</div>
-			<div class="modal-body">
+			<hr>
+			<div >
 				<span ng-bind-html="_errorMessage"></span>
 				<p ng-if="_errorCode != 403"></p>
 			</div>

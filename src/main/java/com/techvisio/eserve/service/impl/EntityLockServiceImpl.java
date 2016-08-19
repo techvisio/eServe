@@ -1,6 +1,7 @@
 package com.techvisio.eserve.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Customer;
+import com.techvisio.eserve.beans.UserPrivilege;
 import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.beans.EntityLocks;
 import com.techvisio.eserve.beans.Unit;
@@ -73,7 +75,12 @@ public class EntityLockServiceImpl implements EntityLockService{
 			lockedObject = customerService.getUnitById(entityLocks.getEntityId());
 		}
 		else{
-			lockedObject = userService.getUser(entityLocks.getEntityId());
+			User user = userService.getUser(entityLocks.getEntityId());
+			if(user!=null){
+				List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(user);
+				user.setPrivileges(userPrivileges);
+			}
+			lockedObject = user;
 		}	
 
 		lockedObject.setEdited(true);
@@ -110,6 +117,10 @@ public class EntityLockServiceImpl implements EntityLockService{
 
 				else if(entityType.equalsIgnoreCase(AppConstants.EntityType.USER.toString())){
 					User userFromDB = userService.getUser(entityId);
+					if(userFromDB!=null){
+						List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(userFromDB);
+						userFromDB.setPrivileges(userPrivileges);
+					}
 					return userFromDB;
 				}
 

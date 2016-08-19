@@ -18,6 +18,7 @@ import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.beans.UserPrivilege;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.UserDao;
+import com.techvisio.eserve.exception.DuplicateEntityException;
 import com.techvisio.eserve.manager.UserManager;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
@@ -126,19 +127,29 @@ public class UserManagerImpl implements UserManager{
 	}
 
 	@Override
-	public Map<String, Object> saveUser(User user, Long clientId) {
-		Map<String,Object> result=new HashMap<String, Object>();
+	public Long saveUser(User user, Long clientId) {
 
 		if(user.getUserId()==null){
-
-			boolean isUserExists = userDao.isUserExists(user,clientId);
-			if(isUserExists){
-				result.put("existingUser", null);
-				result.put("success", false);
-				return result;
+			User userByEmailId = userDao.getEmailId(user.getEmailId(), clientId);
+			if(userByEmailId!=null){
+				throw new DuplicateEntityException("This Email Id is Already Exists, Choose Different EmailId");
+			}
+			User userByUserName = userDao.getUserByUserName(user.getUserName(), clientId);
+			if(userByUserName!=null){
+				throw new DuplicateEntityException("This User Name is Already Exists, Choose Different User Name");
 			}
 		}
 
+		else{
+			User userByEmailId = userDao.getEmailId(user.getEmailId(), clientId);
+			if(userByEmailId!=null && user.getUserId()!= userByEmailId.getUserId()){
+				throw new DuplicateEntityException("This Email Id Already Exists, Choose Different EmailId");
+			}
+			User userByUserName = userDao.getUserByUserName(user.getUserName(), clientId);
+			if(userByUserName!=null && user.getUserId()!= userByUserName.getUserId()){
+				throw new DuplicateEntityException("This User Name Already Exists, Choose Different User Name");
+			}
+		}
 		user.setClient(CommonUtil.getCurrentClient());		
 
 		if(user.getUserId()==null){
@@ -155,11 +166,7 @@ public class UserManagerImpl implements UserManager{
 		}
 
 		Long userId = userDao.saveUser(user);	
-
-		User UserFromDB = userDao.getUser(userId);
-		result.put("user", UserFromDB);
-		result.put("success", true);
-		return result;
+		return userId;
 	}
 
 
@@ -211,12 +218,6 @@ public class UserManagerImpl implements UserManager{
 	@Override
 	public User getEmailId(String EmailId, Long clientId) {
 		User user = userDao.getEmailId(EmailId, clientId);
-		return user;
-	}
-
-	@Override
-	public User getUserName(String UserName, Long clientId) {
-		User user = userDao.getUserName(UserName, clientId);
 		return user;
 	}
 

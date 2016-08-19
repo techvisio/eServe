@@ -41,7 +41,8 @@ public interface AppConstants {
 	public static final String WORK_ITEM_OPEN_STATUS = "OPEN";
 	public static final String WORK_ITEM_CLOSE_STATUS = "CLOSE";
 	public static final String CUSTOMER_DRAFT = "CUSTOMER_DRAFT";
-	public static final String RENEW_SERVICE_CALL = "RENEW SERVICE CALL";
+	public static final String FOLLOWUP_RENEWAL_SERVICE = "FOLLOWUP RENEWAL SERVICE";
+	public static final String SALES_RENEWAL_AGREEMENT = "SALES RENEWAL AGREEMENT";
 	public static final String PMS = "PMS";
 	public static final String UNIT_DRAFT = "UNIT_DRAFT";
 	public static final String PUBLISH = "PUBLISH";
@@ -67,9 +68,9 @@ public interface AppConstants {
 	public enum WorkItemType {
 		AGREEMENT_APPROVAL("unit", "APPROVE_SERVICE_AGREEMENT",
 				"AGREEMENT APPROVAL", "UNIT"), CUSTOMER_DRAFT("customer",
-						"CREATE_CUSTOMER", "CUSTOMER AS DRAFT", "CUSTOMER"), RENEW_SERVICE_AGREEMENT(
-								"unit", "RENEW_SERVICE_AGREEMENT", "RENEW SERVICE AGREEMENT",
-								"UNIT"), PMS("unit", "CREATE_COMPLAINT", "PMS","UNIT");
+						"CREATE_CUSTOMER", "CUSTOMER AS DRAFT", "CUSTOMER"), FOLLOWUP_RENEWAL_SERVICE(
+								"unit", "RENEW_SERVICE_AGREEMENT", "FOLLOWUP RENEWAL SERVICE",
+								"UNIT"), PMS("unit", "CREATE_COMPLAINT", "PMS","UNIT"),SALES_RENEWAL_AGREEMENT("unit", "ACCESS_SALES_RENEW", "SALES RENEWAL AGREEMENT","UNIT");;
 		String url;
 		String privilege;
 		String workType;

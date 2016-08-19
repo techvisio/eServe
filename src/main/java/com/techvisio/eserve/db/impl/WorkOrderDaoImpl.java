@@ -516,7 +516,7 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 
 	@Override
 	public PmsWorkOrder getPmsComplaint(Long workitemId){
-		String queryString="FROM PmsComplaint pc where pc.workitemId = " + workitemId;
+		String queryString="FROM PmsWorkOrder pwo where pwo.workitemId = " + workitemId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<PmsWorkOrder> result= (List<PmsWorkOrder>)query.getResultList();

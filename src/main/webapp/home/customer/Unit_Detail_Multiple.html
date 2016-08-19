@@ -210,7 +210,7 @@
 							<div class="row">
 								<button type="button" class="btn btn-primary child-right"
 									ng-show="unit.edited"
-									ng-disabled="isCreateOrUpdatePrivileged() || isProcessing"
+									ng-disabled="!isCreateOrUpdatePrivileged() || isProcessing"
 									ng-click="saveUnit(unit,'CUSTOMER_DRAFT',$id)">
 									<i class="fa fa-floppy-o" style="font-size: 13px"></i>&nbsp
 									Save As Draft
@@ -218,7 +218,7 @@
 
 								<button type="button" class="btn btn-success child-right"
 									ng-show="unit.edited"
-									ng-disabled="isCreateOrUpdatePrivileged() || isProcessing || unit.approvalStatus==='P'"
+									ng-disabled="!isCreateOrUpdatePrivileged() || isProcessing || unit.approvalStatus==='P'"
 									ng-click="showCommentBoxUnitPublish(unit)">
 									<i class="fa fa-paper-plane" style="font-size: 12px"></i>&nbsp
 									Publish
@@ -226,7 +226,7 @@
 
 								<button type="button" class="btn btn-primary child-right"
 									ng-click="showUnitExpireModal(unit)" ng-show="unit.unitId"
-									ng-disabled="isCreateOrUpdatePrivileged() || isProcessing">Show
+									ng-disabled="!isCreateOrUpdatePrivileged() || isProcessing">Show
 									Agreement</button>
 
 								<button type="button" class="btn btn-success child-right"

@@ -10,7 +10,7 @@ customerModule.service('customerService', function($http, $q) {
 		getUnit : getUnit,
 		getCustomerByCriteria : getCustomerByCriteria,
 		getAllComplaints : getAllComplaints,
-		updateServiceAgreement : updateServiceAgreement,
+		updateSalesAgreement : updateSalesAgreement,
 		getServiceAgreementHistoryForUnit : getServiceAgreementHistoryForUnit,
 		approveUnit : approveUnit,
 		getUnitForApproval : getUnitForApproval,
@@ -25,7 +25,7 @@ customerModule.service('customerService', function($http, $q) {
 	});
 
 
-	
+
 	function rejectUnitApproval(genericRequest){
 		console.log('rejecting unit approval in service');
 		var request = $http({
@@ -37,7 +37,7 @@ customerModule.service('customerService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
-	
+
 	function getWorkItemByUserIdAndWorkType(userId, type, status){
 		console.log('get work Item by user Id and type in service');
 
@@ -153,13 +153,13 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function updateServiceAgreement(serviceAgreement, unitId){
-		console.log('renewService called in service');
+	function updateSalesAgreement(genericRequest,unitId,context){
+		console.log('renewSalesAgreement called in service');
 		var request = $http({
 			method : "put",
-			url : "../service/customer/renewService/" + unitId,
+			url : "../service/customer/renewsalesagreement/" + unitId+"/"+context,
 			params : "",
-			data: serviceAgreement
+			data: genericRequest
 
 		});
 		return (request.then(handleSuccess, handleError));
@@ -229,7 +229,7 @@ customerModule.service('customerService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}
-	
+
 	function getUnitActionItems(entityId){
 		console.log('get action items in service');
 
@@ -242,7 +242,7 @@ customerModule.service('customerService', function($http, $q) {
 		});
 		return (request.then(handleSuccess, handleError));
 	}	
-	
+
 	function lockEntity(entityLock){
 		console.log('lock entity');
 		var request = $http({
@@ -280,7 +280,7 @@ customerModule.service('customerService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	
+
 	function handleError(response) {
 		console.log('Error occured while calling service');
 		console.log(response);
