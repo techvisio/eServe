@@ -637,7 +637,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 								object = response;
 								$scope.alerts=[];
 								$rootScope.showAlertModel('Agreement Updated Successfully ', 'Operation Successful')
-								$rootScope.curModal.close();
+								$scope.curModal.close();
 							} 
 						})
 					};
@@ -954,6 +954,57 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				$scope.comment = response;
 			} 
 		})
-	}
+	};
+	
+	
+	$scope.showRenewUnitExpireModal = function(unit) {
 
+		$scope.renewAgreementModal = $modal.open({
+			templateUrl: 'customer/popup boxes/Unit_Expiration_Model.html',
+			controller: function (customerService, masterdataService) {
+				$scope.serviceRenewalBean = unit.serviceAgreement;
+			},
+			scope:$scope,
+			backdrop:'static',
+			keyboard: false
+		});
+
+		$scope.updateServiceAgreement = function(){
+			$scope.curModal.close();
+		};
+		
+		$scope.showCommentBoxRenewAgreementPublish = function() {
+
+			$scope.agreementCommentModal = $modal.open({
+				templateUrl: 'customer/popup boxes/Comment_Box_Renew_Sales_Agreement.html',
+				scope:$scope,
+				controller: function (customerService,$scope) {
+					$scope.serviceRenewalBean = unit.serviceAgreement;
+					$scope.comment = "";
+
+					$scope.updateSalesAgreement = function(context) {
+						var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
+						customerService.updateSalesAgreement(genericRequest, unit.unitId, context)
+						.then(function(response) {
+							console.log('updateSalesAgreement received from service : ');
+							console.log(response);
+							if (response) {
+								object = response;
+								$rootScope.showAlertModel('Agreement Updated Successfully ', 'Operation Successful')
+								$scope.agreementCommentModal.close();
+								$scope.renewAgreementModal.close();
+							} 
+						})
+					};
+					$scope.closeModal=function(){
+						$scope.curModal.close();
+					}
+				},
+				backdrop:'static',
+				keyboard: false
+			});
+		};
+	};
+	
+	
 } ]);

@@ -60,6 +60,32 @@ public class UserPrivilege extends BasicEntity {
 	public void setGranted(boolean granted) {
 		this.granted = granted;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((userPrivilegeId == null) ? 0 : userPrivilegeId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserPrivilege other = (UserPrivilege) obj;
+		if (userPrivilegeId == null) {
+			if (other.userPrivilegeId != null)
+				return false;
+		} else if (!userPrivilegeId.equals(other.userPrivilegeId))
+			return false;
+		return true;
+	}
 	
 	
 }

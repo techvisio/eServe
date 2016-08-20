@@ -317,9 +317,9 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 
 	@Override
-	public Unit renewSalesAgreement(Unit unit, Long unitId){
-        customerDao.saveUnit(unit);
-        Unit unitFromDB = customerDao.getUnit(unitId);
+	public Unit renewSalesAgreement(Unit unit, String context){
+		saveUnit(unit, context);
+        Unit unitFromDB = customerDao.getUnit(unit.getUnitId());
 		return unitFromDB;
 	}
 }

@@ -151,8 +151,8 @@ public class CustomerController {
 	@RequestMapping(value ="/renewsalesagreement/{unitId}/{context}", method = RequestMethod.PUT)
 	public ResponseEntity<Response> renewSalesAgreement( @RequestBody GenericRequest<Unit> request, @PathVariable String context, @PathVariable Long unitId) {
 		Response response=new Response();
-		customerService.renewSalesAgreement(request, context, unitId);
-
+		Unit unitFromDB = customerService.renewSalesAgreement(request, context, unitId);
+		response.setResponseBody(unitFromDB);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 

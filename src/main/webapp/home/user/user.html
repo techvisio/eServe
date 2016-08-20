@@ -10,8 +10,7 @@
 						ng-class="{'fa-chevron-down':isUserCollapsed}"
 						ng-click="isUserCollapsed=!isUserCollapsed"></i> <i
 						class="fa fa-pencil" ng-show="!user.edited && !isNew"
-						popover-placement="bottom" popover="Click To Edit"
-						popover-trigger="mouseenter" ng-click="lockUserEntity()"
+						ng-click="lockUserEntity()"
 						ng-disabled="isCreateOrUpdatePrivileged()"></i>
 				</div>
 			</header>

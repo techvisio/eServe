@@ -70,9 +70,9 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 	}
 
 	@Override
-	public void updateWorkItemStatus(Long entityId, String status, String workType, String entityType){
+	public void updateWorkItemStatus(Long entityId, String status, String entityType, String workType){
 
-		String updateQuery = "UPDATE TB_WORK_ITEM SET STATUS= "+"'"+status+"'"+ " where ENTITY_ID = "+"'"+entityId+"'"+" and ENTITY_TYPE = "+"'"+entityType+"'"+" and WORKTYPE = "+"'"+workType+"'";
+		String updateQuery = "UPDATE TB_WORK_ITEM SET STATUS= "+"'"+status+"'"+ " where ENTITY_ID = "+entityId+" and ENTITY_TYPE = "+"'"+entityType+"'"+" and WORKTYPE = "+"'"+workType+"'";
 
 		Query query=(Query) getEntityManager().createNativeQuery(updateQuery);
 		query.executeUpdate();	

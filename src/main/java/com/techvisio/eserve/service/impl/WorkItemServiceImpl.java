@@ -73,8 +73,8 @@ public class WorkItemServiceImpl implements WorkItemService {
 	}
 
 	@Override
-	public void updateWorkItemStatus(Long entityId, String status,String workType, String entityType) {
-		workItemManager.updateWorkItemStatus(entityId, status,workType,entityType );
+	public void updateWorkItemStatus(Long entityId, String status,String entityType,String workType) {
+		workItemManager.updateWorkItemStatus(entityId, status,entityType, workType);
 
 	}
 

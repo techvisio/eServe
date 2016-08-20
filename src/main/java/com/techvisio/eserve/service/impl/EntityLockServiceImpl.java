@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -76,11 +77,12 @@ public class EntityLockServiceImpl implements EntityLockService{
 		}
 		else{
 			User user = userService.getUser(entityLocks.getEntityId());
+			User cloneUser = SerializationUtils.clone(user);
 			if(user!=null){
 				List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(user);
-				user.setPrivileges(userPrivileges);
+				cloneUser.setPrivileges(userPrivileges);
 			}
-			lockedObject = user;
+			lockedObject = cloneUser;
 		}	
 
 		lockedObject.setEdited(true);
@@ -117,10 +119,10 @@ public class EntityLockServiceImpl implements EntityLockService{
 
 				else if(entityType.equalsIgnoreCase(AppConstants.EntityType.USER.toString())){
 					User userFromDB = userService.getUser(entityId);
-					if(userFromDB!=null){
-						List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(userFromDB);
-						userFromDB.setPrivileges(userPrivileges);
-					}
+//					if(userFromDB!=null){
+//						List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(userFromDB);
+//						userFromDB.setPrivileges(userPrivileges);
+//					}
 					return userFromDB;
 				}
 

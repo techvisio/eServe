@@ -48,5 +48,5 @@ public interface CustomerManager {
 	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId);
 	public Long saveUnit(Unit unit);
 	public UnitBasicInfo getUnitBasicInfo(Long unitId);
-	public Unit renewSalesAgreement(Unit unit, Long unitId);
+	public Unit renewSalesAgreement(Unit unit, String context);
 }

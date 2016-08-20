@@ -261,10 +261,10 @@ public class CustomerServiceImpl implements CustomerService{
 	public Unit renewSalesAgreement(GenericRequest<Unit> request, String context, Long unitId){
 		Unit unit=request.getBussinessObject();
 		String comment = request.getContextInfo().get("comment");
-		Unit unitFromDB = customerManager.renewSalesAgreement(unit, unitId);
+		Unit unitFromDB = customerManager.renewSalesAgreement(unit,context);
         workItemService.createWorkItemForUnitSave(context, unitId, comment);
         workItemService.updateWorkItemStatus(unitId,"CLOSE", "UNIT", "SALES RENEWAL AGREEMENT");
-        return unit;
+        return unitFromDB;
 	}
 
 }

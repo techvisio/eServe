@@ -354,7 +354,9 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 		String deleteQuery = "Delete from TB_USER_PRIVILEGE where USER_ID =:USER_ID and USER_PRVLG_ID not in :USER_PRVLG_ID";
 
 		Query query=(Query) getEntityManager().createNativeQuery(deleteQuery).setParameter("USER_ID", userId).setParameter("USER_PRVLG_ID", userPrivilegeId);
-		query.executeUpdate();	}
+		query.executeUpdate();	
+		getEntityManager().flush();	
+	}
 
 
 	@Override
@@ -370,4 +372,13 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 		return null;
 	}
 
+//	@Override
+//	public List<UserPrivilege> geUserPrivileges(Long userId) {
+//	
+//		String queryString="FROM UserPrivilege up WHERE up.userId = "+ userId;
+//		Query query=getEntityManager().createQuery(queryString);
+//		@SuppressWarnings("unchecked")
+//		List<UserPrivilege> privileges= (List<UserPrivilege>)query.getResultList();
+//		return privileges;
+//	}
 }

@@ -513,7 +513,6 @@ userModule
 							 console.log(user);
 							 if (user) {
 								 $scope.user=user;
-								 $scope.createPriviledgeGrp($scope.user.privileges);
 								 $scope.toggleReadOnly('USER', $scope.user.edited);
 							 }
 						 })
