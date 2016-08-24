@@ -24,15 +24,15 @@ public interface UserService {
 
 	public List<Role> getUserRole(Long userId);
 
-	public void saveSecurityQuestion(SecurityQuestion securityQuestion);
+//	public void saveSecurityQuestion(SecurityQuestion securityQuestion);
 
-	public SecurityQuestion getSecurityQuestion(Long questionId);
+//	public SecurityQuestion getSecurityQuestion(Long questionId);
 
 	public List<User> getUsers();
 
 //	public List<Privilege> getUserPrivileges(Long userId);
 	
-	public void saveUserPrivileges(List<Privilege> privileges);
+//	public void saveUserPrivileges(List<Privilege> privileges);
 
 	public Map<String, Boolean> forcePasswordChange(User user);
 
@@ -50,5 +50,11 @@ public interface UserService {
 
 	public User getUserByUserName(String userName);
 
-	public User getEmailId(String emailId);
+	public User getUserByEmailId(String emailId);
+	
+	public User getUserForEdit(Long userId);
+
+	public User releaseUserEntityLock(Long userId);
+	
+	public List<UserPrivilege> getPrivilegesForUser(Long userId);
 }

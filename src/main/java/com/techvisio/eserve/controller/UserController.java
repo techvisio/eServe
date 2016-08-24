@@ -100,8 +100,8 @@ public class UserController {
 	public ResponseEntity<Response> saveManadatoryResetChanges(@RequestBody User user){
 
 		User loggedinUser = CommonUtil.getCurrentUser();
-		User userFrromDB = userService.getUser(user.getUserId());
-		loggedinUser.setPassword(userFrromDB.getPassword());
+		User userFromDB = userService.getUser(user.getUserId());
+		loggedinUser.setPassword(userFromDB.getPassword());
 		Map<String, Boolean> result = userService.forcePasswordChange(user);
 		Response response=new Response();
 		response.setResponseBody(result);
@@ -126,11 +126,7 @@ public class UserController {
 	public ResponseEntity<Response> updateUser(@RequestBody User user){
 
 		Long userId = userService.saveUser(user);
-		User userFromDB =  userService.getUser(userId);
-		if(userFromDB!=null){
-			List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(userFromDB);
-			userFromDB.setPrivileges(userPrivileges);
-		}
+		User userFromDB =  userService.releaseUserEntityLock(userId);
 		Response response=new Response();
 		response.setResponseBody(userFromDB);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
@@ -148,9 +144,7 @@ public class UserController {
 	public ResponseEntity<Response> getUserWithUserPrivileges(@PathVariable Long userId){
 		Response response = new Response();
 
-		User user = userService.getUser(userId);
-		List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(user);
-		user.setPrivileges(userPrivileges);
+		User user = userService.getUserWithUserPrivileges(userId);
 		response.setResponseBody(user);
 
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
@@ -188,7 +182,7 @@ public class UserController {
 	@RequestMapping(value="/emailId",method = RequestMethod.GET)
 	public ResponseEntity<Response> getEmailId(@RequestParam(value="emailId", defaultValue="")String emailId) {  
 		Response response=new Response();
-		User user = userService.getEmailId(emailId);
+		User user = userService.getUserByEmailId(emailId);
 		response.setResponseBody(user);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
@@ -197,6 +191,22 @@ public class UserController {
 	public ResponseEntity<Response> getUserName(@RequestParam(value="userName", defaultValue="")String userName) {  
 		Response response=new Response();
 		User user = userService.getUserByUserName(userName);
+		response.setResponseBody(user);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/lockuser/{userId}",method = RequestMethod.GET)
+	public ResponseEntity<Response> getUserForEdit(@PathVariable Long userId) {  
+		Response response=new Response();
+		User user = userService.getUserForEdit(userId);
+		response.setResponseBody(user);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/unlockuser/{userId}",method = RequestMethod.GET)
+	public ResponseEntity<Response> releaseUserEntityLock(@PathVariable Long userId) {  
+		Response response=new Response();
+		User user = userService.releaseUserEntityLock(userId);
 		response.setResponseBody(user);
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}

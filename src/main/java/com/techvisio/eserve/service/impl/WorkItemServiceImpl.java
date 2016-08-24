@@ -2,12 +2,11 @@ package com.techvisio.eserve.service.impl;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.Config;
@@ -28,7 +27,7 @@ import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 
 @Component
-@Transactional
+@Transactional(propagation=Propagation.REQUIRED)
 public class WorkItemServiceImpl implements WorkItemService {
 
 	@Autowired

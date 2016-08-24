@@ -15,8 +15,8 @@ userModule.service('userService', function($http, $q) {
 		getUserprivileges : getUserprivileges,
 		getCurrentPassword :getCurrentPassword,
 		resetPassword : resetPassword,
-		lockEntity : lockEntity,
-		unlockEntity : unlockEntity,
+		getUserForEdit : getUserForEdit,
+		getUserAfterEdit : getUserAfterEdit,
 		getEmailId : getEmailId,
 		getUserName:getUserName
 	});
@@ -205,18 +205,32 @@ userModule.service('userService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
-	function lockEntity(entityLock){
-		console.log('lock entity');
-		var request = $http({
-			method : "post",
-			url : "../service/entityLock/lockEntity",
-			params : "",
-			data: entityLock
+	function getUserForEdit(userId){
+			console.log('Lock user entity in service');
 
+			var request = $http({
+				method : "get",
+				url : "../service/user/lockuser/"+userId,
+				params : {
+					action : "get"
+				}
+			});
+			return (request.then(handleSuccess, handleError));
+		}
+
+	function getUserAfterEdit(userId){
+		console.log('unlock user entity in service');
+
+		var request = $http({
+			method : "get",
+			url : "../service/user/unlockuser/"+userId,
+			params : {
+				action : "get"
+			}
 		});
 		return (request.then(handleSuccess, handleError));
 	}
-
+	
 	function unlockEntity(entityLock){
 		console.log('unlock entity');
 		var request = $http({

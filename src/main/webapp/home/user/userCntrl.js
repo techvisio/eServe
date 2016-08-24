@@ -476,12 +476,8 @@ userModule
 
 			 $scope.lockUserEntity = function()
 			 {
-				 $scope.entityLock = {};
-				 $scope.entityLock.entityId = $scope.user.userId;
-				 $scope.entityLock.entityType = 'USER';
-
 				 if($scope.isCreateOrUpdatePrivileged){
-					 userService.lockEntity($scope.entityLock)
+					 userService.getUserForEdit($scope.user.userId)
 					 .then(
 							 function(user) {
 								 console
@@ -501,11 +497,7 @@ userModule
 
 			 $scope.unlockUserEntity = function(){
 
-				 $scope.entityLock = {};
-				 $scope.entityLock.entityId = $scope.user.userId;
-				 $scope.entityLock.entityType = 'USER';
-
-				 userService.unlockEntity($scope.entityLock)
+				 userService.getUserAfterEdit($scope.user.userId)
 				 .then(
 						 function(user) {
 							 console
@@ -513,6 +505,7 @@ userModule
 							 console.log(user);
 							 if (user) {
 								 $scope.user=user;
+								 $state.reload('viewUser',{entityId:$scope.user.userId});
 								 $scope.toggleReadOnly('USER', $scope.user.edited);
 							 }
 						 })

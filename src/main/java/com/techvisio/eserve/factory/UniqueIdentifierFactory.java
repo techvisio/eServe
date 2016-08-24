@@ -7,6 +7,7 @@ import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.manager.CacheManager;
+import com.techvisio.eserve.util.ApplicationContextProvider;
 import com.techvisio.eserve.util.CommonUtil;
 import com.techvisio.eserve.util.ContextProvider;
 
@@ -16,6 +17,9 @@ public class UniqueIdentifierFactory implements UniqueIdentifierGenerator {
 
 	@Autowired
 	CacheManager cacheManager ;
+	
+	@Autowired
+	ApplicationContextProvider contextProvider;
 
 
 	@Override
@@ -23,7 +27,7 @@ public class UniqueIdentifierFactory implements UniqueIdentifierGenerator {
 
 		String customerCode = CommonUtil.getCurrentClient().getClientCode()+"/"+"CST";
 
-		SequenceFactory sf=ContextProvider.getContext().getBean(SequenceFactory.class);
+		SequenceFactory sf=contextProvider.getApplicationContext().getBean(SequenceFactory.class);
 
 		Long Id = sf.getSequence(customerCode);
 
@@ -41,7 +45,7 @@ public class UniqueIdentifierFactory implements UniqueIdentifierGenerator {
 
 		String unitCode = CommonUtil.getCurrentClient().getClientCode()+"/"+"U";
 
-		SequenceFactory sf=ContextProvider.getContext().getBean(SequenceFactory.class);
+		SequenceFactory sf=contextProvider.getApplicationContext().getBean(SequenceFactory.class);
 
 		Long Id = sf.getSequence(unitCode);
 
@@ -59,7 +63,7 @@ public class UniqueIdentifierFactory implements UniqueIdentifierGenerator {
 
 		String complaintCode = CommonUtil.getCurrentClient().getClientCode()+"/"+"C";
 
-		SequenceFactory sf=ContextProvider.getContext().getBean(SequenceFactory.class);
+		SequenceFactory sf=contextProvider.getApplicationContext().getBean(SequenceFactory.class);
 
 		Long Id = sf.getSequence(complaintCode);
 

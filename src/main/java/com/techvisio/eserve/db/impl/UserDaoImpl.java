@@ -360,7 +360,7 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 
 
 	@Override
-	public User getEmailId(String EmailId, Long clientId) {
+	public User getUserByEmailId(String EmailId, Long clientId) {
 		String queryString="FROM User u WHERE u.emailId = "+" '" + EmailId +" ' "+" and u.client.clientId = "+clientId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
@@ -372,13 +372,13 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 		return null;
 	}
 
-//	@Override
-//	public List<UserPrivilege> geUserPrivileges(Long userId) {
-//	
-//		String queryString="FROM UserPrivilege up WHERE up.userId = "+ userId;
-//		Query query=getEntityManager().createQuery(queryString);
-//		@SuppressWarnings("unchecked")
-//		List<UserPrivilege> privileges= (List<UserPrivilege>)query.getResultList();
-//		return privileges;
-//	}
+	@Override
+	public List<UserPrivilege> getPrivilegesForUser(Long userId) {
+	
+		String queryString="FROM UserPrivilege up WHERE up.userId = "+ userId;
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<UserPrivilege> privileges= (List<UserPrivilege>)query.getResultList();
+		return privileges;
+	}
 }

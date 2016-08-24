@@ -130,7 +130,7 @@ public class UserManagerImpl implements UserManager{
 	public Long saveUser(User user, Long clientId) {
 
 		if(user.getUserId()==null){
-			User userByEmailId = userDao.getEmailId(user.getEmailId(), clientId);
+			User userByEmailId = userDao.getUserByEmailId(user.getEmailId(), clientId);
 			if(userByEmailId!=null){
 				throw new DuplicateEntityException("This Email Id is Already Exists, Choose Different EmailId");
 			}
@@ -141,7 +141,7 @@ public class UserManagerImpl implements UserManager{
 		}
 
 		else{
-			User userByEmailId = userDao.getEmailId(user.getEmailId(), clientId);
+			User userByEmailId = userDao.getUserByEmailId(user.getEmailId(), clientId);
 			if(userByEmailId!=null && user.getUserId()!= userByEmailId.getUserId()){
 				throw new DuplicateEntityException("This Email Id Already Exists, Choose Different EmailId");
 			}
@@ -216,9 +216,15 @@ public class UserManagerImpl implements UserManager{
 	}
 
 	@Override
-	public User getEmailId(String EmailId, Long clientId) {
-		User user = userDao.getEmailId(EmailId, clientId);
+	public User getUserByEmailId(String EmailId, Long clientId) {
+		User user = userDao.getUserByEmailId(EmailId, clientId);
 		return user;
+	}
+
+	@Override
+	public List<UserPrivilege> getPrivilegesForUser(Long userId) {
+		List<UserPrivilege> userPrivileges = userDao.getPrivilegesForUser(userId);
+		return userPrivileges;
 	}
 
 }

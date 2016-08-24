@@ -119,10 +119,6 @@ public class EntityLockServiceImpl implements EntityLockService{
 
 				else if(entityType.equalsIgnoreCase(AppConstants.EntityType.USER.toString())){
 					User userFromDB = userService.getUser(entityId);
-//					if(userFromDB!=null){
-//						List<UserPrivilege> userPrivileges = userService.getAllUserPrivileges(userFromDB);
-//						userFromDB.setPrivileges(userPrivileges);
-//					}
 					return userFromDB;
 				}
 

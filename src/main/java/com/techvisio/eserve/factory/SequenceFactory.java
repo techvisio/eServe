@@ -8,12 +8,15 @@ import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.techvisio.eserve.db.impl.BaseDao;
 import com.techvisio.eserve.util.SqlFunction;
 
 
 @Repository
+@Transactional(propagation=Propagation.REQUIRES_NEW)
 public class SequenceFactory extends BaseDao {
 	
 	public Long getSequence(String seqName){

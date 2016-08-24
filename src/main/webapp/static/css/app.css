@@ -1343,3 +1343,9 @@ button-left {
 .comment-padding{
 	padding-top: 10px;
 }
+
+/* check box label padding */
+
+.check-box-padding{
+	padding-left: 10px;
+}

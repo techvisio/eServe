@@ -49,5 +49,7 @@ public interface UserManager {
 
 	public User getUserByUserName(String userName,Long clientId);
 
-	public User getEmailId(String EmailId, Long clientId);
+	public User getUserByEmailId(String EmailId, Long clientId);
+
+	public List<UserPrivilege> getPrivilegesForUser(Long userId);
 }

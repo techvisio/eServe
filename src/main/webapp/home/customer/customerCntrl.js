@@ -84,7 +84,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	if(Operation && Operation == 'viewCustomer'){
 		$scope.customer = contextObject;
-		$scope.toggleReadOnly('CUSTOMER',contextObject.edited);
+		$scope.toggleReadOnly('CUSTOMER',false);
 	}
 
 

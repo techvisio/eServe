@@ -3,31 +3,23 @@ package com.techvisio.eserve.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SearchResultData;
-import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkOrder;
-import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.icc.CustomerServiceICC;
 import com.techvisio.eserve.manager.CustomerManager;
-import com.techvisio.eserve.service.ActivityService;
 import com.techvisio.eserve.service.CustomerService;
-import com.techvisio.eserve.service.EntityLockService;
-import com.techvisio.eserve.service.WorkItemService;
-import com.techvisio.eserve.service.WorkOrderService;
-import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 import com.techvisio.eserve.util.ServiceLocator;
 
@@ -39,19 +31,8 @@ public class CustomerServiceImpl implements CustomerService{
 	CustomerManager customerManager;
 
 	@Autowired
-	WorkItemService workItemService; 
-
-	@Autowired
-	ActivityService activityService;
-
-	@Autowired
-	EntityLockService entityLockService;
-
-	@Autowired
 	ServiceLocator servicelocator;
 
-	@Autowired
-	WorkOrderService complaintService;
 	@Override
 	public List<Customer> retrieveAllCustomer() {
 		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
@@ -66,7 +47,10 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public Customer getCustomerbyId(Long customerId) {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customerServiceICC.preGetCustomerbyId();
 		Customer customer = customerManager.getCustomer(customerId);
+		customer = customerServiceICC.postGetCustomerbyId(customer);
 		return customer;
 	}
 
@@ -82,13 +66,10 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public Long saveCustomerWizard(GenericRequest<Customer> request, String context) {
-
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
 		Customer customer=request.getBussinessObject();
-		String comment = request.getContextInfo().get("comment");
 		Long customerId = customerManager.saveCustomer(customer, context);
-
-		workItemService.createWorkItemForCustomerSave(context, customer,comment);
-		//		activityService.createActivityForCustomer(customer);
+		request = customerServiceICC.postSaveCustomerWizard(request, context);
 		return customerId;
 	}
 
@@ -100,34 +81,31 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public Long saveUnitWizard(GenericRequest<Unit> request, String context) {
-
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		request = customerServiceICC.preSaveUnitWizard(request);
 		Unit unit=request.getBussinessObject();
-		if(unit.getUnitId()!=null){
-			String userName = CommonUtil.getCurrentUser().getUserName();
-			boolean isEntityLocked=entityLockService.isEntityLocked(unit.getUnitId(), AppConstants.EntityType.UNIT.toString(), userName);
-			if(!isEntityLocked){
-				throw new EntityLockedException("Current user does not hold lock for this unit");
-			}
-		}
-		String comment = request.getContextInfo().get("comment");
+
 		Long unitId = customerManager.saveUnit(unit,context);
-
-		workItemService.createWorkItemForUnitSave(context, unitId, comment);
-
-		entityLockService.unlockEntity("UNIT", unitId);
+		request = customerServiceICC.postSaveUnitWizard(request, context);
 		return unitId;
 	}
 
 
 	@Override
 	public List<Unit> getAllUnitForCustomerById(Long customerId) {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customerServiceICC.preGetAllUnitForCustomerById();
 		List<Unit> units = customerManager.getUnits(customerId);
+		units = customerServiceICC.postGetAllUnitForCustomerById(units);
 		return units;
 	}
 
 	@Override
 	public SearchResultData getCustomerByCriteria(SearchCriteria searchCriteria) {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customerServiceICC.preGetCustomerByCriteria();
 		SearchResultData customers = customerManager.getCustomerByCriteria(searchCriteria);
+		customers = customerServiceICC.postGetCustomerByCriteria(customers);
 		return customers;
 	}
 
@@ -171,59 +149,77 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId) {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customerServiceICC.preGetServiceAgreementHistoryForUnit();
 		List<ServiceAgreementHistory> agreementHistories = customerManager.getServiceAgreementHistoryForUnit(unitId);
+		agreementHistories = customerServiceICC.postGetServiceAgreementHistoryForUnit(agreementHistories);
 		return agreementHistories;
 	}
 
 	@Override
 	public Unit getUnitById(Long unitId) {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customerServiceICC.preGetUnitById();
 		Unit unit = customerManager.getUnit(unitId);
+		unit = customerServiceICC.postGetUnitById(unit);
 		return unit;
 	}
 
 	@Override
 	public Unit updateUnitForApproval(Unit unit) {
-
+		CustomerServiceICC customerServiceICC = servicelocator.getService(CustomerServiceICC.class);
+		unit=customerServiceICC.preUpdateUnitForApproval(unit);
 		Unit unitFromDB = customerManager.approveUnit(unit);
-		workItemService.closeAgreementApprovalWorkItem(unit.getUnitId());
-		workItemService.createWorkItemForServiceRenewal(unit);
-		complaintService.createPmsWorkItem(unit);
+		unitFromDB = customerServiceICC.postUpdateUnitForApproval(unitFromDB);
 		return unitFromDB;
 	}
 
 	@Override
 	public UnitBasicCustomer getUnitWithBasicCustomerDetais(Long unitId) {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customerServiceICC.preGetUnitWithBasicCustomerDetails();
 		UnitBasicCustomer approveUnitDtl = customerManager.getUnitForApproval(unitId);
+		approveUnitDtl = customerServiceICC.postGetUnitWithBasicCustomerDetails(approveUnitDtl);
 		return approveUnitDtl;
 	}
 
 	@Override
 	public Customer getCustomerByEmailId(String emailId) {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customerServiceICC.preGetCustomerByEmailId();
 		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		Customer customer = customerManager.getEmailId(emailId, clientId);
+		customer = customerServiceICC.postGetCustomerByEmailId(customer);
 		return customer;
 	}
 
 	@Override
 	public Customer getCustomerByContactNo(String contactNo)  {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customerServiceICC.preGetCustomerByContactNo();
 		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		Customer customer = customerManager.getContactNo(contactNo,clientId);
+		customer = customerServiceICC.postGetCustomerByContactNo(customer);
 		return customer;
 	}
 
 	@Override
 	public Unit updateUnitForRejection(GenericRequest<Unit> request) {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		request = customerServiceICC.preUpdateUnitForRejection(request);
 		Unit unit = request.getBussinessObject();
-		String comment = request.getContextInfo().get("comment");
-		workItemService.workItemWorkForRejectApprovalChanges(unit, comment);
 		Unit unitFromDB = customerManager.rejectUnitApproval(unit);
+
+		request = customerServiceICC.postUpdateUnitForRejection(request);
 		return unitFromDB;
 	}
 
 	@Override
 	public List<EquipmentDetail> getAllEquipmentForUnitById(String type, Long unitId){
-
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customerServiceICC.preGetAllEquipmentForUnitById();
 		List<EquipmentDetail> equipmentDetails= customerManager.getEquipmentDetail(type, unitId);
+		equipmentDetails = customerServiceICC.postGetAllEquipmentForUnitById(equipmentDetails);
 		return equipmentDetails;
 	}
 
@@ -235,14 +231,20 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public Long saveEquipmentforUnit(EquipmentDetail equipmentDetail) {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		equipmentDetail=customerServiceICC.preSaveEquipmentforUnit(equipmentDetail);
 		Long equipmentdtlId = customerManager.saveEquipment(equipmentDetail);
+		equipmentDetail = customerServiceICC.postSaveEquipmentforUnit(equipmentDetail);
 		return equipmentdtlId;
 	}
 
 	@Override
 	public EquipmentDetail getEquipmentDetailByEquipmentId(Long equipDtlId) {
-		EquipmentDetail equipmentDetails = customerManager.getEquipmentDetailByEquipmentId(equipDtlId);
-		return equipmentDetails;
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customerServiceICC.preGetEquipmentDetailByEquipmentId();
+		EquipmentDetail equipmentDetail = customerManager.getEquipmentDetailByEquipmentId(equipDtlId);
+		equipmentDetail = customerServiceICC.postGetEquipmentDetailByEquipmentId(equipmentDetail);
+		return equipmentDetail;
 	}
 
 	//	@Override
@@ -253,18 +255,22 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public UnitBasicInfo getUnitBasicInfoById(Long unitId) {
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		customerServiceICC.preGetUnitBasicInfoById();
 		UnitBasicInfo basicInfo = customerManager.getUnitBasicInfo(unitId);
+		basicInfo = customerServiceICC.postGetUnitBasicInfoById(basicInfo);
 		return basicInfo;
 	}
 
 	@Override
 	public Unit renewSalesAgreement(GenericRequest<Unit> request, String context, Long unitId){
+		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
+		request = customerServiceICC.preRenewSalesAgreement(request);
 		Unit unit=request.getBussinessObject();
-		String comment = request.getContextInfo().get("comment");
 		Unit unitFromDB = customerManager.renewSalesAgreement(unit,context);
-        workItemService.createWorkItemForUnitSave(context, unitId, comment);
-        workItemService.updateWorkItemStatus(unitId,"CLOSE", "UNIT", "SALES RENEWAL AGREEMENT");
-        return unitFromDB;
+
+		request=customerServiceICC.postRenewSalesAgreement(request, context);		
+		return unitFromDB;
 	}
 
 }
