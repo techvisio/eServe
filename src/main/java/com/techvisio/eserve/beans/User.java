@@ -1,5 +1,6 @@
 package com.techvisio.eserve.beans;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +45,9 @@ public class User extends BasicEntity implements Lockable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USER_ID")
 	private Long userId;
+
+	@Column(name = "PHOTO_PATH")
+	private String photoPath;
 	
 	@Column(name = "FIRST_NAME")
 	private String firstName;
@@ -249,6 +253,12 @@ public class User extends BasicEntity implements Lockable{
 
 	public void setPrivileges(List<UserPrivilege> privileges) {
 		this.privileges = privileges;
+	}
+	public String getPhotoPath() {
+		return photoPath;
+	}
+	public void setPhotoPath(String photoPath) {
+		this.photoPath = photoPath;
 	}
 
 }

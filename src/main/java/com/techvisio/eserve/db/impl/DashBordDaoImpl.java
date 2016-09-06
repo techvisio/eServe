@@ -19,7 +19,7 @@ public class DashBordDaoImpl extends BaseDao implements DashBordDao{
 	@SuppressWarnings("unchecked")
 	public Map<String, Long> getCount(Long clientId){
 		Map<String, Long> countMap = new HashMap<String, Long>();
-		String queryString="select 'pendingApp',count(*) from TB_UNIT_DETAIL where APPROVAL_STATUS = 'P' and client_Id = " + clientId + " union select 'openComplaints',count(*) from TB_WORK_ORDER WHERE STATUS != 'CLOSE' and client_Id ="+clientId +" and work_order_type='Complaint' union select 'salesRenewal',count(*) from TB_WORK_ITEM where STATUS != 'CLOSE' and WORKTYPE='RENEW SERVICE CALL'  and client_Id= " +clientId ;
+		String queryString="select 'pendingApp',count(*) from TB_UNIT_DETAIL where APPROVAL_STATUS = 'P' and client_Id = " + clientId + " union select 'openComplaints',count(*) from TB_WORK_ORDER WHERE STATUS != 'CLOSE' and client_Id ="+clientId +" and work_order_type='Complaint' union select 'salesRenewal',count(*) from TB_WORK_ITEM where STATUS != 'CLOSE' and WORKTYPE='FOLLOWUP_RENEWAL_SERVICE'  and client_Id= " +clientId+" union select 'pmsCall',count(*) from TB_WORK_ITEM where STATUS != 'CLOSE' and WORKTYPE='PMS'  and client_Id= " +clientId ;
 		Query query=getEntityManager().createNativeQuery(queryString);
 		List<Object[]> results = query.getResultList();
 		for (Object[] result : results) {

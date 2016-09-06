@@ -56,5 +56,4 @@ public interface UserService {
 
 	public User releaseUserEntityLock(Long userId);
 	
-	public List<UserPrivilege> getPrivilegesForUser(Long userId);
 }

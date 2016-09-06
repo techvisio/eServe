@@ -17,9 +17,9 @@
 						<i class="fa fa-floppy-o" ng-click="saveAndUpdateComplaint()" ng-show="workOrder.edited"
 							ng-disabled="isProcessing"></i> <i
 							class="fa fa-times" ng-show="workOrder.edited"
-							ng-click="toggleReadOnly('COMPLAINT'); unlockComplaintEntity()"></i>
+							ng-click="toggleReadOnly('COMPLAINT')"></i>
 						<i class="fa fa-pencil" ng-show="!workOrder.edited"
-							ng-click="toggleReadOnly('COMPLAINT'); lockComplaintEntity();"
+							ng-click="toggleReadOnly('COMPLAINT')"
 							ng-disabled="isCreateOrUpdatePrivileged()"></i> <i
 							class="fa fa-chevron-up"
 							ng-class="{'fa-chevron-down':isCollapsed}"
@@ -102,7 +102,7 @@
 						</tab> <tab heading="DESCRIPTION">
 						<div ng-include
 							src="'../home/complaint/Complaint_Description.html'"></div>
-						</tab> <tab heading="EQUIPMENTS">
+						</tab> <tab heading="EQUIPMENTS" ng-click="getWorkOrderEquipment()">
 						<div ng-include
 							src="'../home/complaint/Complaint_Equipment.html'"></div>
 						</tab> <tab heading="SCHEDULING">

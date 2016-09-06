@@ -1,5 +1,6 @@
 package com.techvisio.eserve.manager.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,11 +20,15 @@ import com.techvisio.eserve.beans.UserPrivilege;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.UserDao;
 import com.techvisio.eserve.exception.DuplicateEntityException;
+import com.techvisio.eserve.manager.CacheManager;
 import com.techvisio.eserve.manager.UserManager;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 @Component
 public class UserManagerImpl implements UserManager{
+
+	@Autowired
+	CacheManager cacheManager;
 
 	@Autowired
 	UserDao userDao;
@@ -48,18 +53,68 @@ public class UserManagerImpl implements UserManager{
 	}
 
 	@Override
-	public List<User> getUsers(Long clientId){
-		List<User> users = userDao.getUsers(clientId);
+	public List<User> getUsers(){
+		List<User> users = userDao.getUsers();
 		return users;
+	}
+
+	@Override
+	public List<UserPrivilege> getAllUserPrivileges(User user){
+
+		List<UserPrivilege> result = new ArrayList<UserPrivilege>();
+		Map<Long, UserPrivilege> userPrivilegeMap = new HashMap<Long, UserPrivilege>();		
+		List<UserPrivilege> existingUserPrivileges = user.getPrivileges();
+
+		//creating map for existing privileges
+		for(UserPrivilege userPrivilege : existingUserPrivileges){
+			userPrivilegeMap.put(userPrivilege.getPrivilege().getPrivilegeId(), userPrivilege);
+		}
+		List<Privilege> allPrivileges = cacheManager.getPrivileges(user.getClient().getClientId());
+
+		for(Privilege privilege : allPrivileges){
+
+			UserPrivilege userPrivilege = (UserPrivilege) userPrivilegeMap.get(privilege.getPrivilegeId());
+
+			if(userPrivilege==null){
+				userPrivilege = new UserPrivilege();
+				userPrivilege.setClient(user.getClient());
+				userPrivilege.setPrivilege(privilege);
+				userPrivilege.setUserId(user.getUserId());
+			}
+			else{
+				userPrivilege.setGranted(true);
+			}
+			result.add(userPrivilege);				
+		}
+		return result;
 	}
 
 	@Override
 	public User getUserWithUserPrivileges(Long userId){
 
-		User user = userDao.getUserWithUserPrivileges(userId);
+		User user = getUser(userId);
+		List<UserPrivilege> userPrivileges = getAllUserPrivileges(user);
+		user.setPrivileges(userPrivileges);
+
 		return user;
 	}
 
+	@Override
+	public List<UserPrivilege> getUserPrivilegesSet(){
+
+		List<UserPrivilege> result = new ArrayList<UserPrivilege>();
+		List<Privilege> allPrivileges = cacheManager.getPrivileges(CommonUtil.getCurrentClient().getClientId());
+
+		for(Privilege privilege : allPrivileges){
+
+			UserPrivilege userPrivilege = new UserPrivilege();
+			userPrivilege.setClient(CommonUtil.getCurrentClient());
+			userPrivilege.setPrivilege(privilege);
+			result.add(userPrivilege);	
+		}
+
+		return result;
+	}
 
 
 	@Override
@@ -74,17 +129,6 @@ public class UserManagerImpl implements UserManager{
 
 		List<Role> userRoles = userDao.getUserRole(userId);
 		return userRoles;
-	}
-
-	@Override
-	public void saveSecurityQuestion(SecurityQuestion securityQuestion){
-		userDao.saveSecurityQuestion(securityQuestion);	
-	}
-
-	@Override
-	public SecurityQuestion getSecurityQuestion(Long questionId){
-		SecurityQuestion securityQuestion = userDao.getSecurityQuestion(questionId);
-		return securityQuestion;
 	}
 
 	//	@Override
@@ -127,26 +171,26 @@ public class UserManagerImpl implements UserManager{
 	}
 
 	@Override
-	public Long saveUser(User user, Long clientId) {
+	public Long saveUser(User user) {
 
 		if(user.getUserId()==null){
-			User userByEmailId = userDao.getUserByEmailId(user.getEmailId(), clientId);
+			User userByEmailId = userDao.getUserByEmailId(user.getEmailId());
 			if(userByEmailId!=null){
 				throw new DuplicateEntityException("This Email Id is Already Exists, Choose Different EmailId");
 			}
-			User userByUserName = userDao.getUserByUserName(user.getUserName(), clientId);
+			User userByUserName = userDao.getUserByUserName(user.getUserName());
 			if(userByUserName!=null){
 				throw new DuplicateEntityException("This User Name is Already Exists, Choose Different User Name");
 			}
 		}
 
 		else{
-			User userByEmailId = userDao.getUserByEmailId(user.getEmailId(), clientId);
-			if(userByEmailId!=null && user.getUserId()!= userByEmailId.getUserId()){
+			User userByEmailId = userDao.getUserByEmailId(user.getEmailId());
+			if(userByEmailId!=null && !user.getUserId().equals(userByEmailId.getUserId())){
 				throw new DuplicateEntityException("This Email Id Already Exists, Choose Different EmailId");
 			}
-			User userByUserName = userDao.getUserByUserName(user.getUserName(), clientId);
-			if(userByUserName!=null && user.getUserId()!= userByUserName.getUserId()){
+			User userByUserName = userDao.getUserByUserName(user.getUserName());
+			if(userByUserName!=null && !user.getUserId().equals(userByUserName.getUserId())){
 				throw new DuplicateEntityException("This User Name Already Exists, Choose Different User Name");
 			}
 		}
@@ -196,35 +240,17 @@ public class UserManagerImpl implements UserManager{
 		return result;
 	}
 
-	@Override
-	public List<UserPrivilege> getAllUserPrivileges(User user) {
-
-		List<UserPrivilege> userPrivileges =  userDao.getAllUserPrivileges(user);
-		return userPrivileges;
-	}
 
 	@Override
-	public List<UserPrivilege> getUserPrivilegesSet() {
-		List<UserPrivilege> userPrivileges =  userDao.getUserPrivilegesSet();
-		return userPrivileges;
-	}
-
-	@Override
-	public User getUserByUserName(String userName, Long clientId){
-		User user = userDao.getUserByUserName(userName, clientId); 
+	public User getUserByUserName(String userName){
+		User user = userDao.getUserByUserName(userName); 
 		return user;
 	}
 
 	@Override
-	public User getUserByEmailId(String EmailId, Long clientId) {
-		User user = userDao.getUserByEmailId(EmailId, clientId);
+	public User getUserByEmailId(String EmailId) {
+		User user = userDao.getUserByEmailId(EmailId);
 		return user;
-	}
-
-	@Override
-	public List<UserPrivilege> getPrivilegesForUser(Long userId) {
-		List<UserPrivilege> userPrivileges = userDao.getPrivilegesForUser(userId);
-		return userPrivileges;
 	}
 
 }

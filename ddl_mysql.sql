@@ -27,6 +27,10 @@
         drop 
         foreign key FK_r3pkhmiil3a81x6nsjhovna2l;
 
+    alter table TB_CLIENT_COMMUNICATION_CONFIG 
+        drop 
+        foreign key FK_r65gq884mwdhpffykwypfmp2t;
+
     alter table TB_COMMENT 
         drop 
         foreign key FK_2a6hdwvdyrou7hjk59lmgok04;
@@ -287,6 +291,8 @@
 
     drop table if exists TB_AGREEMENT_INVOICE;
 
+    drop table if exists TB_CLIENT_COMMUNICATION_CONFIG;
+
     drop table if exists TB_CLIENT_MASTER;
 
     drop table if exists TB_COMMENT;
@@ -439,6 +445,18 @@
         INVOICE_ID bigint,
         Client_Id bigint,
         primary key (AGREEMENT_INVOICE_ID)
+    );
+
+    create table TB_CLIENT_COMMUNICATION_CONFIG (
+        CLIENT_COM_CONFIG_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        PROPERTY varchar(255),
+        VALUE varchar(255),
+        Client_Id bigint,
+        primary key (CLIENT_COM_CONFIG_ID)
     );
 
     create table TB_CLIENT_MASTER (
@@ -879,6 +897,7 @@
         FORCE_PASSWORD_CHANGE bit,
         LAST_NAME varchar(255),
         PASSWORD varchar(255),
+        PHOTO_PATH varchar(255),
         USER_NAME varchar(255),
         Client_Id bigint,
         DEPARTMENT_ID bigint,
@@ -966,7 +985,7 @@
         WORK_ORDER_EQUIPMENT_ID bigint not null auto_increment,
         IS_DELETED bit,
         EQUIPMENT_DTL_ID bigint,
-        INSTALLATION_DATE date,
+        INSTALLATION_DATE datetime,
         INVOICE_NO bigint,
         SERIAL_NO varchar(255),
         TYPE varchar(255),
@@ -1025,6 +1044,11 @@
 
     alter table TB_AGREEMENT_INVOICE 
         add constraint FK_r3pkhmiil3a81x6nsjhovna2l 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_CLIENT_COMMUNICATION_CONFIG 
+        add constraint FK_r65gq884mwdhpffykwypfmp2t 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 

@@ -32,7 +32,7 @@
 
 							<div class="controls">
 								<select class="form-control"
-									ng-model="unit.serviceAgreement.serviceCategory" disabled>
+									ng-model="unit.serviceAgreement.serviceCategory" required>
 									<option>Warranty</option>
 									<option>AMC</option>
 									<option>Paid</option>
@@ -137,7 +137,7 @@
 							<label class="form-label" for="formfield9">Contract Start
 								On</label>
 							<div class="controls">
-								<input type="text" class="form-control datepicker"
+								<input type="text" class="form-control datepicker" required
 									name="requestDueDate"
 									ng-model="unit.serviceAgreement.contractStartOnString"
 									datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"

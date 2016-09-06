@@ -65,7 +65,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 	.state('workItemSearch',{
 
 		url: "/workitem",
-		templateUrl: 'customer/workItem.html',
+		templateUrl: 'workitem/workItem.html',
 		controller:"workItemController",
 		resolve:{
 			workitem: ['$stateParams', function($stateParams){
@@ -195,7 +195,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 	})
 
 	.state('unitApproval', {
-		url: "/unit/{entityId:[0-9]{1,8}}/:entityType",
+		url: "/approval/unit/{entityId:[0-9]{1,8}}",
 		templateUrl: 'customer/Unit_Detail_Single.html',
 		controller: "customerController",
 		resolve:{
@@ -204,6 +204,19 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 			}],
 			Operation: ['$stateParams', function($stateParams){
 				return 'unitApproval';
+			}]
+		}
+	})
+	.state('renewSalesAgreement', {
+		url: "/renew/unit/{entityId:[0-9]{1,8}}",
+		templateUrl: 'customer/Unit_Detail_Single.html',
+		controller: "customerController",
+		resolve:{
+			contextObject: ['$stateParams','customerService', function($stateParams,customerService){
+				return customerService.getUnitForApproval($stateParams.entityId);
+			}],
+			Operation: ['$stateParams', function($stateParams){
+				return 'renewSalesAgreement';
 			}]
 		}
 	})
@@ -222,7 +235,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		templateUrl: 'user/userSearch.html',
 		controller:"userController",
 		resolve:{
-			
+
 			contextObject: ['$stateParams', function($stateParams){
 				return null;
 			}],
@@ -237,7 +250,7 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		templateUrl: 'user/user.html',
 		controller: "userController",
 		resolve:{
-			
+
 			contextObject: ['$stateParams','userService', function($stateParams,userService){
 				return userService.getUserwithprivileges($stateParams.entityId);
 			}],
@@ -331,7 +344,7 @@ erp.controller('ApplicationController',
 										templateUrl: 'user/resetPassword.html',
 										controller: 'userController',
 										resolve: {
-											
+
 											contextObject: ['$stateParams', function($stateParams){
 												return angular.copy($rootScope.user);
 											}],
@@ -406,6 +419,9 @@ erp.controller('ApplicationController',
 				if(toState.name=='unitApproval'){
 					$rootScope.heading = 'Unit Approval';
 				}
+				if(toState.name=='renewSalesAgreement'){
+					$rootScope.heading = 'Renew Agreement';
+				}
 				if(toState.name=='createNewComplaint'){
 					$rootScope.heading = 'Create Complaint';
 				}
@@ -466,11 +482,11 @@ erp.controller('ApplicationController',
 			$rootScope.showAlertModel = function(content, title){
 				alertModal.showAlert(content,title);
 			};
-			
+
 			$rootScope.showConfirmModal = function(content, title){
 				confirmModal.showConfirmModal(content,title);
 			};
-			
+
 			$rootScope.redirectToComplaint=function(){
 				if($rootScope.isPrivileged("CREATE_COMPLAINT(PAID ONLY)")){
 					$state.go('createNewComplaint');
@@ -480,9 +496,9 @@ erp.controller('ApplicationController',
 				}		
 
 			}
-			
+
 			$scope.createUser=function(){
-			
+
 				if($rootScope.isPrivileged('CREATE_USER')){
 					$state.go('createNewUser');
 				}
@@ -502,7 +518,7 @@ erp.controller('ApplicationController',
 			$rootScope.closeModal=function(){
 				$rootScope.curModal.close();
 			}
-			
+
 		}]);
 
 erp.config(['$httpProvider', '$sceProvider',

@@ -62,14 +62,31 @@ public class WorkOrderServiceImpl implements WorkOrderService{
 
 		String userName = CommonUtil.getCurrentUser().getUserName();
 		if(workOrder.getWorkOrderId()!=null){
-			boolean isEntityLocked=entityLockService.isEntityLocked(workOrder.getWorkOrderId(), AppConstants.EntityType.COMPLAINT.toString(), userName);
-			if(!isEntityLocked){
-				throw new EntityLockedException("Current user does not hold lock for this complaint");
+//			boolean isEntityLocked=entityLockService.isEntityLocked(workOrder.getWorkOrderId(), AppConstants.EntityType.COMPLAINT.toString(), userName);
+//			if(!isEntityLocked){
+//				throw new EntityLockedException("Current user does not hold lock for this complaint");
+//			}
+			PmsWorkOrder pmsWorkOrder = workOrderManager.getPmsComplaintByWorkOrderId(workOrder.getWorkOrderId());
+			if(pmsWorkOrder!=null){
+				WorkItem workItem = workItemService.getWorkitemByWorkitemId(pmsWorkOrder.getWorkitemId());
+				workItem.setStatus("CLOSE");
+				workItemService.saveWorkItem(workItem);
+				workOrder.setStatus(AppConstants.ComplaintStatus.UNASSIGNED.name());
 			}
 		}
+		
 		if(workOrder.getWorkOrderType()==null){
 			workOrder.setWorkOrderType("Complaint");
 		}
+
+		if(workOrder.getCustomerId()==null){
+			Customer customer = customerService.createCustomerfromComplaint(workOrder);
+			Long customerId = customerService.saveCustomerDirect(customer);
+			Customer customerFromDB = customerService.getCustomerbyId(customerId);
+			workOrder.setCustomerCode(customerFromDB.getCustomerCode());
+			workOrder.setCustomerId(customerFromDB.getCustomerId());
+		}
+
 		Long workOrderId = workOrderManager.saveWorkOrder(workOrder);		
 		return workOrderId;
 	}
@@ -134,7 +151,7 @@ public class WorkOrderServiceImpl implements WorkOrderService{
 	public List<SearchComplaintCustomer> getCustomerForComplaintByCriteria(
 			SearchCriteria searchCriteria) {
 		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		List<SearchComplaintCustomer> complaintCustomers = workOrderManager.getCustomerForComplaintByCriteria(searchCriteria, clientId);
+		List<SearchComplaintCustomer> complaintCustomers = workOrderManager.getCustomerForComplaintByCriteria(searchCriteria);
 		return complaintCustomers;
 	}
 
@@ -159,7 +176,7 @@ public class WorkOrderServiceImpl implements WorkOrderService{
 	@Override
 	public List<ComplaintSearchData> getComplaintDataforDashboard(String type,String code) {
 		Long clientId=CommonUtil.getCurrentClient().getClientId();
-		List<ComplaintSearchData> complaints= workOrderManager.getComplaintDataforDashboard( clientId,type,code);
+		List<ComplaintSearchData> complaints= workOrderManager.getComplaintDataforDashboard(type,code);
 		return complaints;
 	}
 
@@ -185,7 +202,7 @@ public class WorkOrderServiceImpl implements WorkOrderService{
 		complaintEquipment.setEquipment(equipmentDetail.getEquipment());
 		complaintEquipment.setEquipmentDtlId(equipmentDetail.getEquipmentDtlId());
 		complaintEquipment.setInstallationDate(equipmentDetail.getInstallationDate());
-		complaintEquipment.setInstallationDateString(equipmentDetail.getInstallationDateString());
+		complaintEquipment.setInstallationDate(equipmentDetail.getInstallationDate());
 		complaintEquipment.setInvoiceNo(equipmentDetail.getInvoiceNo());
 		complaintEquipment.setSerialNo(equipmentDetail.getSerialNo());
 		complaintEquipment.setType(equipmentDetail.getType());
@@ -279,7 +296,7 @@ public class WorkOrderServiceImpl implements WorkOrderService{
 
 	@Override
 	public WorkOrder createWorkOrderByPms(Long workitemId, UnitBasicInfo basicInfo){
-		PmsWorkOrder pmsWorkOrder = workOrderManager.getPmsWorkOrder(workitemId);
+		PmsWorkOrder pmsWorkOrder = workOrderManager.getPmsWorkOrderByWorkitemId(workitemId);
 		WorkOrder workOrderFromDB = null;
 		if(pmsWorkOrder == null){
 

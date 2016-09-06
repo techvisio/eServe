@@ -105,8 +105,9 @@
 				<div class="col-md-1 col-sm-1 col-xs-1 padding-non">
 					<div class="form-group">
 						<i class="fa fa-trash-o icon"
-							ng-click="removeMachine(unit,$index)"></i> <i
-							class="fa fa-pencil icon"
+							ng-click="removeMachine(unit,$index)"
+							ng-hide="selection==='preview'"></i> <i
+							ng-hide="selection==='preview'" class="fa fa-pencil icon"
 							ng-click="editEquipment='true' ; showAddEquipmentModel(equip,editEquipment)"></i>
 					</div>
 				</div>

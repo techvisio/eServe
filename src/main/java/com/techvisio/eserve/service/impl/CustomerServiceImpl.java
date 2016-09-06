@@ -37,8 +37,7 @@ public class CustomerServiceImpl implements CustomerService{
 	public List<Customer> retrieveAllCustomer() {
 		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
 		customerServiceICC.preRetrieveAllCustomers();
-		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		List<Customer> customers = customerManager.getCustomers(clientId);
+		List<Customer> customers = customerManager.getCustomers();
 
 		customers=customerServiceICC.postRetrieveAllCustomers(customers);
 
@@ -187,8 +186,7 @@ public class CustomerServiceImpl implements CustomerService{
 	public Customer getCustomerByEmailId(String emailId) {
 		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
 		customerServiceICC.preGetCustomerByEmailId();
-		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		Customer customer = customerManager.getEmailId(emailId, clientId);
+		Customer customer = customerManager.getEmailId(emailId);
 		customer = customerServiceICC.postGetCustomerByEmailId(customer);
 		return customer;
 	}
@@ -197,8 +195,7 @@ public class CustomerServiceImpl implements CustomerService{
 	public Customer getCustomerByContactNo(String contactNo)  {
 		CustomerServiceICC customerServiceICC=servicelocator.getService(CustomerServiceICC.class);
 		customerServiceICC.preGetCustomerByContactNo();
-		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		Customer customer = customerManager.getContactNo(contactNo,clientId);
+		Customer customer = customerManager.getContactNo(contactNo);
 		customer = customerServiceICC.postGetCustomerByContactNo(customer);
 		return customer;
 	}

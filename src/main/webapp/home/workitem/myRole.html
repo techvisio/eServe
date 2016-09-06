@@ -1,0 +1,57 @@
+<!-- <div> -->
+<!-- 	<table class="table table-striped"> -->
+<!-- 		<thead> -->
+<!-- 			<tr> -->
+<!-- 				<th>Entity Code</th> -->
+<!-- 				<th>Entity Type</th> -->
+<!-- 				<th>Work Type</th> -->
+<!-- 				<th>Status</th> -->
+<!-- 			</tr> -->
+<!-- 		</thead> -->
+<!-- 		<tbody> -->
+<!-- 			<tr ng-repeat = "workItem in workItems"> -->
+<!-- 			<td><a herf="" -->
+<!-- 					ng-click="redirectToWorkitemScreen(workItem.workItemId)">{{workItem.entityCode}} -->
+<!-- 				</a></td> -->
+<!-- 				<td>{{workItem.entityType}}</td> -->
+<!-- 				<td>{{workItem.workType}} -->
+<!-- 				</td> -->
+<!-- 				<td>{{workItem.status}}</td> -->
+<!-- 				already commented -->
+				<!--         <td><a ui-sref="resetpassword"><button class="btn-primary">Reset Password</button></a></td> -->
+<!-- 			</tr> -->
+<!-- 		</tbody> -->
+<!-- 	</table> -->
+<!-- </div> -->
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+	<section class="box " >
+		<header class="panel_header">
+			<h2 class=" pull-left"></h2>
+			<div class="actions panel_actions pull-right">
+				<i class="fa fa-filter" aria-hidden="true"
+					ng-click="filterWorkItems()">&nbspFilter</i> <i
+					class="box_setting material-icons"></i>
+			</div>
+		</header>
+		<div class="content-body">
+			<div class="row"></div>
+			<div class="row"></div>
+			<div class="row">
+				<div class="table-parent-container">
+					<div>
+						<table ng-table="tableParams"
+							class="table table-condensed table-bordered table-striped">
+							<tr ng-repeat="row in $data">
+								<td data-title="'Entity Code'" sortable="'entityCode'">{{row.entityCode}}</td>
+								<td data-title="'Entity Type'" sortable="'entityType'">{{row.entityType}}</td>
+								<td data-title="'Work Type'" sortable="'workType'">{{row.workType}}</td>
+								<td data-title="'Status'" sortable="'status'">{{row.status}}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+

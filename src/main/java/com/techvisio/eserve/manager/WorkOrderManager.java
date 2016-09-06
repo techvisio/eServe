@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.SearchResultData;
+import com.techvisio.eserve.beans.WorkItemSearchCriteria;
 import com.techvisio.eserve.beans.WorkOrderAssignment;
 import com.techvisio.eserve.beans.WorkOrderEquipment;
 import com.techvisio.eserve.beans.WorkOrderResolution;
@@ -31,13 +33,14 @@ public interface WorkOrderManager {
 	public void saveWorkOrderAssignment(Long complaintId, WorkOrderAssignment complaintAssignment);
 	public WorkOrderAssignment getWorkOrderAssignment(Long complaintId);
 	public List<SearchComplaintCustomer> getCustomerForComplaintByCriteria(
-			SearchCriteria searchCriteria, Long clientId);
+			SearchCriteria searchCriteria);
 	public List<SearchComplaintUnit> getSearchUnitByCustomerId(Long customerId);
 	public List<SearchWorkOrder> getComplaintSearchByUnitId(Long unitId);
 	public List<WorkOrder> getAllComplaintsForUnit(Long unitId);
-	public 	List<ComplaintSearchData> getComplaintDataforDashboard(Long clientId, String type, String code);
+	public 	List<ComplaintSearchData> getComplaintDataforDashboard(String type, String code);
 	public void saveWorkOrderEquipments(WorkOrderEquipment complaintEquipment);
 	public List<WorkOrderEquipment> getWorkOrderEquipments(Long complaintId);
 	public void createPmsComplaint(PmsWorkOrder pmsComplaint);
-	public PmsWorkOrder getPmsWorkOrder(Long workitemId);
+	public PmsWorkOrder getPmsWorkOrderByWorkitemId(Long workitemId);
+	public PmsWorkOrder getPmsComplaintByWorkOrderId(Long workOrderId);
 }

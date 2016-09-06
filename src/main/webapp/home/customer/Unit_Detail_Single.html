@@ -97,8 +97,7 @@
 
 							<div class="controls">
 								<select class="form-control"
-									ng-model="unitApproval.unit.serviceAgreement.serviceCategory"
-									disabled>
+									ng-model="unitApproval.unit.serviceAgreement.serviceCategory">
 									<option>Warranty</option>
 									<option>AMC</option>
 									<option>Paid</option>
@@ -261,12 +260,12 @@
 
 				<div class="row">
 					<button type="button" class="btn btn-success btn-sm child-right"
-						ng-click="approveUnit(unitApproval.unit)"
+						ng-click="approveUnit(unitApproval.unit)" ng-show="approveUnitScreen"
 						ng-disabled="isProcessing || unitApproval.unit.approvalStatus==='A' || unitApproval.unit.approvalStatus==='R'"">Approve
 						Unit</button>
 
 					<button type="button" class="btn btn-danger btn-sm child-right"
-						ng-click="showRejectionCommentBox(unitApproval.unit)"
+						ng-click="showRejectionCommentBox(unitApproval.unit)" ng-show="approveUnitScreen"
 						ng-disabled="isProcessing || unitApproval.unit.approvalStatus==='A' || unitApproval.unit.approvalStatus==='R'">Reject
 						Changes</button>
 
@@ -278,7 +277,7 @@
 						
 						<button type="button" class="btn btn-primary btn-sm child-right"
 						ng-click="showRenewUnitExpireModal(unitApproval.unit)"
-						ng-show="unitApproval.unit.unitId"
+						ng-show="unitApproval.unit.unitId && renewAgreementScreen"
 						ng-disabled=" isProcessing">Renew Agreement</button>
 				</div>
 			</div>

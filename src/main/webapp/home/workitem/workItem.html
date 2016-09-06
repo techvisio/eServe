@@ -1,0 +1,38 @@
+<section class="box ">
+			<div class="content-body">
+
+
+	<div class="row">
+		<div class="col-sm-3">
+			<label for="inputlg">Select Work Item Type</label>
+		</div>
+		<div class="col-sm-3">
+			<select class="form-control" ng-model="workItemSearchCriteria.workType" ng-change="getWorkItemByUserIdAndWorkType()">
+				<option value="CUSTOMER AS DRAFT">DRAFT AGREEMENT</option>
+				<option value="AGREEMENT APPROVAL">AGREEMENT APPROVAL</option>
+				<option value="FOLLOWUP RENEWAL SERVICE">RENEW SERVICE CALL</option>
+				<option value="PMS">PMS</option>
+				<option value="SALES RENEWAL AGREEMENT">SALES RENEWAL AGREEMENT</option>
+			</select>
+		</div>
+		
+		<div class="col-sm-3">
+			<label for="inputlg">Select Work Item Status</label>
+		</div>
+		<div class="col-sm-3">
+			<select class="form-control" ng-model="workItemSearchCriteria.status" ng-change="getWorkItemByUserIdAndWorkType()">
+				<option value="OPEN">Open</option>
+				<option value="CLOSE">Close</option>
+			</select>
+		</div>
+	</div>
+	<hr>
+	<div class="tab-separator">
+		<tabset justified="true"> <tab heading="MY QUEUE">
+		<div ng-include src="'../home/customer/myQueue.html'"></div>
+		</tab> <tab heading="MY ROLE">
+		<div ng-include src="'../home/workitem/myRole.html'"></div>
+		</tab> </tabset>
+	</div>
+</div>
+</section>

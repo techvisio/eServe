@@ -5,13 +5,13 @@
 				ng-init="makeAllReadOnly($id)">
 				<section class="box ">
 					<header class="panel_header">
-						<h2 class="title pull-left">Unit No({{unit.machineSerialNo}})&nbsp<button type="button" ng-click="getLatestCommentBycommentType(unit.unitId,'UNIT','Reject')" ng-class="getClassForUnitStatus(unit.approvalStatus)">{{getUnitStatusText(unit.approvalStatus)}}</button></h2>
+						<h2 class="title pull-left">Unit No({{unit.machineSerialNo}})&nbsp<button type="button" ng-click="getLatestCommentBycommentType(unit.unitId,'UNIT','Reject')" ng-class="getClassForUnitStatus(unit.approvalStatus)">{{getUnitStatusText(unit.approvalStatus)}}</button> </h2>
 						<div class="actions panel_actions pull-right">
 						<i></i><i></i><i></i>
 							<i class="fa fa-pencil icon"
 								ng-click="lockUnitEntity($index,$id)"
 								ng-disabled="isCreateOrUpdatePrivileged()"
-								ng-show="!unit.edited"></i> <img
+								ng-show="!unit.edited && !(selection==='preview')"></i> <img
 								ng-show="unit.edited" src="../static/images/complaint.png"
 								height="25" width="25"
 								ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)"
@@ -26,7 +26,9 @@
 					<div class="content-body">
 
 						<div collapse="isCollapsed">
-
+<div class="row form-group">
+<span class="desc">current unit version Id : {{unit.versionId}}</span>
+</div>
 							<div class="row">
 								<div class="col-md-5 col-sm-12 col-xs-12">
 									<div class="form-group">
@@ -47,7 +49,7 @@
 
 										<div class="controls">
 											<select class="form-control"
-												ng-model="unit.serviceAgreement.serviceCategory" disabled>
+												ng-model="unit.serviceAgreement.serviceCategory">
 												<option>Warranty</option>
 												<option>AMC</option>
 												<option>Paid</option>
@@ -157,7 +159,7 @@
 											<input type="text" class="form-control datepicker"
 												name="requestDueDate"
 												ng-model="unit.serviceAgreement.contractStartOnString"
-												datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
+												datepicker-popup="{{'MMM dd, yyyy'}}" is-open="startDate"
 												ng-click="startDate = !startDate; $event.stopPropagation();"
 												show-button-bar="false">
 										</div>
@@ -174,7 +176,7 @@
 											<input type="text" class="form-control datepicker"
 												name="requestDueDate"
 												ng-model="unit.serviceAgreement.contractExpireOnString"
-												datepicker-popup="{{'MMM dd yyyy'}}" is-open="expireDate"
+												datepicker-popup="{{'MMM dd, yyyy'}}" is-open="expireDate"
 												disabled
 												ng-click="expireDate = !expireDate; $event.stopPropagation();"
 												show-button-bar="false">

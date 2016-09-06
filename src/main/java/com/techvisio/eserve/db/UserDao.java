@@ -17,44 +17,28 @@ public interface UserDao {
 
 	public Long saveUser(User user);
 
-	User getUser(Long userId);
+	public User getUser(Long userId);
 
-	List<Role> getUserRole(Long userId);
+	public List<Role> getUserRole(Long userId);
 
-	void saveSecurityQuestion(SecurityQuestion securityQuestion);
+	public List<User> getUsers();
 
-	SecurityQuestion getSecurityQuestion(Long questionId);
+	public void saveUserPrivileges(List<Privilege> privileges);
 
-	public List<User> getUsers(Long clientId);
-	
-//	public List<Privilege> getPrivileges();
+	public void savePrivilege(Privilege privilege);
 
-//	List<Privilege> getUserPrivileges(Long userId);
+	public SearchResultData getUserByCriteria(SearchCriteria searchCriteria);
 
-	void saveUserPrivileges(List<Privilege> privileges);
+	public User getCurrentPassword(Long userId);
 
-	void savePrivilege(Privilege privilege);
+	public boolean isUserExists(User user);
 
-	SearchResultData getUserByCriteria(SearchCriteria searchCriteria);
+	public void saveUserPrivilege(UserPrivilege userPrivilege);
 
-	User getCurrentPassword(Long userId);
+	public void saveUserPrivilege(List<UserPrivilege> userPrivileges, Long userId);
 
-	boolean isUserExists(User user, Long clientId);
+	public User getUserByUserName(String userName);
 
-	List<UserPrivilege> getAllUserPrivileges(User user);
-
-	void saveUserPrivilege(UserPrivilege userPrivilege);
-
-	void saveUserPrivilege(List<UserPrivilege> userPrivileges, Long userId);
-
-	User getUserWithUserPrivileges(Long userId);
-
-	public List<UserPrivilege> getUserPrivilegesSet();
-
-	public User getUserByUserName(String userName, Long clientId);
-
-	public User getUserByEmailId(String EmailId, Long clientId);
-
-	public List<UserPrivilege> getPrivilegesForUser(Long userId);
+	public User getUserByEmailId(String EmailId);
 
 }

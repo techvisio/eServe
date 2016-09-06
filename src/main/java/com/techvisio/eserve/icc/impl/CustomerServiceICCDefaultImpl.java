@@ -1,5 +1,6 @@
 package com.techvisio.eserve.icc.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.exception.EntityLockedException;
+import com.techvisio.eserve.exception.MandatoryFieldMissingException;
+import com.techvisio.eserve.service.CustomerService;
 import com.techvisio.eserve.service.EntityLockService;
 import com.techvisio.eserve.service.WorkItemService;
 import com.techvisio.eserve.service.WorkOrderService;
@@ -283,11 +286,20 @@ public class CustomerServiceICCDefaultImpl extends	AbstractCustomerServiceICCImp
 	@Override
 	public GenericRequest<Unit> postRenewSalesAgreement(GenericRequest<Unit> request,
 			String context) {
-		request = super.postRenewSalesAgreement(request, context);	
-		String comment = request.getContextInfo().get("comment");
-		workItemService.createWorkItemForUnitSave(context,request.getBussinessObject().getUnitId(), comment);
-		workItemService.updateWorkItemStatus(request.getBussinessObject().getUnitId(),"CLOSE", "UNIT", "SALES RENEWAL AGREEMENT");
+		request = super.postRenewSalesAgreement(request, context);
+		Date contractStartDate = request.getBussinessObject().getServiceAgreement().getContractStartOn();
+		Date contractExpireDate = request.getBussinessObject().getServiceAgreement().getContractExpireOn(); 
+		if(contractExpireDate.before(contractStartDate)){
+			String comment = request.getContextInfo().get("comment");
+			workItemService.createWorkItemForUnitSave(context,request.getBussinessObject().getUnitId(), comment);
+			workItemService.updateWorkItemStatus(request.getBussinessObject().getUnitId(),"CLOSE", "UNIT", "SALES RENEWAL AGREEMENT");
+		}
+		else{
+			throw new MandatoryFieldMissingException("New sales agreement will be started after last agreement expiration.  so please choose contract start date which will come after previous service expiration date");
+		}
 		return request;
+
+
 	}
 
 }

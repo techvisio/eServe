@@ -53,6 +53,8 @@ public interface AppConstants {
 	public static final String DAY = "DAY";
 	public static final String YEAR = "YEAR";
 
+	public static final String STATIC_RESOURCE_BASE_PATH = "/static/resources/";
+
 	public enum ComplaintStatus {
 		ASSIGNED, UNASSIGNED, CLOSED
 	};
@@ -128,4 +130,5 @@ public interface AppConstants {
 	}
 	};
 
+	
 }

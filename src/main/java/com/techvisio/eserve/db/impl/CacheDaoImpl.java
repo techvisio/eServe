@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.AgreementDuration;
 import com.techvisio.eserve.beans.Client;
+import com.techvisio.eserve.beans.ClientComConfig;
 import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
@@ -164,6 +165,14 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 		String queryString="FROM Config c where c.client.clientId = " + clientId;
 		Query query= getEntityManager().createQuery(queryString);
 		List<Config> result= query.getResultList();
+		return result;
+	}
+	
+	@Override
+	public List<ClientComConfig> getClientComConfigValues(Long clientId) {
+		String queryString="FROM ClientComConfig c where c.client.clientId = " + clientId;
+		Query query= getEntityManager().createQuery(queryString);
+		List<ClientComConfig> result= query.getResultList();
 		return result;
 	}
 

@@ -6,7 +6,8 @@ workItemModule.service('workItemService', function($http, $q) {
 		getWorkItemByWorkitemId : getWorkItemByWorkitemId,
 		saveComment : saveComment,
 		getCommentList : getCommentList,
-		createWorkItemForSalesRenewal : createWorkItemForSalesRenewal
+		createWorkItemForSalesRenewal : createWorkItemForSalesRenewal,
+		getWorkItembySearchCriteria : getWorkItembySearchCriteria
 	});
 
 	function getUnitInfoByEntityIdAndEntityType(entityId, entityType){
@@ -88,7 +89,20 @@ workItemModule.service('workItemService', function($http, $q) {
 		return (request.then(handleSuccess, handleError));
 	}
 
+	function getWorkItembySearchCriteria(workItemSearchCriteria){
 
+		console.log('Reset user password');
+		var request = $http({
+			method : "post",
+			url : "../service/workitem/workitemlist/",
+			params : "",
+			data : workItemSearchCriteria
+
+		});
+
+		return (request.then(handleSuccess, handleError));
+	}
+	
 	function handleError(response) {
 		console.log('Error occured while calling service');
 		console.log(response);

@@ -543,5 +543,17 @@ userModule
 				 })
 			 }
 
-
+			 
+			$scope.chooseFile = function(){
+				
+				var chooseFileButton = document.getElementById("userPic");
+				chooseFileButton.click();
+			}
+			 
+			 
+			 $scope.Submit = function(){
+					userService.savePic($scope.user.file, $scope.user.userId);
+					$state.reload('viewUser',{entityId:$scope.user.userId});
+			 }
+			 
 		 } ]);

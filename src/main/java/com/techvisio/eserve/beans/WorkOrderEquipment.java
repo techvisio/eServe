@@ -54,9 +54,7 @@ public class WorkOrderEquipment {
 	@Column(name="IS_UNDER_WARRANTY")
 	private boolean underWarranty;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="INSTALLATION_DATE")
-	@JsonIgnore
 	private Date installationDate;
 
 	@Transient
@@ -111,11 +109,9 @@ public class WorkOrderEquipment {
 		this.underWarranty = underWarranty;
 	}
 
-	@JsonIgnore
 	public Date getInstallationDate() {
 		return installationDate;
 	}
-	@JsonIgnore
 	public void setInstallationDate(Date installationDate) {
 		this.installationDate = installationDate;
 	}
@@ -134,12 +130,12 @@ public class WorkOrderEquipment {
 		}
 		return null;
 	}
-	public void setInstallationDateString(String installationDateString) {
-		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
-		if(!StringUtils.isEmpty(installationDateString)){
-			this.installationDate = parser2.parseDateTime(installationDateString).toDate();
-		}
-	}
+//	public void setInstallationDateString(String installationDateString) {
+//		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
+//		if(!StringUtils.isEmpty(installationDateString)){
+//			this.installationDate = parser2.parseDateTime(installationDateString).toDate();
+//		}
+//	}
 	public Long getWorkOrderEquipmentId() {
 		return workOrderEquipmentId;
 	}

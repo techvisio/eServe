@@ -14,7 +14,6 @@ import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.EquipmentHistory;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SearchResultData;
-import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
@@ -24,6 +23,7 @@ import com.techvisio.eserve.beans.UnitHistory;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.exception.DuplicateEntityException;
+import com.techvisio.eserve.exception.MandatoryFieldMissingException;
 import com.techvisio.eserve.manager.CustomerManager;
 import com.techvisio.eserve.manager.InvoiceManager;
 import com.techvisio.eserve.util.AppConstants;
@@ -55,12 +55,12 @@ public class CustomerManagerImpl implements CustomerManager {
 
 	@Override
 	public Long saveCustomer(Customer customer) {
-		Customer customerByEmailId = customerDao.getEmailId(customer.getEmailId(), CommonUtil.getCurrentClient().getClientId());
-		if(customerByEmailId!=null && customerByEmailId.getCustomerId() != customer.getCustomerId()){
+		Customer customerByEmailId = customerDao.getEmailId(customer.getEmailId());
+		if(customerByEmailId!=null && !customerByEmailId.getCustomerId().equals(customer.getCustomerId()) ){
 			throw new DuplicateEntityException("This Email Id is Already Exists, Choose Different EmailId");
 		}
-		Customer customerByContactNo = customerDao.getContactNo(customer.getContactNo(), CommonUtil.getCurrentClient().getClientId());
-		if(customerByContactNo!=null && customerByContactNo.getCustomerId() != customer.getCustomerId()){
+		Customer customerByContactNo = customerDao.getContactNo(customer.getContactNo());
+		if(customerByContactNo!=null && !customerByContactNo.getCustomerId().equals( customer.getCustomerId())){
 			throw new DuplicateEntityException("This Contact No is Already Exists, Choose Different Contact No");
 		}
 		Long customerId = customerDao.saveCustomer(customer);
@@ -70,11 +70,11 @@ public class CustomerManagerImpl implements CustomerManager {
 	@Override
 	public Long saveCustomer(Customer customer, String context) {
 
-		Customer customerByEmailId = customerDao.getEmailId(customer.getEmailId(), CommonUtil.getCurrentClient().getClientId());
+		Customer customerByEmailId = customerDao.getEmailId(customer.getEmailId());
 		if(customerByEmailId!=null){
 			throw new DuplicateEntityException("This Email Id is Already Exists, Choose Different EmailId");
 		}
-		Customer customerByContactNo = customerDao.getContactNo(customer.getContactNo(), CommonUtil.getCurrentClient().getClientId());
+		Customer customerByContactNo = customerDao.getContactNo(customer.getContactNo());
 		if(customerByContactNo!=null){
 			throw new DuplicateEntityException("This Contact No is Already Exists, Choose Different Contact No");
 		}
@@ -139,8 +139,8 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 
 	@Override
-	public List<Customer> getCustomers(Long clientId) {
-		List<Customer> customers = customerDao.getCustomers(clientId);
+	public List<Customer> getCustomers() {
+		List<Customer> customers = customerDao.getCustomers();
 		return customers;
 	}
 
@@ -159,13 +159,15 @@ public class CustomerManagerImpl implements CustomerManager {
 	@Override
 	public Unit approveUnit(Unit unit){
 
-		Unit unitFromDB = customerDao.getUnit(unit.getUnitId());;
-
-		if(unit.getApprovalStatus()==AppConstants.PENDING){
+		Unit unitFromDB = customerDao.getUnit(unit.getUnitId());
+		Double agreementAmount=null;
+		
+		if(unit.getServiceAgreement().getServiceAgreementFinance()!=null){
+			 agreementAmount = unit.getServiceAgreement().getServiceAgreementFinance().getAgreementAmount();
+		}
+		if(unit.getApprovalStatus()==AppConstants.PENDING && agreementAmount!=null){
 
 			unit.setApprovalStatus(AppConstants.APPROVED);
-
-			Double agreementAmount = unit.getServiceAgreement().getServiceAgreementFinance().getAgreementAmount();
 
 			invoiceManager.saveInvoiceAndInvoiceAgreement(unit.getServiceAgreement().getServiceAgreementId(), agreementAmount);
 
@@ -176,9 +178,10 @@ public class CustomerManagerImpl implements CustomerManager {
 			unit.setLastApprovedBy(CommonUtil.getCurrentUser().getUserName());
 			unit.setVersionId(unit.getVersionId()+1);
 			customerDao.saveUnit(unit);
-
 		}
-
+		else{
+			throw new MandatoryFieldMissingException("Agreement amount is missing for this unit");
+		}
 		unitFromDB = customerDao.getUnit(unit.getUnitId());
 		return unitFromDB;
 	}
@@ -258,14 +261,14 @@ public class CustomerManagerImpl implements CustomerManager {
 	}
 
 	@Override
-	public Customer getEmailId(String EmailId, Long clientId) {
-		Customer customer = customerDao.getEmailId(EmailId, clientId);
+	public Customer getEmailId(String EmailId) {
+		Customer customer = customerDao.getEmailId(EmailId);
 		return customer;
 	}
 
 	@Override
-	public Customer getContactNo(String ContactNo, Long clientId) {
-		Customer customer = customerDao.getContactNo(ContactNo, clientId);
+	public Customer getContactNo(String ContactNo) {
+		Customer customer = customerDao.getContactNo(ContactNo);
 		return customer;
 	}
 
@@ -319,7 +322,7 @@ public class CustomerManagerImpl implements CustomerManager {
 	@Override
 	public Unit renewSalesAgreement(Unit unit, String context){
 		saveUnit(unit, context);
-        Unit unitFromDB = customerDao.getUnit(unit.getUnitId());
+		Unit unitFromDB = customerDao.getUnit(unit.getUnitId());
 		return unitFromDB;
 	}
 }

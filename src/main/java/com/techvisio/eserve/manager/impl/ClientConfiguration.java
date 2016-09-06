@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.ClientComConfig;
 import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.manager.CacheManager;
 import com.techvisio.eserve.util.AppConstants;
@@ -16,7 +17,7 @@ public class ClientConfiguration {
 
 	@Autowired
 	CacheManager cacheManager;
-	
+
 	public String getDefaultPassword(Long clientId){
 
 		Config config = getConfigObject(AppConstants.DEFAULT_PASSWORD);
@@ -64,14 +65,26 @@ public class ClientConfiguration {
 	}
 
 	public Config getConfigObject(String property){
-		
+
 		Map<Long, Map<String, Object>> configMap = cacheManager
 				.getConfigMap();
 
 		Map<String, Object> defaultMap = configMap.get(CommonUtil.getCurrentClient().getClientId());
 
 		Config config = (Config) defaultMap.get(property);
-		
+
 		return config;
+	}
+
+	public ClientComConfig getClientComConfigObject(String property){
+
+		Map<Long, Map<String, Object>> clientComConfigMap = cacheManager
+				.getClientComConfigMap();
+
+		Map<String, Object> defaultMap = clientComConfigMap.get(CommonUtil.getCurrentClient().getClientId());
+
+		ClientComConfig clientComConfig = (ClientComConfig) defaultMap.get(property);
+
+		return clientComConfig;
 	}
 }

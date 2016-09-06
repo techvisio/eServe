@@ -46,10 +46,10 @@ public class UserServiceICCDefaultImpl extends AbstractUserServiceICCImpl{
 	@Override
 	public User postGetUserforEdit(User user) {
 		user = super.postGetUserforEdit(user);
-		User clonedUser=SerializationUtils.clone(user);
-		List<UserPrivilege> privileges= userManager.getAllUserPrivileges(clonedUser);
-		clonedUser.setPrivileges(privileges);
-		return clonedUser;
+		List<UserPrivilege> privileges= userManager.getAllUserPrivileges(user);
+		user.setPrivileges(privileges);
+		user.setEdited(true);
+		return user;
 	}
 	
 	@Override

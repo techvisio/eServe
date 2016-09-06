@@ -5,9 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Comment;
+import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.GenericRequest;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.WorkItem;
+import com.techvisio.eserve.beans.WorkItemSearchCriteria;
 
 @Component
 public interface WorkItemManager {
@@ -25,7 +28,10 @@ public interface WorkItemManager {
 	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId, String workType);
 	public WorkItem getWorkitemByWorkitemId(Long workitemId);
 	public List<Comment> saveComment(GenericRequest<WorkItem> request);
-	public List<Comment> getCommentList(Long workItemId, Long clientId);
+	public List<Comment> getCommentList(Long workItemId);
 	public Comment getLatestCommentBycommentType(Long entityId, String entityType,
 			String commentType);
+	public void closeDraftWorkItem(Customer customer);
+	public SearchResultData getWorkItembySearchCriteria(
+			WorkItemSearchCriteria workItemSearchCriteria);
 }

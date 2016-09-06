@@ -26,7 +26,7 @@ import com.techvisio.eserve.beans.UnitBasicInfo;
 @Component
 public interface CustomerManager {
 
-	public List<Customer> getCustomers(Long clientId);
+	public List<Customer> getCustomers();
 	public Customer getCustomer(Long customerId);
 	public Long saveCustomer(Customer customer, String context);
 	public void saveUnit(List<Unit> units,  Long customerId);
@@ -38,8 +38,8 @@ public interface CustomerManager {
 	public Unit approveUnit(Unit unit);
 	public UnitBasicCustomer getUnitForApproval(Long unitId);
 	public Long saveCustomer(Customer customer);
-	public Customer getEmailId(String EmailId, Long clientId);
-	public Customer getContactNo(String ContactNo, Long clientId);
+	public Customer getEmailId(String EmailId);
+	public Customer getContactNo(String ContactNo);
 	public Unit rejectUnitApproval(Unit unit);
 	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId);
 	void deleteEquipmentDtlInclusion(List<EquipmentDetail> equipmentDetails,

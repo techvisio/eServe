@@ -15,8 +15,10 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="actionItem in actionItems">
-				<td>{{actionItem.entityCode}}</td>
+				<td><a herf=""
+					ng-click="redirectToWorkitemScreen(actionItem.workItemId)">{{actionItem.entityCode}}</a></td>
 				<td>{{actionItem.workType}}</td>
+				<td>{{actionItem.dueDateString}}</td>
 				<td>{{actionItem.status}}</td>
 			</tr>
 		</tbody>

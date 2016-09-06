@@ -1,92 +1,86 @@
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 padding-non">
 	<section class="box ">
 		<div class="content-body">
 
 			<div class="row">
-				<div class="col-md-2 col-sm-2 col-xs-2">
+
+				<div class="col-md-1 col-sm-1 col-xs-1 padding-non">
 					<div class="form-group">
-						<label class="form-label" for="formfield9">Type</label>
+						<label class="font-size_header" for="formfield9">Type</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
 					<div class="form-group">
-						<label class="form-label" for="formfield9">Model No</label>
+						<label class="font-size_header" for="formfield9">Model No</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
 					<div class="form-group">
-						<label class="form-label" for="formfield9">Serial No</label>
+						<label class=" font-size_header" for="formfield9">Serial
+							No</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
 					<div class="form-group">
-						<label class="form-label" for="formfield9">Invoice No</label>
+						<label class="font-size_header" for="formfield9">Invoice
+							No</label>
 					</div>
 				</div>
 
-				<div class="col-md-3 col-sm-3 col-xs-3">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
 					<div class="form-group">
-						<label class="form-label" for="formfield9">Warranty Under</label>
+						<label class=" font-size_header" for="formfield9">Installation
+							Date</label>
+					</div>
+				</div>
+
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non">
+					<div class="form-group">
+						<label class="font-size_header" for="formfield9">Warranty
+							Under</label>
 					</div>
 				</div>
 			</div>
 
-
-			<div class="row"
-				ng-repeat="equip in unitApproval.unit.equipmentDetails">
-				<div class="col-md-2 col-sm-2 col-xs-2">
+			<div class="row gray-border"
+				ng-repeat="equip in unitApproval.unit.equipmentDetails" id="parent">
+				<div class="col-md-1 col-sm-1 col-xs-1 padding-non text-centre">
 					<div class="form-group">
-						<select class="form-control" ng-model="equip.type">
-							<option></option>
-						</select>
+						<label class="font-size-label" for="formfield9">{{equip.type}}</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 					<div class="form-group">
-						<select class="form-control" ng-model="equip.equipment.model">
-							<option></option>
-						</select>
+						<label class=" font-size-label" for="formfield9">{{equip.equipment.model}}</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 					<div class="form-group">
-						<input class="form-control" type="text" ng-model="equip.serialNo">
+						<label class="font-size-label" for="formfield9">{{equip.serialNo}}</label>
 					</div>
 				</div>
 
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 					<div class="form-group">
-						<input class="form-control" type="text" ng-model="equip.invoiceNo">
+						<label class="font-size-label" for="formfield9">{{equip.invoiceNo}}</label>
 					</div>
 				</div>
-
-				<div class="col-md-2 col-sm-2 col-xs-2">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 					<div class="form-group">
-						<select class="form-control" ng-model="equip.warrantyUnder">
-							<option></option>
-						</select>
+						<label class="font-size-label" for="formfield9">{{equip.installationDateString}}</label>
 					</div>
 				</div>
-
-
-				<div class="col-md-1 col-sm-1 col-xs-1">
+				<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 					<div class="form-group">
-						<!--                                <input type="checkbox" id="chk_act_{{$id}}" -->
-						<!-- 								ng-model="equip.underWarranty" />  -->
-						<!-- 								<label for="chk_act_{{$id}}">UW</label> -->
-
-						<input type="checkbox" class="faChkSqr"
-							ng-model="equip.underWarranty"><label class="padding-uw">UW</label>
+						<label class="font-size-label" for="formfield9">{{equip.warrantyUnder}}</label>
 					</div>
 				</div>
-
 			</div>
-
 		</div>
 	</section>
 </div>

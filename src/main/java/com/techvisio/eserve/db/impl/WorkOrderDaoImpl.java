@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,7 @@ import com.techvisio.eserve.db.WorkOrderDao;
 import com.techvisio.eserve.factory.UniqueIdentifierGenerator;
 import com.techvisio.eserve.manager.CustomerManager;
 import com.techvisio.eserve.util.AppConstants;
+import com.techvisio.eserve.util.CommonUtil;
 
 @Component
 public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
@@ -63,7 +65,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 		Query query= getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<WorkOrder> workOrders= (List<WorkOrder>)query.getResultList();
-		return workOrders;
+		List<WorkOrder> clonedWorkOrders = new ArrayList<WorkOrder>(workOrders);
+		return clonedWorkOrders;
 	}
 
 	@Override
@@ -72,7 +75,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 		Query query= getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<WorkOrder> complaints= (List<WorkOrder>)query.getResultList();
-		return complaints;
+		List<WorkOrder> clonedWorkOrders = new ArrayList<WorkOrder>(complaints);
+		return clonedWorkOrders;
 	}
 
 	@Override
@@ -82,7 +86,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 		@SuppressWarnings("unchecked")
 		List<WorkOrder> workOrders= (List<WorkOrder>)query.getResultList();
 		if(workOrders != null && workOrders.size()>0){
-			return workOrders.get(0);
+			WorkOrder clonedWorkOrder=SerializationUtils.clone(workOrders.get(0));
+			return clonedWorkOrder;
 		}
 		return null;
 	}
@@ -93,7 +98,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 		Query query=getEntityManager().createNativeQuery(queryString, Customer.class);
 		List<Customer> customers= (List<Customer>)query.getResultList();
 		if(customers != null && customers.size()>0){
-			return customers.get(0);
+			Customer clonedCustomer=SerializationUtils.clone(customers.get(0));
+			return clonedCustomer;
 		}
 		return null;
 	}
@@ -104,7 +110,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 		Query query=getEntityManager().createNativeQuery(queryString, Unit.class);
 		List<Unit> units= (List<Unit>)query.getResultList();
 		if(units != null && units.size()>0){
-			return units.get(0);
+			Unit clonedUnit=SerializationUtils.clone(units.get(0));
+			return clonedUnit;
 		}
 		return null;
 	}
@@ -167,8 +174,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 	}	
 
 	@Override
-	public List<SearchComplaintCustomer> getCustomerForComplaintByCriteria(SearchCriteria searchCriteria, Long clientId) {
-
+	public List<SearchComplaintCustomer> getCustomerForComplaintByCriteria(SearchCriteria searchCriteria) {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		String queryString="from Customer WHERE client.clientId = coalesce(:clientId, client.clientId) and lower(contactNo) = coalesce(:contactNo, contactNo) and lower(customerCode) = coalesce(:customerCode, customerCode)  and lower(emailId) = coalesce(:emailId, emailId) and  lower(customerName) LIKE :customerName";
 		Query query= getEntityManager().createQuery(queryString);
 
@@ -267,8 +274,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 	}	
 
 	@Override
-	public List<SearchComplaintCustomer> getCustomerByWorkOrderNo(SearchCriteria searchCriteria, Long clientId) {
-
+	public List<SearchComplaintCustomer> getCustomerByWorkOrderNo(SearchCriteria searchCriteria) {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		String queryString="from CustomerComplaint WHERE client.clientId = coalesce(:clientId, client.clientId) and lower(workOrderNo) = coalesce(:workOrderNo, workOrderNo)";
 		Query query= getEntityManager().createQuery(queryString);
 
@@ -332,8 +339,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 
 
 	@Override
-	public List<ComplaintSearchData> getComplaintBySLA(Long clientId,String code) {
-
+	public List<ComplaintSearchData> getComplaintBySLA(String code) {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		List<ComplaintSearchData> complaints = new ArrayList<ComplaintSearchData>();		
 		String queryString=getComplaintQueryBySLACode(clientId, code);
 		Query query=getEntityManager().createNativeQuery(queryString);
@@ -386,8 +393,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 
 
 	@Override
-	public List<ComplaintSearchData> getComplaintByASSIGNMENT(Long clientId,String code) {
-
+	public List<ComplaintSearchData> getComplaintByASSIGNMENT(String code) {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		List<ComplaintSearchData> complaints = new ArrayList<ComplaintSearchData>();		
 		String queryString=getComplaintQueryByASSIGNMENTCode(clientId, code);
 		Query query=getEntityManager().createNativeQuery(queryString);
@@ -435,8 +442,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 		return queryString;
 	}
 	@Override
-	public List<ComplaintSearchData> getComplaintByPRIORITY(Long clientId,String code) {
-
+	public List<ComplaintSearchData> getComplaintByPRIORITY(String code) {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		List<ComplaintSearchData> complaints = new ArrayList<ComplaintSearchData>();		
 		String queryString=getComplaintQueryByPRIORITYcode(clientId, code);
 		Query query=getEntityManager().createNativeQuery(queryString);
@@ -515,8 +522,20 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 	}
 
 	@Override
-	public PmsWorkOrder getPmsComplaint(Long workitemId){
+	public PmsWorkOrder getPmsComplaintByWorkitemId(Long workitemId){
 		String queryString="FROM PmsWorkOrder pwo where pwo.workitemId = " + workitemId;
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<PmsWorkOrder> result= (List<PmsWorkOrder>)query.getResultList();
+		if(result != null && result.size()>0){
+			return result.get(0);
+		}
+		return null;
+	}
+	
+	@Override
+	public PmsWorkOrder getPmsComplaintByWorkOrderId(Long workOrderId){
+		String queryString="FROM PmsWorkOrder pwo where pwo.workOrderId = " + workOrderId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<PmsWorkOrder> result= (List<PmsWorkOrder>)query.getResultList();

@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.SearchResultData;
+import com.techvisio.eserve.beans.WorkItemSearchCriteria;
 import com.techvisio.eserve.beans.WorkOrderAssignment;
 import com.techvisio.eserve.beans.WorkOrderEquipment;
 import com.techvisio.eserve.beans.WorkOrderResolution;
@@ -52,16 +54,6 @@ public class WorkOrderManagerImpl implements WorkOrderManager{
 
 		Date slaDate = getSlaDateByPriority(workOrder.getPriority());
 		workOrder.setSlaDate(slaDate);
-		if(workOrder.getCustomerId()==null){
-			Customer customer = customerService.createCustomerfromComplaint(workOrder);
-			Long customerId = customerService.saveCustomerDirect(customer);
-			Customer customerFromDB = customerService.getCustomerbyId(customerId);
-
-			workOrder.setCustomerCode(customerFromDB.getCustomerCode());
-			workOrder.setCustomerId(customerFromDB.getCustomerId());
-			workOrder.setWorkOrderType("Complaint");
-		}
-
 		Long workOrderId = workOrderDao.saveWorkOrder(workOrder);	
 		return workOrderId;
 	}
@@ -133,10 +125,10 @@ public class WorkOrderManagerImpl implements WorkOrderManager{
 
 	@Override
 	public List<SearchComplaintCustomer> getCustomerForComplaintByCriteria(
-			SearchCriteria searchCriteria, Long clientId) {
-		List<SearchComplaintCustomer> customers = workOrderDao.getCustomerForComplaintByCriteria(searchCriteria, clientId);
+			SearchCriteria searchCriteria) {
+		List<SearchComplaintCustomer> customers = workOrderDao.getCustomerForComplaintByCriteria(searchCriteria);
 		if(searchCriteria.getWorkOrderNo() != null ){
-			customers = workOrderDao.getCustomerByWorkOrderNo(searchCriteria, clientId);
+			customers = workOrderDao.getCustomerByWorkOrderNo(searchCriteria);
 		}
 
 		return customers;
@@ -161,18 +153,18 @@ public class WorkOrderManagerImpl implements WorkOrderManager{
 	}
 
 	@Override
-	public List<ComplaintSearchData> getComplaintDataforDashboard(Long clientId ,String type,String code) {
+	public List<ComplaintSearchData> getComplaintDataforDashboard(String type,String code) {
 		List<ComplaintSearchData> complaints=new ArrayList<ComplaintSearchData>();
 		if(type.equalsIgnoreCase("SLA")){
-			complaints=workOrderDao.getComplaintBySLA(clientId, code);
+			complaints=workOrderDao.getComplaintBySLA(code);
 
 		}
 		if(type.equalsIgnoreCase("ASSIGNMENT")){
-			complaints=workOrderDao.getComplaintByASSIGNMENT(clientId, code);
+			complaints=workOrderDao.getComplaintByASSIGNMENT(code);
 		}
 
 		if(type.equalsIgnoreCase("PRIORITY"))	{
-			complaints=workOrderDao.getComplaintByPRIORITY(clientId, code);
+			complaints=workOrderDao.getComplaintByPRIORITY(code);
 		}
 		return complaints;
 	}
@@ -191,8 +183,13 @@ public class WorkOrderManagerImpl implements WorkOrderManager{
 		workOrderDao.createPmsComplaint(pmsComplaint);
 	}
 	@Override
-	public PmsWorkOrder getPmsWorkOrder(Long workitemId) {
-		PmsWorkOrder pmsComplaint = workOrderDao.getPmsComplaint(workitemId);
+	public PmsWorkOrder getPmsWorkOrderByWorkitemId(Long workitemId) {
+		PmsWorkOrder pmsComplaint = workOrderDao.getPmsComplaintByWorkitemId(workitemId);
+		return pmsComplaint;
+	}
+	@Override
+	public PmsWorkOrder getPmsComplaintByWorkOrderId(Long workOrderId) {
+		PmsWorkOrder pmsComplaint = workOrderDao.getPmsComplaintByWorkOrderId(workOrderId);
 		return pmsComplaint;
 	}
 }

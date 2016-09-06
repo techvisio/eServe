@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.AgreementDuration;
 import com.techvisio.eserve.beans.Client;
+import com.techvisio.eserve.beans.ClientComConfig;
 import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
@@ -43,4 +44,5 @@ public interface CacheDao {
 	Config getConfig(String property);
 	List<InvoiceTaxes> getInvoiceTaxes(Long clientId);
 	Client getClient(Long clientId);
+	List<ClientComConfig> getClientComConfigValues(Long clientId);
 }

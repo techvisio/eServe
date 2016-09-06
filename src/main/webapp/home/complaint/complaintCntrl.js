@@ -264,8 +264,8 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			console.log(response);
 			if (response) {
 				$scope.workOrder = response;
-				$rootScope.showAlertModel('Complaint Saved Successfully With Complaint Code '+ $scope.workOrder.complaintCode, 'Operation Successful')
-				$state.go('complaintScreen',{entityId:$scope.workOrder.workOrderId});
+				$rootScope.showAlertModel('Complaint Saved Successfully With Complaint Code '+ $scope.workOrder.workOrderNo, 'Operation Successful')
+				$state.go('viewComplaint',{entityId:$scope.workOrder.workOrderId});
 			} 
 		})
 	};
@@ -280,8 +280,8 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			if (response) {
 				$scope.workOrder = response;
 				$scope.showStatus = true;
-				$rootScope.showAlertModel('Complaint Updated Successfully With Complaint Code '+ $scope.workOrder.complaintCode, 'Operation Successful')
-				$scope.redirectToComplaintScreen($scope.workOrder.workOrderId);
+				$rootScope.showAlertModel('Complaint Updated Successfully With Complaint Code '+ $scope.workOrder.workOrderNo, 'Operation Successful')
+				$state.reload('viewComplaint',{entityId:$scope.workOrder.workOrderId});
 			} 
 		})
 	};
@@ -436,8 +436,6 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 					})
 				};
 
-
-
 				$scope.deleteEquipments = function() {
 					complaintService.deleteEquipments($scope.workOrder.unit.equipmentDetails, object.unitId, $scope.workOrder.workOrderId)
 					.then(function(response) {
@@ -461,16 +459,6 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			keyboard: false
 		});
 
-	};
-
-	$scope.checkComplaintEquipments = function(){
-		if(ComplaintEquipments.length<=0 || angular.isUndefined($scope.ComplaintEquipments)){
-			return true;
-		} 
-
-		else{
-			return false;
-		}
 	};
 
 	$scope.getWorkOrderEquipment =  function(){

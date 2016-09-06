@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.Response;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkItem;
+import com.techvisio.eserve.beans.WorkItemSearchCriteria;
 import com.techvisio.eserve.service.WorkItemService;
 
 @RestController
@@ -92,6 +94,15 @@ public class WorkItemController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void createWorkItemForSalesRenewal(@RequestBody UnitBasicInfo unitInfo) {  
 		workItemService.createWorkItemForSalesRenewal(unitInfo);
+	}
+
+	@RequestMapping(value="/workitemlist/",method = RequestMethod.POST)
+	public ResponseEntity<Response> getWorkItembySearchCriteria(@RequestBody WorkItemSearchCriteria workItemSearchCriteria) {
+		Response response=new Response();
+		SearchResultData workItems = workItemService.getWorkItembySearchCriteria(workItemSearchCriteria);
+		response.setResponseBody(workItems);
+
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
 }

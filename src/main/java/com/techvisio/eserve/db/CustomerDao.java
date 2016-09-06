@@ -25,9 +25,9 @@ public interface CustomerDao {
 	public void saveUnit(List<Unit> units,  Long customerId);
 	public Long saveUnit(Unit unit);
 	public List<Unit> getUnits(Long customerId);
-	public List<Customer> getCustomers(Long clientId);
+	public List<Customer> getCustomers();
 	public SearchResultData getCustomerByCriteria(SearchCriteria searchCriteria);
-	public boolean isCustomerExists(Customer customer, Long clientId);
+	public boolean isCustomerExists(Customer customer);
 	public List<ServiceAgreementHistory> getServiceAgreementHistoryForUnit(Long unitId);
 //	public void updateServiceAgreement(ServiceAgreement agreement, Long unitId);
 	public Unit getUnit(Long unitId);
@@ -35,8 +35,8 @@ public interface CustomerDao {
 	public void saveServiceAgreementHistory(ServiceAgreementHistory history);
 	public void saveServiceAgreementFinanceHistory(
 			ServiceAgreementFinanceHistory financeHistory);
-	public Customer getEmailId(String EmailId, Long clientId);
-	public Customer getContactNo(String ContactNo, Long clientId);
+	public Customer getEmailId(String EmailId);
+	public Customer getContactNo(String ContactNo);
 	public void saveUnitHistory(UnitHistory unitHistory);
 	public void saveEquipmentHistory(EquipmentHistory equipmentHistory);
 	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId);

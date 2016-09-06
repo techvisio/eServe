@@ -32,10 +32,9 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Long saveUser(User user) {
 		UserServiceICC userServiceICC=servicelocator.getService(UserServiceICC.class);
-		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		user = userServiceICC.preUserSave(user);
-		Long userId = userManager.saveUser(user,clientId);
-		user = userServiceICC.postGetUserforEdit(user);
+		Long userId = userManager.saveUser(user);
+		user = userServiceICC.postUserSave(user);
 		return userId;
 	}
 
@@ -69,8 +68,7 @@ public class UserServiceImpl implements UserService{
 	public List<User> getUsers() {
 		UserServiceICC userServiceICC=servicelocator.getService(UserServiceICC.class);
 		userServiceICC.preRetrieveAllUsers();
-		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		List<User> users = userManager.getUsers(clientId);
+		List<User> users = userManager.getUsers();
 		users = userServiceICC.postRetrieveAllUsers(users);
 		return users;
 	}
@@ -141,8 +139,7 @@ public class UserServiceImpl implements UserService{
 	public User getUserByUserName(String userName) {
 		UserServiceICC userServiceICC=servicelocator.getService(UserServiceICC.class);
 		userServiceICC.preGetUserByUserName();
-		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		User user = userManager.getUserByUserName(userName, clientId);
+		User user = userManager.getUserByUserName(userName);
 		user = userServiceICC.postGetUserByUserName(user);
 		return user;
 	}
@@ -151,8 +148,7 @@ public class UserServiceImpl implements UserService{
 	public User getUserByEmailId(String emailId) {
 		UserServiceICC userServiceICC=servicelocator.getService(UserServiceICC.class);
 		userServiceICC.preGetUserByEmailId();
-		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		User user = userManager.getUserByEmailId(emailId, clientId);
+		User user = userManager.getUserByEmailId(emailId);
 		user = userServiceICC.postGetUserByEmailId(user);
 		return user;
 	}
@@ -164,12 +160,6 @@ public class UserServiceImpl implements UserService{
 		User user=userManager.getUser(userId);
 		user=userServiceICC.postGetUserforEdit(user);
 		return user;
-	}
-
-	@Override
-	public List<UserPrivilege> getPrivilegesForUser(Long userId) {
-		List<UserPrivilege> userPrivileges = userManager.getPrivilegesForUser(userId);
-		return userPrivileges;
 	}
 
 	@Override

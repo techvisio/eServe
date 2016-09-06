@@ -185,6 +185,40 @@ body {
 	text-align: center;
 }
 
+.user-image-user-form {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 50px; text-align : center;
+	vertical-align: middle;
+	font: 30px;
+	font-family: 'Roboto Condensed', Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: 300;
+	line-height: 25px;
+	text-align: center;
+	float: left;
+	text-align: center;
+}
+
+.user-image-user-form img {
+	width: 120px;
+	height: 120px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 60px;
+}
+
+.user-image-container {
+	position: relative;
+}
+
+.user-image-menu {
+	float: left;
+	position: absolute;
+	margin-top: 25%;
+}
+
 .user-dept {
 	font: 20px;
 	font-family: 'Roboto Condensed', Arial, Helvetica, sans-serif;
@@ -227,7 +261,7 @@ body {
 	float: left;
 	width: 230px;
 	min-height: 60px;
-	background-color: #ff6e40;
+	background-color: white;
 }
 
 .page-topbar .logo-area img {
@@ -324,7 +358,7 @@ body {
 
 .processing {
 	padding-left: 10px;
-	color: white;
+	color: #37474f;
 	position: fixed;
 }
 
@@ -1048,7 +1082,7 @@ input.faChkRnd:checked:after, input.faChkRnd:after, input.faChkSqr:checked:after
 	width: 17px;
 	position: relative;
 	top: 15px;
-/* 	left: -10px; */
+	/* 	left: -10px; */
 	background-color: #FFF;
 	display: inline-block;
 	color: #28B78D;
@@ -1315,9 +1349,9 @@ button-left {
 
 /* logout icon css */
 .logout-icon {
-	padding-top: 13px; 
-	padding-bottom : 20px;
-	padding-right:20px;
+	padding-top: 13px;
+	padding-bottom: 20px;
+	padding-right: 20px;
 	text-align: center;
 	vertical-align: middle;
 	font: 30px;
@@ -1339,13 +1373,11 @@ button-left {
 }
 
 /* comment box header and comment padding */
-
-.comment-padding{
+.comment-padding {
 	padding-top: 10px;
 }
 
 /* check box label padding */
-
-.check-box-padding{
+.check-box-padding {
 	padding-left: 10px;
 }

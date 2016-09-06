@@ -5,14 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javassist.expr.NewArray;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.AgreementDuration;
+import com.techvisio.eserve.beans.ClientComConfig;
 import com.techvisio.eserve.beans.Config;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
@@ -85,7 +84,21 @@ public class CacheManagerImpl implements CacheManager {
 	}
 
 
+	@Override
+	public Map<Long, Map<String,Object>> getClientComConfigMap(){
 
+		Map<Long, Map<String,Object>> configMap = new HashMap<Long, Map<String,Object>>();
+		Map<String,Object> subMap = new HashMap<String, Object>();
+
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		List<ClientComConfig> defaultValues = cacheDao.getClientComConfigValues(clientId);
+		for(ClientComConfig clientComConfig : defaultValues){
+			subMap.put(clientComConfig.getProperty(), clientComConfig);
+		}
+		configMap.put(clientId, subMap);
+
+		return configMap;
+	}
 
 	public  List<State> getStates(Long clientId) {
 		Map<String, List> clientMap = clientEntityListMap.get(clientId);

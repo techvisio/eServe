@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Comment;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.WorkItem;
+import com.techvisio.eserve.beans.WorkItemSearchCriteria;
 @Component
 public interface WorkItemDao {
 
@@ -22,7 +24,9 @@ public interface WorkItemDao {
 	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId, String workType);
 	public WorkItem getWorkitemByWorkitemId(Long workitemId);
 	public WorkItem getWorkItem(Long workItemId);
-	public List<Comment> getCommentList(Long workItemId, Long clientId);
+	public List<Comment> getCommentList(Long workItemId);
 	public Comment getLatestCommentBycommentType(Long entityId, String entityType,
 			String commentType);
+	public SearchResultData getWorkItembySearchCriteria(
+			WorkItemSearchCriteria workItemSearchCriteria);
 }

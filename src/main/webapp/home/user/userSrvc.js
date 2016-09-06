@@ -18,9 +18,32 @@ userModule.service('userService', function($http, $q) {
 		getUserForEdit : getUserForEdit,
 		getUserAfterEdit : getUserAfterEdit,
 		getEmailId : getEmailId,
-		getUserName:getUserName
+		getUserName:getUserName,
+	    savePic : savePic
 	});
 
+	function savePic(file,userId){
+
+		console.log('saveSecurityQuestion called in service');
+		
+		 var fd = new FormData();
+	        fd.append('file', file);
+	        
+		var request = $http({
+			method : "post",
+			url : "../resources/user/upload/"+userId,
+			transformRequest: angular.indentity,
+			headers: { 'Content-Type': undefined},
+			params : "",
+			data : fd
+
+		});
+
+		return (request.then(handleSuccess, handleError));
+
+	}
+	
+	
 	function authenticateUser(form) {
 		$http({
 			method  : 'POST',

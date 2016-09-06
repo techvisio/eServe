@@ -16,7 +16,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.showStatus=false;
 	$scope.previewContext = false;
 	$scope.customerScreen = true;
-	//	$scope.getAllComplaints=false;
 	$scope.unitApproval = {};
 	$scope.customer={};
 	$scope.customer.edited = false;
@@ -87,12 +86,17 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.toggleReadOnly('CUSTOMER',false);
 	}
 
-
-	if(Operation && Operation == 'unitApproval'){
+	if(Operation && Operation == 'renewSalesAgreement'){
+		$scope.renewAgreementScreen = true;
 		$scope.unitApproval = contextObject;
+		
 	}
 
-
+	if(Operation && Operation == 'unitApproval'){
+		$scope.approveUnitScreen = true;
+		$scope.customerScreen = false;
+		$scope.unitApproval = contextObject;
+	}
 
 	$scope.init = function() {
 		console
@@ -172,7 +176,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	};
 
 	$scope.redirectToCustomerDtlScreen=function(currentCustomerId){
-		if($rootScope.isPrivileged("VIEW_CUSTOMER") || $rootScope.isPrivileged("CREATE_CUSTOMER")){
+		if($rootScope.isPrivileged("VIEW_CUSTOMER") || $rootScope.isPrivileged("CREATE_CUSTOMER") || $rootScope.isPrivileged("AGREEMENT_APPROVAL")){
 			$scope.alerts=[];
 			$state.go('viewCustomer',{entityId:currentCustomerId});
 		}
@@ -304,7 +308,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			if (response) {
 				unit= response;
 				$rootScope.showAlertModel('Unit Approved Successfully', 'Operation Successful')
-				$scope.redirectToCustomerDtlScreen(unit.customerId);
+				$state.go('workItemSearch')
 			} 
 		})
 	};
@@ -364,7 +368,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			if (response) {
 				$scope.customer.units = response;
 				$scope.alerts=[];
-				$rootScope.showAlertModel('Unit Saved Successfully ', 'Operation Successful')
+				$rootScope.showAlertModel('Unit saved successfully as a draft', 'Operation Successful')
 				$rootScope.curModal.close();
 			} 
 		})
@@ -453,6 +457,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		}
 
 		if($scope.selection="unitDtl"){
+			$scope.alerts=[];
 			if(!$scope.form.UNIT.$valid){
 				$scope.alerts=[];
 				$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
@@ -519,7 +524,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						if (response) {
 							unit= response;
 							$rootScope.curModal.close();
-							$scope.redirectToCustomerDtlScreen(unit.customerId);
+							$state.go('workItemSearch');
 						} 
 					})
 				};
@@ -554,7 +559,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 							$scope.customer.units = response;
 							$scope.curModal.close();
 							$rootScope.curModal.close();
-							$rootScope.showAlertModel('Unit Saved Successfully ', 'Operation Successful')
+							$rootScope.showAlertModel('Unit Published Successfully ', 'Operation Successful')
 						} 
 					})
 				};
@@ -618,37 +623,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			$scope.curModal.close();
 		};
 		
-		$scope.showCommentBoxRenewAgreementPublish = function() {
-
-			$scope.curModal = $modal.open({
-				templateUrl: 'customer/popup boxes/Comment_Box_Renew_Sales_Agreement.html',
-				scope:$scope,
-				controller: function (customerService,$scope) {
-					$scope.serviceRenewalBean = unit.serviceAgreement;
-					$scope.comment = "";
-
-					$scope.updateSalesAgreement = function(context) {
-						var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
-						customerService.updateSalesAgreement(genericRequest, unit.unitId, context)
-						.then(function(response) {
-							console.log('updateSalesAgreement received from service : ');
-							console.log(response);
-							if (response) {
-								object = response;
-								$scope.alerts=[];
-								$rootScope.showAlertModel('Agreement Updated Successfully ', 'Operation Successful')
-								$scope.curModal.close();
-							} 
-						})
-					};
-					$scope.closeModal=function(){
-						$scope.curModal.close();
-					}
-				},
-				backdrop:'static',
-				keyboard: false
-			});
-		};
 	};
 
 	
@@ -794,6 +768,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.lockCustomerEntity = function()
 	{
+		if($rootScope.isPrivileged('CREATE_CUSTOMER')){
 		$scope.entityLock = {};
 		$scope.entityLock.entityId = $scope.customer.customerId;
 		$scope.entityLock.entityType = 'CUSTOMER';
@@ -808,11 +783,16 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						$scope.toggleReadOnly('CUSTOMER',customer.edited);
 					}
 				})
-
+		}
+		
+		else{
+			 $rootScope.showNotHavePrivilegeModel();					 
+		 }
 	}
 
 	$scope.lockUnitEntity = function(unitIndex,formId)
 	{
+		if($scope.isCreateOrUpdatePrivileged){
 		$scope.entityLock = {};
 		$scope.entityLock.entityId = $scope.customer.units[unitIndex].unitId;
 		$scope.entityLock.entityType = 'UNIT';
@@ -827,7 +807,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						$scope.toggleReadOnly('UNIT_'+formId,unitFromDB.edited);
 					}
 				})
-
+		}
+		else{
+			 $rootScope.showNotHavePrivilegeModel();					 
+		 }
 	}
 
 	$scope.unlockCustomerEntity = function()
@@ -952,6 +935,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			console.log(response);
 			if (response) {
 				$scope.comment = response;
+				$rootScope.showAlertModel($scope.comment.comment , 'Rejection Reason')
 			} 
 		})
 	};
@@ -970,7 +954,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		});
 
 		$scope.updateServiceAgreement = function(){
-			$scope.curModal.close();
+			$scope.renewAgreementModal.close();
 		};
 		
 		$scope.showCommentBoxRenewAgreementPublish = function() {
@@ -997,7 +981,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						})
 					};
 					$scope.closeModal=function(){
-						$scope.curModal.close();
+						$scope.agreementCommentModal.close();
 					}
 				},
 				backdrop:'static',
@@ -1005,6 +989,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			});
 		};
 	};
-	
+	 $scope.redirectToWorkitemScreen=function(currentWorkitemId){
+		 $state.go('workitem',{workitemId:currentWorkitemId});
+	 }	
 	
 } ]);

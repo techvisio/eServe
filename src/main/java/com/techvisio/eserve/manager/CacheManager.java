@@ -32,4 +32,5 @@ public interface CacheManager {
 	Issue getIssue(Long issueId);
 	public Map<Long, Map<String, Object>> getConfigMap();
 	List<InvoiceTaxes> getInvoiceTaxes(Long clientId);
+	Map<Long, Map<String, Object>> getClientComConfigMap();
 }

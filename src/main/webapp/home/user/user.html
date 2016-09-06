@@ -22,8 +22,21 @@
 							close="closeAlert($index)">{{alert.msg}}</alert>
 					</div>
 
-
-					<div class="row">
+					<div class="user-image-container">
+						<div class="col-md-2 col-sm-6 col-xs-6">
+							<div class="user-image-user-form">
+								<img ng-src="{{user.photoPath}}">
+							</div>
+														<input type="file" file-model="user.file" id="userPic" ng-hide="user.userId || !user.userId"/>
+						</div>
+						<div class="col-md-4 col-sm-6 col-xs-6">
+							<div class="user-image-menu">
+								<button type="button" class="btn btn-primary child-left" ng-disabled="!user.edited && !isNew"
+								ng-click="chooseFile()">Choose File</button>
+								<button type="button" class="btn btn-primary child-left" ng-disabled="!user.edited && !isNew"
+									ng-click="Submit()">Upload File</button>
+							</div>
+						</div>
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">First Name</label>
@@ -33,9 +46,6 @@
 										ng-pattern="/^[a-zA-Z]+$/i" required="required">
 								</div>
 							</div>
-						</div>
-						<div class="col-md-1"></div>
-						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Last Name</label>
 								<div class="controls">
@@ -43,7 +53,15 @@
 										ng-pattern="/^[a-zA-Z]+$/i" ng-model="user.lastName">
 								</div>
 							</div>
+
 						</div>
+					</div>
+
+
+					<div class="row">
+						<div class="col-md-5 col-sm-12 col-xs-12"></div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5 col-sm-12 col-xs-12"></div>
 					</div>
 
 
@@ -69,8 +87,7 @@
 								<label class="form-label" for="formfield9">Email Id</label> <span
 									class="desc">e.g. "asd@asd.com"</span>
 								<div class="controls">
-								<input type="email"
-										class="form-control"
+									<input type="email" class="form-control"
 										ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i"
 										ng-model="user.emailId" ng-click="resetAlert()"
 										required="required" ng-blur="getEmailId()">
@@ -86,10 +103,10 @@
 							<div class="form-group">
 								<label class="form-label" for="formfield9">User Name</label>
 								<div class="controls">
-									 <input type="text"
-										class="form-control" ng-pattern="/^[a-zA-_-Z0-9]+$/i"
-										ng-model="user.userName" required="required"
-										ng-click="resetAlert()" ng-blur="getUserName()">
+									<input type="text" class="form-control"
+										ng-pattern="/^[a-zA-_-Z0-9]+$/i" ng-model="user.userName"
+										required="required" ng-click="resetAlert()"
+										ng-blur="getUserName()">
 								</div>
 							</div>
 						</div>

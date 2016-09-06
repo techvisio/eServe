@@ -14,7 +14,7 @@
 					<div class="row">
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">Unit Code</label> 
+								<label class="form-label" for="formfield9">Unit Code</label>
 								<div class="controls">
 									<input class="form-control" type="text"
 										ng-model="unit.unitCode" ng-click="resetAleart()" disabled>
@@ -27,10 +27,10 @@
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Service Type</label>
-								
+
 								<div class="controls">
 									<select class="form-control"
-										ng-model="unit.serviceAgreement.serviceCategory" disabled>
+										ng-model="unit.serviceAgreement.serviceCategory" required>
 										<option>Warranty</option>
 										<option>AMC</option>
 										<option>Paid</option>
@@ -44,7 +44,7 @@
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Service Party</label>
-								
+
 								<div class="controls">
 									<select
 										ng-model="unit.serviceAgreement.serviceProvider.serviceProviderId"
@@ -61,7 +61,7 @@
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Unit Category</label>
-								
+
 								<div class="controls">
 									<select ng-model="unit.unitCategory.unitCategoryId"
 										class="form-control"
@@ -89,9 +89,9 @@
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Machine
-									Serial No</label> 
+									Serial No</label>
 								<div class="controls">
-									<input class="form-control input-sm" id="inputlg" type="text"
+									<input class="form-control" id="inputlg" type="text"
 										required ng-model="unit.machineSerialNo"
 										ng-click="resetAleart()">
 								</div>
@@ -102,7 +102,7 @@
 					<div class="row">
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">Asset No</label> 
+								<label class="form-label" for="formfield9">Asset No</label>
 								<div class="controls">
 									<input class="form-control" type="text" required
 										ng-model="unit.assetNo" ng-click="resetAleart()">
@@ -115,12 +115,13 @@
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Agreement
-									Duration</label> 
+									Duration</label>
 								<div class="controls">
 									<select
 										ng-model="unit.serviceAgreement.agreementDuration.agreementDurationId"
 										class="form-control"
-										ng-options="item.agreementDurationId*1 as item.displayValue for item in serverModelData.AGREEMENT_DURATION">
+										ng-options="item.agreementDurationId*1 as item.displayValue for item in serverModelData.AGREEMENT_DURATION"
+										required>
 									</select>
 
 								</div>
@@ -132,7 +133,7 @@
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Contract
-									Start On</label> 
+									Start On</label>
 								<div class="controls">
 									<div class="date-input">
 										<input type="text" class="form-control datepicker"
@@ -140,7 +141,7 @@
 											ng-model="unit.serviceAgreement.contractStartOnString"
 											datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
 											ng-click="startDate = !startDate; $event.stopPropagation();"
-											show-button-bar="false">
+											show-button-bar="false" required>
 									</div>
 								</div>
 							</div>
@@ -151,7 +152,7 @@
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Contract
-									Expire On</label> 
+									Expire On</label>
 								<div class="controls">
 									<div class="date-input">
 										<input type="text" class="form-control datepicker"
@@ -190,8 +191,9 @@
 								<input type="checkbox" class="faChkSqr"
 									ng-disabled="unit.address.addressId"
 									ng-change="copyCustomerAddress(unit,sameAsAbove)"
-									ng-model="sameAsAbove" /> <label class="form-label"
-									for="formfield9">Same As Billing Address</label>
+									ng-model="sameAsAbove" /> <label
+									class="form-label check-box-padding" for="formfield9">Same
+									As Billing Address</label>
 							</div>
 						</div>
 					</div>
@@ -199,7 +201,7 @@
 					<div class="row">
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">Address</label> 
+								<label class="form-label" for="formfield9">Address</label>
 								<div class="controls">
 									<input class="form-control" ng-model="unit.address.address"
 										ng-click="resetAleart()" required />
@@ -212,7 +214,7 @@
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
 								<label class="form-label" for="formfield9">Alt. Contact
-									No</label> 
+									No</label>
 								<div class="controls">
 									<input class="form-control" type="text"
 										ng-pattern="/^[0-9--]+$/" ng-model="unit.address.contactNo"
@@ -225,7 +227,7 @@
 					<div class="row">
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">City</label> 
+								<label class="form-label" for="formfield9">City</label>
 								<div class="controls">
 									<input class="form-control" type="text"
 										ng-model="unit.address.city" ng-pattern="/^[a-zA-Z]+$/i"
@@ -238,7 +240,7 @@
 
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">Pincode</label> 
+								<label class="form-label" for="formfield9">Pincode</label>
 								<div class="controls">
 									<input class="form-control" type="text"<input
 										ng-pattern="/^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}$/"
@@ -252,7 +254,7 @@
 					<div class="row">
 						<div class="col-md-5 col-sm-12 col-xs-12">
 							<div class="form-group">
-								<label class="form-label" for="formfield9">State</label> 
+								<label class="form-label" for="formfield9">State</label>
 								<div class="controls">
 									<select ng-model="unit.address.state.stateId"
 										class="form-control"

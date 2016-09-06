@@ -26,7 +26,5 @@ public class DuplicateEntityException extends AbstractCustomException {
 	public DuplicateEntityException(Throwable cause) {
 		super(cause);
 	}
-	
-	
 
 }

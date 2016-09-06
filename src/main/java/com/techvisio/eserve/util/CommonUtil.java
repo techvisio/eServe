@@ -128,5 +128,10 @@ public class CommonUtil {
 		return integerList;
 
 	}
+	
+	public static String getUserImagePath(){
+		String basePath=AppConstants.STATIC_RESOURCE_BASE_PATH;
+		return basePath+getCurrentClient().getClientId()+"/"+"users";
+	}
 
 }

@@ -1,60 +1,48 @@
-<div class="work-item-comment col-lg-12 col-md-12 col-sm-12 col-xs-12 "
-	ng-init="getCommentList()">
-	<section class="box ">
-		<header class="panel_header">
-			<h2 class="title pull-left">COMMENTS</h2>
-			<div class="actions panel_actions pull-right">
-<!-- 				 popover-placement="left" -->
-<!-- 					popover-trigger="mouseenter" popover="Post Comment" -->
-				 
-				 <i
-					class="box_close material-icons"></i> <i class="fa fa-comment" style="font-size:22px;"
-					ng-click="addComment()" title="Post Comment"></i> <i
-					class="box_close material-icons"></i>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+        <section class="box ">
+            <header class="panel_header">
+                <h2 class="title pull-left">COMMENTS</h2>
+                <div class="actions panel_actions pull-right">
+                    <i class="box_toggle material-icons"></i>
+                    <i class="box_setting material-icons"></i>
+                    <i class="box_close material-icons"></i>
+                </div>
+            </header>
+            <div class="content-body">
+              
+              <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                       <div class="form-group">
+                            <button ng-click="addComment()" type="button" class="btn btn-primary child-right">Post Comment</button>
+                       </div>
+                    </div>
 			</div>
-		</header>
-		<div class="content-body">
-			<div ng-show="showAllComments==false"><!-- Single comment div  -->
-				<div class="row">
-					<div class="col-md-12 col-sm-12 col-xs-12">
+			
+			
+			<hr>
+			
+			<div class="row">
+			<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
 						<div class="form-group element-size">
-							<label class="desc" for="formfield9">
-								 <span class="workitem-user">{{workitem.comments[0].createdBy}}</span>  {{workitem.comments[0].commentDateString}}</label>
+							<label class="form-label element-size-label" for="formfield9">Name:<b class="desc">aki</b>, Date:<b class="desc">23rd June 2016</b></label>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12 col-sm-12 col-xs-12">
+			</div>
+	
+			<div class="row">
+					<div class="col-md-5 col-sm-12 col-xs-12">
 						<div class="form-group element-size">
-							<span class="workitem-comment">{{workitem.comments[0].comment}}</span>
+							<label class="form-label element-size-label" for="formfield9">Comment:<b class="desc">Text</b></label>
 						</div>
 					</div>
-				</div>
-				<a ng-click="showAllComments=true">Show all comments...</a>
 			</div>
-			<div ng-show="showAllComments==true">
-			<div class="row" ng-repeat="comment in workitem.comments" >
-				<div class="row">
-					<div class="col-md-12 col-sm-12 col-xs-12">
-						<div class="form-group element-size">
-							<label class="desc" for="formfield9">
-								 <span class="workitem-user">{{comment.createdBy}}</span>  {{comment.commentDateString}}</label>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="row">
-					<div class="col-md-12 col-sm-12 col-xs-12">
-						<div class="form-group element-size">
-							<span class="workitem-comment">{{comment.comment}}</span>
-						</div>
-					</div>
-				</div>
-				<hr>
+			<hr>
 			</div>
-			<a ng-click="showAllComments=false">Show latest only...</a>
-			</div>
-		</div>
-	</section>
-</div>
+				
+                
+                
+                
+            </div>
+        </section>
+    </div>

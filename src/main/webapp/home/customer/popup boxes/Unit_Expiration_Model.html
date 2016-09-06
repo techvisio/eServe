@@ -19,7 +19,8 @@
 						<div class="form-group element-size">
 							<div class="controls">
 								<select class="form-control"
-									ng-model="serviceRenewalBean.serviceCategory" required>
+									ng-model="serviceRenewalBean.serviceCategory"
+									ng-disabled="approveUnitScreen" required>
 									<option>Warranty</option>
 									<option>AMC</option>
 									<option>Paid</option>
@@ -41,7 +42,7 @@
 							<div class="controls">
 								<select
 									ng-model="serviceRenewalBean.agreementDuration.agreementDurationId"
-									class="form-control"
+									class="form-control" ng-disabled="approveUnitScreen"
 									ng-options="item.agreementDurationId*1 as item.displayValue  for item in serverModelData.AGREEMENT_DURATION"
 									required>
 								</select>
@@ -65,7 +66,7 @@
 							<div class="controls">
 								<div class="date-input">
 									<input type="text" class="form-control datepicker"
-										name="requestDueDate"
+										name="requestDueDate" ng-disabled="approveUnitScreen"
 										ng-model="serviceRenewalBean.contractStartOnString"
 										datepicker-popup="{{'MMM dd yyyy'}}" is-open="startDate"
 										ng-click="startDate = !startDate; $event.stopPropagation();"
@@ -87,20 +88,21 @@
 						<div class="form-group element-size">
 							<div class="controls">
 								<input class="form-control" type="text"
-									ng-model="serviceRenewalBean.serviceAgreementFinance.agreementAmount">
+									ng-model="serviceRenewalBean.serviceAgreementFinance.agreementAmount"
+									ng-disabled="approveUnitScreen">
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<button class="btn btn-primary child-right"
-						ng-show="customerScreen" ng-click="updateServiceAgreement()">Update
+						ng-show="customerScreen"
+						ng-click="updateServiceAgreement()">Update Agreement</button>
+					<button class="btn btn-primary child-right"
+						ng-show="renewAgreementScreen"
+						ng-click="showCommentBoxRenewAgreementPublish()">Renew
 						Agreement</button>
-						<button class="btn btn-primary child-right"
-						ng-show="customerScreen" ng-click="showCommentBoxRenewAgreementPublish()">Renew
-						Agreement</button>
-					<button type="button"
-						class="btn btn-primary child-right"
+					<button type="button" class="btn btn-primary child-right"
 						ng-click="updateServiceAgreement()">Cancel</button>
 				</div>
 			</div>

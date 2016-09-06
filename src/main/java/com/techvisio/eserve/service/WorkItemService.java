@@ -9,9 +9,11 @@ import org.springframework.stereotype.Component;
 import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.GenericRequest;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkItem;
+import com.techvisio.eserve.beans.WorkItemSearchCriteria;
 
 @Component
 @Transactional
@@ -21,7 +23,6 @@ public interface WorkItemService {
 	public List<WorkItem> getWorkItemByPrivilege(Long privilegeId);
 	public List<WorkItem>  getWorkItemByWorkType(String workType);
 	public List<WorkItem> getWorkItembyUserandType(Long userId,String type, String status);
-	public void updateWorkItemStatus(Long entityId,String status,String workType, String entityType);
 	public List<WorkItem> getUnitWorkItemsByEntityIdAndEntityType(Long entityId);
 	public void createWorkItemForCustomerSave(String context,
 			Customer customer, String comment);
@@ -40,4 +41,8 @@ public interface WorkItemService {
 	public Comment getLatestCommentBycommentType(Long entityId, String entityType,
 			String commentType);
 	public void createWorkItemForSalesRenewal(UnitBasicInfo unitInfo);
+	public void updateWorkItemStatus(Long entityId, String status, String workType,
+			String entityType);
+	public SearchResultData getWorkItembySearchCriteria(
+			WorkItemSearchCriteria workItemSearchCriteria);
 }

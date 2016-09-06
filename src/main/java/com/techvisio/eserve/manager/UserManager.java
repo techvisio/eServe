@@ -17,17 +17,13 @@ import com.techvisio.eserve.beans.UserPrivilege;
 @Component
 public interface UserManager {
 
-	public Long saveUser(User user, Long clientId);
+	public Long saveUser(User user);
 	
 	public User getUser(Long userId);
 
 	public List<Role> getUserRole(Long userId);
 
-	public void saveSecurityQuestion(SecurityQuestion securityQuestion);
-
-	public SecurityQuestion getSecurityQuestion(Long questionId);
-
-	public List<User> getUsers(Long clientId);
+	public List<User> getUsers();
 
 //	public List<Privilege> getUserPrivileges(Long userId);
 	
@@ -47,9 +43,7 @@ public interface UserManager {
 
 	public void resetPassword(User user);
 
-	public User getUserByUserName(String userName,Long clientId);
+	public User getUserByUserName(String userName);
 
-	public User getUserByEmailId(String EmailId, Long clientId);
-
-	public List<UserPrivilege> getPrivilegesForUser(Long userId);
+	public User getUserByEmailId(String EmailId);
 }

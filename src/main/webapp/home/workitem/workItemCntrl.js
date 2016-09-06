@@ -11,9 +11,10 @@ workItemModule
 		 'customerService',
 		 '$modal',
 		 '$http',
+		 'NgTableParams',
 		 'masterdataService',
 		 'workitem',
-		 function($scope, $state, $rootScope,workItemService,customerService,$modal,$http,masterdataService,workitem) {
+		 function($scope, $state, $rootScope,workItemService,customerService,$modal,$http,NgTableParams,masterdataService,workitem) {
 
 			 $scope.workItems = [];
 			 $scope.workitem = {};
@@ -103,6 +104,9 @@ workItemModule
 				 $state.go('unitApproval',{entityId:unitId} );
 			 }
 
+			 $scope.redirectToRenewSalesAgreement=function(unitId){
+				 $state.go('renewSalesAgreement',{entityId:unitId} );
+			 }
 			 $scope.addComment = function() {
 
 				 $rootScope.curModal = $modal.open({
@@ -154,5 +158,65 @@ workItemModule
 			 
 				$scope.createWorkItemForSalesRenewal = function(unitInfo){
 					workItemService.createWorkItemForSalesRenewal(unitInfo);
+					$rootScope.showAlertModel('Lead Created For Renew Sales Agreement', 'Operation Successful')
+					$state.go('workItemSearch');
 				}
+				
+				$scope.getWorkItembySearchCriteria = function(){
+					 console.log('getting work Item');
+					 var workItemType=$scope.workItemSearchCriteria.workType;
+					 var workItemStatus=$scope.workItemSearchCriteria.status;
+					 if(angular.isUndefined(workItemType)){
+						 workItemType = "";
+					 }
+					 if(angular.isUndefined(workItemStatus)){
+						 workItemStatus = "";
+					 }
+
+					 workItemService.getWorkItembySearchCriteria($rootScope.user.userId, workItemType, workItemStatus)
+					 .then(function(response) {
+						 console.log(response);
+						 if (response) {
+							 $scope.workItems = response;
+						 } 
+					 })	
+				 };
+				 
+				 $scope.tableParams = new NgTableParams({}, {
+					 getData: function($defer,params) {
+						 var sortBy="ENTITY_CODE";
+						 var isAsc=false;
+						 var pageNo=params.page();
+						 var pageSize=params.count();
+						 if(params.sorting()){
+							 for (var attribute in params.sorting()) {
+								 if (params.sorting().hasOwnProperty(attribute)) {
+									 sortBy=attribute;
+									 var ascDsc=params.sorting()[attribute];
+									 if(ascDsc==='asc'){
+										 isAsc=true;  
+									 }
+								 }
+							 }
+						 }
+						 $scope.workItemSearchCriteria.pageSize=pageSize;
+						 $scope.workItemSearchCriteria.pageNo=pageNo;
+						 $scope.workItemSearchCriteria.sortBy=sortBy;
+						 $scope.workItemSearchCriteria.isAscending=isAsc;
+						 $scope.workItemSearchCriteria.userId=$rootScope.user.userId;
+						 $scope.workItemSearchCriteria.type=$scope.workitem.workType;
+						 $scope.workItemSearchCriteria.status=$scope.workitem.status;
+						 
+						 workItemService.getWorkItembySearchCriteria($scope.workItemSearchCriteria)
+						 .then(
+								 function(response) {
+									 if(response){
+										 params.total(response.totalCount);
+										 $defer.resolve(response.objectData);
+									 }
+								 })
+
+					 }
+				 });
+				 
 		 } ]);

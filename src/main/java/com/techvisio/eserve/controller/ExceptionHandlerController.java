@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.techvisio.eserve.beans.Response;
 import com.techvisio.eserve.exception.DuplicateEntityException;
 import com.techvisio.eserve.exception.EntityLockedException;
+import com.techvisio.eserve.exception.MandatoryFieldMissingException;
 import com.techvisio.eserve.exception.NoEntityFoundException;
 import com.techvisio.eserve.util.CustomLogger;
 import com.techvisio.eserve.util.EISystemException;
@@ -95,5 +96,19 @@ public class ExceptionHandlerController {
 		return new ResponseEntity<Response>(response,
 				HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
+	@ExceptionHandler(MandatoryFieldMissingException.class)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	public ResponseEntity<Response> handleException(MandatoryFieldMissingException exp) {
+		// System.out.println(((UnexpectedRollbackException)e).getRootCause());
+		Response response = new Response();
+
+		String message =  exp.getMessage();
+
+		response.setError(message);
+		return new ResponseEntity<Response>(response,
+				HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 }

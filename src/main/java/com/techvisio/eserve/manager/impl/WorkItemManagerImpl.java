@@ -10,9 +10,12 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.GenericRequest;
+import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.WorkItem;
+import com.techvisio.eserve.beans.WorkItemSearchCriteria;
 import com.techvisio.eserve.db.WorkItemDao;
 import com.techvisio.eserve.manager.CacheManager;
 import com.techvisio.eserve.manager.WorkItemManager;
@@ -119,12 +122,12 @@ public class WorkItemManagerImpl implements WorkItemManager{
 		frontWorkItem.setComments(newCommentList);
 		workItemDao.saveWorkItem(frontWorkItem);
 		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		return getCommentList(workItemId, clientId);
+		return getCommentList(workItemId);
 	}
 
 	@Override
-	public List<Comment> getCommentList(Long workItemId, Long clientId) {
-		List<Comment> comments = workItemDao.getCommentList(workItemId, clientId);
+	public List<Comment> getCommentList(Long workItemId) {
+		List<Comment> comments = workItemDao.getCommentList(workItemId);
 		return comments;
 	}
 
@@ -134,4 +137,26 @@ public class WorkItemManagerImpl implements WorkItemManager{
 		Comment comment = workItemDao.getLatestCommentBycommentType(entityId, entityType, commentType);
 		return comment;
 	};
+
+	@Override
+	public void closeDraftWorkItem(Customer customer){
+
+		for(Unit unit : customer.getUnits()){
+
+			if(unit.getApprovalStatus()=='D'){
+				updateWorkItemStatus(customer.getCustomerId(), "OPEN", AppConstants.WorkItemType.CUSTOMER_DRAFT.getWorkType(), "CUSTOMER");
+				return;
+			}
+			else{
+				updateWorkItemStatus(customer.getCustomerId(), "CLOSE", AppConstants.WorkItemType.CUSTOMER_DRAFT.getWorkType(), "CUSTOMER");
+			}
+		}
+	}
+
+	@Override
+	public SearchResultData getWorkItembySearchCriteria(
+			WorkItemSearchCriteria workItemSearchCriteria) {
+		SearchResultData searchResultData = workItemDao.getWorkItembySearchCriteria(workItemSearchCriteria);
+		return searchResultData;
+	}
 }

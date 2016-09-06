@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.AgreementDuration;
-import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.EquipmentHistory;
@@ -24,6 +24,7 @@ import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementFinanceHistory;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.UnitHistory;
 import com.techvisio.eserve.db.CacheDao;
@@ -49,18 +50,21 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		@SuppressWarnings("unchecked")
 		List<Customer> customers= (List<Customer>)query.getResultList();
 		if(customers != null && customers.size()>0){
-			return customers.get(0);
+			Customer clonedCustomer=SerializationUtils.clone(customers.get(0));
+			return clonedCustomer;
 		}
 		return null;
 	}
 
 	@Override
-	public List<Customer> getCustomers(Long clientId) {
+	public List<Customer> getCustomers() {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		String queryString="FROM Customer c WHERE c.client.clientId = "+clientId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<Customer> customers= (List<Customer>)query.getResultList();
-		return customers;
+		List<Customer> ClonedCustomers = new ArrayList<Customer>(customers);
+		return ClonedCustomers;
 	}
 
 	@Override
@@ -242,7 +246,8 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<Unit> units= (List<Unit>)query.getResultList();
-		return units;
+		List<Unit> clonedUnits = new ArrayList<Unit>(units);
+		return clonedUnits;
 	}
 
 	public void deleteEquipmentDtlExclusion(
@@ -271,8 +276,8 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public boolean isCustomerExists(Customer customer, Long clientId) {
-
+	public boolean isCustomerExists(Customer customer) {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		String queryString="from Customer WHERE client.clientId = coalesce(:clientId, client.clientId) and lower(emailId) = coalesce(:emailId, emailId) or lower(contactNo) = coalesce(:contactNo, contactNo)";
 		Query query= getEntityManager().createQuery(queryString);
 
@@ -302,7 +307,8 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		@SuppressWarnings("unchecked")
 		List<Unit> units= (List<Unit>)query.getResultList();
 		if(units != null && units.size()>0){
-			return units.get(0);
+			Unit clonedUnit=SerializationUtils.clone(units.get(0));
+			return clonedUnit;
 		}
 		return null;
 	}
@@ -381,15 +387,13 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		Query query= getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<ServiceAgreementHistory> agreementHistories= (List<ServiceAgreementHistory>)query.getResultList();
-		return agreementHistories;
+		List<ServiceAgreementHistory> clonedAgreementHistories = new ArrayList<ServiceAgreementHistory>(agreementHistories);
+		return clonedAgreementHistories;
 	}
 
 	@Override
 	public UnitBasicCustomer getUnitForApproval(Long unitId){
-
-
 		Unit unit = getUnit(unitId);
-
 		if(unit==null){
 			throw new NoEntityFoundException("No Unit found with id : "+unitId);
 		}
@@ -408,26 +412,30 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	}
 
 	@Override
-	public Customer getEmailId(String EmailId, Long clientId) {
+	public Customer getEmailId(String EmailId) {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		String queryString="FROM Customer cus WHERE cus.emailId = "+" '" + EmailId +" ' "+" and cus.client.clientId = "+clientId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<Customer> customers= (List<Customer>)query.getResultList();
 
 		if(customers != null && customers.size()>0){
-			return customers.get(0);
+			Customer clonedCustomer=SerializationUtils.clone(customers.get(0));
+			return clonedCustomer;
 		}
 		return null;
 	}
 
 	@Override
-	public Customer getContactNo(String ContactNo, Long clientId) {
+	public Customer getContactNo(String ContactNo) {
+		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		String queryString="FROM Customer cus WHERE cus.contactNo = "+" '" + ContactNo +" ' "+" and cus.client.clientId = "+clientId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<Customer> customers= (List<Customer>)query.getResultList();
 		if(customers != null && customers.size()>0){
-			return customers.get(0);
+			Customer clonedCustomer=SerializationUtils.clone(customers.get(0));
+			return clonedCustomer;
 		}
 		return null;
 	}
@@ -440,7 +448,8 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		@SuppressWarnings("unchecked")
 		List<EquipmentDetail> equipmentDetails= (List<EquipmentDetail>)query.getResultList();
 		if(equipmentDetails != null && equipmentDetails.size()>0){
-			return equipmentDetails.get(0);
+			EquipmentDetail clonedEquipmentDetail=SerializationUtils.clone(equipmentDetails.get(0));
+			return clonedEquipmentDetail;
 		}
 		return null;
 	}
@@ -452,8 +461,8 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<EquipmentDetail> equipmentDetails= (List<EquipmentDetail>)query.getResultList();
-
-		return equipmentDetails;
+		List<EquipmentDetail> clonedEquipmentDetails = new ArrayList<EquipmentDetail>(equipmentDetails);
+		return clonedEquipmentDetails;
 	}
 
 	@Override

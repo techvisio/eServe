@@ -24,24 +24,25 @@ public interface WorkOrderDao {
 	public WorkOrder getWorkOrder(Long complaintId);
 	public Customer getCustomerBasicInfo(Long customerId);
 	public Unit getUnitBasicInfo(Long unitId);
-	public List<WorkOrder> getWorkOrders(Long customerId);
+	public List<WorkOrder> getWorkOrders(Long workOrderId);
 	public void saveWorkOrderResolution(Long complaintId, WorkOrderResolution complaintResolution);
 	public WorkOrderResolution getWorkOrderResolution(Long complaintId);
 	public void saveWorkOrderAssignment(Long complaintId, WorkOrderAssignment complaintAssignment);
 	public WorkOrderAssignment getWorkOrderAssignment(Long complaintId);
 	public List<SearchComplaintCustomer> getCustomerForComplaintByCriteria(
-			SearchCriteria searchCriteria, Long clientId);
+			SearchCriteria searchCriteria);
 	public List<SearchComplaintUnit> getSearchUnitByCustomerId(Long customerId);
 	public List<SearchWorkOrder> getComplaintSearchByUnitId(Long unitId);
 	public List<SearchComplaintCustomer> getCustomerByWorkOrderNo(
-			SearchCriteria searchCriteria, Long clientId);
+			SearchCriteria searchCriteria);
 	public List<WorkOrder> getAllComplaintsForUnit(Long unitId);
 
-	public List<ComplaintSearchData> getComplaintByASSIGNMENT(Long clientId,String code);
-	public List<ComplaintSearchData> getComplaintByPRIORITY(Long clientId, String code);
-	public List<ComplaintSearchData> getComplaintBySLA(Long clientId, String code);
+	public List<ComplaintSearchData> getComplaintByASSIGNMENT(String code);
+	public List<ComplaintSearchData> getComplaintByPRIORITY(String code);
+	public List<ComplaintSearchData> getComplaintBySLA(String code);
 	public void saveWorkOrderEquipments(WorkOrderEquipment complaintEquipment);
 	public List<WorkOrderEquipment> getWorkOrderEquipments(Long complaintId);
 	public void createPmsComplaint(PmsWorkOrder pmsComplaint);
-	public PmsWorkOrder getPmsComplaint(Long workitemId);
+	public PmsWorkOrder getPmsComplaintByWorkitemId(Long workitemId);
+	public PmsWorkOrder getPmsComplaintByWorkOrderId(Long workOrderId);
 }
