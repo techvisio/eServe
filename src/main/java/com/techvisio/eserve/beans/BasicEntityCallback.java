@@ -9,19 +9,35 @@ import com.techvisio.eserve.util.CommonUtil;
 
 public class BasicEntityCallback {
 
-	 
-	 @PrePersist
-	  public void prePersist(BasicEntity basicEntity) {
-		 basicEntity.setClient(CommonUtil.getCurrentClient());
-		 basicEntity.setCreatedBy(CommonUtil.getCurrentUser().getUserName());
-		 basicEntity.setCreatedOn(new Date());
-		 basicEntity.setUpdatedBy(CommonUtil.getCurrentUser().getUserName());
-		 basicEntity.setUpdatedOn(new Date());
-	 }
-	 
-	 @PreUpdate
-	 public void preUpdate(BasicEntity basicEntity) {
-		 basicEntity.setUpdatedBy(CommonUtil.getCurrentUser().getUserName());
-		 basicEntity.setUpdatedOn(new Date());
-	 }
+
+	@PrePersist
+	public void prePersist(BasicEntity basicEntity) {
+
+		String userName;
+		if(CommonUtil.getCurrentUser()!=null){
+			userName = 	 CommonUtil.getCurrentUser().getUserName();
+		}
+		else{
+			userName="system";
+		}
+
+		basicEntity.setClient(CommonUtil.getCurrentClient());
+		basicEntity.setCreatedBy(userName);
+		basicEntity.setCreatedOn(new Date());
+		basicEntity.setUpdatedBy(userName);
+		basicEntity.setUpdatedOn(new Date());
+	}
+
+	@PreUpdate
+	public void preUpdate(BasicEntity basicEntity) {
+		String userName;
+		if(CommonUtil.getCurrentUser()!=null){
+			userName = 	 CommonUtil.getCurrentUser().getUserName();
+		}
+		else{
+			userName="system";
+		}
+		basicEntity.setUpdatedBy(userName);
+		basicEntity.setUpdatedOn(new Date());
+	}
 }

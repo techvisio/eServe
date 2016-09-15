@@ -1,23 +1,25 @@
 package com.techvisio.eserve.manager.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Comment;
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchResultData;
+import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkItem;
 import com.techvisio.eserve.beans.WorkItemSearchCriteria;
 import com.techvisio.eserve.db.WorkItemDao;
-import com.techvisio.eserve.manager.CacheManager;
+import com.techvisio.eserve.factory.WorkItemFactory;
 import com.techvisio.eserve.manager.WorkItemManager;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
@@ -27,6 +29,9 @@ public class WorkItemManagerImpl implements WorkItemManager{
 
 	@Autowired
 	WorkItemDao workItemDao;
+
+	@Autowired
+	ClientConfiguration configPreferences;
 
 	@Override
 	public void saveWorkItem(WorkItem workItem) {
@@ -109,10 +114,11 @@ public class WorkItemManagerImpl implements WorkItemManager{
 		if(commentList != null && commentList.size()>0){
 			Comment comment = new Comment();
 			comment.setComment(stringComment);
-			commentList.add(comment);
-			frontWorkItem.setComments(commentList);
+			List<Comment> clonedCommntList = new ArrayList<Comment>(commentList);
+			clonedCommntList.add(comment);
+			frontWorkItem.setComments(clonedCommntList);
 			workItemDao.saveWorkItem(frontWorkItem);
-			return commentList;
+			return getCommentList(workItemId);
 		}
 
 		List<Comment> newCommentList = new ArrayList<Comment>();
@@ -121,7 +127,6 @@ public class WorkItemManagerImpl implements WorkItemManager{
 		newCommentList.add(comment);
 		frontWorkItem.setComments(newCommentList);
 		workItemDao.saveWorkItem(frontWorkItem);
-		Long clientId = CommonUtil.getCurrentClient().getClientId();
 		return getCommentList(workItemId);
 	}
 
@@ -141,22 +146,94 @@ public class WorkItemManagerImpl implements WorkItemManager{
 	@Override
 	public void closeDraftWorkItem(Customer customer){
 
+		String entityType = AppConstants.WorkItemType.CUSTOMER_DRAFT.getEntityType();
+		String workType = AppConstants.WorkItemType.CUSTOMER_DRAFT.getWorkType();
 		for(Unit unit : customer.getUnits()){
 
 			if(unit.getApprovalStatus()=='D'){
-				updateWorkItemStatus(customer.getCustomerId(), "OPEN", AppConstants.WorkItemType.CUSTOMER_DRAFT.getWorkType(), "CUSTOMER");
+				updateWorkItemStatus(customer.getCustomerId(),AppConstants.WORK_ITEM_OPEN_STATUS, workType, entityType);
 				return;
 			}
 			else{
-				updateWorkItemStatus(customer.getCustomerId(), "CLOSE", AppConstants.WorkItemType.CUSTOMER_DRAFT.getWorkType(), "CUSTOMER");
+				updateWorkItemStatus(customer.getCustomerId(),AppConstants.WORK_ITEM_CLOSE_STATUS,workType, entityType);
 			}
 		}
 	}
 
 	@Override
 	public SearchResultData getWorkItembySearchCriteria(
-			WorkItemSearchCriteria workItemSearchCriteria) {
+			WorkItemSearchCriteria workItemSearchCriteria) throws ParseException {
 		SearchResultData searchResultData = workItemDao.getWorkItembySearchCriteria(workItemSearchCriteria);
 		return searchResultData;
+	}
+
+	@Override
+	public void createWorkItemForServiceRenewal(Unit unit) {
+		
+		String entityType = AppConstants.EntityType.UNIT.name();
+		String workType = AppConstants.WorkItemType.FOLLOWUP_RENEWAL_SERVICE
+				.getWorkType();
+		ClientConfig config = configPreferences.getConfigObject(AppConstants.SERVICE_REMINDER);
+		int countDays = Integer.parseInt(config.getValue());
+		Date dueDate = CommonUtil.getDate(unit.getServiceAgreement().getContractExpireOn(), countDays, false, false);
+		List<WorkItem> workItems = workItemDao.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unit.getUnitId(), entityType, workType);
+		WorkItem workItem = null;
+		if(workItems != null && workItems.size()>0){
+			workItem = workItems.get(0);
+		}
+		if (workItem == null) {
+			WorkItemFactory factory = new WorkItemFactory();
+			workItem = factory.getWorkItem(workType);
+		}
+		workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
+		workItem.setEntityId(unit.getUnitId());
+		workItem.setEntityCode(unit.getUnitCode());
+		workItem.setDueDate(dueDate);
+		workItemDao.saveWorkItem(workItem);
+	}
+
+	@Override
+	public void closeAgreementApprovalWorkItem(Long unitId){
+		
+		String entityType = AppConstants.EntityType.UNIT.name();
+		String workType = AppConstants.WorkItemType.AGREEMENT_APPROVAL
+				.getWorkType();
+		List<WorkItem> workItems= workItemDao.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unitId, entityType,workType);
+
+		if(workItems != null && workItems.size()>0){
+			WorkItem workItemFromDB = workItems.get(0);		
+			workItemFromDB.setStatus(AppConstants.WORK_ITEM_CLOSE_STATUS);
+			workItemDao.saveWorkItem(workItemFromDB);
+		}	
+	}
+
+	@Override
+	public void createWorkItemForSalesRenewal(UnitBasicInfo unitInfo) {
+		
+		String entityType = AppConstants.EntityType.UNIT.name();
+		String workType = AppConstants.WorkItemType.SALES_RENEWAL_AGREEMENT.getWorkType();
+		List<WorkItem> workItems = workItemDao.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unitInfo.getUnitId(), entityType, workType);
+		WorkItem workItem = null;
+		
+		if(workItems != null && workItems.size()>0){
+			workItem = workItems.get(0);
+		}
+		if (workItem == null) {
+			WorkItemFactory factory = new WorkItemFactory();
+			workItem = factory.getWorkItem(AppConstants.SALES_RENEWAL_AGREEMENT);
+		}
+		workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
+		workItem.setEntityId(unitInfo.getUnitId());
+		workItem.setDueDate(new Date());
+		workItem.setEntityCode(unitInfo.getUnitCode());
+		workItemDao.saveWorkItem(workItem);
+		workItemDao.updateWorkItemStatus(unitInfo.getUnitId(),AppConstants.WORK_ITEM_CLOSE_STATUS,AppConstants.FOLLOWUP_RENEWAL_SERVICE ,entityType);
+	}
+
+	@Override
+	public List<WorkItem> getActiveWorkItems(WorkItemSearchCriteria criteria,
+			ServiceAgreement agreement) {
+		List<WorkItem> workItems = workItemDao.getActiveWorkItems(criteria, agreement);
+		return workItems;
 	}
 }

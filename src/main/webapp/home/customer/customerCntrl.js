@@ -89,7 +89,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	if(Operation && Operation == 'renewSalesAgreement'){
 		$scope.renewAgreementScreen = true;
 		$scope.unitApproval = contextObject;
-		
+		$scope.customerScreen = false;
 	}
 
 	if(Operation && Operation == 'unitApproval'){

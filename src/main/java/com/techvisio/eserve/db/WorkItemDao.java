@@ -1,11 +1,13 @@
 package com.techvisio.eserve.db;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.SearchResultData;
+import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.WorkItem;
 import com.techvisio.eserve.beans.WorkItemSearchCriteria;
 @Component
@@ -28,5 +30,7 @@ public interface WorkItemDao {
 	public Comment getLatestCommentBycommentType(Long entityId, String entityType,
 			String commentType);
 	public SearchResultData getWorkItembySearchCriteria(
-			WorkItemSearchCriteria workItemSearchCriteria);
+			WorkItemSearchCriteria workItemSearchCriteria) throws ParseException;
+	public List<WorkItem> getActiveWorkItems(WorkItemSearchCriteria criteria,
+			ServiceAgreement agreement);
 }

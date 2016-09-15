@@ -6,6 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.techvisio.eserve.async.process.AsyncEmailMessage;
+import com.techvisio.eserve.async.process.AsyncMessageProducer;
+import com.techvisio.eserve.beans.CommunicationJob;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.EquipmentDetail;
 import com.techvisio.eserve.beans.GenericRequest;
@@ -17,12 +20,15 @@ import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.exception.MandatoryFieldMissingException;
+import com.techvisio.eserve.service.CommunicationService;
 import com.techvisio.eserve.service.CustomerService;
 import com.techvisio.eserve.service.EntityLockService;
 import com.techvisio.eserve.service.WorkItemService;
 import com.techvisio.eserve.service.WorkOrderService;
 import com.techvisio.eserve.util.AppConstants;
+import com.techvisio.eserve.util.ApplicationContextProvider;
 import com.techvisio.eserve.util.CommonUtil;
+import com.techvisio.eserve.util.ServiceLocator;
 
 @Service
 public class CustomerServiceICCDefaultImpl extends	AbstractCustomerServiceICCImpl {
@@ -31,10 +37,18 @@ public class CustomerServiceICCDefaultImpl extends	AbstractCustomerServiceICCImp
 	WorkItemService workItemService; 
 
 	@Autowired
+	CustomerService customerService;
+	@Autowired
 	EntityLockService entityLockService;
 
 	@Autowired
 	WorkOrderService workOrderService;
+
+	@Autowired
+	CommunicationService communicationService;
+
+	@Autowired
+	ServiceLocator serviceLocator;
 
 	@Override
 	public void preRetrieveAllCustomers() {
@@ -175,13 +189,31 @@ public class CustomerServiceICCDefaultImpl extends	AbstractCustomerServiceICCImp
 		workItemService.closeAgreementApprovalWorkItem(unit.getUnitId());
 		workItemService.createWorkItemForServiceRenewal(unit);
 		workOrderService.createPmsWorkItem(unit);
+		if(!unit.getServiceAgreement().isAgreementComSend()){
+			AsyncEmailMessage emailMsg=serviceLocator.getService(AsyncEmailMessage.class);
+			//Creating communication Job
+			CommunicationJob communicationJob = saveAndGetCommunicationJob(unit.getUnitId());
+			//Set comm job obj
+			emailMsg.setCommunicationJob(communicationJob);
+			AsyncMessageProducer.addJob(emailMsg);
+			customerService.saveUnitForEmailProcess(unit);
+		}
 		return unit;
+	}
+
+	private CommunicationJob saveAndGetCommunicationJob(Long unitId) {
+		CommunicationJob communicationJob = new CommunicationJob();
+		communicationJob.setEntityId(unitId);
+		communicationJob.setEntityType(AppConstants.EntityType.UNIT.name());
+		communicationJob.setEventType(AppConstants.EventType.APPROVAL.name());
+		communicationJob.setCommunicationType("EMAIL");
+		communicationService.saveCommunicationJos(communicationJob);
+		return communicationJob;
 	}
 
 	@Override
 	public void preGetUnitWithBasicCustomerDetails() {
 		super.preGetUnitWithBasicCustomerDetails();
-
 	}
 
 	@Override

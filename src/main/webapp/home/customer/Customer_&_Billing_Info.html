@@ -12,8 +12,8 @@
 					<h2 class="title pull-left">Customer Information</h2>
 					<div class="actions panel_actions pull-right">
 
-						<div ng-show="!showAndHidePreview()">
-							<i></i> <i class="fa fa-pencil" ng-show="!customer.edited"
+						<div>
+							<i></i> <i class="fa fa-pencil" ng-show="!customer.edited && !showAndHidePreview()"
 								ng-click="lockCustomerEntity()"></i>
 						</div>
 					</div>

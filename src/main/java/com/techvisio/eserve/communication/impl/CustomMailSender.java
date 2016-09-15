@@ -12,7 +12,7 @@ import javax.management.RuntimeErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.techvisio.eserve.beans.ClientComConfig;
+import com.techvisio.eserve.beans.ClientCommConfig;
 import com.techvisio.eserve.beans.EmailMessage;
 import com.techvisio.eserve.manager.impl.ClientConfiguration;
 import com.techvisio.eserve.util.ClientComConfigConstants;
@@ -25,11 +25,11 @@ public class CustomMailSender extends AbstractEmailSender {
 	@Override
 	public boolean sendEmail(EmailMessage msg) {
 
-		ClientComConfig mailtransportProtocol = configPreferences.getClientComConfigObject(ClientComConfigConstants.MAIL_TRANSPORT_PROTOCOL);
-		ClientComConfig mailHost = configPreferences.getClientComConfigObject(ClientComConfigConstants.MAIL_HOST);
-		ClientComConfig mailSmtpAuth = configPreferences.getClientComConfigObject(ClientComConfigConstants.MAIL_SMTP_AUTH);
-		ClientComConfig mailuser = configPreferences.getClientComConfigObject(ClientComConfigConstants.MAIL_USER);
-		ClientComConfig mailPassword = configPreferences.getClientComConfigObject(ClientComConfigConstants.MAIL_PASSWORD);
+		ClientCommConfig mailtransportProtocol = configPreferences.getClientComConfigObject(ClientComConfigConstants.MAIL_TRANSPORT_PROTOCOL,msg.getClientId());
+		ClientCommConfig mailHost = configPreferences.getClientComConfigObject(ClientComConfigConstants.MAIL_HOST,msg.getClientId());
+		ClientCommConfig mailSmtpAuth = configPreferences.getClientComConfigObject(ClientComConfigConstants.MAIL_SMTP_AUTH,msg.getClientId());
+		ClientCommConfig mailuser = configPreferences.getClientComConfigObject(ClientComConfigConstants.MAIL_USER,msg.getClientId());
+		ClientCommConfig mailPassword = configPreferences.getClientComConfigObject(ClientComConfigConstants.MAIL_PASSWORD,msg.getClientId());
 
 		try {
 			Properties props = System.getProperties();
@@ -47,7 +47,7 @@ public class CustomMailSender extends AbstractEmailSender {
 			MimeMessage message = new MimeMessage(mailSession);
 			message.setSentDate(new java.util.Date());
 			message.setSubject(msg.getSubject());
-			message.setFrom(new InternetAddress(msg.getFrom()));
+			message.setFrom(new InternetAddress(mailuser.getValue(),"Sales Techvisio"));
 			for (String recipient:msg.getRecipients())
 			{
 
@@ -63,6 +63,7 @@ public class CustomMailSender extends AbstractEmailSender {
 			transport.close();
 		} catch (Exception e) {
 		throw new RuntimeException("Error while sending email", e);
+		
 		}
 		return true;
 	}

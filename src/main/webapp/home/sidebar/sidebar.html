@@ -5,7 +5,7 @@
 
 	<div class="menu-list">
 		<div class="user-image">
-			<img src="../static/images/user.jpg"> <span>{{user.firstName}}
+			<img ng-src="{{user.photoPath}}"> <span>{{user.firstName}}
 				{{user.lastName}}</span> <br> <span class="user-dept">{{user.designation.designation}},
 				{{user.department.department}}</span>
 		</div>
@@ -27,7 +27,7 @@
 					class="fa fa-car fa-lg"></i> Customer <span class="arrow"></span></a>
 
 				<ul class="sub-menu collapse" id="new">
-					<li><a ui-sref="searchCustomer"> Customer Search </a></li>
+					<li><a ng-click="searchCustomer()"> Search Customer </a></li>
 					<li><a ng-click="createCustomer()"> Add Customer </a></li>
 				</ul></li>
 
@@ -35,7 +35,7 @@
 					class="fa fa-globe fa-lg"></i> User Administration <span
 					class="arrow"></span></a>
 				<ul class="sub-menu collapse" id="userAdmin">
-					<li><a ui-sref="searchUser"> Search User </a></li>
+					<li><a ng-click="searchUser()"> Search User </a></li>
 					<li><a ng-click="createUser()"> Add User </a></li>
 				</ul></li>
 

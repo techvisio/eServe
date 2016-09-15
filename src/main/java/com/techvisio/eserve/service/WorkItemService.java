@@ -1,5 +1,6 @@
 package com.techvisio.eserve.service;
 
+import java.text.ParseException;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -10,6 +11,7 @@ import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchResultData;
+import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkItem;
@@ -44,5 +46,7 @@ public interface WorkItemService {
 	public void updateWorkItemStatus(Long entityId, String status, String workType,
 			String entityType);
 	public SearchResultData getWorkItembySearchCriteria(
-			WorkItemSearchCriteria workItemSearchCriteria);
+			WorkItemSearchCriteria workItemSearchCriteria) throws ParseException;
+	public List<WorkItem> getActiveWorkItems(WorkItemSearchCriteria criteria,
+			ServiceAgreement agreement);
 }

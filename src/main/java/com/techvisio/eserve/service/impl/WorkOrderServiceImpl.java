@@ -14,7 +14,7 @@ import com.techvisio.eserve.beans.WorkOrderAssignment;
 import com.techvisio.eserve.beans.WorkOrderEquipment;
 import com.techvisio.eserve.beans.WorkOrderResolution;
 import com.techvisio.eserve.beans.ComplaintSearchData;
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.beans.EntityLocks;
@@ -257,8 +257,8 @@ public class WorkOrderServiceImpl implements WorkOrderService{
 	@Override
 	public void createPmsWorkItem(Unit unit){
 
-		Config pmsCalculationData = configPreferences.getConfigObject(AppConstants.PMS_CALCULATION_DATA);
-		Config pmsCalculationFreqeuncy = configPreferences.getConfigObject(AppConstants.PMS_CACULATION_FREQUENCY); 
+		ClientConfig pmsCalculationData = configPreferences.getConfigObject(AppConstants.PMS_CALCULATION_DATA);
+		ClientConfig pmsCalculationFreqeuncy = configPreferences.getConfigObject(AppConstants.PMS_CACULATION_FREQUENCY); 
 		List<String> stringToStringArray = CommonUtil.stringToStringArray(pmsCalculationData.getValue());
 		List<Integer> stringArrayToIntegerArray = CommonUtil.stringArrayToIntegerArray(stringToStringArray);
 
@@ -272,7 +272,7 @@ public class WorkOrderServiceImpl implements WorkOrderService{
 			}
 		});
 
-		workItemService.deleteWorkItemsByEntityIdAndWorkType(unit.getUnitId(), AppConstants.WorkItemType.PMS.getWorkType());
+		//workItemService.deleteWorkItemsByEntityIdAndWorkType(unit.getUnitId(), AppConstants.WorkItemType.PMS.getWorkType());
 
 		int index=0;
 		for (Integer pmsFrequencyCount : stringArrayToIntegerArray){

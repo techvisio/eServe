@@ -7,7 +7,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Client;
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
@@ -405,7 +405,7 @@ public class MasterDataDaoImpl extends BaseDao implements MasterDataDao{
 	@Override
 	public SearchResultData getConfigData(Long clientId){
 		
-		SearchResultData<Config> searchResultData= new SearchResultData<Config>();
+		SearchResultData<ClientConfig> searchResultData= new SearchResultData<ClientConfig>();
 		
 		String queryString="SELECT * FROM Config c WHERE c.clientId ="+clientId;
 		Query query= getEntityManager().createQuery(queryString);
@@ -421,14 +421,14 @@ public class MasterDataDaoImpl extends BaseDao implements MasterDataDao{
 		}
 		
 		@SuppressWarnings("unchecked")
-		List<Config> result= (List<Config>)query.getResultList();
+		List<ClientConfig> result= (List<ClientConfig>)query.getResultList();
 		searchResultData.setObjectData(result);
 		return searchResultData;
 		
 	}
 	
 	@Override
-	public Long saveConfig(Config config){
+	public Long saveConfig(ClientConfig config){
 		if(config.getConfigTBId() == null){
 			getEntityManager().persist(config);
 		}
@@ -444,11 +444,11 @@ public class MasterDataDaoImpl extends BaseDao implements MasterDataDao{
 	}
 	
 	@Override
-	public Config getConfig(Long configTBId) {
+	public ClientConfig getConfig(Long configTBId) {
 		String queryString="FROM Config c WHERE c.configTBId= "+configTBId;
 		Query query= getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
-		List<Config> result= (List<Config>)query.getResultList();
+		List<ClientConfig> result= (List<ClientConfig>)query.getResultList();
 		if(result != null && result.size()>0){
 			return result.get(0);
 		}

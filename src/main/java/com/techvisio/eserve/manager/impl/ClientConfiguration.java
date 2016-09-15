@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.ClientComConfig;
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ClientCommConfig;
+import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.manager.CacheManager;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
@@ -18,17 +18,16 @@ public class ClientConfiguration {
 	@Autowired
 	CacheManager cacheManager;
 
-	public String getDefaultPassword(Long clientId){
+	public String getDefaultPassword(Long clientId) {
 
-		Config config = getConfigObject(AppConstants.DEFAULT_PASSWORD);
+		ClientConfig config = getConfigObject(AppConstants.DEFAULT_PASSWORD);
 
 		return config.getValue();
 	}
 
+	public Date getSlaDateForCriticalIssue(Long clientId) {
 
-	public Date getSlaDateForCriticalIssue(Long clientId){
-
-		Config config = getConfigObject(AppConstants.SLA_DAYS_CRITICAL);
+		ClientConfig config = getConfigObject(AppConstants.SLA_DAYS_CRITICAL);
 		int countDays = Integer.parseInt(config.getValue());
 		Date date = new Date();
 		Date slaDate = CommonUtil.getDate(date, countDays, false, true);
@@ -36,9 +35,9 @@ public class ClientConfiguration {
 		return slaDate;
 	}
 
-	public Date getSlaDateForHighIssue(Long clientId){
+	public Date getSlaDateForHighIssue(Long clientId) {
 
-		Config config = getConfigObject(AppConstants.SLA_DAYS_HIGH);
+		ClientConfig config = getConfigObject(AppConstants.SLA_DAYS_HIGH);
 		int countDays = Integer.parseInt(config.getValue());
 		Date date = new Date();
 		Date slaDate = CommonUtil.getDate(date, countDays, false, true);
@@ -46,8 +45,8 @@ public class ClientConfiguration {
 		return slaDate;
 	}
 
-	public Date getSlaDateForMediumIssue(Long clientId){
-		Config config = getConfigObject(AppConstants.SLA_DAYS_MEDIUM);
+	public Date getSlaDateForMediumIssue(Long clientId) {
+		ClientConfig config = getConfigObject(AppConstants.SLA_DAYS_MEDIUM);
 		int countDays = Integer.parseInt(config.getValue());
 		Date date = new Date();
 		Date slaDate = CommonUtil.getDate(date, countDays, false, true);
@@ -55,8 +54,8 @@ public class ClientConfiguration {
 		return slaDate;
 	}
 
-	public Date getSlaDateForLowIssue(Long clientId){
-		Config config = getConfigObject(AppConstants.SLA_DAYS_LOW);
+	public Date getSlaDateForLowIssue(Long clientId) {
+		ClientConfig config = getConfigObject(AppConstants.SLA_DAYS_LOW);
 		int countDays = Integer.parseInt(config.getValue());
 		Date date = new Date();
 		Date slaDate = CommonUtil.getDate(date, countDays, false, true);
@@ -64,27 +63,28 @@ public class ClientConfiguration {
 		return slaDate;
 	}
 
-	public Config getConfigObject(String property){
+	public ClientConfig getConfigObject(String property) {
+		return getConfigObject(property, CommonUtil.getCurrentClient().getClientId());
+	}
 
-		Map<Long, Map<String, Object>> configMap = cacheManager
-				.getConfigMap();
+	public ClientConfig getConfigObject(String property, Long clientId) {
 
-		Map<String, Object> defaultMap = configMap.get(CommonUtil.getCurrentClient().getClientId());
-
-		Config config = (Config) defaultMap.get(property);
-
+		Map<Long, Map<String, ClientConfig>> configMap = cacheManager.getConfigMap();
+		Map<String, ClientConfig> defaultMap = configMap.get(clientId);
+		ClientConfig config = (ClientConfig) defaultMap.get(property);
 		return config;
 	}
 
-	public ClientComConfig getClientComConfigObject(String property){
+	
+	public ClientCommConfig getClientComConfigObject(String property) {
+		return getClientComConfigObject(property, CommonUtil.getCurrentClient().getClientId());
+	}
+	
+	public ClientCommConfig getClientComConfigObject(String property,Long clientId) {
 
-		Map<Long, Map<String, Object>> clientComConfigMap = cacheManager
-				.getClientComConfigMap();
-
-		Map<String, Object> defaultMap = clientComConfigMap.get(CommonUtil.getCurrentClient().getClientId());
-
-		ClientComConfig clientComConfig = (ClientComConfig) defaultMap.get(property);
-
+		Map<Long, Map<String, ClientCommConfig>> clientComConfigMap = cacheManager.getClientComConfigMap();
+		Map<String, ClientCommConfig> defaultMap = clientComConfigMap.get(clientId);
+		ClientCommConfig clientComConfig = (ClientCommConfig) defaultMap.get(property);
 		return clientComConfig;
 	}
 }

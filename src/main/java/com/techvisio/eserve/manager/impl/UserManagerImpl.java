@@ -9,7 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.Role;
 import com.techvisio.eserve.beans.SearchCriteria;
@@ -155,8 +155,8 @@ public class UserManagerImpl implements UserManager{
 	@Override
 	public void resetPassword(User user){
 
-		List<Config> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
-		for(Config config : defaultValues){
+		List<ClientConfig> defaultValues = cacheDao.getDefalutValues(CommonUtil.getCurrentClient().getClientId());
+		for(ClientConfig config : defaultValues){
 			if(config.getProperty().equalsIgnoreCase(AppConstants.DEFAULT_PASSWORD)){
 				user.setPassword(config.getValue().toCharArray());
 			}

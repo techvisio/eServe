@@ -1,5 +1,6 @@
 package com.techvisio.eserve.db.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.AgreementDuration;
 import com.techvisio.eserve.beans.Client;
-import com.techvisio.eserve.beans.ClientComConfig;
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ClientCommConfig;
+import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
@@ -22,6 +23,7 @@ import com.techvisio.eserve.beans.Resolution;
 import com.techvisio.eserve.beans.ServiceProvider;
 import com.techvisio.eserve.beans.State;
 import com.techvisio.eserve.beans.UnitCategory;
+import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.util.CustomLogger;
 
@@ -62,10 +64,10 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 	}
 	
 	@Override
-	public List<Config> getDefaultValues() {
+	public List<ClientConfig> getDefaultValues() {
 		String queryString="FROM Config";
 		Query query=getEntityManager().createQuery(queryString);
-		List<Config> result= query.getResultList();
+		List<ClientConfig> result= query.getResultList();
 		return result;
 	}
 	
@@ -106,6 +108,15 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 		String queryString="FROM Resolution";
 		Query query= getEntityManager().createQuery(queryString);
 		List<Resolution> result= query.getResultList();
+		return result;
+	}
+
+	@Override
+	public List<User> getUsers() {
+		String queryString="FROM User";
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<User> result= (List<User>)query.getResultList();
 		return result;
 	}
 	
@@ -161,18 +172,18 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 	}
 	
 	@Override
-	public List<Config> getDefalutValues(Long clientId) {
+	public List<ClientConfig> getDefalutValues(Long clientId) {
 		String queryString="FROM Config c where c.client.clientId = " + clientId;
 		Query query= getEntityManager().createQuery(queryString);
-		List<Config> result= query.getResultList();
+		List<ClientConfig> result= query.getResultList();
 		return result;
 	}
 	
 	@Override
-	public List<ClientComConfig> getClientComConfigValues(Long clientId) {
+	public List<ClientCommConfig> getClientComConfigValues(Long clientId) {
 		String queryString="FROM ClientComConfig c where c.client.clientId = " + clientId;
 		Query query= getEntityManager().createQuery(queryString);
-		List<ClientComConfig> result= query.getResultList();
+		List<ClientCommConfig> result= query.getResultList();
 		return result;
 	}
 
@@ -198,22 +209,28 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 	
 	
 	@Override
-	public Config getConfig(String property) {
-		String queryString="FROM Config c WHERE c.property = "+property;
-		Query query=getEntityManager().createQuery(queryString);
-		@SuppressWarnings("unchecked")
-		List<Config> configs= (List<Config>)query.getResultList();
-		if(configs != null && configs.size()>0){
-			return configs.get(0);
-		}
-		return null;
-	}
-
-	@Override
 	public List<InvoiceTaxes> getInvoiceTaxes(Long clientId) {
 		String queryString="FROM InvoiceTaxes it where it.client.clientId = " + clientId;
 		Query query= getEntityManager().createQuery(queryString);
 		List<InvoiceTaxes> result= query.getResultList();
 		return result;
 	}
+
+	@Override
+	public List<ClientConfig> getClientPreferences() {
+		String queryString="FROM ClientConfig";
+		Query query=getEntityManager().createQuery(queryString);
+		@SuppressWarnings("unchecked")
+		List<ClientConfig> configs= (List<ClientConfig>)query.getResultList();
+		return configs;
+	}
+
+	@Override
+	public List<ClientCommConfig> getClientCommunicationConfig() {
+		String queryString="FROM ClientCommConfig c";
+		Query query= getEntityManager().createQuery(queryString);
+		List<ClientCommConfig> result= query.getResultList();
+		return result;
+	}
+
 }

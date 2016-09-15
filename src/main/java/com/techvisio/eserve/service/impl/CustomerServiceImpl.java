@@ -270,4 +270,8 @@ public class CustomerServiceImpl implements CustomerService{
 		return unitFromDB;
 	}
 
+	@Override
+	public void saveUnitForEmailProcess(Unit unit){
+		customerManager.saveUnit(unit);
+	}
 }

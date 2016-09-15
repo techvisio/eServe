@@ -11,7 +11,14 @@ public class BasicFieldsCallBack {
 
 	@PrePersist
 	public void prePersist(BasicFileds basicFileds) {
-		basicFileds.setCreatedBy(CommonUtil.getCurrentUser().getUserName());
+		String userName;
+		if(CommonUtil.getCurrentUser()!=null){
+			userName = 	 CommonUtil.getCurrentUser().getUserName();
+		}
+		else{
+			userName="system";
+		}
+		basicFileds.setCreatedBy(userName);
 		basicFileds.setCreatedOn(new Date());
 		basicFileds.setClient(CommonUtil.getCurrentClient());
 	}

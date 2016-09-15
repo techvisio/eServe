@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Client;
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
@@ -176,15 +176,15 @@ public class MasterDataManagerImpl implements MasterDataManager {
 	}
 
 	@Override
-	public Long saveConfig(Config config) {
+	public Long saveConfig(ClientConfig config) {
 		// TODO Auto-generated method stub
 		Long  saveConfig = masterDataDao.saveConfig(config);
 		return saveConfig;
 	}
 	
 	@Override
-	public Config getConfig(Long configTBId) {
-		Config  config = masterDataDao.getConfig(configTBId);
+	public ClientConfig getConfig(Long configTBId) {
+		ClientConfig  config = masterDataDao.getConfig(configTBId);
 		return config ;
 	}
 

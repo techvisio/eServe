@@ -4,7 +4,8 @@ masterDataModule.service('masterdataService', function($http, $q){
 
 	return ({
 		getCustomerMasterData : getCustomerMasterData,
-		getUserMasterData : getUserMasterData
+		getUserMasterData : getUserMasterData,
+		getWorkitemMasterData : getWorkitemMasterData
 	});
 
 		function getCustomerMasterData() {
@@ -33,6 +34,18 @@ masterDataModule.service('masterdataService', function($http, $q){
 		return (request.then(handleSuccess, handleError));
 	}
 
+	function  getWorkitemMasterData() {
+
+		console.log('Getting masterdata for workitem module');
+		var request = $http({
+			method : "get",
+			url : "../service/masterdata/workitem",
+			params : "",
+			data : ""
+		});
+		return (request.then(handleSuccess, handleError));
+	}
+	
 	function handleError(response) {
 		console.log('handle error');
 		console.log(response);

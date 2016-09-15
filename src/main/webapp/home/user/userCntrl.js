@@ -416,6 +416,7 @@ userModule
 				 return ($rootScope.isPrivileged('CREATE_USER')) || ($rootScope.isPrivileged('VIEW_USER')) || ($rootScope.isPrivileged('USER_ADMINISTRATION'));
 			 }
 
+			 
 			 $scope.filterUser = function() {
 
 				 if($scope.isViewPrivileged){
@@ -476,7 +477,7 @@ userModule
 
 			 $scope.lockUserEntity = function()
 			 {
-				 if($scope.isCreateOrUpdatePrivileged){
+				 if($rootScope.isPrivileged('CREATE_USER')){
 					 userService.getUserForEdit($scope.user.userId)
 					 .then(
 							 function(user) {

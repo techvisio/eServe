@@ -1,4 +1,4 @@
-<div ng-show="customerComplaints.length>0">
+<div ng-show="workOrders.length>0">
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -17,10 +17,9 @@
 				<td>{{complaint.customerName}}</td>
 				<td>{{complaint.unit.unitCode}}</td>
 				<td>{{complaint.status}}</td>
-				<!--         <td><a ui-sref="resetpassword"><button class="btn-primary">Reset Password</button></a></td> -->
 			</tr>
 		</tbody>
 	</table>
 </div>
-<div class="form-group" ng-show="customerComplaints.length<=0"><h3
+<div class="form-group" ng-show="workOrders.length<=0"><h3
 								class="desc" style="font-size: 16px">No complaint for unit </h3></div>

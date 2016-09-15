@@ -1,5 +1,6 @@
 package com.techvisio.eserve.beans;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,7 +15,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "TB_COMMENT")
-public class Comment extends BasicFileds{
+public class Comment extends BasicFileds implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

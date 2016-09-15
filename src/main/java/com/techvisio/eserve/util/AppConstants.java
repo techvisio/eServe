@@ -12,11 +12,15 @@ public interface AppConstants {
 	public static final String UNIT_CATEGORY = "UNIT_CATEGORY";
 	public static final String CUSTOMER_TYPE = "CUSTOMER_TYPE";
 	public static final String SERVICE_PROVIDER = "SERVICE_PROVIDER";
+	public static final String CONFIG = "CONFIG";
+	public static final String CLIENT_CONFIG = "CLIENT_CONFIG";
 	public static final char APPROVED = 'A';
 	public static final char REJECTED = 'R';
 	public static final char PENDING = 'P';
 	public static final char DRAFTSTATUS = 'D';
 
+	
+	
 	public static final String CRITICAL = "C";
 	public static final String MEDIUM = "M";
 	public static final String HIGH = "H";
@@ -33,8 +37,11 @@ public interface AppConstants {
 	public static final String PMS_CALCULATION_DATA = "PMS_CALCULATION_DATA";
 	public static final String PMS_DUE_DATE_REMINDER = "PMS_DUE_DATE_REMINDER";
 
-	public static final String CONFIG = "CONFIG";
+	public static final String USER = "USER";
 
+	public static final String PROCESSED = "P";
+//	public static final String CONFIG = "CONFIG";
+	
 	public static final Long BASE_AMOUNT_ID=9998L;
 	public static final Long TOTAL_AMOUNT_ID=9999L;
 
@@ -49,16 +56,32 @@ public interface AppConstants {
 	public static final String APPROVALWORK = "APPROVAL";
 	public static final String PENDINGWORK = "AGREEMENT_APPROVAL";
 
+	public static final String ENVIRONMENT = "ENVIRONMENT";
+	public static final String WHITE_LISTED_EMAIL_ID = "WHITE_LISTED_EMAIL_ID";
+	public static final String WHITE_LSITED_SMS_NO = "WHITE_LSITED_SMS_NO";
+	
 	public static final String MONTH = "MONTH";
 	public static final String DAY = "DAY";
 	public static final String YEAR = "YEAR";
 
 	public static final String STATIC_RESOURCE_BASE_PATH = "/static/resources/";
 
+	public enum EventType {
+		APPROVAL, RENEW_SERVICE
+	};
+	
 	public enum ComplaintStatus {
 		ASSIGNED, UNASSIGNED, CLOSED
 	};
 
+	public enum processEnvironment {
+		LIVE, TESTING, ENVIRONMENT
+	};
+	
+	public enum CommentType {
+		REJECT, PUBLISH, OPERATIONAL
+	};
+	
 	public enum EntityType {
 		CUSTOMER, UNIT, USER, COMPLAINT
 	};

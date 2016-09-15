@@ -1,5 +1,6 @@
 package com.techvisio.eserve.manager;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -8,7 +9,9 @@ import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.GenericRequest;
 import com.techvisio.eserve.beans.SearchResultData;
+import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkItem;
 import com.techvisio.eserve.beans.WorkItemSearchCriteria;
 
@@ -33,5 +36,10 @@ public interface WorkItemManager {
 			String commentType);
 	public void closeDraftWorkItem(Customer customer);
 	public SearchResultData getWorkItembySearchCriteria(
-			WorkItemSearchCriteria workItemSearchCriteria);
+			WorkItemSearchCriteria workItemSearchCriteria) throws ParseException;
+	public void createWorkItemForServiceRenewal(Unit unit);
+	public void closeAgreementApprovalWorkItem(Long unitId);
+	public void createWorkItemForSalesRenewal(UnitBasicInfo unitInfo);
+	public List<WorkItem> getActiveWorkItems(WorkItemSearchCriteria criteria,
+			ServiceAgreement agreement);
 }

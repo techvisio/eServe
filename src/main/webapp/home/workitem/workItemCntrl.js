@@ -99,7 +99,7 @@ workItemModule
 			 $scope.redirectToWorkitemScreen=function(currentWorkitemId){
 				 $state.go('workitem',{workitemId:currentWorkitemId});
 			 }
-			 
+
 			 $scope.redirectToUnit=function(unitId){
 				 $state.go('unitApproval',{entityId:unitId} );
 			 }
@@ -132,10 +132,10 @@ workItemModule
 						 };
 
 						 $scope.redirectToworkItemScreen = function(currentWorkitemId){
-								$state.reload('workitem',{workitemId:currentWorkitemId});
-								 
-							}
-						 
+							 $state.reload('workitem',{workitemId:currentWorkitemId});
+
+						 }
+
 						 $scope.closePopup = function(){
 							 $rootScope.curModal.close();
 						 }
@@ -146,77 +146,100 @@ workItemModule
 			 };
 
 			 $scope.getCommentList = function(){
-					workItemService.getCommentList($scope.workitem.workItemId)
-					.then(function(response) {
-						console.log('getting all comments  received in controller : ');
-						console.log(response);
-						if (response) {
-							$scope.workitem.comments = response;
-						} 
-					})
-				};
-			 
-				$scope.createWorkItemForSalesRenewal = function(unitInfo){
-					workItemService.createWorkItemForSalesRenewal(unitInfo);
-					$rootScope.showAlertModel('Lead Created For Renew Sales Agreement', 'Operation Successful')
-					$state.go('workItemSearch');
-				}
-				
-				$scope.getWorkItembySearchCriteria = function(){
-					 console.log('getting work Item');
-					 var workItemType=$scope.workItemSearchCriteria.workType;
-					 var workItemStatus=$scope.workItemSearchCriteria.status;
-					 if(angular.isUndefined(workItemType)){
-						 workItemType = "";
-					 }
-					 if(angular.isUndefined(workItemStatus)){
-						 workItemStatus = "";
-					 }
+				 workItemService.getCommentList($scope.workitem.workItemId)
+				 .then(function(response) {
+					 console.log('getting all comments  received in controller : ');
+					 console.log(response);
+					 if (response) {
+						 $scope.workitem.comments = response;
+					 } 
+				 })
+			 };
 
-					 workItemService.getWorkItembySearchCriteria($rootScope.user.userId, workItemType, workItemStatus)
-					 .then(function(response) {
-						 console.log(response);
-						 if (response) {
-							 $scope.workItems = response;
-						 } 
-					 })	
-				 };
-				 
-				 $scope.tableParams = new NgTableParams({}, {
-					 getData: function($defer,params) {
-						 var sortBy="ENTITY_CODE";
-						 var isAsc=false;
-						 var pageNo=params.page();
-						 var pageSize=params.count();
-						 if(params.sorting()){
-							 for (var attribute in params.sorting()) {
-								 if (params.sorting().hasOwnProperty(attribute)) {
-									 sortBy=attribute;
-									 var ascDsc=params.sorting()[attribute];
-									 if(ascDsc==='asc'){
-										 isAsc=true;  
-									 }
+			 $scope.createWorkItemForSalesRenewal = function(unitInfo){
+				 workItemService.createWorkItemForSalesRenewal(unitInfo);
+				 $rootScope.showAlertModel('Lead Created For Renew Sales Agreement', 'Operation Successful')
+				 $state.go('workItemSearch');
+			 }
+
+			 $scope.getWorkItembySearchCriteria = function(){
+				 console.log('getting work Item');
+
+				 workItemService.getWorkItembySearchCriteria($scope.workItemSearchCriteria)
+				 .then(function(response) {
+					 console.log(response);
+					 if (response) {
+						 $scope.workItems = response;
+					 } 
+				 })	
+			 };
+
+			 $scope.filterWorkItems = function() {
+				 $scope.workItemSearchCriteria = {};
+				 $rootScope.curModal = $modal.open({
+					 templateUrl: 'workitem/WorkItemCriteria.html',
+					 scope:$scope,
+					 controller: function (workItemService,$scope) {
+
+						 
+						 $scope.getWorkItembySearchCriteria = function(){
+							 $scope.tableParams.reload();
+							 $rootScope.curModal.close();
+						 }
+					 },
+				 });
+			 };
+			 
+			 $scope.tableParams = new NgTableParams({}, {
+				 getData: function($defer,params) {
+					 var sortBy="ENTITY_CODE";
+					 var isAsc=false;
+					 var pageNo=params.page();
+					 var pageSize=params.count();
+					 if(params.sorting()){
+						 for (var attribute in params.sorting()) {
+							 if (params.sorting().hasOwnProperty(attribute)) {
+								 sortBy=attribute;
+								 var ascDsc=params.sorting()[attribute];
+								 if(ascDsc==='asc'){
+									 isAsc=true;  
 								 }
 							 }
 						 }
-						 $scope.workItemSearchCriteria.pageSize=pageSize;
-						 $scope.workItemSearchCriteria.pageNo=pageNo;
-						 $scope.workItemSearchCriteria.sortBy=sortBy;
-						 $scope.workItemSearchCriteria.isAscending=isAsc;
-						 $scope.workItemSearchCriteria.userId=$rootScope.user.userId;
-						 $scope.workItemSearchCriteria.type=$scope.workitem.workType;
-						 $scope.workItemSearchCriteria.status=$scope.workitem.status;
-						 
-						 workItemService.getWorkItembySearchCriteria($scope.workItemSearchCriteria)
-						 .then(
-								 function(response) {
-									 if(response){
-										 params.total(response.totalCount);
-										 $defer.resolve(response.objectData);
-									 }
-								 })
-
 					 }
-				 });
-				 
+					 $scope.workItemSearchCriteria.pageSize=pageSize;
+					 $scope.workItemSearchCriteria.pageNo=pageNo;
+					 $scope.workItemSearchCriteria.sortBy=sortBy;
+					 $scope.workItemSearchCriteria.isAscending=isAsc;
+					 $scope.workItemSearchCriteria.userId=$rootScope.user.userId;
+					 
+					 workItemService.getWorkItembySearchCriteria($scope.workItemSearchCriteria)
+					 .then(
+							 function(response) {
+								 if(response){
+									 params.total(response.totalCount);
+									 $defer.resolve(response.objectData);
+								 }
+							 })
+
+				 }
+			 });
+
+
+			 $scope.workitemMasterData = function() {
+				 console
+				 .log('getting masterdata for workitem');
+
+				 masterdataService
+				 .getWorkitemMasterData()
+				 .then(
+						 function(data) {
+							 console.log(data);
+							 if (data) {
+								 $scope.serverModelData = data.responseBody;
+							 } else {
+								 console.log('error');
+							 }
+						 });
+			 };
 		 } ]);

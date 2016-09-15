@@ -8,26 +8,24 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TB_CONFIG")
-
-public class Config extends BasicEntity{
+@Table(name = "TB_CLIENT_COMMUNICATION_CONFIG")
+public class ClientCommConfig extends BasicEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "CONFIG_TB_ID")
-	private Long configTBId;
+	@Column(name = "CLIENT_COM_CONFIG_ID")
+	private Long clientComConfigId;
 	@Column(name = "PROPERTY")
 	private String property;
 	@Column(name = "VALUE")
 	private String value;
 
-	public Long getConfigTBId() {
-		return configTBId;
+	public Long getClientComConfigId() {
+		return clientComConfigId;
 	}
-	public void setConfigTBId(Long configTBId) {
-		this.configTBId = configTBId;
+	public void setClientComConfigId(Long clientComConfigId) {
+		this.clientComConfigId = clientComConfigId;
 	}
-
 	public String getProperty() {
 		return property;
 	}
@@ -40,5 +38,4 @@ public class Config extends BasicEntity{
 	public void setValue(String value) {
 		this.value = value;
 	}
-
 }

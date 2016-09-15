@@ -3,6 +3,8 @@ package com.techvisio.eserve.beans;
 public class WorkItemSearchCriteria {
 
 	
+	private Long entityId;
+	
 	private String sortBy;
 
 	private int pageSize;
@@ -18,6 +20,15 @@ public class WorkItemSearchCriteria {
 	private String type;
 	
 	private String status;
+	
+	private String entityType;
+	
+	private Long assigneeId;
+	
+	private String fromDate;
+
+	private String toDate;
+
 
 	public String getSortBy() {
 		return sortBy;
@@ -83,5 +94,48 @@ public class WorkItemSearchCriteria {
 		this.status = status;
 	}
 
-	
+	public String getEntityType() {
+		return entityType;
+	}
+
+	public void setEntityType(String entityType) {
+		this.entityType = entityType;
+	}
+
+	public Long getAssigneeId() {
+		return assigneeId;
+	}
+
+	public void setAssigneeId(Long assigneeId) {
+		this.assigneeId = assigneeId;
+	}
+
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+
+	public Long getEntityId() {
+		return entityId;
+	}
+
+	public void setEntityId(Long entityId) {
+		this.entityId = entityId;
+	}
+
+	public void setAscending(boolean isAscending) {
+		this.isAscending = isAscending;
+	}
+
 }

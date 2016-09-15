@@ -3,8 +3,10 @@ var dashboardModule=angular.module('dashboardModule',['chart.js']);
 dashboardModule
 .controller(
 		'dashboardController',
-		['dashboardService','$scope','$rootScope','$state','complaint','isDashboard', function(dashboardService,$scope,$rootScope,$state,complaint,isDashboard) {
+		['dashboardService','workItemService','$scope','$rootScope','$state','complaint','isDashboard', function(dashboardService,workItemService,$scope,$rootScope,$state,complaint,isDashboard) {
 
+			
+			$scope.workItemSearchCriteria={};
 			$scope.selectedModule="complaint";
 			$scope.noticeBoardCount;
 
@@ -134,5 +136,26 @@ dashboardModule
 				$scope.redirectToComplaintGraphScreen(type,label);
 			}
 
+			$scope.getWorkItembySearchCriteria = function(){
+				console.log('getting work Item');
+				
+				 $scope.workItemSearchCriteria.pageSize=5;
+				 $scope.workItemSearchCriteria.pageNo=1;
+				 $scope.workItemSearchCriteria.sortBy="UPDATED_ON";
+				 $scope.workItemSearchCriteria.isAscending=false;
+				 $scope.workItemSearchCriteria.userId=$rootScope.user.userId;
 
+				workItemService.getWorkItembySearchCriteria($scope.workItemSearchCriteria)
+				.then(function(response) {
+					console.log(response);
+					if (response) {
+						$scope.workItem = response.objectData;
+					} 
+				})	
+			};
+			
+			$scope.redirectToWorkitemScreen=function(currentWorkitemId){
+				 $state.go('workitem',{workitemId:currentWorkitemId});
+			 }
+			
 		} ]);

@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.techvisio.eserve.beans.Client;
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.User;
@@ -113,6 +113,10 @@ public class CommonUtil {
 	public static List<String> stringToStringArray(String value){
 
 		String[] stringArray  = value.split(",");
+		for (int i = 0; i < stringArray.length; i++){
+			stringArray[i] = stringArray[i].trim();
+		}
+		
 		List<String> stringArrayList = new ArrayList<String>(stringArray.length);
 		for(String c : stringArray){
 			stringArrayList.add(c);

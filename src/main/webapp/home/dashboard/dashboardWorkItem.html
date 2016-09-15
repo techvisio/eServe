@@ -1,0 +1,22 @@
+<div>
+<div class="whiteBorder">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Entity Code</th>
+				<th>Entity Type</th>
+				<th>Work Type</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat = "row in workItem">
+				<td><a herf="" ng-click="redirectToWorkitemScreen(row.workItemId)">{{row.entityCode}}</a></td>
+				<td>{{row.entityType}}</td>
+				<td>{{row.workType}}</td>
+				<td>{{row.status}}</td>
+		   </tr>
+		</tbody>
+	</table>
+	</div>
+</div>

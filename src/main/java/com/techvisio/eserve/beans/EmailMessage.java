@@ -7,6 +7,7 @@ public class EmailMessage {
 	private String text;
 	private String from;
 	private List<String> recipients;
+	private Long clientId;
 	public String getSubject() {
 		return subject;
 	}
@@ -31,5 +32,10 @@ public class EmailMessage {
 	public void setFrom(String from) {
 		this.from = from;
 	}
-	
+	public Long getClientId() {
+		return clientId;
+	}
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
+	}
 }

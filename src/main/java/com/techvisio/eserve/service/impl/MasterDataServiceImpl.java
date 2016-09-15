@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Client;
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
@@ -70,8 +70,8 @@ public class MasterDataServiceImpl implements MasterDataService{
 				return equipment;
 				
 			case "CONFIG":
-				Long  configTBId = masterDataManager.saveConfig((Config) object);
-				Config config= masterDataManager.getConfig(configTBId);
+				Long  configTBId = masterDataManager.saveConfig((ClientConfig) object);
+				ClientConfig config= masterDataManager.getConfig(configTBId);
 				return config;
 				
 			case "ISSUE":

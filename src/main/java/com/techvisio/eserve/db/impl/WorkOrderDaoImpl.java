@@ -71,7 +71,7 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 
 	@Override
 	public List<WorkOrder> getAllComplaintsForUnit(Long unitId) {
-		String queryString="FROM WorkOrder wo WHERE wo.unit.unitId = "+ unitId;
+		String queryString="FROM WorkOrder wo WHERE wo.workOrderType='Complaint' and  wo.unit.unitId = "+ unitId;
 		Query query= getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<WorkOrder> complaints= (List<WorkOrder>)query.getResultList();

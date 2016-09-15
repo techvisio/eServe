@@ -3,7 +3,7 @@ package com.techvisio.eserve.manager;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Client;
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
@@ -65,9 +65,9 @@ public interface MasterDataManager {
 
 	SearchResultData getConfigData(Long clientId);
 
-	Long saveConfig(Config config);
+	Long saveConfig(ClientConfig config);
 	
-	Config getConfig(Long configTBId);
+	ClientConfig getConfig(Long configTBId);
 
 	SearchResultData getIssueMasterData(Long clientId);
 

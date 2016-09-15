@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.Invoice;
 import com.techvisio.eserve.beans.InvoiceComponentAmountBean;
 import com.techvisio.eserve.manager.CacheManager;
@@ -25,7 +25,7 @@ public class InvoiceGeneratorFactory {
 
 	public InvoiceGenerator getInstance(){
 
-		Config config = configPreferences.getConfigObject(AppConstants.IS_TAX_INCLUDED);
+		ClientConfig config = configPreferences.getConfigObject(AppConstants.IS_TAX_INCLUDED);
 
 		if(config.getValue().equalsIgnoreCase("N")){
 			return new InvoiceTaxExcluded(cacheManager);

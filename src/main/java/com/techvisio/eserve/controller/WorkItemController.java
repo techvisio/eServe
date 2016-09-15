@@ -1,5 +1,6 @@
 package com.techvisio.eserve.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +89,6 @@ public class WorkItemController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 	
-	
-	
 	@RequestMapping(value="/salesrenewal",method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void createWorkItemForSalesRenewal(@RequestBody UnitBasicInfo unitInfo) {  
@@ -97,7 +96,7 @@ public class WorkItemController {
 	}
 
 	@RequestMapping(value="/workitemlist/",method = RequestMethod.POST)
-	public ResponseEntity<Response> getWorkItembySearchCriteria(@RequestBody WorkItemSearchCriteria workItemSearchCriteria) {
+	public ResponseEntity<Response> getWorkItembySearchCriteria(@RequestBody WorkItemSearchCriteria workItemSearchCriteria) throws ParseException {
 		Response response=new Response();
 		SearchResultData workItems = workItemService.getWorkItembySearchCriteria(workItemSearchCriteria);
 		response.setResponseBody(workItems);

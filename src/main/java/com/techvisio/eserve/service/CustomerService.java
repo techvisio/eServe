@@ -59,5 +59,6 @@ public interface CustomerService {
 	public UnitBasicInfo getUnitBasicInfoById(Long unitId);
 	public Unit renewSalesAgreement(GenericRequest<Unit> request, String context,
 			Long unitId);
+	public void saveUnitForEmailProcess(Unit unit);
 }
 

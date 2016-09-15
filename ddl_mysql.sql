@@ -39,6 +39,10 @@
         drop 
         foreign key FK_i5onl4rqdykxqkef27t8ybhya;
 
+    alter table TB_COMMUNICATION_JOBS 
+        drop 
+        foreign key FK_cy5dxgj70pbijeqwv1m0ehjs0;
+
     alter table TB_CONFIG 
         drop 
         foreign key FK_bu8i693dhiy4sbl9tucpiwfht;
@@ -70,6 +74,10 @@
     alter table TB_DESIGNATION_MASTER 
         drop 
         foreign key FK_2cukmf7ss9s9vb7hl1ekh7539;
+
+    alter table TB_EMAIL_FORMAT 
+        drop 
+        foreign key FK_aicsdnndc577p9npba66ic5h6;
 
     alter table TB_EQUIPMENT_DETAIL 
         drop 
@@ -297,6 +305,8 @@
 
     drop table if exists TB_COMMENT;
 
+    drop table if exists TB_COMMUNICATION_JOBS;
+
     drop table if exists TB_CONFIG;
 
     drop table if exists TB_CONTACT;
@@ -308,6 +318,8 @@
     drop table if exists TB_DEPARTMENT_MASTER;
 
     drop table if exists TB_DESIGNATION_MASTER;
+
+    drop table if exists TB_EMAIL_FORMAT;
 
     drop table if exists TB_ENTITY_LOCKS;
 
@@ -483,6 +495,22 @@
         primary key (COMMENT_ID)
     );
 
+    create table TB_COMMUNICATION_JOBS (
+        JOB_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        COMMUNICATION_TYPE varchar(255),
+        ENTITY_ID bigint,
+        ENTITY_TYPE varchar(255),
+        EVENT_TYPE varchar(255),
+        LOGS varchar(255),
+        STATUS varchar(255),
+        Client_Id bigint,
+        primary key (JOB_ID)
+    );
+
     create table TB_CONFIG (
         CONFIG_TB_ID bigint not null auto_increment,
         CREATED_BY varchar(255),
@@ -555,6 +583,21 @@
         DESIGNATION varchar(255),
         Client_Id bigint,
         primary key (DESIGNATION_ID)
+    );
+
+    create table TB_EMAIL_FORMAT (
+        EMAIL_FORMAT_ID bigint not null auto_increment,
+        CREATED_BY varchar(255),
+        CREATED_ON datetime,
+        UPDATED_BY varchar(255),
+        UPDATED_ON datetime,
+        COMMUNICATION_TYPE varchar(255),
+        EVENT_TYPE varchar(255),
+        FORMAT varchar(255),
+        SUBJECT varchar(255),
+        TITLE varchar(255),
+        Client_Id bigint,
+        primary key (EMAIL_FORMAT_ID)
     );
 
     create table TB_ENTITY_LOCKS (
@@ -761,6 +804,7 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
+        AGREEMENT_COM_SEND bit,
         APPROVED_BY bigint,
         CONTRACT_EXPIRE_ON date,
         CONTRACT_START_ON date,
@@ -1062,6 +1106,11 @@
         foreign key (WORKITEM_ID) 
         references TB_WORK_ITEM (WORKITEM_ID);
 
+    alter table TB_COMMUNICATION_JOBS 
+        add constraint FK_cy5dxgj70pbijeqwv1m0ehjs0 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
     alter table TB_CONFIG 
         add constraint FK_bu8i693dhiy4sbl9tucpiwfht 
         foreign key (Client_Id) 
@@ -1099,6 +1148,11 @@
 
     alter table TB_DESIGNATION_MASTER 
         add constraint FK_2cukmf7ss9s9vb7hl1ekh7539 
+        foreign key (Client_Id) 
+        references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_EMAIL_FORMAT 
+        add constraint FK_aicsdnndc577p9npba66ic5h6 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
 

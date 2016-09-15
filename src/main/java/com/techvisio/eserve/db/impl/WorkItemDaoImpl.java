@@ -1,5 +1,6 @@
 package com.techvisio.eserve.db.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,14 +8,16 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.SearchResultData;
+import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.WorkItem;
 import com.techvisio.eserve.beans.WorkItemSearchCriteria;
 import com.techvisio.eserve.db.WorkItemDao;
+import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
+import com.techvisio.eserve.util.DateUtil;
 import com.techvisio.eserve.util.StringUtilities;
 @Component
 public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
@@ -29,7 +32,7 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		List<WorkItem> clonedWorkItems = new ArrayList<WorkItem>(workItems);
 		return clonedWorkItems;
 	}
-	
+
 	@Override
 	public List<WorkItem> getWorkItemByPrivilege(Long privilegeId) {
 		Long clientId = CommonUtil.getCurrentClient().getClientId();
@@ -114,8 +117,8 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 	@Override
 	public void deleteWorkItemsByEntityIdAndWorkType(Long entityId, String workType) {
 		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		String deleteQuery = "Delete from TB_WORK_ITEM where ENTITY_ID =:ENTITY_ID and WORKTYPE = :WORKTYPE and CLIENT_ID = "+clientId ;;
-		Query query=(Query) getEntityManager().createNativeQuery(deleteQuery).setParameter("ENTITY_ID", entityId).setParameter("WORKTYPE", workType);
+		String deleteQuery = "Delete from WorkItem where entityId =:ENTITY_ID and workType = :WORKTYPE and clientId = "+clientId ;;
+		Query query=(Query) getEntityManager().createQuery(deleteQuery).setParameter("ENTITY_ID", entityId).setParameter("WORKTYPE", workType);
 		query.executeUpdate();	
 	}
 
@@ -126,7 +129,7 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		@SuppressWarnings("unchecked")
 		List<WorkItem> workItems= (List<WorkItem>)query.getResultList();
 		if(workItems != null && workItems.size()>0){
-			
+
 			return workItems.get(0);
 		}
 		return null;
@@ -172,12 +175,28 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		if(comments!=null && comments.size()>0){
 			return comments.get(0);
 		}
-	
+
 		return null;
 	}
 
 	@Override
-	public SearchResultData getWorkItembySearchCriteria(WorkItemSearchCriteria workItemSearchCriteria) {
+	public List<WorkItem> getActiveWorkItems(WorkItemSearchCriteria criteria, ServiceAgreement agreement){
+
+		java.sql.Date startDateSql = DateUtil.convertStringToSqlDate(agreement.getContractStartOnString());
+		java.sql.Date expireDateSql = DateUtil.convertStringToSqlDate(agreement.getContractExpireOnString());
+
+		String queryString="Select wi.WORKITEM_ID	,wi.CREATED_BY	,wi.CREATED_ON	,wi.UPDATED_BY	,wi.UPDATED_ON	,wi.ASSIGNEE_ID	,wi.DESCRIPTION	,wi.DUE_DATE	,wi.ENTITY_CODE	,wi.ENTITY_ID	,wi.ENTITY_TYPE	,wi.ENTITY_URL	,wi.PRIORITY	,wi.PRIVILEGE_ID,wi.STATUS,wi.WORKTYPE	,"
+				+ "wi.Client_Id	 from  TB_WORK_ITEM " 
+				+ "where wi.entityId ="+criteria.getEntityId()+" and wi.WORKTYPE = "+"'"+criteria.getType()+"'"+" and wi.ENTITY_TYPE = "+"'"+criteria.getEntityType() +"'"+" and wi.DUE_DATE BETWEEN "+startDateSql+" AND " + expireDateSql;
+		Query query=getEntityManager().createNativeQuery(queryString,WorkItem.class);
+		@SuppressWarnings("unchecked")
+		List<WorkItem> workItems= (List<WorkItem>)query.getResultList();
+		List<WorkItem> clonedWorkItems = new ArrayList<WorkItem>(workItems);
+		return clonedWorkItems;
+	}	
+
+	@Override
+	public SearchResultData getWorkItembySearchCriteria(WorkItemSearchCriteria workItemSearchCriteria) throws ParseException {
 
 		SearchResultData<WorkItem> searchResultData= new SearchResultData<WorkItem>();
 		String ascOrDsc = workItemSearchCriteria.getIsAscending()?"ASC":"DESC";
@@ -193,15 +212,46 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		String queryString="Select wi.WORKITEM_ID	,wi.CREATED_BY	,wi.CREATED_ON	,wi.UPDATED_BY	,wi.UPDATED_ON	,wi.ASSIGNEE_ID	,wi.DESCRIPTION	,wi.DUE_DATE	,wi.ENTITY_CODE	,wi.ENTITY_ID	,wi.ENTITY_TYPE	,wi.ENTITY_URL	,wi.PRIORITY	,wi.PRIVILEGE_ID,wi.STATUS,wi.WORKTYPE	,"
 				+ "wi.Client_Id	 from  TB_WORK_ITEM wi join TB_PRIVILEGE prv "
 				+ "on wi.PRIVILEGE_ID=prv.PRIVILEGE_ID join TB_USER_PRIVILEGE usrpr on usrpr.PRIVILEGE_ID=prv.PRIVILEGE_ID "
-				+ "where wi.WORKTYPE = coalesce(:type, wi.WORKTYPE) and wi.STATUS = coalesce(:status, wi.STATUS) and usrpr.USER_ID=:userId ORDER BY  "+sortBy +" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
+				+ "where wi.WORKTYPE = coalesce(:type, wi.WORKTYPE) and wi.STATUS = coalesce(:status, wi.STATUS) and wi.ENTITY_TYPE = coalesce(:entityType, wi.ENTITY_TYPE) and coalesce(wi.ASSIGNEE_ID, '-1') = coalesce(:assigneeId, coalesce(wi.ASSIGNEE_ID, '-1')) and usrpr.USER_ID=:userId and (coalesce(DATE(wi.DUE_DATE),now()) BETWEEN :DATE_FROM AND :DATE_TO) ORDER BY  "+sortBy +" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
 		Query query=getEntityManager().createNativeQuery(queryString,WorkItem.class);
 		
-		String queryString1="SELECT count(*),'totalCount' FROM (select wi.* from  TB_WORK_ITEM wi join TB_PRIVILEGE prv on wi.PRIVILEGE_ID=prv.PRIVILEGE_ID join TB_USER_PRIVILEGE usrpr on usrpr.PRIVILEGE_ID=prv.PRIVILEGE_ID where wi.WORKTYPE = coalesce(:type, WORKTYPE) and wi.STATUS = coalesce(:status, STATUS) and usrpr.USER_ID=:userId)a";
+		String queryString1="SELECT count(*),'totalCount' FROM (select wi.* from  TB_WORK_ITEM wi join TB_PRIVILEGE prv on wi.PRIVILEGE_ID=prv.PRIVILEGE_ID join TB_USER_PRIVILEGE usrpr on usrpr.PRIVILEGE_ID=prv.PRIVILEGE_ID where wi.WORKTYPE = coalesce(:type, WORKTYPE) and wi.STATUS = coalesce(:status, STATUS) and wi.ENTITY_TYPE = coalesce(:entityType, wi.ENTITY_TYPE) and coalesce(wi.ASSIGNEE_ID, '-1') = coalesce(:assigneeId, coalesce(wi.ASSIGNEE_ID, '-1')) and usrpr.USER_ID=:userId and (coalesce(DATE(wi.DUE_DATE),now()) BETWEEN :DATE_FROM AND :DATE_TO))a";
 		Query query1=getEntityManager().createNativeQuery(queryString1);
 		
+		
+		String entityType = StringUtilities.getDefaultOrBlankValueOfString(workItemSearchCriteria.getEntityType());
 		String type = StringUtilities.getDefaultOrBlankValueOfString(workItemSearchCriteria.getType());
 		String status = StringUtilities.getDefaultOrBlankValueOfString(workItemSearchCriteria.getStatus());
 		Long userId = workItemSearchCriteria.getUserId();
+		Long assigneeId = null;
+		if(workItemSearchCriteria.getAssigneeId() != null){
+			 assigneeId = workItemSearchCriteria.getAssigneeId();
+		}
+		String dateFromString,dateToString = null;
+		java.sql.Date dateToSql;
+		java.sql.Date dateFromSql;
+		if(workItemSearchCriteria.getFromDate() == null)
+		{
+			dateFromString = "March 01, 1986";
+			dateFromSql = DateUtil.convertStringToSqlDate(dateFromString, AppConstants.DateFormat.MM_dd_yyyy.getPattern());
+		}
+		else
+		{
+			dateFromString = workItemSearchCriteria.getFromDate();
+			dateFromSql = DateUtil.convertStringToSqlDate(dateFromString);
+		}
+
+		if(workItemSearchCriteria.getToDate() == null)
+		{
+			dateToString = "March 01, 9999";
+			dateToSql = DateUtil.convertStringToSqlDate(dateToString, AppConstants.DateFormat.MM_dd_yyyy.getPattern()); 
+		}
+		else
+		{
+			dateToString = workItemSearchCriteria.getToDate();
+			dateToSql = DateUtil.convertStringToSqlDate(dateToString);
+		}
+
 		
 		int pageSize,pageNo;
 		if(workItemSearchCriteria.getPageSize()==0)
@@ -226,12 +276,20 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		query.setParameter("type", type);
 		query.setParameter("userId", userId);
 		query.setParameter("status", status);
+		query.setParameter("entityType", entityType);
+		query.setParameter("assigneeId", assigneeId);
+		query.setParameter("DATE_FROM", dateFromSql);
+		query.setParameter("DATE_TO", dateToSql);
 		query.setParameter("PAGE_SIZE", pageSize);
 		query.setParameter("START_INDEX", startIndex);
 		
 		query1.setParameter("type", type);
 		query1.setParameter("userId", userId);
 		query1.setParameter("status", status);
+		query1.setParameter("entityType", entityType);
+		query1.setParameter("assigneeId", assigneeId);
+		query1.setParameter("DATE_FROM", dateFromSql);
+		query1.setParameter("DATE_TO", dateToSql);
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> counts = query1.getResultList();

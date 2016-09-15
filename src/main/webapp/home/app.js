@@ -506,6 +506,17 @@ erp.controller('ApplicationController',
 					$rootScope.showNotHavePrivilegeModel();
 				}
 			}
+			
+			$scope.searchUser=function(){
+
+				if($rootScope.isPrivileged('CREATE_USER') || $rootScope.isPrivileged('VIEW_USER')){
+					$state.go('searchUser');
+				}
+				else{
+					$rootScope.showNotHavePrivilegeModel();
+				}
+			}
+			
 			$scope.createCustomer=function(){
 				if($rootScope.isPrivileged('CREATE_CUSTOMER')){
 					$state.go('createNewCustomer');
@@ -515,6 +526,16 @@ erp.controller('ApplicationController',
 				}
 			}
 
+			$scope.searchCustomer=function(){
+
+				if($rootScope.isPrivileged('VIEW_CUSTOMER') || $rootScope.isPrivileged('CREATE_CUSTOMER')){
+					$state.go('searchUser');
+				}
+				else{
+					$rootScope.showNotHavePrivilegeModel();
+				}
+			}
+			
 			$rootScope.closeModal=function(){
 				$rootScope.curModal.close();
 			}

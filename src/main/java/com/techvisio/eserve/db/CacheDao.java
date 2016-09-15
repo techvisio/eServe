@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.AgreementDuration;
 import com.techvisio.eserve.beans.Client;
-import com.techvisio.eserve.beans.ClientComConfig;
-import com.techvisio.eserve.beans.Config;
+import com.techvisio.eserve.beans.ClientCommConfig;
+import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
@@ -19,6 +19,7 @@ import com.techvisio.eserve.beans.Resolution;
 import com.techvisio.eserve.beans.ServiceProvider;
 import com.techvisio.eserve.beans.State;
 import com.techvisio.eserve.beans.UnitCategory;
+import com.techvisio.eserve.beans.User;
 
 @Component
 public interface CacheDao {
@@ -32,8 +33,8 @@ public interface CacheDao {
 	List<Department> getDepartments(Long clientId);
 	List<Designation> getDesignations(Long clientId);
 	List<Privilege> getPrivileges(Long clientId);
-	List<Config> getDefalutValues(Long clientId);
-	List<Config> getDefaultValues();
+	List<ClientConfig> getDefalutValues(Long clientId);
+	List<ClientConfig> getDefaultValues();
 	List<Resolution> getResolution();
 	List<Issue> getIssues();
 	List<AgreementDuration> getAgreementDuration();
@@ -41,8 +42,10 @@ public interface CacheDao {
 	List<CustomerType> getCustomerTypes();
 	List<ServiceProvider> getServiceProviders();
 	AgreementDuration getAgreementDuration(Long durationId);
-	Config getConfig(String property);
 	List<InvoiceTaxes> getInvoiceTaxes(Long clientId);
 	Client getClient(Long clientId);
-	List<ClientComConfig> getClientComConfigValues(Long clientId);
+	List<ClientCommConfig> getClientComConfigValues(Long clientId);
+	public List<User> getUsers();
+	public List<ClientConfig> getClientPreferences();
+	public List<ClientCommConfig> getClientCommunicationConfig();
 }

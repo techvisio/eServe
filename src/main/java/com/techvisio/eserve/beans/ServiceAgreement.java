@@ -63,6 +63,9 @@ public class ServiceAgreement extends BasicEntity{
 	@Column(name="APPROVED_BY")
 	private Long approvedBy;
 	
+	@Column(name="AGREEMENT_COM_SEND")
+	private boolean agreementComSend;
+	
 	@OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
 	@JoinColumn(name="SERVICE_AGREEMENT_FINANCE_ID")
 	private ServiceAgreementFinance serviceAgreementFinance;
@@ -178,6 +181,11 @@ public class ServiceAgreement extends BasicEntity{
 	public void setVersionId(Double versionId) {
 		this.versionId = versionId;
 	}
-	
+	public boolean isAgreementComSend() {
+		return agreementComSend;
+	}
+	public void setAgreementComSend(boolean agreementComSend) {
+		this.agreementComSend = agreementComSend;
+	}
 	
 }
