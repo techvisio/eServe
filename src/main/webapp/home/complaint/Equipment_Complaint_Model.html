@@ -13,12 +13,9 @@
 
 							<div class="controls">
 								<select class="form-control"
-									ng-model="dummyEquipmentDetails.type"
-									ng-change="getEquipments(dummyEquipmentDetails.type)">
-									<option></option>
-									<option value="COMPRESSOR">COMPRESSOR</option>
-									<option value="PCB">PCB</option>
-									<option value="FILTER">FILTER</option>
+									ng-model="dummyEquipmentDetails.equipmentType.equipmentTypeId"
+									ng-change="getEquipments(dummyEquipmentDetails.equipmentType.equipmentTypeId)"
+									ng-options="item.equipmentTypeId*1 as item.equipmentType for item in serverModelData.EQUIPMENT_TYPE">
 								</select>
 							</div>
 						</div>
@@ -32,9 +29,10 @@
 								No</label>
 
 							<div class="controls">
+
 								<select class="form-control"
-									ng-model="dummyEquipmentDetails.equipment.model">
-									<option></option>
+									ng-model="dummyEquipmentDetails.modalNo.equipmentModalNoId"
+									ng-options="item.equipmentModalNoId*1 as item.modalNo for item in serverModelData.EQUIPMENT_MODAL_NO">
 								</select>
 							</div>
 						</div>
@@ -95,8 +93,8 @@
 
 							<div class="controls">
 								<select class="form-control"
-									ng-model="dummyEquipmentDetails.warrantyUnder">
-									<option></option>
+									ng-model="dummyEquipmentDetails.warrantyUnder.warrantyUnderId"
+									ng-options="item.warrantyUnderId*1 as item.warrantyUnder for item in serverModelData.EQUIPMENT_WARRANTY_UNDER">
 								</select>
 							</div>
 						</div>
@@ -108,8 +106,8 @@
 						<div class="controls">
 							<input type="checkbox" class="faChkSqr"
 								ng-model="dummyEquipmentDetails.underWarranty" id="chk_{{$id}}"><label
-								for="chk_{{$id}}" class="check-box-padding">Covered Under
-								Warranty </label>
+								for="chk_{{$id}}" class="check-box-padding">Covered
+								Under Warranty </label>
 						</div>
 					</div>
 				</div>
@@ -162,8 +160,7 @@
 					</div>
 
 					<div class="row"
-						ng-repeat="equip in workOrder.unit.equipmentDetails"
-						id="parent">
+						ng-repeat="equip in workOrder.unit.equipmentDetails" id="parent">
 
 						<div class="col-md-1 col-sm-12 col-xs-12">
 							<div class="form-group">
@@ -173,13 +170,13 @@
 						</div>
 						<div class="col-md-1 col-sm-1 col-xs-1 padding-non text-centre">
 							<div class="form-group">
-								<label class="font-size-label" for="formfield9">{{equip.type}}</label>
+								<label class="font-size-label" for="formfield9">{{equip.equipmentType.equipmentType}}</label>
 							</div>
 						</div>
 
 						<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 							<div class="form-group">
-								<label class=" font-size-label" for="formfield9">{{equip.equipment.model}}</label>
+								<label class=" font-size-label" for="formfield9">{{equip.modalNo.modalNo}}</label>
 							</div>
 						</div>
 
@@ -201,7 +198,7 @@
 						</div>
 						<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 							<div class="form-group">
-								<label class="font-size-label" for="formfield9">{{equip.warrantyUnder}}</label>
+								<label class="font-size-label" for="formfield9">{{equip.warrantyUnder.warrantyUnder}}</label>
 							</div>
 						</div>
 
@@ -211,8 +208,9 @@
 					<div class="col-md-4 col-sm-12 col-xs-12"></div>
 					<div class="col-md-8 col-sm-12 col-xs-12">
 						<button type="button" class="btn btn-success child-right"
-							ng-click="addMachine(); saveEquipment() ">Skip & Save Equipment</button>
-							
+							ng-click="addMachine(); saveEquipment() ">Skip & Save
+							Equipment</button>
+
 						<button type="button" class="btn btn-primary child-right"
 							ng-click="deleteEquipments();saveEquipment()">Replace</button>
 						<button type="button" class="btn btn-primary child-right"

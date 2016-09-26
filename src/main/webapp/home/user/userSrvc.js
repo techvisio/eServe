@@ -1,4 +1,4 @@
-userModule.service('userService', function($http, $q) {
+userModule.service('userService', function($http, $q,$rootScope,$state) {
 
 	// Return public API.
 	return ({
@@ -22,7 +22,7 @@ userModule.service('userService', function($http, $q) {
 	    savePic : savePic
 	});
 
-	function savePic(file,userId){
+	function savePic(file,userId, userName){
 
 		console.log('saveSecurityQuestion called in service');
 		
@@ -39,7 +39,10 @@ userModule.service('userService', function($http, $q) {
 
 		});
 
-		return (request.then(handleSuccess, handleError));
+		return (request.then(function(){
+			$rootScope.showAlertModel('Profile photo uploaded for user '+ userName);					
+			$state.reload('viewUser',{entityId:userId});
+		}, handleError));
 
 	}
 	

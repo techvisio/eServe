@@ -13,7 +13,8 @@
 
 							<div class="controls">
 								<select class="form-control"
-									ng-model="dummyEquipmentDetails.type">
+									ng-model="dummyEquipmentDetails.equipmentType.equipmentTypeId"
+									ng-options="item.equipmentTypeId*1 as item.equipmentType for item in serverModelData.EQUIPMENT_TYPE">
 									<option></option>
 								</select>
 							</div>
@@ -29,8 +30,8 @@
 
 							<div class="controls">
 								<select class="form-control"
-									ng-model="dummyEquipmentDetails.equipment.model">
-									<option></option>
+									ng-model="dummyEquipmentDetails.modalNo.equipmentModalNoId"
+									ng-options="item.equipmentModalNoId*1 as item.modalNo for item in serverModelData.EQUIPMENT_MODAL_NO">
 								</select>
 							</div>
 						</div>
@@ -91,7 +92,8 @@
 
 							<div class="controls">
 								<select class="form-control"
-									ng-model="dummyEquipmentDetails.warrantyUnder">
+									ng-model="dummyEquipmentDetails.warrantyUnder.warrantyUnderId"
+									ng-options="item.warrantyUnderId*1 as item.warrantyUnder for item in serverModelData.EQUIPMENT_WARRANTY_UNDER">
 									<option></option>
 								</select>
 							</div>
@@ -104,8 +106,8 @@
 						<div class="controls">
 							<input type="checkbox" class="faChkSqr"
 								ng-model="dummyEquipmentDetails.underWarranty" id="chk_{{$id}}"><label
-								for="chk_{{$id}}" class="check-box-padding">Covered Under
-								Warranty </label>
+								for="chk_{{$id}}" class="check-box-padding">Covered
+								Under Warranty </label>
 						</div>
 					</div>
 				</div>

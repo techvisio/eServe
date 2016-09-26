@@ -28,8 +28,6 @@ public class Equipment extends BasicEntity{
 	private Long equipmentId;
 	@Column(name="CATEGORY")
 	private String category;
-	@Column(name="MODEL")
-	private String model;
 	@Column(name="CAPACITY")
 	private String capacity;
 	@Column(name="PRICE")
@@ -48,12 +46,6 @@ public class Equipment extends BasicEntity{
 	}
 	public void setCategory(String category) {
 		this.category = category;
-	}
-	public String getModel() {
-		return model;
-	}
-	public void setModel(String model) {
-		this.model = model;
 	}
 	public String getCapacity() {
 		return capacity;

@@ -1,0 +1,31 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+	<section class="box " >
+		<header class="panel_header">
+			<h2 class=" pull-left"></h2>
+			<div class="actions panel_actions pull-right">
+				<i class="fa fa-filter" aria-hidden="true"
+					ng-click="filterWorkItemsForQueue()">&nbspFilter</i> <i
+					class="box_setting material-icons"></i>
+			</div>
+		</header>
+		<div class="content-body">
+			<div class="row"></div>
+			<div class="row"></div>
+			<div class="row">
+				<div class="table-parent-container">
+					<div>
+						<table ng-table="tableParamsQueue"
+							class="table table-condensed table-bordered table-striped">
+							<tr ng-repeat="row in $data">
+								<td data-title="'Entity Code'" sortable="'entityCode'"><a class="hand-pointer" herf="" ng-click="redirectToWorkitemScreen(row.workItemId)">{{row.entityCode}}</a></td>
+								<td data-title="'Entity Type'" sortable="'entityType'">{{row.entityType}}</td>
+								<td data-title="'Work Type'" sortable="'workType'">{{row.workType}}</td>
+								<td data-title="'Status'" sortable="'status'">{{row.status}}</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>

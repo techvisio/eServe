@@ -17,6 +17,9 @@ import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.EquipmentModalNo;
+import com.techvisio.eserve.beans.EquipmentType;
+import com.techvisio.eserve.beans.EquipmentWarrantyUnder;
 import com.techvisio.eserve.beans.InvoiceTaxes;
 import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
@@ -210,6 +213,38 @@ public class CacheManagerImpl implements CacheManager {
 		return new ArrayList<User>();
 	}
 
+	public List<EquipmentWarrantyUnder> getEquipmentWarrantyUnder(Long clientId) {
+		Map<String, List> clientMap = clientEntityListMap.get(clientId);
+		if (clientMap != null) {
+			List data = clientMap.get(AppConstants.EQUIPMENT_WARRANTY_UNDER);
+			if (data != null) {
+				return (List<EquipmentWarrantyUnder>) data;
+			}
+		}
+		return new ArrayList<EquipmentWarrantyUnder>();
+	}
+	
+	public List<EquipmentType> getEquipmentType(Long clientId) {
+		Map<String, List> clientMap = clientEntityListMap.get(clientId);
+		if (clientMap != null) {
+			List data = clientMap.get(AppConstants.EQUIPMENT_TYPE);
+			if (data != null) {
+				return (List<EquipmentType>) data;
+			}
+		}
+		return new ArrayList<EquipmentType>();
+	}
+	
+	public List<EquipmentModalNo> getEquipmentModalNo(Long clientId) {
+		Map<String, List> clientMap = clientEntityListMap.get(clientId);
+		if (clientMap != null) {
+			List data = clientMap.get(AppConstants.EQUIPMENT_MODAL_NO);
+			if (data != null) {
+				return (List<EquipmentModalNo>) data;
+			}
+		}
+		return new ArrayList<EquipmentModalNo>();
+	}
 	public void builtEntityListCache() {
 		List<State> states = new ArrayList<State>();
 		logger.info("{} : built entity list cache work for get state ", this
@@ -257,6 +292,18 @@ public class CacheManagerImpl implements CacheManager {
 		users = cacheDao.getUsers();
 		entityListMap.put(AppConstants.USER, users);
 
+		List<EquipmentWarrantyUnder> warrantyUnders = new ArrayList<EquipmentWarrantyUnder>();
+		warrantyUnders = cacheDao.getEquipmentWarrantyUnder();
+		entityListMap.put(AppConstants.EQUIPMENT_WARRANTY_UNDER, warrantyUnders);
+		
+		List<EquipmentType> equipmentTypes = new ArrayList<EquipmentType>();
+		equipmentTypes = cacheDao.getEquipmentType();
+		entityListMap.put(AppConstants.EQUIPMENT_TYPE, equipmentTypes);
+		
+		List<EquipmentModalNo> modalNo = new ArrayList<EquipmentModalNo>();
+		modalNo = cacheDao.getEquipmentModalNo();
+		entityListMap.put(AppConstants.EQUIPMENT_MODAL_NO, modalNo);
+		
 		buildClientCache();
 
 	}
@@ -359,6 +406,24 @@ public class CacheManagerImpl implements CacheManager {
 			List<User> users = new ArrayList<User>();
 			users = cacheDao.getUsers();
 			entityListMap.put(AppConstants.USER, users);
+			break;
+			
+		case AppConstants.EQUIPMENT_WARRANTY_UNDER:
+			List<EquipmentWarrantyUnder> warrantyUnder = new ArrayList<EquipmentWarrantyUnder>();
+			warrantyUnder = cacheDao.getEquipmentWarrantyUnder();
+			entityListMap.put(AppConstants.EQUIPMENT_WARRANTY_UNDER, warrantyUnder);
+			break;
+			
+		case AppConstants.EQUIPMENT_TYPE:
+			List<EquipmentType> equipmentType = new ArrayList<EquipmentType>();
+			equipmentType = cacheDao.getEquipmentType();
+			entityListMap.put(AppConstants.EQUIPMENT_TYPE, equipmentType);
+			break;
+			
+		case AppConstants.EQUIPMENT_MODAL_NO:
+			List<EquipmentModalNo> modalNo = new ArrayList<EquipmentModalNo>();
+			modalNo = cacheDao.getEquipmentModalNo();
+			entityListMap.put(AppConstants.EQUIPMENT_MODAL_NO, modalNo);
 			break;
 
 		default:

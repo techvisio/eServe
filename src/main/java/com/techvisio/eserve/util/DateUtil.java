@@ -55,6 +55,9 @@ public class DateUtil {
 		return javeSqlDate;
 	}
 
-	
+	public static Date converUtilDateToSqlDate(java.util.Date date){
+		java.sql.Date javeSqlDate=new java.sql.Date(date.getTime());
+		return javeSqlDate;
+	}	
 
 }

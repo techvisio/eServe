@@ -21,8 +21,6 @@ public class AsyncEmailMessage implements AsyncMessage{
 	@Autowired
 	ServiceLocator serviceLocator;
 	
-	
-	
 	private CommunicationJob communicationJob;
 	
 	public CommunicationJob getCommunicationJob() {

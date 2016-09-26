@@ -5,18 +5,22 @@
 				ng-init="makeAllReadOnly($id)">
 				<section class="box ">
 					<header class="panel_header">
-						<h2 class="title pull-left">Unit No({{unit.machineSerialNo}})&nbsp<button type="button" ng-click="getLatestCommentBycommentType(unit.unitId,'UNIT','Reject')" ng-class="getClassForUnitStatus(unit.approvalStatus)">{{getUnitStatusText(unit.approvalStatus)}}</button> </h2>
+						<h2 class="title pull-left">
+							Unit No({{unit.machineSerialNo}})&nbsp
+							<button type="button"
+								ng-click="getLatestCommentBycommentType(unit.unitId,'UNIT','Reject')"
+								ng-class="getClassForUnitStatus(unit.approvalStatus)"
+								ng-show="customer.customerId">{{getUnitStatusText(unit.approvalStatus)}}</button>
+						</h2>
 						<div class="actions panel_actions pull-right">
-						<i></i><i></i><i></i>
-							<i class="fa fa-pencil icon"
+							<i></i><i></i><i></i> <i class="fa fa-pencil icon"
 								ng-click="lockUnitEntity($index,$id)"
 								ng-disabled="isCreateOrUpdatePrivileged()"
 								ng-show="!unit.edited && !(selection==='preview')"></i> <img
 								ng-show="unit.edited" src="../static/images/complaint.png"
 								height="25" width="25"
 								ng-click="redirectToComplaintScreenByUnitId(unit,unit.unitId)"
-								ng-disabled="isProcessing" />
-							<i class="fa fa-chevron-up"
+								ng-disabled="isProcessing" /> <i class="fa fa-chevron-up"
 								ng-class="{'fa-chevron-down':isCollapsed}"
 								ng-click="isCollapsed=!isCollapsed"></i>
 							<!--                     <i class="box_setting material-icons"></i> -->
@@ -26,9 +30,10 @@
 					<div class="content-body">
 
 						<div collapse="isCollapsed">
-<div class="row form-group">
-<span class="desc">current unit version Id : {{unit.versionId}}</span>
-</div>
+							<div class="row form-group">
+								<span class="desc">current unit version Id :
+									{{unit.versionId}}</span>
+							</div>
 							<div class="row">
 								<div class="col-md-5 col-sm-12 col-xs-12">
 									<div class="form-group">
@@ -201,7 +206,9 @@
 									ng-click="getAllComplaintsForUnit(unit.unitId)"
 									disabled="!unit.unitId">
 								<div ng-include src="'../home/customer/Customer_Complaint.html'"></div>
-								</tab> <tab heading="ACTION ITEMS" ng-click="getUnitActionItems(unit.unitId)" disabled="!unit.unitId">
+								</tab> <tab heading="ACTION ITEMS"
+									ng-click="getUnitActionItems(unit.unitId)"
+									disabled="!unit.unitId">
 								<div ng-include src="'../home/customer/Action_Item.html'"></div>
 								</tab> <tab heading="CALL" disabled="!unit.unitId">
 								<div ng-include src=" "></div>

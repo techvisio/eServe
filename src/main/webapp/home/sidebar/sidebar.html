@@ -5,7 +5,7 @@
 
 	<div class="menu-list">
 		<div class="user-image">
-			<img ng-src="{{user.photoPath}}"> <span>{{user.firstName}}
+			<img ng-src="{{user.photoPath || '../static/images/user.png'}}"> <span>{{user.firstName}}
 				{{user.lastName}}</span> <br> <span class="user-dept">{{user.designation.designation}},
 				{{user.department.department}}</span>
 		</div>

@@ -51,8 +51,8 @@ public class WorkItemManagerImpl implements WorkItemManager{
 	}
 
 	@Override
-	public List<WorkItem> getWorkItemByWorkType(String workType) {
-		List<WorkItem> workItems = workItemDao.getWorkItemByWorkType(workType);
+	public List<WorkItem> getWorkItemOfServiceRenewal(WorkItemSearchCriteria criteria) {
+		List<WorkItem> workItems = workItemDao.getWorkItemOfServiceRenewal(criteria);
 		return workItems;
 	}
 
@@ -85,7 +85,6 @@ public class WorkItemManagerImpl implements WorkItemManager{
 	public List<WorkItem> getWorkItemsByEntityIdAndEntityTypeAndWorkType(Long entityId,
 			String entityType, String workType) {
 		List<WorkItem> workItem = workItemDao.getWorkItemsByEntityIdAndEntityTypeAndWorkType(entityId, entityType, workType);
-
 		return workItem;
 	}
 
@@ -176,7 +175,9 @@ public class WorkItemManagerImpl implements WorkItemManager{
 		ClientConfig config = configPreferences.getConfigObject(AppConstants.SERVICE_REMINDER);
 		int countDays = Integer.parseInt(config.getValue());
 		Date dueDate = CommonUtil.getDate(unit.getServiceAgreement().getContractExpireOn(), countDays, false, false);
-		List<WorkItem> workItems = workItemDao.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unit.getUnitId(), entityType, workType);
+		
+		WorkItemSearchCriteria criteria = getWorkitemCriteria(unit.getUnitId(), entityType, workType);
+		List<WorkItem> workItems = workItemDao.getActiveWorkItems(criteria, unit.getServiceAgreement());
 		WorkItem workItem = null;
 		if(workItems != null && workItems.size()>0){
 			workItem = workItems.get(0);
@@ -193,12 +194,13 @@ public class WorkItemManagerImpl implements WorkItemManager{
 	}
 
 	@Override
-	public void closeAgreementApprovalWorkItem(Long unitId){
+	public void closeAgreementApprovalWorkItem(Unit unit){
 		
 		String entityType = AppConstants.EntityType.UNIT.name();
 		String workType = AppConstants.WorkItemType.AGREEMENT_APPROVAL
 				.getWorkType();
-		List<WorkItem> workItems= workItemDao.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unitId, entityType,workType);
+		WorkItemSearchCriteria criteriaForApproval = getWorkitemCriteria(unit.getUnitId(), entityType, workType);
+		List<WorkItem> workItems= workItemDao.getActiveWorkItems(criteriaForApproval, unit.getServiceAgreement());
 
 		if(workItems != null && workItems.size()>0){
 			WorkItem workItemFromDB = workItems.get(0);		
@@ -208,11 +210,11 @@ public class WorkItemManagerImpl implements WorkItemManager{
 	}
 
 	@Override
-	public void createWorkItemForSalesRenewal(UnitBasicInfo unitInfo) {
-		
+	public void createWorkItemForSalesRenewal(UnitBasicInfo unitInfo, Unit unit) {
 		String entityType = AppConstants.EntityType.UNIT.name();
 		String workType = AppConstants.WorkItemType.SALES_RENEWAL_AGREEMENT.getWorkType();
-		List<WorkItem> workItems = workItemDao.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unitInfo.getUnitId(), entityType, workType);
+		WorkItemSearchCriteria criteriaForSalesRenewal = getWorkitemCriteria(unitInfo.getUnitId(), entityType, workType);
+		List<WorkItem> workItems= workItemDao.getActiveWorkItems(criteriaForSalesRenewal, unit.getServiceAgreement());
 		WorkItem workItem = null;
 		
 		if(workItems != null && workItems.size()>0){
@@ -231,9 +233,23 @@ public class WorkItemManagerImpl implements WorkItemManager{
 	}
 
 	@Override
-	public List<WorkItem> getActiveWorkItems(WorkItemSearchCriteria criteria,
-			ServiceAgreement agreement) {
+	public List<WorkItem> getActiveWorkItems(WorkItemSearchCriteria criteria, ServiceAgreement agreement) {
 		List<WorkItem> workItems = workItemDao.getActiveWorkItems(criteria, agreement);
 		return workItems;
 	}
+	
+	@Override
+	public WorkItemSearchCriteria getWorkitemCriteria(Long entityId,String entityType, String workType) {
+		WorkItemSearchCriteria criteria = new WorkItemSearchCriteria();
+		criteria.setType(workType);
+		criteria.setEntityType(entityType);
+		criteria.setEntityId(entityId);
+		return criteria;
+	}
+	@Override
+	public SearchResultData getWorkItemForQueuebySearchCriteria(WorkItemSearchCriteria workItemSearchCriteria) throws ParseException{
+		SearchResultData searchResultData = workItemDao.getWorkItemForQueuebySearchCriteria(workItemSearchCriteria);
+		return searchResultData;
+	}
+	
 }

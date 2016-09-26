@@ -354,6 +354,11 @@ userModule
 
 			 $scope.updateUser=function(){
 
+				 if(!$scope.USER.$valid){
+					 $scope.alerts=[];
+					 $scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
+					 return;
+				 }
 				 userService.updateUser($scope.user)
 				 .then(
 						 function(response) {
@@ -553,8 +558,8 @@ userModule
 			 
 			 
 			 $scope.Submit = function(){
-					userService.savePic($scope.user.file, $scope.user.userId);
-					$state.reload('viewUser',{entityId:$scope.user.userId});
+					userService.savePic($scope.user.file, $scope.user.userId, $scope.user.userName);
+					
 			 }
-			 
+
 		 } ]);

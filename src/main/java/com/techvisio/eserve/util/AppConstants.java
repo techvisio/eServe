@@ -14,6 +14,13 @@ public interface AppConstants {
 	public static final String SERVICE_PROVIDER = "SERVICE_PROVIDER";
 	public static final String CONFIG = "CONFIG";
 	public static final String CLIENT_CONFIG = "CLIENT_CONFIG";
+	public static final String EQUIPMENT_MODAL_NO = "EQUIPMENT_MODAL_NO";
+	public static final String EQUIPMENT_WARRANTY_UNDER = "EQUIPMENT_WARRANTY_UNDER";
+	public static final String EQUIPMENT_TYPE = "EQUIPMENT_TYPE";
+	
+	
+	
+	
 	public static final char APPROVED = 'A';
 	public static final char REJECTED = 'R';
 	public static final char PENDING = 'P';

@@ -312,26 +312,25 @@ public class CustomerServiceICCDefaultImpl extends	AbstractCustomerServiceICCImp
 
 	@Override
 	public GenericRequest<Unit> preRenewSalesAgreement(GenericRequest<Unit> request) {
-		return super.preRenewSalesAgreement(request);
+		 request=super.preRenewSalesAgreement(request);
+		
+		Date contractStartDate = request.getBussinessObject().getServiceAgreement().getContractStartOn();
+		Date contractExpireDate = request.getBussinessObject().getServiceAgreement().getContractExpireOn(); 
+
+		if(contractStartDate.before(contractExpireDate) || contractExpireDate.equals(contractStartDate)){
+			throw new MandatoryFieldMissingException("New sales agreement need to be started after last agreement expiration.  so please choose contract start date which will come after previous service expiration date");
+		}
+		return request;
 	}
 
 	@Override
 	public GenericRequest<Unit> postRenewSalesAgreement(GenericRequest<Unit> request,
 			String context) {
 		request = super.postRenewSalesAgreement(request, context);
-		Date contractStartDate = request.getBussinessObject().getServiceAgreement().getContractStartOn();
-		Date contractExpireDate = request.getBussinessObject().getServiceAgreement().getContractExpireOn(); 
-		if(contractExpireDate.before(contractStartDate)){
-			String comment = request.getContextInfo().get("comment");
-			workItemService.createWorkItemForUnitSave(context,request.getBussinessObject().getUnitId(), comment);
-			workItemService.updateWorkItemStatus(request.getBussinessObject().getUnitId(),"CLOSE", "UNIT", "SALES RENEWAL AGREEMENT");
-		}
-		else{
-			throw new MandatoryFieldMissingException("New sales agreement will be started after last agreement expiration.  so please choose contract start date which will come after previous service expiration date");
-		}
+		String comment = request.getContextInfo().get("comment");
+		workItemService.createWorkItemForUnitSave(context,request.getBussinessObject().getUnitId(), comment);
+		workItemService.updateWorkItemStatus(request.getBussinessObject().getUnitId(),"CLOSE", "SALES RENEWAL AGREEMENT","UNIT");
 		return request;
-
-
 	}
 
 }

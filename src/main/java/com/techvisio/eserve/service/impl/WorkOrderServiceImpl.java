@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.WorkItemSearchCriteria;
 import com.techvisio.eserve.beans.WorkOrderAssignment;
 import com.techvisio.eserve.beans.WorkOrderEquipment;
 import com.techvisio.eserve.beans.WorkOrderResolution;
@@ -205,7 +206,7 @@ public class WorkOrderServiceImpl implements WorkOrderService{
 		complaintEquipment.setInstallationDate(equipmentDetail.getInstallationDate());
 		complaintEquipment.setInvoiceNo(equipmentDetail.getInvoiceNo());
 		complaintEquipment.setSerialNo(equipmentDetail.getSerialNo());
-		complaintEquipment.setType(equipmentDetail.getType());
+		complaintEquipment.setEquipmentType(equipmentDetail.getEquipmentType());
 		complaintEquipment.setUnderWarranty(equipmentDetail.isUnderWarranty());
 		complaintEquipment.setUnitId(equipmentDetail.getUnitId());
 		complaintEquipment.setWarrantyUnder(equipmentDetail.getWarrantyUnder());
@@ -257,13 +258,16 @@ public class WorkOrderServiceImpl implements WorkOrderService{
 	@Override
 	public void createPmsWorkItem(Unit unit){
 
+		ClientConfig pmsDueDate = configPreferences.getConfigObject(AppConstants.PMS_DUE_DATE_REMINDER);
+		int pmsDueDateCount = Integer.parseInt(pmsDueDate.getValue());
 		ClientConfig pmsCalculationData = configPreferences.getConfigObject(AppConstants.PMS_CALCULATION_DATA);
 		ClientConfig pmsCalculationFreqeuncy = configPreferences.getConfigObject(AppConstants.PMS_CACULATION_FREQUENCY); 
 		List<String> stringToStringArray = CommonUtil.stringToStringArray(pmsCalculationData.getValue());
 		List<Integer> stringArrayToIntegerArray = CommonUtil.stringArrayToIntegerArray(stringToStringArray);
 
 		//get existing workitem for unit and type
-		List<WorkItem> existingWorkItem=workItemService.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unit.getUnitId(),AppConstants.WorkItemType.PMS.getEntityType(), AppConstants.WorkItemType.PMS.getWorkType());
+		WorkItemSearchCriteria criteria = workItemService.getWorkitemCriteria(unit.getUnitId(),AppConstants.WorkItemType.PMS.getEntityType(), AppConstants.WorkItemType.PMS.getWorkType());
+		List<WorkItem> existingWorkItem=workItemService.getActiveWorkItems(criteria, unit.getServiceAgreement());
 		Collections.sort(existingWorkItem, new Comparator<WorkItem>() {
 
 			@Override
@@ -276,7 +280,7 @@ public class WorkOrderServiceImpl implements WorkOrderService{
 
 		int index=0;
 		for (Integer pmsFrequencyCount : stringArrayToIntegerArray){
-			Date dueDate = CommonUtil.getDueDateByPmsFrequencyCalculator(unit.getServiceAgreement()	.getContractStartOn(), pmsFrequencyCount, pmsCalculationFreqeuncy.getValue());
+			Date dueDate = CommonUtil.getDueDateByPmsFrequencyCalculator(unit.getServiceAgreement()	.getContractStartOn(), pmsFrequencyCount, pmsCalculationFreqeuncy.getValue(), pmsDueDateCount);
 
 			WorkItem workItem=null;
 			if(existingWorkItem !=null && existingWorkItem.size()>index){

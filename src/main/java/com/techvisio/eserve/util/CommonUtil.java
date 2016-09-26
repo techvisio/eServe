@@ -90,7 +90,7 @@ public class CommonUtil {
 		return null;
 	}
 
-	public static Date getDueDateByPmsFrequencyCalculator(Date date, int pmsFrequencyCount, String pmsFrequencyCalculator){
+	public static Date getDueDateByPmsFrequencyCalculator(Date date, int pmsFrequencyCount, String pmsFrequencyCalculator, int dueDateCount){
 
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(date); 
@@ -106,6 +106,9 @@ public class CommonUtil {
 		{
 			c.add(Calendar.YEAR, (pmsFrequencyCount));	
 		}
+		date = c.getTime();
+		c.setTime(date);
+		c.add(Calendar.DATE, -(dueDateCount));
 		date = c.getTime();
 		return date;
 	}

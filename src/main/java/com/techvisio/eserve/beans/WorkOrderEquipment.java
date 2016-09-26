@@ -43,10 +43,15 @@ public class WorkOrderEquipment {
 	private String serialNo;
 	@Column(name="INVOICE_NO")
 	private Long invoiceNo;
-	@Column(name="WARRANTY_UNDER")
-	private String warrantyUnder;
-	@Column(name="TYPE")
-	private String type;
+	@OneToOne
+	@JoinColumn(name="WARRANTY_UNDER_ID")
+	private EquipmentWarrantyUnder warrantyUnder;
+	@OneToOne
+	@JoinColumn(name="EQUIPMENT_TYPE_ID")
+	private EquipmentType equipmentType;
+	@OneToOne
+	@JoinColumn(name="EQUIPMENT_MODAL_NO_ID")
+	private EquipmentModalNo modalNo;
 	@OneToOne
 	@JoinColumn(name="EQUIPMENT_ID")
 	private Equipment equipment;
@@ -84,17 +89,24 @@ public class WorkOrderEquipment {
 	public void setInvoiceNo(Long invoiceNo) {
 		this.invoiceNo = invoiceNo;
 	}
-	public String getWarrantyUnder() {
+
+	public EquipmentWarrantyUnder getWarrantyUnder() {
 		return warrantyUnder;
 	}
-	public void setWarrantyUnder(String warrantyUnder) {
+	public void setWarrantyUnder(EquipmentWarrantyUnder warrantyUnder) {
 		this.warrantyUnder = warrantyUnder;
 	}
-	public String getType() {
-		return type;
+	public EquipmentType getEquipmentType() {
+		return equipmentType;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setEquipmentType(EquipmentType equipmentType) {
+		this.equipmentType = equipmentType;
+	}
+	public EquipmentModalNo getModalNo() {
+		return modalNo;
+	}
+	public void setModalNo(EquipmentModalNo modalNo) {
+		this.modalNo = modalNo;
 	}
 	public Long getUnitId() {
 		return unitId;

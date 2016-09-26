@@ -11,6 +11,9 @@ import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.EquipmentModalNo;
+import com.techvisio.eserve.beans.EquipmentType;
+import com.techvisio.eserve.beans.EquipmentWarrantyUnder;
 import com.techvisio.eserve.beans.InvoiceTaxes;
 import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
@@ -48,4 +51,7 @@ public interface CacheDao {
 	public List<User> getUsers();
 	public List<ClientConfig> getClientPreferences();
 	public List<ClientCommConfig> getClientCommunicationConfig();
+	public List<EquipmentWarrantyUnder> getEquipmentWarrantyUnder();
+	public List<EquipmentType> getEquipmentType();
+	public List<EquipmentModalNo> getEquipmentModalNo();
 }

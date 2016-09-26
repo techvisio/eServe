@@ -40,7 +40,7 @@ public class WorkItemSearchCriteria {
 	}
 
 	public void setPageNo(int pageNo) {
-		this.pageNo = pageNo;
+		this.pageNo = pgeNo;
 	}
 
 	public boolean getIsAscending() {

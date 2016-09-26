@@ -4,11 +4,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -20,7 +24,7 @@ import com.techvisio.eserve.util.AppConstants;
 
 @Entity
 @Table(name = "TB_SERVICE_AGREEMENT_HISTORY")
-public class ServiceAgreementHistory extends BasicEntity{
+public class ServiceAgreementHistory extends BasicFileds{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -41,6 +45,10 @@ public class ServiceAgreementHistory extends BasicEntity{
 	private String startDateString;
 	@Transient
 	private String endDateString;
+
+	@OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
+	@JoinColumn(name="SRVC_AGRMNT_FINANC_HSTORY_ID")
+	private ServiceAgreementFinanceHistory serviceAgreementFinanceHistory;
 	
 	public Long getAgreementHistoryId() {
 		return AgreementHistoryId;
@@ -120,6 +128,13 @@ public class ServiceAgreementHistory extends BasicEntity{
 	}
 	public void setVersionId(Double versionId) {
 		this.versionId = versionId;
+	}
+	public ServiceAgreementFinanceHistory getServiceAgreementFinanceHistory() {
+		return serviceAgreementFinanceHistory;
+	}
+	public void setServiceAgreementFinanceHistory(
+			ServiceAgreementFinanceHistory serviceAgreementFinanceHistory) {
+		this.serviceAgreementFinanceHistory = serviceAgreementFinanceHistory;
 	}
 	
 }

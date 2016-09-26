@@ -56,13 +56,13 @@
 				ng-repeat="equip in unit.equipmentDetails" id="parent">
 				<div class="col-md-1 col-sm-1 col-xs-1 padding-non text-centre">
 					<div class="form-group">
-						<label class="font-size-label" for="formfield9">{{equip.type}}</label>
+						<label class="font-size-label" for="formfield9">{{equip.equipmentType.equipmentType}}</label>
 					</div>
 				</div>
 
 				<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 					<div class="form-group">
-						<label class=" font-size-label" for="formfield9">{{equip.equipment.model}}</label>
+						<label class=" font-size-label" for="formfield9">{{equip.modalNo.modalNo}}</label>
 					</div>
 				</div>
 
@@ -84,7 +84,7 @@
 				</div>
 				<div class="col-md-2 col-sm-2 col-xs-2 padding-non text-centre">
 					<div class="form-group">
-						<label class="font-size-label" for="formfield9">{{equip.warrantyUnder}}</label>
+						<label class="font-size-label" for="formfield9">{{equip.warrantyUnder.warrantyUnder}}</label>
 					</div>
 				</div>
 

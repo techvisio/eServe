@@ -100,8 +100,13 @@ public class WorkItemController {
 		Response response=new Response();
 		SearchResultData workItems = workItemService.getWorkItembySearchCriteria(workItemSearchCriteria);
 		response.setResponseBody(workItems);
-
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
-	
+	@RequestMapping(value="/workitemqueuelist/",method = RequestMethod.POST)
+	public ResponseEntity<Response> getWorkItemForQueuebySearchCriteria(@RequestBody WorkItemSearchCriteria workItemSearchCriteria) throws ParseException {
+		Response response=new Response();
+		SearchResultData workItems = workItemService.getWorkItemForQueuebySearchCriteria(workItemSearchCriteria);
+		response.setResponseBody(workItems);
+		return new ResponseEntity<Response>(response,HttpStatus.OK);
+	}
 }

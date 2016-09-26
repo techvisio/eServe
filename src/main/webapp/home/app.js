@@ -295,7 +295,10 @@ erp.config(function ($stateProvider, $urlRouterProvider) {
 		resolve:{
 			complaint: ['$stateParams','dashboardService', function($stateParams,dashboardService){
 				return dashboardService.getComplaintDataforDashboard($stateParams.type,$stateParams.code);
-			}]	
+			}],
+			isDashboard: ['$stateParams', function($stateParams){
+				return true;
+			}]
 		}
 	})
 
@@ -456,7 +459,7 @@ erp.controller('ApplicationController',
 					$rootScope.heading = 'workitem';
 				}
 			});
-
+			
 			$scope.logout=function(){
 
 				window.location=document.getElementById('logout').href;
@@ -506,17 +509,17 @@ erp.controller('ApplicationController',
 					$rootScope.showNotHavePrivilegeModel();
 				}
 			}
-			
+
 			$scope.searchUser=function(){
 
-				if($rootScope.isPrivileged('CREATE_USER') || $rootScope.isPrivileged('VIEW_USER')){
+				if($rootScope.isPrivileged('CREATE_USER') || $rootScope.isPrivileged('VIEW_USER') || $rootScope.isPrivileged('USER_ADMINISTRATION') ){
 					$state.go('searchUser');
 				}
 				else{
 					$rootScope.showNotHavePrivilegeModel();
 				}
 			}
-			
+
 			$scope.createCustomer=function(){
 				if($rootScope.isPrivileged('CREATE_CUSTOMER')){
 					$state.go('createNewCustomer');
@@ -529,13 +532,13 @@ erp.controller('ApplicationController',
 			$scope.searchCustomer=function(){
 
 				if($rootScope.isPrivileged('VIEW_CUSTOMER') || $rootScope.isPrivileged('CREATE_CUSTOMER')){
-					$state.go('searchUser');
+					$state.go('searchCustomer');
 				}
 				else{
 					$rootScope.showNotHavePrivilegeModel();
 				}
 			}
-			
+
 			$rootScope.closeModal=function(){
 				$rootScope.curModal.close();
 			}

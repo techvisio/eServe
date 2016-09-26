@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TB_COMMUNICATION_JOBS")
+@Table(name = "TB_COMMUNICATION_JOB")
 public class CommunicationJob extends BasicEntity{
 
 	@Id

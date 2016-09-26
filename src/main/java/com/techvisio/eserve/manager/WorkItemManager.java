@@ -21,7 +21,7 @@ public interface WorkItemManager {
 	public void saveWorkItem(WorkItem workItem);
 	public List<WorkItem> getWorkItemByUserId(Long userId);
 	public List<WorkItem> getWorkItemByPrivilege(Long privilegeId);
-	public List<WorkItem> getWorkItemByWorkType(String workType);
+	public List<WorkItem> getWorkItemOfServiceRenewal(WorkItemSearchCriteria criteria);
 	public List<WorkItem> getWorkItembyUserandType(Long userId, String type,
 			String status);
 	public void updateWorkItemStatus(Long entityId, String status,String workType, String entityType);
@@ -38,8 +38,13 @@ public interface WorkItemManager {
 	public SearchResultData getWorkItembySearchCriteria(
 			WorkItemSearchCriteria workItemSearchCriteria) throws ParseException;
 	public void createWorkItemForServiceRenewal(Unit unit);
-	public void closeAgreementApprovalWorkItem(Long unitId);
-	public void createWorkItemForSalesRenewal(UnitBasicInfo unitInfo);
+	public void closeAgreementApprovalWorkItem(Unit unit);
 	public List<WorkItem> getActiveWorkItems(WorkItemSearchCriteria criteria,
 			ServiceAgreement agreement);
+	public WorkItemSearchCriteria getWorkitemCriteria(Long entityId,
+			String entityType, String workType);
+	public void createWorkItemForSalesRenewal(UnitBasicInfo unitInfo, Unit unit);
+	public SearchResultData getWorkItemForQueuebySearchCriteria(
+			WorkItemSearchCriteria workItemSearchCriteria)
+			throws ParseException;
 }

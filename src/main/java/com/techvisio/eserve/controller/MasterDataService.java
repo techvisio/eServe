@@ -43,7 +43,10 @@ public class MasterDataService {
 				AppConstants.AGREEMENT_DURATION,
 				AppConstants.UNIT_CATEGORY,
 				AppConstants.CUSTOMER_TYPE,
-				AppConstants.SERVICE_PROVIDER
+				AppConstants.SERVICE_PROVIDER,
+				AppConstants.EQUIPMENT_MODAL_NO,
+				AppConstants.EQUIPMENT_TYPE,
+				AppConstants.EQUIPMENT_WARRANTY_UNDER
 		};
 
 		try{

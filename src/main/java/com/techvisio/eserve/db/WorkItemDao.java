@@ -16,7 +16,7 @@ public interface WorkItemDao {
 	public void saveWorkItem(WorkItem workItem);
 	public List<WorkItem> getWorkItemByUserId(Long userId);
 	public List<WorkItem> getWorkItemByPrivilege(Long privilegeId);
-	public List<WorkItem> getWorkItemByWorkType(String workType);
+	public List<WorkItem> getWorkItemOfServiceRenewal(WorkItemSearchCriteria criteria);
 	public List<WorkItem> getWorkItembyUserandType(Long userId, String type,
 			String status);
 	public void updateWorkItemStatus(Long entityId,String status,String workType, String entityType);
@@ -33,4 +33,7 @@ public interface WorkItemDao {
 			WorkItemSearchCriteria workItemSearchCriteria) throws ParseException;
 	public List<WorkItem> getActiveWorkItems(WorkItemSearchCriteria criteria,
 			ServiceAgreement agreement);
+	public SearchResultData getWorkItemForQueuebySearchCriteria(
+			WorkItemSearchCriteria workItemSearchCriteria)
+			throws ParseException;
 }

@@ -1,5 +1,6 @@
 package com.techvisio.eserve.db.impl;
 
+import java.sql.Date;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,9 +46,11 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 	}
 
 	@Override
-	public List<WorkItem> getWorkItemByWorkType(String workType) {
+	public List<WorkItem> getWorkItemOfServiceRenewal(WorkItemSearchCriteria criteria) {
 		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		String queryString="FROM WorkItem wi WHERE wi.workType = "+" ' "+workType+" ' "+" and wi.client.clientId = "+clientId;
+		String queryString="FROM WorkItem wi WHERE wi.entityId="+criteria.getEntityId() + " and wi.entityType="+"'"+criteria.getEntityType()+"'" 
+		+" and wi.status="+""+criteria.getStatus() +"'"+" and wi.workType = "+"'"+criteria.getType()+"'"
+				+" and wi.client.clientId = "+clientId;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<WorkItem> workItems= (List<WorkItem>)query.getResultList();
@@ -152,8 +155,8 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 
 	@Override
 	public List<Comment> getCommentList(Long workItemId){
-		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		String queryString="FROM Comment c WHERE c.workItemId = "+workItemId+" "+" and c.client.clientId = "+clientId +" ORDER BY c.createdOn desc"; 
+//		Long clientId = CommonUtil.getCurrentClient().getClientId();
+		String queryString="FROM Comment c WHERE c.workItemId = "+workItemId+" ORDER BY c.createdOn desc"; 
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<Comment> comment= (List<Comment>)query.getResultList();
@@ -182,13 +185,26 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 	@Override
 	public List<WorkItem> getActiveWorkItems(WorkItemSearchCriteria criteria, ServiceAgreement agreement){
 
-		java.sql.Date startDateSql = DateUtil.convertStringToSqlDate(agreement.getContractStartOnString());
-		java.sql.Date expireDateSql = DateUtil.convertStringToSqlDate(agreement.getContractExpireOnString());
+		java.sql.Date startDateSql = null;
+		java.sql.Date expireDateSql = null;
 
-		String queryString="Select wi.WORKITEM_ID	,wi.CREATED_BY	,wi.CREATED_ON	,wi.UPDATED_BY	,wi.UPDATED_ON	,wi.ASSIGNEE_ID	,wi.DESCRIPTION	,wi.DUE_DATE	,wi.ENTITY_CODE	,wi.ENTITY_ID	,wi.ENTITY_TYPE	,wi.ENTITY_URL	,wi.PRIORITY	,wi.PRIVILEGE_ID,wi.STATUS,wi.WORKTYPE	,"
-				+ "wi.Client_Id	 from  TB_WORK_ITEM " 
-				+ "where wi.entityId ="+criteria.getEntityId()+" and wi.WORKTYPE = "+"'"+criteria.getType()+"'"+" and wi.ENTITY_TYPE = "+"'"+criteria.getEntityType() +"'"+" and wi.DUE_DATE BETWEEN "+startDateSql+" AND " + expireDateSql;
+		String queryString="Select wi.WORKITEM_ID,wi.CREATED_BY,wi.CREATED_ON,wi.UPDATED_BY,wi.UPDATED_ON,wi.ASSIGNEE_ID,wi.DESCRIPTION,wi.DUE_DATE,wi.ENTITY_CODE,wi.ENTITY_ID,wi.ENTITY_TYPE,wi.ENTITY_URL,wi.PRIORITY,wi.PRIVILEGE_ID,wi.STATUS,wi.WORKTYPE,"
+				+ "wi.Client_Id	 from  TB_WORK_ITEM wi " 
+				+ "where wi.WORKTYPE = coalesce(:type, wi.WORKTYPE) and wi.ENTITY_ID = :entityId and wi.ENTITY_TYPE = coalesce(:entityType, wi.ENTITY_TYPE) and (coalesce(DATE(wi.DUE_DATE),now()) BETWEEN :DATE_FROM AND :DATE_TO)";
 		Query query=getEntityManager().createNativeQuery(queryString,WorkItem.class);
+
+		String entityType = StringUtilities.getDefaultOrBlankValueOfString(criteria.getEntityType());
+		String type = StringUtilities.getDefaultOrBlankValueOfString(criteria.getType());
+		Long entityId = criteria.getEntityId();
+		startDateSql = DateUtil.converUtilDateToSqlDate(agreement.getContractStartOn());
+		expireDateSql = DateUtil.converUtilDateToSqlDate(agreement.getContractExpireOn());
+		
+		query.setParameter("type", type);
+		query.setParameter("entityId", entityId);
+		query.setParameter("entityType", entityType);
+		query.setParameter("DATE_FROM", startDateSql);
+		query.setParameter("DATE_TO", expireDateSql);
+
 		@SuppressWarnings("unchecked")
 		List<WorkItem> workItems= (List<WorkItem>)query.getResultList();
 		List<WorkItem> clonedWorkItems = new ArrayList<WorkItem>(workItems);
@@ -197,6 +213,115 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 
 	@Override
 	public SearchResultData getWorkItembySearchCriteria(WorkItemSearchCriteria workItemSearchCriteria) throws ParseException {
+
+		SearchResultData<WorkItem> searchResultData= new SearchResultData<WorkItem>();
+		String ascOrDsc = workItemSearchCriteria.getIsAscending()?"ASC":"DESC";
+
+		String sortBy=null;
+		try {
+			sortBy = CommonUtil.getFieldValue(WorkItem.class, workItemSearchCriteria.getSortBy());
+		} catch (NoSuchFieldException | SecurityException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		String queryString="Select wi.WORKITEM_ID	,wi.CREATED_BY	,wi.CREATED_ON	,wi.UPDATED_BY	,wi.UPDATED_ON	,wi.ASSIGNEE_ID	,wi.DESCRIPTION	,wi.DUE_DATE	,wi.ENTITY_CODE	,wi.ENTITY_ID	,wi.ENTITY_TYPE	,wi.ENTITY_URL	,wi.PRIORITY	,wi.PRIVILEGE_ID,wi.STATUS,wi.WORKTYPE	,"
+				+ "wi.Client_Id	 from  TB_WORK_ITEM wi join TB_PRIVILEGE prv "
+				+ "on wi.PRIVILEGE_ID=prv.PRIVILEGE_ID join TB_USER_PRIVILEGE usrpr on usrpr.PRIVILEGE_ID=prv.PRIVILEGE_ID "
+				+ "where wi.assignee_Id is null and wi.WORKTYPE = coalesce(:type, wi.WORKTYPE) and wi.STATUS = coalesce(:status, wi.STATUS) and wi.ENTITY_TYPE = coalesce(:entityType, wi.ENTITY_TYPE) and coalesce(wi.ASSIGNEE_ID, '-1') = coalesce(:assigneeId, coalesce(wi.ASSIGNEE_ID, '-1')) and usrpr.USER_ID=:userId and (coalesce(DATE(wi.DUE_DATE),now()) BETWEEN :DATE_FROM AND :DATE_TO) ORDER BY  "+sortBy +" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
+		Query query=getEntityManager().createNativeQuery(queryString,WorkItem.class);
+
+		String queryString1="SELECT count(*),'totalCount' FROM (select wi.* from  TB_WORK_ITEM wi join TB_PRIVILEGE prv on wi.PRIVILEGE_ID=prv.PRIVILEGE_ID join TB_USER_PRIVILEGE usrpr on usrpr.PRIVILEGE_ID=prv.PRIVILEGE_ID where wi.assignee_Id is null and wi.WORKTYPE = coalesce(:type, WORKTYPE) and wi.STATUS = coalesce(:status, STATUS) and wi.ENTITY_TYPE = coalesce(:entityType, wi.ENTITY_TYPE) and coalesce(wi.ASSIGNEE_ID, '-1') = coalesce(:assigneeId, coalesce(wi.ASSIGNEE_ID, '-1')) and usrpr.USER_ID=:userId and (coalesce(DATE(wi.DUE_DATE),now()) BETWEEN :DATE_FROM AND :DATE_TO))a";
+		Query query1=getEntityManager().createNativeQuery(queryString1);
+
+
+		String entityType = StringUtilities.getDefaultOrBlankValueOfString(workItemSearchCriteria.getEntityType());
+		String type = StringUtilities.getDefaultOrBlankValueOfString(workItemSearchCriteria.getType());
+		String status = StringUtilities.getDefaultOrBlankValueOfString(workItemSearchCriteria.getStatus());
+		Long userId = workItemSearchCriteria.getUserId();
+		Long assigneeId = null;
+		if(workItemSearchCriteria.getAssigneeId() != null){
+			assigneeId = workItemSearchCriteria.getAssigneeId();
+		}
+		String dateFromString,dateToString = null;
+		java.sql.Date dateToSql;
+		java.sql.Date dateFromSql;
+		if(workItemSearchCriteria.getFromDate() == null)
+		{
+			dateFromString = "March 01, 1986";
+			dateFromSql = DateUtil.convertStringToSqlDate(dateFromString, AppConstants.DateFormat.MM_dd_yyyy.getPattern());
+		}
+		else
+		{
+			dateFromString = workItemSearchCriteria.getFromDate();
+			dateFromSql = DateUtil.convertStringToSqlDate(dateFromString);
+		}
+
+		if(workItemSearchCriteria.getToDate() == null)
+		{
+			dateToString = "March 01, 9999";
+			dateToSql = DateUtil.convertStringToSqlDate(dateToString, AppConstants.DateFormat.MM_dd_yyyy.getPattern()); 
+		}
+		else
+		{
+			dateToString = workItemSearchCriteria.getToDate();
+			dateToSql = DateUtil.convertStringToSqlDate(dateToString);
+		}
+
+
+		int pageSize,pageNo;
+		if(workItemSearchCriteria.getPageSize()==0)
+		{
+			pageSize = 3;
+		}
+		else
+		{
+			pageSize = workItemSearchCriteria.getPageSize();
+		}
+		if(workItemSearchCriteria.getPageNo() == 0)
+		{
+			pageNo = 1;
+		}
+		else
+		{
+			pageNo = workItemSearchCriteria.getPageNo();
+		}
+
+		int startIndex = (pageSize * pageNo) - pageSize;
+
+		query.setParameter("type", type);
+		query.setParameter("userId", userId);
+		query.setParameter("status", status);
+		query.setParameter("entityType", entityType);
+		query.setParameter("assigneeId", assigneeId);
+		query.setParameter("DATE_FROM", dateFromSql);
+		query.setParameter("DATE_TO", dateToSql);
+		query.setParameter("PAGE_SIZE", pageSize);
+		query.setParameter("START_INDEX", startIndex);
+
+		query1.setParameter("type", type);
+		query1.setParameter("userId", userId);
+		query1.setParameter("status", status);
+		query1.setParameter("entityType", entityType);
+		query1.setParameter("assigneeId", assigneeId);
+		query1.setParameter("DATE_FROM", dateFromSql);
+		query1.setParameter("DATE_TO", dateToSql);
+
+		@SuppressWarnings("unchecked")
+		List<Object[]> counts = query1.getResultList();
+		for (Object[] count : counts) {
+			Long count1 = (long) ((Number) count[0]).intValue();
+			searchResultData.setTotalCount(count1);
+		}
+
+		@SuppressWarnings("unchecked")
+		List<WorkItem> result= (List<WorkItem>)query.getResultList();
+		searchResultData.setObjectData(result);
+		return searchResultData;
+	}
+	
+	@Override
+	public SearchResultData getWorkItemForQueuebySearchCriteria(WorkItemSearchCriteria workItemSearchCriteria) throws ParseException {
 
 		SearchResultData<WorkItem> searchResultData= new SearchResultData<WorkItem>();
 		String ascOrDsc = workItemSearchCriteria.getIsAscending()?"ASC":"DESC";
@@ -209,13 +334,12 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 			e.printStackTrace();
 		}
 		
-		String queryString="Select wi.WORKITEM_ID	,wi.CREATED_BY	,wi.CREATED_ON	,wi.UPDATED_BY	,wi.UPDATED_ON	,wi.ASSIGNEE_ID	,wi.DESCRIPTION	,wi.DUE_DATE	,wi.ENTITY_CODE	,wi.ENTITY_ID	,wi.ENTITY_TYPE	,wi.ENTITY_URL	,wi.PRIORITY	,wi.PRIVILEGE_ID,wi.STATUS,wi.WORKTYPE	,"
-				+ "wi.Client_Id	 from  TB_WORK_ITEM wi join TB_PRIVILEGE prv "
-				+ "on wi.PRIVILEGE_ID=prv.PRIVILEGE_ID join TB_USER_PRIVILEGE usrpr on usrpr.PRIVILEGE_ID=prv.PRIVILEGE_ID "
-				+ "where wi.WORKTYPE = coalesce(:type, wi.WORKTYPE) and wi.STATUS = coalesce(:status, wi.STATUS) and wi.ENTITY_TYPE = coalesce(:entityType, wi.ENTITY_TYPE) and coalesce(wi.ASSIGNEE_ID, '-1') = coalesce(:assigneeId, coalesce(wi.ASSIGNEE_ID, '-1')) and usrpr.USER_ID=:userId and (coalesce(DATE(wi.DUE_DATE),now()) BETWEEN :DATE_FROM AND :DATE_TO) ORDER BY  "+sortBy +" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
+		String queryString="Select wi.WORKITEM_ID	,wi.CREATED_BY	,wi.CREATED_ON	,wi.UPDATED_BY	,wi.UPDATED_ON	,wi.ASSIGNEE_ID	,wi.DESCRIPTION	,wi.DUE_DATE	,wi.ENTITY_CODE	,wi.ENTITY_ID	,wi.ENTITY_TYPE	,wi.ENTITY_URL	,wi.PRIORITY	,wi.PRIVILEGE_ID,wi.STATUS,wi.WORKTYPE,"
+				+ "wi.Client_Id	 from  TB_WORK_ITEM wi "
+				+ "where wi.WORKTYPE = coalesce(:type, wi.WORKTYPE) and wi.STATUS = coalesce(:status, wi.STATUS) and wi.ENTITY_TYPE = coalesce(:entityType, wi.ENTITY_TYPE) and wi.ASSIGNEE_ID=:userId and (coalesce(DATE(wi.DUE_DATE),now()) BETWEEN :DATE_FROM AND :DATE_TO) ORDER BY  "+sortBy +" "+ascOrDsc+" limit :START_INDEX,:PAGE_SIZE";
 		Query query=getEntityManager().createNativeQuery(queryString,WorkItem.class);
 		
-		String queryString1="SELECT count(*),'totalCount' FROM (select wi.* from  TB_WORK_ITEM wi join TB_PRIVILEGE prv on wi.PRIVILEGE_ID=prv.PRIVILEGE_ID join TB_USER_PRIVILEGE usrpr on usrpr.PRIVILEGE_ID=prv.PRIVILEGE_ID where wi.WORKTYPE = coalesce(:type, WORKTYPE) and wi.STATUS = coalesce(:status, STATUS) and wi.ENTITY_TYPE = coalesce(:entityType, wi.ENTITY_TYPE) and coalesce(wi.ASSIGNEE_ID, '-1') = coalesce(:assigneeId, coalesce(wi.ASSIGNEE_ID, '-1')) and usrpr.USER_ID=:userId and (coalesce(DATE(wi.DUE_DATE),now()) BETWEEN :DATE_FROM AND :DATE_TO))a";
+		String queryString1="SELECT count(*),'totalCount' FROM (select wi.* from  TB_WORK_ITEM wi where wi.WORKTYPE = coalesce(:type, WORKTYPE) and wi.STATUS = coalesce(:status, STATUS) and wi.ENTITY_TYPE = coalesce(:entityType, wi.ENTITY_TYPE) and wi.ASSIGNEE_ID=:userId and (coalesce(DATE(wi.DUE_DATE),now()) BETWEEN :DATE_FROM AND :DATE_TO))a";
 		Query query1=getEntityManager().createNativeQuery(queryString1);
 		
 		
@@ -223,10 +347,6 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		String type = StringUtilities.getDefaultOrBlankValueOfString(workItemSearchCriteria.getType());
 		String status = StringUtilities.getDefaultOrBlankValueOfString(workItemSearchCriteria.getStatus());
 		Long userId = workItemSearchCriteria.getUserId();
-		Long assigneeId = null;
-		if(workItemSearchCriteria.getAssigneeId() != null){
-			 assigneeId = workItemSearchCriteria.getAssigneeId();
-		}
 		String dateFromString,dateToString = null;
 		java.sql.Date dateToSql;
 		java.sql.Date dateFromSql;
@@ -277,7 +397,6 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		query.setParameter("userId", userId);
 		query.setParameter("status", status);
 		query.setParameter("entityType", entityType);
-		query.setParameter("assigneeId", assigneeId);
 		query.setParameter("DATE_FROM", dateFromSql);
 		query.setParameter("DATE_TO", dateToSql);
 		query.setParameter("PAGE_SIZE", pageSize);
@@ -287,7 +406,6 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		query1.setParameter("userId", userId);
 		query1.setParameter("status", status);
 		query1.setParameter("entityType", entityType);
-		query1.setParameter("assigneeId", assigneeId);
 		query1.setParameter("DATE_FROM", dateFromSql);
 		query1.setParameter("DATE_TO", dateToSql);
 		
@@ -303,5 +421,5 @@ public class WorkItemDaoImpl extends BaseDao implements WorkItemDao{
 		searchResultData.setObjectData(result);
 		return searchResultData;
 	}
-
+	
 }

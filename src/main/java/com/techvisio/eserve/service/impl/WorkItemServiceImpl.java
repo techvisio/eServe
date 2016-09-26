@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.svg.GetSVGDocument;
 
 import com.techvisio.eserve.beans.Comment;
 import com.techvisio.eserve.beans.ClientConfig;
@@ -63,9 +64,8 @@ public class WorkItemServiceImpl implements WorkItemService {
 	}
 
 	@Override
-	public List<WorkItem> getWorkItemByWorkType(String workType) {
-		List<WorkItem> workItems = workItemManager
-				.getWorkItemByWorkType(workType);
+	public List<WorkItem> getWorkItemOfServiceRenewal(WorkItemSearchCriteria criteria){
+		List<WorkItem> workItems = workItemManager.getWorkItemOfServiceRenewal(criteria);
 		return workItems;
 	}
 
@@ -83,8 +83,12 @@ public class WorkItemServiceImpl implements WorkItemService {
 
 	@Override
 	public List<WorkItem> getUnitWorkItemsByEntityIdAndEntityType(Long entityId) {
+		Unit unitFromDB = customerService.getUnitById(entityId);
 		String entityType = AppConstants.EntityType.UNIT.name();
-		List<WorkItem> workItems = workItemManager.getWorkItemsByEntityIdAndEntityType(entityId, entityType);
+		WorkItemSearchCriteria criteria = new WorkItemSearchCriteria();
+		criteria.setEntityId(entityId);
+		criteria.setEntityType(entityType);
+		List<WorkItem> workItems = workItemManager.getActiveWorkItems(criteria, unitFromDB.getServiceAgreement());
 		return workItems;
 	}
 
@@ -109,9 +113,8 @@ public class WorkItemServiceImpl implements WorkItemService {
 		Unit unitFromDB = customerService.getUnitById(unitId);
 		Customer customer = customerService.getCustomerbyId(unitFromDB.getCustomerId());
 		if (context.equalsIgnoreCase(AppConstants.CUSTOMER_DRAFT)) {
-
-
-			List<WorkItem> workItems = getWorkItemsByEntityIdAndEntityTypeAndWorkType(unitId, AppConstants.EntityType.UNIT.name(), AppConstants.WorkItemType.AGREEMENT_APPROVAL.getWorkType());
+			WorkItemSearchCriteria criteriaForApprovalType = getWorkitemCriteria(unitId, AppConstants.EntityType.UNIT.name(), AppConstants.WorkItemType.AGREEMENT_APPROVAL.getWorkType());
+			List<WorkItem> workItems = getActiveWorkItems(criteriaForApprovalType, unitFromDB.getServiceAgreement());
 			if(workItems != null && workItems.size()>0){
 				workItemManager.updateWorkItemStatus(unitId, AppConstants.WORK_ITEM_CLOSE_STATUS, AppConstants.WorkItemType.AGREEMENT_APPROVAL.getWorkType(), AppConstants.EntityType.UNIT.name());
 			}
@@ -143,15 +146,19 @@ public class WorkItemServiceImpl implements WorkItemService {
 	}
 
 	private void createWorkItemForPublishingUnit(String context,String comment, Unit unitFromDB) {
-		List<WorkItem> workItems = workItemManager.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unitFromDB.getUnitId(),AppConstants.EntityType.UNIT.name(),AppConstants.WorkItemType.AGREEMENT_APPROVAL.getWorkType()); 
+
+		WorkItemSearchCriteria criteriaForApprovalType = getWorkitemCriteria(unitFromDB.getUnitId(),AppConstants.EntityType.UNIT.name(),AppConstants.WorkItemType.AGREEMENT_APPROVAL.getWorkType());
+		List<WorkItem> workItems = getActiveWorkItems(criteriaForApprovalType, unitFromDB.getServiceAgreement());
 
 		WorkItem workItem = null;
 		if(workItems != null && workItems.size()>0){
 			workItem = workItems.get(0);
+			workItem.setDueDate(new Date());
 		}
 		if (workItem == null) {
 			WorkItemFactory factory = new WorkItemFactory();
 			workItem = factory.getWorkItem(context);
+			workItem.setDueDate(unitFromDB.getServiceAgreement().getContractStartOn());
 		}
 
 		Comment commentFromDB = workItemManager.getLatestCommentBycommentType(unitFromDB.getUnitId(), AppConstants.EntityType.UNIT.name(), AppConstants.CommentType.REJECT.name());
@@ -168,7 +175,6 @@ public class WorkItemServiceImpl implements WorkItemService {
 		workItem.setStatus(AppConstants.WORK_ITEM_OPEN_STATUS);
 		workItem.setEntityId(unitFromDB.getUnitId());
 		workItem.setEntityCode(unitFromDB.getUnitCode());
-		workItem.setDueDate(new Date());
 		workItemManager.saveWorkItem(workItem);
 	}
 
@@ -180,11 +186,9 @@ public class WorkItemServiceImpl implements WorkItemService {
 	@Override
 	public void workItemWorkForRejectApprovalChanges(Unit unit, String comment) {
 
-		List<WorkItem> workItems= workItemManager
-				.getWorkItemsByEntityIdAndEntityTypeAndWorkType(unit
-						.getUnitId(), AppConstants.EntityType.UNIT.name(),
-						AppConstants.WorkItemType.AGREEMENT_APPROVAL
-						.getWorkType());
+		WorkItemSearchCriteria criteriaForApprovalType = getWorkitemCriteria(unit.getUnitId(), AppConstants.EntityType.UNIT.name(),	AppConstants.WorkItemType.AGREEMENT_APPROVAL.getWorkType());
+		List<WorkItem> workItems = getActiveWorkItems(criteriaForApprovalType, unit.getServiceAgreement());
+
 		if(workItems != null && workItems.size()>0){
 			WorkItem workItemFromDB = workItems.get(0);
 			Comment commentFromDB = workItemManager.getLatestCommentBycommentType(unit.getUnitId(), AppConstants.EntityType.UNIT.name(), AppConstants.CommentType.PUBLISH.name());
@@ -206,7 +210,8 @@ public class WorkItemServiceImpl implements WorkItemService {
 
 	@Override
 	public void closeAgreementApprovalWorkItem(Long unitId){
-		workItemManager.closeAgreementApprovalWorkItem(unitId);
+		Unit unitFromDB = customerService.getUnitById(unitId);
+		workItemManager.closeAgreementApprovalWorkItem(unitFromDB);
 	}
 
 	@Override
@@ -234,7 +239,6 @@ public class WorkItemServiceImpl implements WorkItemService {
 			UnitBasicInfo basicInfo = customerService.getUnitBasicInfoById(entityId);
 			return basicInfo;
 		}
-
 		return null;
 	}
 
@@ -265,7 +269,8 @@ public class WorkItemServiceImpl implements WorkItemService {
 
 	@Override
 	public void createWorkItemForSalesRenewal(UnitBasicInfo unitInfo) {
-		workItemManager.createWorkItemForSalesRenewal(unitInfo);
+		Unit unitFromDB = customerService.getUnitById(unitInfo.getUnitId());
+		workItemManager.createWorkItemForSalesRenewal(unitInfo,unitFromDB);
 	}
 
 	@Override
@@ -276,10 +281,21 @@ public class WorkItemServiceImpl implements WorkItemService {
 	}
 
 	@Override
-	public List<WorkItem> getActiveWorkItems(WorkItemSearchCriteria criteria,
-			ServiceAgreement agreement) {
+	public List<WorkItem> getActiveWorkItems(WorkItemSearchCriteria criteria, ServiceAgreement agreement) {
 		List<WorkItem> workItems = workItemManager.getActiveWorkItems(criteria, agreement);
 		return workItems;
+	}
+
+	@Override
+	public WorkItemSearchCriteria getWorkitemCriteria(Long entityId,String entityType, String workType) {
+		WorkItemSearchCriteria criteria = workItemManager.getWorkitemCriteria(entityId, entityType, workType);
+		return criteria;
+	}
+	
+	@Override
+	public SearchResultData getWorkItemForQueuebySearchCriteria(WorkItemSearchCriteria workItemSearchCriteria) throws ParseException{
+		SearchResultData searchResultData=workItemManager.getWorkItemForQueuebySearchCriteria(workItemSearchCriteria);
+		return searchResultData;
 	}
 
 }

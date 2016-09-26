@@ -373,8 +373,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 
 		String  queryString="SELECT CD.CUSTOMER_ID,CD.CUSTOMER_CODE,UD.UNIT_ID,UD.UNIT_CODE,CC.WORK_ORDER_ID, CC.WORK_ORDER_NO, TIM.VALUE ,CC.STATUS,Case when cc.PRIORITY = 'C' then 'CRITICAL' when cc.PRIORITY = 'H' then 'HIGH' when cc.PRIORITY = 'M' then 'MEDIUM' else 'LOW' End PRIORITY,TU.USER_NAME"
 				+" From TB_CUSTOMER_DETAIL CD left join TB_UNIT_DETAIL UD on UD.CUSTOMER_ID = CD.CUSTOMER_ID"
-				+" left join TB_CUSTOMER_COMPLAINT CC on CC.UNIT_ID = UD.UNIT_ID"
-				+" left join TB_COMPLAINT_ASSIGNMENT CA on CA.WORK_ORDER_ID = CC.WORK_ORDER_ID "
+				+" left join TB_WORK_ORDER CC on CC.UNIT_ID = UD.UNIT_ID"
+				+" left join TB_WORK_ORDER_ASSIGNMENT CA on CA.WORK_ORDER_ID = CC.WORK_ORDER_ID "
 				+ " left join TB_ISSUE_MASTER TIM ON TIM.ISSUE_ID = CC.ISSUE_ID"
 				+ " left join TB_USER TU ON TU.USER_ID = CA.USER_ID where cc.Work_order_type='Complaint' and cc.client_Id="+ clientId;
 
@@ -427,8 +427,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 
 		String  queryString="SELECT CD.CUSTOMER_ID,CD.CUSTOMER_CODE,UD.UNIT_ID,UD.UNIT_CODE,CC.WORK_ORDER_ID, CC.WORK_ORDER_NO, TIM.VALUE ,CC.STATUS,Case when cc.PRIORITY = 'C' then 'CRITICAL' when cc.PRIORITY = 'H' then 'HIGH' when cc.PRIORITY = 'M' then 'MEDIUM' else 'LOW' End PRIORITY,TU.USER_NAME"
 				+" From TB_CUSTOMER_DETAIL CD left join TB_UNIT_DETAIL UD on UD.CUSTOMER_ID = CD.CUSTOMER_ID"
-				+" left join TB_CUSTOMER_COMPLAINT CC on CC.UNIT_ID = UD.UNIT_ID"
-				+" left join TB_COMPLAINT_ASSIGNMENT CA on CA.WORK_ORDER_ID = CC.WORK_ORDER_ID"
+				+" left join TB_WORK_ORDER CC on CC.UNIT_ID = UD.UNIT_ID"
+				+" left join TB_WORK_ORDER_ASSIGNMENT CA on CA.WORK_ORDER_ID = CC.WORK_ORDER_ID"
 				+ " left join TB_ISSUE_MASTER TIM ON TIM.ISSUE_ID = CC.ISSUE_ID"
 				+ " left join TB_USER TU ON TU.USER_ID = CA.USER_ID where cc.Work_order_type='Complaint' and cc.client_Id="+ clientId;
 
@@ -475,8 +475,8 @@ public class WorkOrderDaoImpl extends BaseDao implements WorkOrderDao{
 
 		String  queryString="SELECT CD.CUSTOMER_ID,CD.CUSTOMER_CODE,UD.UNIT_ID,UD.UNIT_CODE,CC.WORK_ORDER_ID, CC.WORK_ORDER_NO, TIM.VALUE ,CC.STATUS,Case when cc.PRIORITY = 'C' then 'CRITICAL' when cc.PRIORITY = 'H' then 'HIGH' when cc.PRIORITY = 'M' then 'MEDIUM' else 'LOW' End PRIORITY,TU.USER_NAME"
 				+" From TB_CUSTOMER_DETAIL CD left join TB_UNIT_DETAIL UD on UD.CUSTOMER_ID = CD.CUSTOMER_ID"
-				+" left join TB_CUSTOMER_COMPLAINT CC on CC.UNIT_ID = UD.UNIT_ID"
-				+" left join TB_COMPLAINT_ASSIGNMENT CA on CA.WORK_ORDER_ID = CC.WORK_ORDER_ID"
+				+" left join TB_WORK_ORDER CC on CC.UNIT_ID = UD.UNIT_ID"
+				+" left join TB_WORK_ORDER_ASSIGNMENT CA on CA.WORK_ORDER_ID = CC.WORK_ORDER_ID"
 				+ " left join TB_ISSUE_MASTER TIM ON TIM.ISSUE_ID = CC.ISSUE_ID"
 				+ " left join TB_USER TU ON TU.USER_ID = CA.USER_ID where cc.Work_order_type='Complaint' and cc.client_Id="+ clientId;
 

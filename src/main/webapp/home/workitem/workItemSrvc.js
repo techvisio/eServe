@@ -7,7 +7,8 @@ workItemModule.service('workItemService', function($http, $q) {
 		saveComment : saveComment,
 		getCommentList : getCommentList,
 		createWorkItemForSalesRenewal : createWorkItemForSalesRenewal,
-		getWorkItembySearchCriteria : getWorkItembySearchCriteria
+		getWorkItembySearchCriteria : getWorkItembySearchCriteria,
+		getWorkItemForQueuebySearchCriteria : getWorkItemForQueuebySearchCriteria
 	});
 
 	function getUnitInfoByEntityIdAndEntityType(entityId, entityType){
@@ -100,6 +101,18 @@ workItemModule.service('workItemService', function($http, $q) {
 
 		});
 
+		return (request.then(handleSuccess, handleError));
+	}
+
+	function getWorkItemForQueuebySearchCriteria(workItemSearchCriteria){
+		console.log('getting workitems for queue');
+		var request = $http({
+			method : "post",
+			url : "../service/workitem/workitemqueuelist/",
+			params : "",
+			data : workItemSearchCriteria
+
+		});
 		return (request.then(handleSuccess, handleError));
 	}
 	

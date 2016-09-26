@@ -161,9 +161,9 @@ public class CustomerManagerImpl implements CustomerManager {
 
 		Unit unitFromDB = customerDao.getUnit(unit.getUnitId());
 		Double agreementAmount=null;
-		
+
 		if(unit.getServiceAgreement().getServiceAgreementFinance()!=null){
-			 agreementAmount = unit.getServiceAgreement().getServiceAgreementFinance().getAgreementAmount();
+			agreementAmount = unit.getServiceAgreement().getServiceAgreementFinance().getAgreementAmount();
 		}
 		if(unit.getApprovalStatus()==AppConstants.PENDING && agreementAmount!=null){
 
@@ -172,7 +172,6 @@ public class CustomerManagerImpl implements CustomerManager {
 			invoiceManager.saveInvoiceAndInvoiceAgreement(unit.getServiceAgreement().getServiceAgreementId(), agreementAmount);
 
 			saveServiceAgreementHistory(unit);
-			saveServiceAgreementFinanceHistory(unit);
 			saveUnitHistory(unit);
 			unit.setLastApprovalDate(new Date());
 			unit.setLastApprovedBy(CommonUtil.getCurrentUser().getUserName());
@@ -201,7 +200,7 @@ public class CustomerManagerImpl implements CustomerManager {
 			equipmentHistory.setEquipment(equipmentDetail.getEquipment());
 			equipmentHistory.setInvoiceNo(equipmentDetail.getInvoiceNo());
 			equipmentHistory.setSerialNo(equipmentDetail.getSerialNo());
-			equipmentHistory.setType(equipmentDetail.getType());
+			equipmentHistory.setEquipmentType(equipmentDetail.getEquipmentType());
 			equipmentHistory.setWarrantyUnder(equipmentDetail.getWarrantyUnder());
 			equipmentHistory.setUnderWarranty(equipmentDetail.isUnderWarranty());
 			customerDao.saveEquipmentHistory(equipmentHistory);
@@ -240,20 +239,16 @@ public class CustomerManagerImpl implements CustomerManager {
 		history.setServiceType(unit.getServiceAgreement().getServiceCategory());
 		history.setStartDateString(unit.getServiceAgreement().getContractStartOnString());
 		history.setUnitId(unit.getServiceAgreement().getUnitId());
-		customerDao.saveServiceAgreementHistory(history);
-	}
-
-	private void saveServiceAgreementFinanceHistory(Unit unit) {
 		if(unit.getServiceAgreement().getServiceAgreementFinance() != null){
 			ServiceAgreementFinanceHistory financeHistory = new ServiceAgreementFinanceHistory();
 			financeHistory.setVersionId(unit.getVersionId());
 			financeHistory.setAgreementAmount(unit.getServiceAgreement().getServiceAgreementFinance().getAgreementAmount());
 			financeHistory.setClient(unit.getClient());
 			financeHistory.setUnitId(unit.getUnitId());
-			customerDao.saveServiceAgreementFinanceHistory(financeHistory);
+			history.setServiceAgreementFinanceHistory(financeHistory);
 		}
+		customerDao.saveServiceAgreementHistory(history);
 	}
-
 	@Override
 	public UnitBasicCustomer getUnitForApproval(Long unitId) {
 		UnitBasicCustomer approveUnitDtl = customerDao.getUnitForApproval(unitId);

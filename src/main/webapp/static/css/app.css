@@ -1381,3 +1381,8 @@ button-left {
 .check-box-padding {
 	padding-left: 10px;
 }
+
+/* css for link */
+.hand-pointer{
+	cursor: pointer;
+}

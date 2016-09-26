@@ -300,17 +300,21 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 
 	$scope.approveUnit = function(unit) {
-
-		customerService.approveUnit(unit)
-		.then(function(response) {
-			console.log('update unit called in controller: ');
-			console.log(response);
-			if (response) {
-				unit= response;
-				$rootScope.showAlertModel('Unit Approved Successfully', 'Operation Successful')
-				$state.go('workItemSearch')
-			} 
-		})
+		if($rootScope.isPrivileged("AGREEMENT_APPROVAL")){
+			customerService.approveUnit(unit)
+			.then(function(response) {
+				console.log('update unit called in controller: ');
+				console.log(response);
+				if (response) {
+					unit= response;
+					$rootScope.showAlertModel('Unit Approved Successfully', 'Operation Successful')
+					$state.go('workItemSearch')
+				} 
+			})
+		}
+		else{
+			$rootScope.showNotHavePrivilegeModel();					 
+		}
 	};
 
 //	$scope.rejectUnitApproval= function(unit){
@@ -516,17 +520,23 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				$scope.comment = "";
 
 				$scope.rejectUnitApproval = function() {
-					var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
-					customerService.rejectUnitApproval(genericRequest)
-					.then(function(response) {
-						console.log('reject approval called from service : ');
-						console.log(response);
-						if (response) {
-							unit= response;
-							$rootScope.curModal.close();
-							$state.go('workItemSearch');
-						} 
-					})
+					if($rootScope.isPrivileged("AGREEMENT_APPROVAL")){
+						var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
+						customerService.rejectUnitApproval(genericRequest)
+						.then(function(response) {
+							console.log('reject approval called from service : ');
+							console.log(response);
+							if (response) {
+								unit= response;
+								$rootScope.curModal.close();
+								$state.go('workItemSearch');
+							} 
+						})
+					}
+					else{
+						$rootScope.showNotHavePrivilegeModel();					 
+					}
+
 				};
 
 				$scope.closeModal=function(){
@@ -557,9 +567,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 						console.log(response);
 						if (response) {
 							$scope.customer.units = response;
+							$rootScope.showAlertModel('Unit Published Successfully ', 'Operation Successful')
 							$scope.curModal.close();
 							$rootScope.curModal.close();
-							$rootScope.showAlertModel('Unit Published Successfully ', 'Operation Successful')
+
 						} 
 					})
 				};
@@ -622,10 +633,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.updateServiceAgreement = function(){
 			$scope.curModal.close();
 		};
-		
+
 	};
 
-	
+
 
 	$scope.showAddEquipmentModel = function(object, editEquipment) {
 		$scope.dummyEquipmentDetails={};
@@ -769,48 +780,48 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.lockCustomerEntity = function()
 	{
 		if($rootScope.isPrivileged('CREATE_CUSTOMER')){
-		$scope.entityLock = {};
-		$scope.entityLock.entityId = $scope.customer.customerId;
-		$scope.entityLock.entityType = 'CUSTOMER';
-		customerService.lockEntity($scope.entityLock)
-		.then(
-				function(customer) {
-					console
-					.log('Locking customer entity in controller');
-					console.log(customer);
-					if (customer) {
-						$scope.customer=customer;
-						$scope.toggleReadOnly('CUSTOMER',customer.edited);
-					}
-				})
+			$scope.entityLock = {};
+			$scope.entityLock.entityId = $scope.customer.customerId;
+			$scope.entityLock.entityType = 'CUSTOMER';
+			customerService.lockEntity($scope.entityLock)
+			.then(
+					function(customer) {
+						console
+						.log('Locking customer entity in controller');
+						console.log(customer);
+						if (customer) {
+							$scope.customer=customer;
+							$scope.toggleReadOnly('CUSTOMER',customer.edited);
+						}
+					})
 		}
-		
+
 		else{
-			 $rootScope.showNotHavePrivilegeModel();					 
-		 }
+			$rootScope.showNotHavePrivilegeModel();					 
+		}
 	}
 
 	$scope.lockUnitEntity = function(unitIndex,formId)
 	{
 		if($scope.isCreateOrUpdatePrivileged){
-		$scope.entityLock = {};
-		$scope.entityLock.entityId = $scope.customer.units[unitIndex].unitId;
-		$scope.entityLock.entityType = 'UNIT';
-		customerService.lockEntity($scope.entityLock)
-		.then(
-				function(unitFromDB) {
-					console
-					.log('Locking unit entity in controller');
-					console.log(unitFromDB);
-					if (unitFromDB) {
-						$scope.customer.units[unitIndex] = unitFromDB;	
-						$scope.toggleReadOnly('UNIT_'+formId,unitFromDB.edited);
-					}
-				})
+			$scope.entityLock = {};
+			$scope.entityLock.entityId = $scope.customer.units[unitIndex].unitId;
+			$scope.entityLock.entityType = 'UNIT';
+			customerService.lockEntity($scope.entityLock)
+			.then(
+					function(unitFromDB) {
+						console
+						.log('Locking unit entity in controller');
+						console.log(unitFromDB);
+						if (unitFromDB) {
+							$scope.customer.units[unitIndex] = unitFromDB;	
+							$scope.toggleReadOnly('UNIT_'+formId,unitFromDB.edited);
+						}
+					})
 		}
 		else{
-			 $rootScope.showNotHavePrivilegeModel();					 
-		 }
+			$rootScope.showNotHavePrivilegeModel();					 
+		}
 	}
 
 	$scope.unlockCustomerEntity = function()
@@ -939,8 +950,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			} 
 		})
 	};
-	
-	
+
+
 	$scope.showRenewUnitExpireModal = function(unit) {
 
 		$scope.renewAgreementModal = $modal.open({
@@ -956,7 +967,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		$scope.updateServiceAgreement = function(){
 			$scope.renewAgreementModal.close();
 		};
-		
+
 		$scope.showCommentBoxRenewAgreementPublish = function() {
 
 			$scope.agreementCommentModal = $modal.open({
@@ -967,18 +978,25 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 					$scope.comment = "";
 
 					$scope.updateSalesAgreement = function(context) {
-						var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
-						customerService.updateSalesAgreement(genericRequest, unit.unitId, context)
-						.then(function(response) {
-							console.log('updateSalesAgreement received from service : ');
-							console.log(response);
-							if (response) {
-								object = response;
-								$rootScope.showAlertModel('Agreement Updated Successfully ', 'Operation Successful')
-								$scope.agreementCommentModal.close();
-								$scope.renewAgreementModal.close();
-							} 
-						})
+						if($rootScope.isPrivileged("SALES_RENEWAL_AGREEMENT")){
+
+							var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
+							customerService.updateSalesAgreement(genericRequest, unit.unitId, context)
+							.then(function(response) {
+								console.log('updateSalesAgreement received from service : ');
+								console.log(response);
+								if (response) {
+									object = response;
+									$rootScope.showAlertModel('Agreement Renewed Successfully ', 'Operation Successful')
+									$scope.agreementCommentModal.close();
+									$scope.renewAgreementModal.close();
+									$state.go('workItemSearch');
+								} 
+							})
+						}
+						else{
+							$rootScope.showNotHavePrivilegeModel();					 
+						}
 					};
 					$scope.closeModal=function(){
 						$scope.agreementCommentModal.close();
@@ -989,8 +1007,8 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			});
 		};
 	};
-	 $scope.redirectToWorkitemScreen=function(currentWorkitemId){
-		 $state.go('workitem',{workitemId:currentWorkitemId});
-	 }	
-	
+	$scope.redirectToWorkitemScreen=function(currentWorkitemId){
+		$state.go('workitem',{workitemId:currentWorkitemId});
+	}	
+
 } ]);

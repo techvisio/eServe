@@ -1,5 +1,6 @@
 package com.techvisio.eserve.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -14,7 +15,7 @@ import javax.persistence.PrePersist;
 @MappedSuperclass
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @EntityListeners({BasicFieldsCallBack.class})
-public class BasicFileds {
+public class BasicFileds implements Serializable{
 
 	@Column(name="CREATED_BY")
 	private String createdBy;

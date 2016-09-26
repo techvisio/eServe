@@ -15,6 +15,9 @@ import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
+import com.techvisio.eserve.beans.EquipmentModalNo;
+import com.techvisio.eserve.beans.EquipmentType;
+import com.techvisio.eserve.beans.EquipmentWarrantyUnder;
 import com.techvisio.eserve.beans.InvoiceTaxes;
 import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
@@ -173,7 +176,7 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 	
 	@Override
 	public List<ClientConfig> getDefalutValues(Long clientId) {
-		String queryString="FROM Config c where c.client.clientId = " + clientId;
+		String queryString="FROM ClientConfig c where c.client.clientId = " + clientId;
 		Query query= getEntityManager().createQuery(queryString);
 		List<ClientConfig> result= query.getResultList();
 		return result;
@@ -230,6 +233,30 @@ public class CacheDaoImpl extends BaseDao implements CacheDao {
 		String queryString="FROM ClientCommConfig c";
 		Query query= getEntityManager().createQuery(queryString);
 		List<ClientCommConfig> result= query.getResultList();
+		return result;
+	}
+
+	@Override
+	public List<EquipmentWarrantyUnder> getEquipmentWarrantyUnder() {
+		String queryString="FROM EquipmentWarrantyUnder";
+		Query query= getEntityManager().createQuery(queryString);
+		List<EquipmentWarrantyUnder> result= query.getResultList();
+		return result;
+	}
+
+	@Override
+	public List<EquipmentType> getEquipmentType() {
+		String queryString="FROM EquipmentType";
+		Query query= getEntityManager().createQuery(queryString);
+		List<EquipmentType> result= query.getResultList();
+		return result;
+	}
+
+	@Override
+	public List<EquipmentModalNo> getEquipmentModalNo() {
+		String queryString="FROM EquipmentModalNo";
+		Query query= getEntityManager().createQuery(queryString);
+		List<EquipmentModalNo> result= query.getResultList();
 		return result;
 	}
 

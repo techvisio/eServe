@@ -1,101 +1,102 @@
 <br>
-	<div class="row">
-		<div class="form-group col-lg-10 col-md-12 col-sm-12 col-xs-12"
-			ng-show="ComplaintEquipments.length<=0">
-			<h3 class="desc" style="font-size: 16px">No Equipments For This
-				Complaint</h3>
-		</div>
-		<div class="form-group col-lg-2 col-md-12 col-sm-12 col-xs-12 child-right">
-			<button type="button" class="btn btn-primary btn-sm padding-non"
-				ng-click="showAddEquipmentModel(workOrder.unit,editEquipment )">Add
-				Equipment</button>
-		</div>
+<div class="row">
+	<div class="form-group col-lg-10 col-md-12 col-sm-12 col-xs-12"
+		ng-show="ComplaintEquipments.length<=0">
+		<h3 class="desc" style="font-size: 16px">No Equipments For This
+			Complaint</h3>
 	</div>
+	<div
+		class="form-group col-lg-2 col-md-12 col-sm-12 col-xs-12 child-right">
+		<button type="button" class="btn btn-primary btn-sm padding-non"
+			ng-click="showAddEquipmentModel(workOrder.unit,editEquipment )">Add
+			Equipment</button>
+	</div>
+</div>
 <div class="row"></div>
-	<div ng-show="ComplaintEquipments.length>0">
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<div class="row">
+<div ng-show="ComplaintEquipments.length>0">
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="row">
 
-					<div class="col-md-1 col-sm-1 col-xs-1 ">
-						<div class="form-group">
-							<label class="font-size_header" for="formfield9">Type</label>
-						</div>
-					</div>
-
-					<div class="col-md-2 col-sm-2 col-xs-2 ">
-						<div class="form-group">
-							<label class="font-size_header" for="formfield9">Model No</label>
-						</div>
-					</div>
-
-					<div class="col-md-2 col-sm-2 col-xs-2 ">
-						<div class="form-group">
-							<label class=" font-size_header" for="formfield9">Serial
-								No</label>
-						</div>
-					</div>
-
-					<div class="col-md-2 col-sm-2 col-xs-2 ">
-						<div class="form-group">
-							<label class="font-size_header" for="formfield9">Invoice
-								No</label>
-						</div>
-					</div>
-
-					<div class="col-md-2 col-sm-2 col-xs-2 ">
-						<div class="form-group">
-							<label class=" font-size_header" for="formfield9">Installation
-								Date</label>
-						</div>
-					</div>
-
-					<div class="col-md-2 col-sm-2 col-xs-2">
-						<div class="form-group">
-							<label class="font-size_header" for="formfield9">Warranty
-								Under</label>
-						</div>
+				<div class="col-md-1 col-sm-1 col-xs-1 ">
+					<div class="form-group">
+						<label class="font-size_header" for="formfield9">Type</label>
 					</div>
 				</div>
 
-				<div class="row gray-border"
-					ng-repeat="equip in ComplaintEquipments" id="parent">
-					<div class="col-md-1 col-sm-1 col-xs-1 text-centre">
-						<div class="form-group">
-							<label class="font-size-label" for="formfield9">{{equip.type}}</label>
-						</div>
+				<div class="col-md-2 col-sm-2 col-xs-2 ">
+					<div class="form-group">
+						<label class="font-size_header" for="formfield9">Model No</label>
 					</div>
+				</div>
 
-					<div class="col-md-2 col-sm-2 col-xs-2 text-centre">
-						<div class="form-group">
-							<label class=" font-size-label" for="formfield9">{{equip.equipment.model}}</label>
-						</div>
+				<div class="col-md-2 col-sm-2 col-xs-2 ">
+					<div class="form-group">
+						<label class=" font-size_header" for="formfield9">Serial
+							No</label>
 					</div>
+				</div>
 
-					<div class="col-md-2 col-sm-2 col-xs-2 text-centre">
-						<div class="form-group">
-							<label class="font-size-label" for="formfield9">{{equip.serialNo}}</label>
-						</div>
+				<div class="col-md-2 col-sm-2 col-xs-2 ">
+					<div class="form-group">
+						<label class="font-size_header" for="formfield9">Invoice
+							No</label>
 					</div>
+				</div>
 
-					<div class="col-md-2 col-sm-2 col-xs-2  text-centre">
-						<div class="form-group">
-							<label class="font-size-label" for="formfield9">{{equip.invoiceNo}}</label>
-						</div>
+				<div class="col-md-2 col-sm-2 col-xs-2 ">
+					<div class="form-group">
+						<label class=" font-size_header" for="formfield9">Installation
+							Date</label>
 					</div>
-					<div class="col-md-2 col-sm-2 col-xs-2 text-centre">
-						<div class="form-group">
-							<label class="font-size-label" for="formfield9">{{equip.installationDateString}}</label>
-						</div>
-					</div>
-					<div class="col-md-2 col-sm-2 col-xs-2 text-centre">
-						<div class="form-group">
-							<label class="font-size-label" for="formfield9">{{equip.warrantyUnder}}</label>
-						</div>
-					</div>
+				</div>
 
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<label class="font-size_header" for="formfield9">Warranty
+							Under</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row gray-border" ng-repeat="equip in ComplaintEquipments"
+				id="parent">
+				<div class="col-md-1 col-sm-1 col-xs-1 text-centre">
+					<div class="form-group">
+						<label class="font-size-label" for="formfield9">{{equip.equipmentType.equipmentType}}</label>
+					</div>
+				</div>
+
+				<div class="col-md-2 col-sm-2 col-xs-2 text-centre">
+					<div class="form-group">
+						<label class=" font-size-label" for="formfield9">{{equip.modalNo.modalNo}}</label>
+					</div>
+				</div>
+
+				<div class="col-md-2 col-sm-2 col-xs-2 text-centre">
+					<div class="form-group">
+						<label class="font-size-label" for="formfield9">{{equip.serialNo}}</label>
+					</div>
+				</div>
+
+				<div class="col-md-2 col-sm-2 col-xs-2  text-centre">
+					<div class="form-group">
+						<label class="font-size-label" for="formfield9">{{equip.invoiceNo}}</label>
+					</div>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-2 text-centre">
+					<div class="form-group">
+						<label class="font-size-label" for="formfield9">{{equip.installationDateString}}</label>
+					</div>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-2 text-centre">
+					<div class="form-group">
+						<label class="font-size-label" for="formfield9">{{equip.warrantyUnder.warrantyUnder}}</label>
+					</div>
 				</div>
 
 			</div>
+
 		</div>
 	</div>
+</div>

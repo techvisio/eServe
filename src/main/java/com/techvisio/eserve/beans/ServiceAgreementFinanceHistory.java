@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TB_SERVICE_AGREEMENT_FINANCE_HISTORY")
-public class ServiceAgreementFinanceHistory extends BasicEntity{
+public class ServiceAgreementFinanceHistory extends BasicFileds{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
