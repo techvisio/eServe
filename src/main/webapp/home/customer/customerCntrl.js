@@ -353,7 +353,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 	$scope.saveUnit = function(object, context,formId) {
 		console.log('save unit called');
 
-		if(!$scope.UNIT_+formId.$valid){
+		if(!$scope.UNIT.$valid){
 
 			$scope.alerts=[];
 			$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
@@ -377,19 +377,6 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			} 
 		})
 	};
-
-//	if($scope.getAllComplaints){
-//	$scope.getAllComplaints = function(){
-//	customerService.getAllComplaints(customer.customerId)
-//	.then(function(response) {
-//	console.log('getting all complaints in controller : ');
-//	console.log(response);
-//	if (response) {
-//	$scope.workOrders = response;
-//	} 
-//	})
-//	}
-//	}
 
 	$scope.getWorkItemByUserIdAndWorkType = function(){
 		console.log('getting work Item');
@@ -453,9 +440,18 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 		if($scope.selection="customer"){
 
 
-			if(!$scope.form.CUSTOMER.$valid || $scope.contactNoError || $scope.emailError){
+			if(!$scope.form.CUSTOMER.$valid){
 				$scope.alerts=[];
 				$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
+				return;
+			}
+			
+			if($scope.contactNoError){
+				$rootScope.showAlertModel('This Contact No is Already Exists, Choose Different Contact No', 'Duplicate Record');
+				return;
+			}
+			if($scope.emailError){
+				$rootScope.showAlertModel('This Email Id is Already Exists, Choose Different Email Id', 'Duplicate Record');
 				return;
 			}
 		}
@@ -483,9 +479,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			console.log(response);
 			if (response) {
 				$scope.customerForEmail = response;
-
+				$scope.emailError = false;
 				if(angular.isUndefined($scope.customer.customerId) || $scope.customerForEmail.customerId != $scope.customer.customerId){
 					$rootScope.showAlertModel('This Email Id is Already Exists, Choose Different Email Id', 'Duplicate Record');
+					$scope.emailError = true;
 					return;
 				}
 			} 
@@ -499,9 +496,10 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 			console.log(response);
 			if (response) {
 				$scope.customerForContactNo = response;
-
+				$scope.contactNoError = false;
 				if(angular.isUndefined($scope.customer.customerId) || $scope.customerForContactNo.customerId != $scope.customer.customerId){
 					$rootScope.showAlertModel('This Contact No is Already Exists, Choose Different Contact No', 'Duplicate Record');
+					$scope.contactNoError = true;
 					return;
 				}
 			} 
@@ -559,6 +557,13 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				$scope.comment = "";
 
 				$scope.saveUnit = function(context) {
+					
+					if(!$scope.UNIT.$valid){
+						$scope.alerts=[];
+						$scope.alerts.push({msg: 'Some of the fields are invalid! please verify again'})
+						return;
+					}
+					
 					var genericRequest={"bussinessObject":unit,"contextInfo":{"comment":$scope.comment}};
 					console.log('save unit called');
 					customerService.saveUnit(genericRequest, $scope.customer.customerId, context)
@@ -745,7 +750,7 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 
 	$scope.tableParams = new NgTableParams({}, {
 		getData: function($defer,params) {
-			var sortBy="CUSTOMER_NAME";
+			var sortBy="customerName";
 			var isAsc=false;
 			var pageNo=params.page();
 			var pageSize=params.count();
@@ -938,8 +943,12 @@ customerModule.controller('customerController', ['$scope','$window','$rootScope'
 				})
 	}
 
-	$scope.getLatestCommentBycommentType =  function(entityId, entityType, commentType){
+	$scope.getLatestCommentBycommentType =  function(entityId, entityType, status){
 
+		var commentType;
+		if(status=='R'){
+			commentType = 'Reject'
+		}
 		customerService.getLatestCommentBycommentType(entityId, entityType, commentType)
 		.then(function(response) {
 			console.log('getting latest comment based on comment type in controller');

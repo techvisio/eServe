@@ -69,14 +69,6 @@ public class WorkOrderController {
 		return new ResponseEntity<Response>(response,HttpStatus.OK);
 	}
 
-	@RequestMapping(value="complaints/{customerId}",method = RequestMethod.GET)
-	public ResponseEntity<Response> getAllCustomerComplaints(@PathVariable Long customerId) {  
-		Response response=new Response();
-		List<WorkOrder> complaints = workOrderService.getWorkOrders(customerId);
-		response.setResponseBody(complaints);
-		return new ResponseEntity<Response>(response,HttpStatus.OK);
-	}
-
 	@RequestMapping(value="/{workOrderId}",method = RequestMethod.GET)
 	public ResponseEntity<Response> getWorkOrder(@PathVariable Long workOrderId) {  
 		Response response=new Response();

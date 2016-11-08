@@ -59,7 +59,7 @@ public class Unit extends BasicEntity implements Lockable{
 
 	@OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
 	@JoinColumn(name="UNIT_ID")
-	private ServiceAgreement serviceAgreement;
+	private ServiceAgreement serviceAgreement = new ServiceAgreement();
 
 	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER)
 	@JoinColumn(name="UNIT_ID")

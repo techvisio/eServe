@@ -207,5 +207,13 @@ public class AbstractCustomerServiceICCImpl implements CustomerServiceICC{
 			String context) {
 		return request;
 	}
+	@Override
+	public void preGetUnitByCriteria() {
+	}
+	@Override
+	public SearchResultData postGetUnitByCriteria(
+			SearchResultData searchResultData) {
+		return searchResultData;
+	}
 	
 }

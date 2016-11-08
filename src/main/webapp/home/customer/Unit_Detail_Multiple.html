@@ -8,7 +8,7 @@
 						<h2 class="title pull-left">
 							Unit No({{unit.machineSerialNo}})&nbsp
 							<button type="button"
-								ng-click="getLatestCommentBycommentType(unit.unitId,'UNIT','Reject')"
+								ng-click="getLatestCommentBycommentType(unit.unitId,'UNIT', unit.approvalStatus)"
 								ng-class="getClassForUnitStatus(unit.approvalStatus)"
 								ng-show="customer.customerId">{{getUnitStatusText(unit.approvalStatus)}}</button>
 						</h2>

@@ -1,10 +1,8 @@
 package com.techvisio.eserve.beans;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,7 +38,7 @@ public class User extends BasicEntity implements Lockable{
 	 * 
 	 */
 	private static final long serialVersionUID = -378250549629261597L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USER_ID")
@@ -48,29 +46,29 @@ public class User extends BasicEntity implements Lockable{
 
 	@Column(name = "PHOTO_PATH")
 	private String photoPath;
-	
+
 	@Column(name = "FIRST_NAME")
 	private String firstName;
-	
+
 	@Column(name = "LAST_NAME")
 	private String lastName;
-	
+
 	@Column(name = "EMAIL_ID")
 	private String emailId;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	@JoinTable(name = "TB_USER_ROLE", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
 	private List<Role> roles;
-	
+
 	@Column(name = "PASSWORD")
 	private char[] password;
-	
+
 	@Transient
 	private char[] newPassword;
-	
+
 	@Column(name = "IS_ACTIVE")
 	private boolean active;
-	
+
 	@Column(name = "FORCE_PASSWORD_CHANGE")
 	private boolean forcePasswordChange;
 
@@ -80,11 +78,11 @@ public class User extends BasicEntity implements Lockable{
 
 	@Column(name = "USER_NAME")
 	private String userName;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "DEPARTMENT_ID")
 	private Department department;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "DESIGNATION_ID")
 	private Designation designation;
@@ -98,20 +96,20 @@ public class User extends BasicEntity implements Lockable{
 	private String dobString;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	
+
 	@JoinColumn(name="USER_ID")
 	private List<UserPrivilege> privileges = new ArrayList<UserPrivilege>();
 
 	@Transient
 	private boolean edited = false;
-	
+
 	public boolean isEdited() {
 		return edited;
 	}
 	public void setEdited(boolean edited) {
 		this.edited = edited;
 	}
-	
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -229,13 +227,11 @@ public class User extends BasicEntity implements Lockable{
 	public String getDobString() {
 		if (this.DOB == null)
 			return null;
-
 		try {
 			DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
 			return fmt.print(this.DOB.getTime());
-
 		} catch (Exception e) {
-
+			
 		}
 		return null;
 	}
@@ -243,7 +239,7 @@ public class User extends BasicEntity implements Lockable{
 	public void setDobString(String dobString) {
 		DateTimeFormatter parser2 = ISODateTimeFormat.dateTime().withZoneUTC();
 		if(!StringUtils.isEmpty(dobString)){
-		this.DOB = parser2.parseDateTime(dobString).toDate();
+			this.DOB = parser2.parseDateTime(dobString).toDate();
 		}
 	}
 
@@ -260,5 +256,4 @@ public class User extends BasicEntity implements Lockable{
 	public void setPhotoPath(String photoPath) {
 		this.photoPath = photoPath;
 	}
-
 }

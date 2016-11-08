@@ -46,9 +46,6 @@ public class EquipmentDetail extends BasicEntity{
 	@OneToOne
 	@JoinColumn(name="EQUIPMENT_MODAL_NO_ID")
 	private EquipmentModalNo modalNo;
-	@OneToOne
-	@JoinColumn(name="EQUIPMENT_ID")
-	private Equipment equipment;
 
 	@Column(name="IS_UNDER_WARRANTY")
 	private boolean underWarranty;
@@ -67,12 +64,6 @@ public class EquipmentDetail extends BasicEntity{
 	}
 	public void setEquipmentDtlId(Long equipmentDtlId) {
 		this.equipmentDtlId = equipmentDtlId;
-	}
-	public Equipment getEquipment() {
-		return equipment;
-	}
-	public void setEquipment(Equipment equipment) {
-		this.equipment = equipment;
 	}
 	public String getSerialNo() {
 		return serialNo;

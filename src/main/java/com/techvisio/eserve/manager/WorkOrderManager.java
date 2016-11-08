@@ -27,7 +27,6 @@ public interface WorkOrderManager {
 	public WorkOrder getWorkOrder(Long complaintId);
 	public Customer getCustomerBasicInfo(Long customerId);
 	public Unit getUnitBasicInfo(Long unitId);
-	public List<WorkOrder> getWorkOrders(Long customerId);
 	public void saveWorkOrderResolution(Long complaintId, WorkOrderResolution complaintResolution);
 	public WorkOrderResolution getWorkOrderResolution(Long complaintId);
 	public void saveWorkOrderAssignment(Long complaintId, WorkOrderAssignment complaintAssignment);

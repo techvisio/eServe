@@ -1,9 +1,11 @@
 package com.techvisio.eserve.db;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import com.techvisio.eserve.beans.CustomerUnitComplaint;
 import com.techvisio.eserve.beans.WorkOrderAssignment;
 import com.techvisio.eserve.beans.WorkOrderEquipment;
 import com.techvisio.eserve.beans.WorkOrderResolution;
@@ -16,6 +18,7 @@ import com.techvisio.eserve.beans.SearchComplaintCustomer;
 import com.techvisio.eserve.beans.SearchComplaintUnit;
 import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.Unit;
+import com.techvisio.eserve.beans.complaintSearchCriteria;
 
 @Component
 public interface WorkOrderDao {
@@ -24,7 +27,6 @@ public interface WorkOrderDao {
 	public WorkOrder getWorkOrder(Long complaintId);
 	public Customer getCustomerBasicInfo(Long customerId);
 	public Unit getUnitBasicInfo(Long unitId);
-	public List<WorkOrder> getWorkOrders(Long workOrderId);
 	public void saveWorkOrderResolution(Long complaintId, WorkOrderResolution complaintResolution);
 	public WorkOrderResolution getWorkOrderResolution(Long complaintId);
 	public void saveWorkOrderAssignment(Long complaintId, WorkOrderAssignment complaintAssignment);
@@ -45,4 +47,7 @@ public interface WorkOrderDao {
 	public void createPmsComplaint(PmsWorkOrder pmsComplaint);
 	public PmsWorkOrder getPmsComplaintByWorkitemId(Long workitemId);
 	public PmsWorkOrder getPmsComplaintByWorkOrderId(Long workOrderId);
+	List<CustomerUnitComplaint> getCustomerUnitComplaint(
+			complaintSearchCriteria searchCriteria);
+	Map<Customer, List<Map<Unit, List<WorkOrder>>>> getComplaint();
 }

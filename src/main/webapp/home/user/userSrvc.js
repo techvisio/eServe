@@ -24,7 +24,7 @@ userModule.service('userService', function($http, $q,$rootScope,$state) {
 
 	function savePic(file,userId, userName){
 
-		console.log('saveSecurityQuestion called in service');
+		console.log('save user pic called in service');
 		
 		 var fd = new FormData();
 	        fd.append('file', file);

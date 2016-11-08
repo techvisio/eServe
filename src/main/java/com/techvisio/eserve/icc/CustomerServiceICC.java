@@ -76,4 +76,7 @@ public interface CustomerServiceICC {
 
 	public GenericRequest<Unit> preRenewSalesAgreement(GenericRequest<Unit> request);
 	public GenericRequest<Unit> postRenewSalesAgreement(GenericRequest<Unit> request, String context);
+
+	public void preGetUnitByCriteria();
+	public SearchResultData postGetUnitByCriteria(SearchResultData searchResultData);
 }

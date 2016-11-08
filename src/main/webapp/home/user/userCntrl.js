@@ -314,6 +314,14 @@ userModule
 
 					 $scope.user.securityQuestion.customQuestion = false;
 				 }
+				 if(angular.isUndefined($scope.user.securityQuestion.question) || $scope.user.securityQuestion.question==null){
+					 $rootScope.showAlertModel('Provide sercurity question');
+					 return;
+				 }
+				 if(angular.isUndefined($scope.user.securityQuestion.answer) || $scope.user.securityQuestion.answer==null){
+					 $rootScope.showAlertModel('Provide security answer');
+					 return;
+				 }
 				 userService.saveQuestion($scope.user)
 				 .then(
 						 function(response) {
@@ -421,7 +429,7 @@ userModule
 				 return ($rootScope.isPrivileged('CREATE_USER')) || ($rootScope.isPrivileged('VIEW_USER')) || ($rootScope.isPrivileged('USER_ADMINISTRATION'));
 			 }
 
-			 
+
 			 $scope.filterUser = function() {
 
 				 if($scope.isViewPrivileged){
@@ -448,7 +456,7 @@ userModule
 
 			 $scope.tableParams = new NgTableParams({}, {
 				 getData: function($defer,params) {
-					 var sortBy="USER_NAME";
+					 var sortBy="userName";
 					 var isAsc=false;
 					 var pageNo=params.page();
 					 var pageSize=params.count();
@@ -549,17 +557,21 @@ userModule
 				 })
 			 }
 
-			 
-			$scope.chooseFile = function(){
-				
-				var chooseFileButton = document.getElementById("userPic");
-				chooseFileButton.click();
-			}
-			 
-			 
+
+			 $scope.chooseFile = function(){
+
+				 var chooseFileButton = document.getElementById("userPic");
+				 chooseFileButton.click();
+			 }
+
+
 			 $scope.Submit = function(){
-					userService.savePic($scope.user.file, $scope.user.userId, $scope.user.userName);
-					
+
+				 if(angular.isUndefined($scope.user.file)){
+					 $rootScope.showAlertModel('choose a photo to upload');
+					 return;
+				 }
+				 userService.savePic($scope.user.file, $scope.user.userId, $scope.user.userName);
 			 }
 
 		 } ]);

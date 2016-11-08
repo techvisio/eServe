@@ -16,6 +16,7 @@ import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.UnitHistory;
+import com.techvisio.eserve.beans.complaintSearchCriteria;
 
 @Component
 public interface CustomerDao {

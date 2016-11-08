@@ -18,10 +18,8 @@ public class SearchCriteria {
     private int pageSize;
     private int pageNo;
     private String sortBy;
-    private boolean isAscending;
+    private boolean ascending;
     private int startIndex;
-    
-    
 	
 	public String getEmailId() {
 		return emailId;
@@ -108,11 +106,11 @@ public class SearchCriteria {
 	public void setSortBy(String sortBy) {
 		this.sortBy = sortBy;
 	}
-	public boolean getIsAscending() {
-		return isAscending;
+	public boolean isAscending() {
+		return ascending;
 	}
-	public void setIsAscending(boolean isAscending) {
-		this.isAscending = isAscending;
+	public void setAscending(boolean ascending) {
+		this.ascending = ascending;
 	}
 	public int getStartIndex() {
 		return startIndex;

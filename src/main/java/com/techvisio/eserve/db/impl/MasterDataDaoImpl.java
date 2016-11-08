@@ -8,22 +8,18 @@ import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Client;
 import com.techvisio.eserve.beans.ClientConfig;
-import com.techvisio.eserve.beans.Customer;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
-import com.techvisio.eserve.beans.Equipment;
 import com.techvisio.eserve.beans.InvoiceTaxes;
 import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
 import com.techvisio.eserve.beans.QuestionMaster;
 import com.techvisio.eserve.beans.Resolution;
-import com.techvisio.eserve.beans.SearchCriteria;
 import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceProvider;
 import com.techvisio.eserve.beans.State;
 import com.techvisio.eserve.beans.UnitCategory;
-import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.db.MasterDataDao;
 
 @Component
@@ -342,59 +338,6 @@ public class MasterDataDaoImpl extends BaseDao implements MasterDataDao{
 		Query query= getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<Designation> result= (List<Designation>)query.getResultList();
-		if(result != null && result.size()>0){
-			return result.get(0);
-		}
-		return null;
-	}
-
-	@Override
-	public SearchResultData getEquipmentMasterData(Long clientId){
-		
-		SearchResultData<Equipment> searchResultData= new SearchResultData<Equipment>();
-		
-		String queryString="SELECT * FROM Equipment e WHERE e.clientId ="+clientId;
-		Query query= getEntityManager().createQuery(queryString);
-		
-		String queryString1="SELECT COUNT(*) FROM tb_equipment_master";
-		Query query1= getEntityManager().createNativeQuery(queryString1);
-		
-		@SuppressWarnings("unchecked")
-		List<Object[]> counts = query1.getResultList();
-		for (Object[] count : counts) {
-			Long count1 = (long) ((Number) count[0]).intValue();
-			searchResultData.setTotalCount(count1);
-		}
-		
-		@SuppressWarnings("unchecked")
-		List<Equipment> result= (List<Equipment>)query.getResultList();
-		searchResultData.setObjectData(result);
-		return searchResultData;
-		
-	}
-	
-	@Override
-	public Long saveEquipment(Equipment equipment){
-		if(equipment.getEquipmentId() == null){
-			getEntityManager().persist(equipment);
-		}
-		else{
-			
-			getEntityManager().merge(equipment);
-			//saveUserPrivilege(user.getPrivileges(), user.getUserId());
-		}
-
-		//Explicitly flush session
-		getEntityManager().flush();
-		return equipment.getEquipmentId();
-	}
-	
-	@Override
-	public Equipment getEquipment(Long equipmentId) {
-		String queryString="FROM Equipment e WHERE e.equipmentId= "+equipmentId;
-		Query query= getEntityManager().createQuery(queryString);
-		@SuppressWarnings("unchecked")
-		List<Equipment> result= (List<Equipment>)query.getResultList();
 		if(result != null && result.size()>0){
 			return result.get(0);
 		}

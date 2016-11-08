@@ -35,7 +35,7 @@ public class ServiceAgreement extends BasicEntity{
 	@Column(name="UNIT_ID")
 	private Long unitId;
 	@Column(name="SERVICE_CATEGORY")
-	private String serviceCategory = "Paid";
+	private String serviceCategory;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="CONTRACT_START_ON")

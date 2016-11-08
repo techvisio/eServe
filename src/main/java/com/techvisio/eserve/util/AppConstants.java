@@ -82,7 +82,7 @@ public interface AppConstants {
 	};
 
 	public enum processEnvironment {
-		LIVE, TESTING, ENVIRONMENT
+		LIVE, TESTING, DEVELOPMENT
 	};
 	
 	public enum CommentType {

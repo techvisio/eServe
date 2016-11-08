@@ -5,8 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,7 +17,7 @@ public class SecurityQuestion extends BasicEntity{
 	@Column(name="USER_ID")
 	private Long userId;
 	@Column(name="IS_CUSTOM_QUESTION")
-    private boolean customQuestion;	
+	private boolean customQuestion;	
 	@Column(name="QUESTION")
 	private String question;
 	@Column(name="ANSWER")
@@ -55,5 +54,5 @@ public class SecurityQuestion extends BasicEntity{
 	public void setCustomQuestion(boolean customQuestion) {
 		this.customQuestion = customQuestion;
 	}
-	
+
 }

@@ -141,7 +141,7 @@ dashboardModule
 				
 				 $scope.workItemSearchCriteria.pageSize=5;
 				 $scope.workItemSearchCriteria.pageNo=1;
-				 $scope.workItemSearchCriteria.sortBy="UPDATED_ON";
+				 $scope.workItemSearchCriteria.sortBy="updatedOn";
 				 $scope.workItemSearchCriteria.isAscending=false;
 				 $scope.workItemSearchCriteria.userId=$rootScope.user.userId;
 

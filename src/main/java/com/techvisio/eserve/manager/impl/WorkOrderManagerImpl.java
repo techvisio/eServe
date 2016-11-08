@@ -96,12 +96,6 @@ public class WorkOrderManagerImpl implements WorkOrderManager{
 	}
 
 	@Override
-	public List<WorkOrder> getWorkOrders(Long workOrderId) {
-		List<WorkOrder> workOrders = workOrderDao.getWorkOrders(workOrderId);
-		return workOrders;
-	}
-
-	@Override
 	public void saveWorkOrderResolution(Long workOrderId, WorkOrderResolution workOrderResolution) {
 		workOrderDao.saveWorkOrderResolution(workOrderId, workOrderResolution);
 	}

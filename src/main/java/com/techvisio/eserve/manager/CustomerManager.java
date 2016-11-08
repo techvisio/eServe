@@ -23,6 +23,7 @@ import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.ServiceRenewalBean;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicInfo;
+import com.techvisio.eserve.beans.complaintSearchCriteria;
 @Component
 public interface CustomerManager {
 

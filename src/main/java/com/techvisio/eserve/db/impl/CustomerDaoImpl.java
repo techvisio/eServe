@@ -27,6 +27,7 @@ import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.UnitHistory;
+import com.techvisio.eserve.beans.complaintSearchCriteria;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.exception.NoEntityFoundException;
@@ -71,7 +72,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	public SearchResultData getCustomerByCriteria(SearchCriteria searchCriteria) {
 
 		SearchResultData<Customer> searchResultData= new SearchResultData<Customer>();
-		String ascOrDsc = searchCriteria.getIsAscending()?"ASC":"DESC";
+		String ascOrDsc = searchCriteria.isAscending()?"ASC":"DESC";
 
 		String sortBy=null;
 		try {
@@ -457,7 +458,7 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 	@Override
 	public List<EquipmentDetail> getEquipmentDetail(String type, Long unitId){
 
-		String queryString="FROM EquipmentDetail ed WHERE ed.type = "+"'"+ type +"'"+" and ed.unitId = "+unitId ;
+		String queryString="FROM EquipmentDetail ed WHERE ed.equipmentType.equipmentTypeId = "+"'"+ type +"'"+" and ed.unitId = "+unitId ;
 		Query query=getEntityManager().createQuery(queryString);
 		@SuppressWarnings("unchecked")
 		List<EquipmentDetail> equipmentDetails= (List<EquipmentDetail>)query.getResultList();
@@ -556,5 +557,4 @@ public class CustomerDaoImpl extends BaseDao implements CustomerDao{
 		}
 		return null;
 	}
-
 }

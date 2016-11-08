@@ -93,7 +93,7 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 	public SearchResultData getUserByCriteria(SearchCriteria searchCriteria) {
 
 		SearchResultData<User> searchResultData= new SearchResultData<User>();
-		String ascOrDsc = searchCriteria.getIsAscending()?"ASC":"DESC";
+		String ascOrDsc = searchCriteria.isAscending()?"ASC":"DESC";
 
 		String sortBy=null;
 		try {

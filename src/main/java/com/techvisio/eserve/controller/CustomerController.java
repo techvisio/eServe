@@ -22,6 +22,7 @@ import com.techvisio.eserve.beans.ServiceAgreement;
 import com.techvisio.eserve.beans.ServiceAgreementHistory;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicCustomer;
+import com.techvisio.eserve.beans.complaintSearchCriteria;
 import com.techvisio.eserve.service.CustomerService;
 
 @RestController

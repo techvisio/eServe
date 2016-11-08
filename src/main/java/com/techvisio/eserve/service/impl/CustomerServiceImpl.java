@@ -17,6 +17,7 @@ import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.WorkOrder;
+import com.techvisio.eserve.beans.complaintSearchCriteria;
 import com.techvisio.eserve.icc.CustomerServiceICC;
 import com.techvisio.eserve.manager.CustomerManager;
 import com.techvisio.eserve.service.CustomerService;
@@ -274,4 +275,5 @@ public class CustomerServiceImpl implements CustomerService{
 	public void saveUnitForEmailProcess(Unit unit){
 		customerManager.saveUnit(unit);
 	}
+	
 }

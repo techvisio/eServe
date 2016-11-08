@@ -20,11 +20,12 @@ import org.joda.time.format.ISODateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.techvisio.eserve.interfaces.Lockable;
 import com.techvisio.eserve.util.AppConstants;
 
 @Entity
 @Table(name = "TB_WORK_ORDER")
-public class WorkOrder extends BasicEntity{
+public class WorkOrder extends BasicEntity implements Lockable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

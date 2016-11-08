@@ -101,11 +101,21 @@ workItemModule
 			 }
 
 			 $scope.redirectToUnit=function(unitId){
+				 if($rootScope.isPrivileged('AGREEMENT_APPROVAL')){
 				 $state.go('unitApproval',{entityId:unitId} );
+				 }
+				 else{
+					 $rootScope.showNotHavePrivilegeModel();					 
+				 }
 			 }
 
 			 $scope.redirectToRenewSalesAgreement=function(unitId){
+				 if($rootScope.isPrivileged('SALES_RENEWAL_AGREEMENT')){
 				 $state.go('renewSalesAgreement',{entityId:unitId} );
+				 }
+				 else{
+					 $rootScope.showNotHavePrivilegeModel();					 
+				 }
 			 }
 			 $scope.addComment = function() {
 
@@ -213,7 +223,7 @@ workItemModule
 
 			 $scope.tableParams = new NgTableParams({}, {
 				 getData: function($defer,params) {
-					 var sortBy="ENTITY_CODE";
+					 var sortBy="entityCode";
 					 var isAsc=false;
 					 var pageNo=params.page();
 					 var pageSize=params.count();
@@ -281,7 +291,7 @@ workItemModule
 
 			 $scope.tableParamsQueue = new NgTableParams({}, {
 				 getData: function($defer,params) {
-					 var sortBy="ENTITY_CODE";
+					 var sortBy="entityCode";
 					 var isAsc=false;
 					 var pageNo=params.page();
 					 var pageSize=params.count();

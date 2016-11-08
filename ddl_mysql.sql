@@ -85,10 +85,6 @@
 
     alter table TB_EQUIPMENT_DETAIL 
         drop 
-        foreign key FK_p6xth0elmsal9cjr2t6kojel1;
-
-    alter table TB_EQUIPMENT_DETAIL 
-        drop 
         foreign key FK_m5ucx000awvs1mgj3syikv7lk;
 
     alter table TB_EQUIPMENT_DETAIL 
@@ -105,10 +101,6 @@
 
     alter table TB_EQUIPMENT_HISTORY 
         drop 
-        foreign key FK_op2ujhdw2ikw9ywpweenqei0d;
-
-    alter table TB_EQUIPMENT_HISTORY 
-        drop 
         foreign key FK_21mkw11pa1r8lmed13ke187md;
 
     alter table TB_EQUIPMENT_HISTORY 
@@ -119,13 +111,13 @@
         drop 
         foreign key FK_j616r4hvjinw9r3bk1vv99jyb;
 
-    alter table TB_EQUIPMENT_MASTER 
-        drop 
-        foreign key FK_g2knoota7mm923vp006iw706l;
-
     alter table TB_EQUIPMENT_MODAL_NO_MASTER 
         drop 
         foreign key FK_9och341jfabxqxpmp69lcoeb4;
+
+    alter table TB_EQUIPMENT_MODAL_NO_MASTER 
+        drop 
+        foreign key FK_r8cejqxojq18gc96qj6pmn0v9;
 
     alter table TB_EQUIPMENT_TYPE_MASTER 
         drop 
@@ -313,10 +305,6 @@
 
     alter table TB_WORK_ORDER_EQUIPMENT 
         drop 
-        foreign key FK_r6qvnp0hom43d263ailps40uv;
-
-    alter table TB_WORK_ORDER_EQUIPMENT 
-        drop 
         foreign key FK_g7129c687xa9a94a3400fqi50;
 
     alter table TB_WORK_ORDER_EQUIPMENT 
@@ -378,8 +366,6 @@
     drop table if exists TB_EQUIPMENT_DETAIL;
 
     drop table if exists TB_EQUIPMENT_HISTORY;
-
-    drop table if exists TB_EQUIPMENT_MASTER;
 
     drop table if exists TB_EQUIPMENT_MODAL_NO_MASTER;
 
@@ -679,7 +665,6 @@
         IS_UNDER_WARRANTY bit,
         UNIT_ID bigint,
         Client_Id bigint,
-        EQUIPMENT_ID bigint,
         EQUIPMENT_TYPE_ID bigint,
         EQUIPMENT_MODAL_NO_ID bigint,
         WARRANTY_UNDER_ID bigint,
@@ -693,25 +678,10 @@
         INVOICE_NO bigint,
         SERIAL_NO varchar(255),
         IS_UNDER_WARRANTY bit,
-        EQUIPMENT_ID bigint,
         EQUIPMENT_TYPE_ID bigint,
         EQUIPMENT_MODAL_NO_ID bigint,
         WARRANTY_UNDER_ID bigint,
         primary key (EQUIPMENT_DTL_ID, UNIT_ID, VERSION)
-    );
-
-    create table TB_EQUIPMENT_MASTER (
-        EQUIPMENT_ID bigint not null auto_increment,
-        CREATED_BY varchar(255),
-        CREATED_ON datetime,
-        UPDATED_BY varchar(255),
-        UPDATED_ON datetime,
-        BRAND varchar(255),
-        CAPACITY varchar(255),
-        CATEGORY varchar(255),
-        PRICE double precision,
-        Client_Id bigint,
-        primary key (EQUIPMENT_ID)
     );
 
     create table TB_EQUIPMENT_MODAL_NO_MASTER (
@@ -720,8 +690,11 @@
         CREATED_ON datetime,
         UPDATED_BY varchar(255),
         UPDATED_ON datetime,
+        BRAND varchar(255),
         MODAL_NO varchar(255),
+        PRICE double precision,
         Client_Id bigint,
+        EQUIPMENT_TYPE_ID bigint,
         primary key (EQUIPMENT_MODAL_NO_ID)
     );
 
@@ -1124,7 +1097,6 @@
         IS_UNDER_WARRANTY bit,
         UNIT_ID bigint,
         WORK_ORDER_ID bigint,
-        EQUIPMENT_ID bigint,
         EQUIPMENT_TYPE_ID bigint,
         EQUIPMENT_MODAL_NO_ID bigint,
         WARRANTY_UNDER_ID bigint,
@@ -1252,11 +1224,6 @@
         references TB_CLIENT_MASTER (CLIENT_ID);
 
     alter table TB_EQUIPMENT_DETAIL 
-        add constraint FK_p6xth0elmsal9cjr2t6kojel1 
-        foreign key (EQUIPMENT_ID) 
-        references TB_EQUIPMENT_MASTER (EQUIPMENT_ID);
-
-    alter table TB_EQUIPMENT_DETAIL 
         add constraint FK_m5ucx000awvs1mgj3syikv7lk 
         foreign key (EQUIPMENT_TYPE_ID) 
         references TB_EQUIPMENT_TYPE_MASTER (EQUIPMENT_TYPE_ID);
@@ -1277,11 +1244,6 @@
         references TB_UNIT_DETAIL (UNIT_ID);
 
     alter table TB_EQUIPMENT_HISTORY 
-        add constraint FK_op2ujhdw2ikw9ywpweenqei0d 
-        foreign key (EQUIPMENT_ID) 
-        references TB_EQUIPMENT_MASTER (EQUIPMENT_ID);
-
-    alter table TB_EQUIPMENT_HISTORY 
         add constraint FK_21mkw11pa1r8lmed13ke187md 
         foreign key (EQUIPMENT_TYPE_ID) 
         references TB_EQUIPMENT_TYPE_MASTER (EQUIPMENT_TYPE_ID);
@@ -1296,15 +1258,15 @@
         foreign key (WARRANTY_UNDER_ID) 
         references TB_EQUIPMENT_WARRANTY_UNDER_MASTER (WARRANTY_UNDER_ID);
 
-    alter table TB_EQUIPMENT_MASTER 
-        add constraint FK_g2knoota7mm923vp006iw706l 
-        foreign key (Client_Id) 
-        references TB_CLIENT_MASTER (CLIENT_ID);
-
     alter table TB_EQUIPMENT_MODAL_NO_MASTER 
         add constraint FK_9och341jfabxqxpmp69lcoeb4 
         foreign key (Client_Id) 
         references TB_CLIENT_MASTER (CLIENT_ID);
+
+    alter table TB_EQUIPMENT_MODAL_NO_MASTER 
+        add constraint FK_r8cejqxojq18gc96qj6pmn0v9 
+        foreign key (EQUIPMENT_TYPE_ID) 
+        references TB_EQUIPMENT_TYPE_MASTER (EQUIPMENT_TYPE_ID);
 
     alter table TB_EQUIPMENT_TYPE_MASTER 
         add constraint FK_81y9em6jqtxxdyx88ns0rmwlc 
@@ -1535,11 +1497,6 @@
         add constraint FK_d3x31wehaioewoy4bwm1ry89f 
         foreign key (WORK_ORDER_ID) 
         references TB_WORK_ORDER (WORK_ORDER_ID);
-
-    alter table TB_WORK_ORDER_EQUIPMENT 
-        add constraint FK_r6qvnp0hom43d263ailps40uv 
-        foreign key (EQUIPMENT_ID) 
-        references TB_EQUIPMENT_MASTER (EQUIPMENT_ID);
 
     alter table TB_WORK_ORDER_EQUIPMENT 
         add constraint FK_g7129c687xa9a94a3400fqi50 

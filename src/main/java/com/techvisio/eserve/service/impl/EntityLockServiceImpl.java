@@ -10,18 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.techvisio.eserve.beans.Customer;
-import com.techvisio.eserve.beans.UserPrivilege;
-import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.beans.EntityLocks;
 import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.User;
+import com.techvisio.eserve.beans.UserPrivilege;
+import com.techvisio.eserve.beans.WorkOrder;
 import com.techvisio.eserve.exception.EntityLockedException;
 import com.techvisio.eserve.interfaces.Lockable;
 import com.techvisio.eserve.manager.EntityLockManager;
-import com.techvisio.eserve.service.WorkOrderService;
 import com.techvisio.eserve.service.CustomerService;
 import com.techvisio.eserve.service.EntityLockService;
 import com.techvisio.eserve.service.UserService;
+import com.techvisio.eserve.service.WorkOrderService;
 import com.techvisio.eserve.util.AppConstants;
 import com.techvisio.eserve.util.CommonUtil;
 @Component
@@ -36,6 +36,9 @@ public class EntityLockServiceImpl implements EntityLockService{
 
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	WorkOrderService workOrderService;
 
 	@Autowired
 	WorkOrderService complaintService;
@@ -75,7 +78,7 @@ public class EntityLockServiceImpl implements EntityLockService{
 		else if(entityLocks.getEntityType().equalsIgnoreCase(AppConstants.EntityType.UNIT.toString())){
 			lockedObject = customerService.getUnitById(entityLocks.getEntityId());
 		}
-		else{
+		else if(entityLocks.getEntityType().equalsIgnoreCase(AppConstants.EntityType.USER.toString())){
 			User user = userService.getUser(entityLocks.getEntityId());
 			User cloneUser = SerializationUtils.clone(user);
 			if(user!=null){
@@ -84,7 +87,9 @@ public class EntityLockServiceImpl implements EntityLockService{
 			}
 			lockedObject = cloneUser;
 		}	
-
+		else{
+			lockedObject = workOrderService.getWorkOrder(entityLocks.getEntityId());	
+		}
 		lockedObject.setEdited(true);
 
 

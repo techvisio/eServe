@@ -27,9 +27,6 @@ public class EquipmentHistory {
 	@OneToOne
 	@JoinColumn(name="EQUIPMENT_MODAL_NO_ID")
 	private EquipmentModalNo modalNo;
-	@OneToOne
-	@JoinColumn(name="EQUIPMENT_ID")
-	private Equipment equipment;
 
 	@Column(name="IS_UNDER_WARRANTY")
 	private boolean underWarranty;
@@ -81,14 +78,6 @@ public class EquipmentHistory {
 
 	public void setModalNo(EquipmentModalNo modalNo) {
 		this.modalNo = modalNo;
-	}
-
-	public Equipment getEquipment() {
-		return equipment;
-	}
-
-	public void setEquipment(Equipment equipment) {
-		this.equipment = equipment;
 	}
 
 	public boolean isUnderWarranty() {

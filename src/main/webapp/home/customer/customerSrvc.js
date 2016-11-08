@@ -9,7 +9,6 @@ customerModule.service('customerService', function($http, $q) {
 		saveUnit : saveUnit,
 		getUnit : getUnit,
 		getCustomerByCriteria : getCustomerByCriteria,
-		getAllComplaints : getAllComplaints,
 		updateSalesAgreement : updateSalesAgreement,
 		getServiceAgreementHistoryForUnit : getServiceAgreementHistoryForUnit,
 		approveUnit : approveUnit,
@@ -174,19 +173,6 @@ customerModule.service('customerService', function($http, $q) {
 			params : "",
 			data : searchCriteria
 
-		});
-		return (request.then(handleSuccess, handleError));
-	}
-
-	function getAllComplaints(customerId){
-		console.log('getting all customer complaints in service');
-
-		var request = $http({
-			method : "get",
-			url : "../service/complaint/complaints/"+customerId,
-			params : {
-				action : "get"
-			}
 		});
 		return (request.then(handleSuccess, handleError));
 	}

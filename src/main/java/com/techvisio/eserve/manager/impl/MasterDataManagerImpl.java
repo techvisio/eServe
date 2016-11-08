@@ -8,7 +8,6 @@ import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
-import com.techvisio.eserve.beans.Equipment;
 import com.techvisio.eserve.beans.InvoiceTaxes;
 import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
@@ -18,7 +17,6 @@ import com.techvisio.eserve.beans.SearchResultData;
 import com.techvisio.eserve.beans.ServiceProvider;
 import com.techvisio.eserve.beans.State;
 import com.techvisio.eserve.beans.UnitCategory;
-import com.techvisio.eserve.beans.User;
 import com.techvisio.eserve.db.MasterDataDao;
 import com.techvisio.eserve.manager.MasterDataManager;
 
@@ -148,25 +146,6 @@ public class MasterDataManagerImpl implements MasterDataManager {
 		return designation ;
 	}
 
-	@Override
-	public SearchResultData getEquipmentMasterData(Long clientId) {
-		// TODO Auto-generated method stub
-		SearchResultData  equipmentMasterData = masterDataDao.getEquipmentMasterData(clientId);
-		return equipmentMasterData;
-	}
-
-	@Override
-	public Long saveEquipment(Equipment equipment) {
-		// TODO Auto-generated method stub
-		Long  saveEquipment = masterDataDao.saveEquipment(equipment);
-		return saveEquipment;
-	}
-	
-	@Override
-	public Equipment getEquipment(Long equipmentId) {
-		Equipment  equipment = masterDataDao.getEquipment(equipmentId);
-		return equipment ;
-	}
 
 	@Override
 	public SearchResultData getConfigData(Long clientId) {

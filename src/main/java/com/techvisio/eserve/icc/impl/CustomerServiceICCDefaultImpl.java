@@ -121,7 +121,7 @@ public class CustomerServiceICCDefaultImpl extends	AbstractCustomerServiceICCImp
 	public GenericRequest<Unit> postSaveUnitWizard(GenericRequest<Unit> request, String context){
 		request=super.postSaveUnitWizard(request, context);
 		String comment = request.getContextInfo().get("comment");
-		workItemService.createWorkItemForUnitSave(context, request.getBussinessObject().getUnitId(), comment);
+		workItemService.createWorkItemForUnitSave(context, request.getBussinessObject(), comment);
 		entityLockService.unlockEntity("UNIT", request.getBussinessObject().getUnitId());
 
 		return request;
@@ -328,9 +328,19 @@ public class CustomerServiceICCDefaultImpl extends	AbstractCustomerServiceICCImp
 			String context) {
 		request = super.postRenewSalesAgreement(request, context);
 		String comment = request.getContextInfo().get("comment");
-		workItemService.createWorkItemForUnitSave(context,request.getBussinessObject().getUnitId(), comment);
+		workItemService.createWorkItemForUnitSave(context,request.getBussinessObject(), comment);
 		workItemService.updateWorkItemStatus(request.getBussinessObject().getUnitId(),"CLOSE", "SALES RENEWAL AGREEMENT","UNIT");
 		return request;
 	}
 
+	@Override
+	public void preGetUnitByCriteria() {
+		super.preGetUnitByCriteria();
+	}
+	@Override
+	public SearchResultData postGetUnitByCriteria(
+			SearchResultData searchResultData) {
+		return super.postGetUnitByCriteria(searchResultData);
+	}
+	
 }

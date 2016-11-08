@@ -1,7 +1,7 @@
 var complaintModule = angular.module('complaintModule', []);
 
-complaintModule.controller('complaintController', ['$scope','$window','$rootScope','complaintService','$state','$filter','contextObject','Operation','masterdataService','$modal',
-                                                   function($scope,$window,$rootScope,complaintService,$state,filter,contextObject,Operation,masterdataService,$modal) {
+complaintModule.controller('complaintController', ['$scope','$window','$rootScope','complaintService','$state','$filter','contextObject','Operation','masterdataService','$modal','$http','NgTableParams','customerService',
+                                                   function($scope,$window,$rootScope,complaintService,$state,filter,contextObject,Operation,masterdataService,$modal,$http,NgTableParams,customerService) {
 
 
 	$scope.form={};
@@ -170,29 +170,29 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 
 	$scope.showconfirmboxComplaint = function () {
 		if ($rootScope.showConfirmModal('No Record Found ! Want To Create New Complaint?', 'No Complaint Found')){
-			
+
 			$scope.redirectToComplaint();
 		}
 	}
 
 
 	$scope.getComplaintByCriteria=function(){
-		
+
 		if($scope.isViewPrivileged){
-		complaintService.getComplaintByCriteria($scope.searchCriteria)
-		.then(
-				function(customers) {
-					console
-					.log('getting complaint by criteria in controller : ');
-					console.log(customers);
-					if (customers) {
-						$scope.complaintCustomers=customers;
-						if($scope.complaintCustomers.length==0){
-							$scope.showconfirmboxComplaint();
+			complaintService.getComplaintByCriteria($scope.searchCriteria)
+			.then(
+					function(customers) {
+						console
+						.log('getting complaint by criteria in controller : ');
+						console.log(customers);
+						if (customers) {
+							$scope.complaintCustomers=customers;
+							if($scope.complaintCustomers.length==0){
+								$scope.showconfirmboxComplaint();
+							}
 						}
-					}
-				})
-	}
+					})
+		}
 		else{
 			$rootScope.showNotHavePrivilegeModel();
 		}
@@ -474,5 +474,108 @@ complaintModule.controller('complaintController', ['$scope','$window','$rootScop
 			})
 		}
 	}
-	
+
+	$scope.filterWorkItemsForQueue = function() {
+		$scope.workItemSearchCriteria = {};
+		$rootScope.curModal = $modal.open({
+			templateUrl: 'workitem/WorkitemCriteriaForQueue.html',
+			scope:$scope,
+			controller: function (workItemService,$scope) {
+
+				$scope.getWorkItemForQueuebySearchCriteria = function(){
+					$scope.tableParamsQueue.reload();
+					$rootScope.curModal.close();
+				}
+
+			},
+		});
+	};
+
+	$scope.tableParamsCustomerSearch = new NgTableParams({}, {
+		getData: function($defer,params) {
+			var sortBy="ENTITY_CODE";
+			var isAsc=false;
+			var pageNo=params.page();
+			var pageSize=params.count();
+			if(params.sorting()){
+				for (var attribute in params.sorting()) {
+					if (params.sorting().hasOwnProperty(attribute)) {
+						sortBy=attribute;
+						var ascDsc=params.sorting()[attribute];
+						if(ascDsc==='asc'){
+							isAsc=true;  
+						}
+					}
+				}
+			}
+			$scope.workItemSearchCriteria.pageSize=pageSize;
+			$scope.workItemSearchCriteria.pageNo=pageNo;
+			$scope.workItemSearchCriteria.sortBy=sortBy;
+			$scope.workItemSearchCriteria.isAscending=isAsc;
+			$scope.workItemSearchCriteria.userId=$rootScope.user.userId;
+
+			workItemService.getWorkItemForQueuebySearchCriteria($scope.workItemSearchCriteria)
+			.then(
+					function(response) {
+						if(response){
+							params.total(response.totalCount);
+							$defer.resolve(response.objectData);
+						}
+					})
+		}
+	});
+
+	$scope.filterCustomer = function() {
+		if($scope.isViewPrivileged){
+			$rootScope.curModal = $modal.open({
+				templateUrl: 'complaint/Complaint_Search_Filter_Modal.html',
+				scope:$scope,
+				size:'lg',
+				controller: function ($scope) {
+
+					$scope.getCustomerByCriteria = function(){
+						$scope.tableParams.reload();
+					}
+
+				},
+			});
+		}
+		else{
+			$rootScope.showNotHavePrivilegeModel();
+		}
+	};
+
+	$scope.tableParams = new NgTableParams({}, {
+		getData: function($defer,params) {
+			var sortBy="CUSTOMER_NAME";
+			var isAsc=false;
+			var pageNo=params.page();
+			var pageSize=params.count();
+			if(params.sorting()){
+				for (var attribute in params.sorting()) {
+					if (params.sorting().hasOwnProperty(attribute)) {
+						sortBy=attribute;
+						var ascDsc=params.sorting()[attribute];
+						if(ascDsc==='asc'){
+							isAsc=true;  
+						}
+					}
+				}
+			}
+			$scope.searchCriteria.pageSize=pageSize;
+			$scope.searchCriteria.pageNo=pageNo;
+			$scope.searchCriteria.sortBy=sortBy;
+			$scope.searchCriteria.isAscending=isAsc;
+
+			customerService.getCustomerByCriteria($scope.searchCriteria)
+			.then(
+					function(customers) {
+						if(customers){
+							params.total(customers.totalCount);
+							$defer.resolve(customers.objectData);
+						}
+					})
+		}
+	});
+
 } ]);

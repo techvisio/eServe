@@ -108,23 +108,23 @@ public class WorkItemServiceImpl implements WorkItemService {
 	}
 
 	@Override
-	public void createWorkItemForUnitSave(String context, Long unitId,
+	public void createWorkItemForUnitSave(String context, Unit unit,
 			String comment) {
-		Unit unitFromDB = customerService.getUnitById(unitId);
-		Customer customer = customerService.getCustomerbyId(unitFromDB.getCustomerId());
+		
+		Customer customer = customerService.getCustomerbyId(unit.getCustomerId());
 		if (context.equalsIgnoreCase(AppConstants.CUSTOMER_DRAFT)) {
-			WorkItemSearchCriteria criteriaForApprovalType = getWorkitemCriteria(unitId, AppConstants.EntityType.UNIT.name(), AppConstants.WorkItemType.AGREEMENT_APPROVAL.getWorkType());
-			List<WorkItem> workItems = getActiveWorkItems(criteriaForApprovalType, unitFromDB.getServiceAgreement());
+			WorkItemSearchCriteria criteriaForApprovalType = getWorkitemCriteria(unit.getUnitId(), AppConstants.EntityType.UNIT.name(), AppConstants.WorkItemType.AGREEMENT_APPROVAL.getWorkType());
+			List<WorkItem> workItems = getActiveWorkItems(criteriaForApprovalType, unit.getServiceAgreement());
 			if(workItems != null && workItems.size()>0){
-				workItemManager.updateWorkItemStatus(unitId, AppConstants.WORK_ITEM_CLOSE_STATUS, AppConstants.WorkItemType.AGREEMENT_APPROVAL.getWorkType(), AppConstants.EntityType.UNIT.name());
+				workItemManager.updateWorkItemStatus(unit.getUnitId(), AppConstants.WORK_ITEM_CLOSE_STATUS, AppConstants.WorkItemType.AGREEMENT_APPROVAL.getWorkType(), AppConstants.EntityType.UNIT.name());
 			}
-			createWorkItemForCustomerDraft(context, unitFromDB.getCustomerId(), customer.getCustomerCode());
+			createWorkItemForCustomerDraft(context, unit.getCustomerId(), customer.getCustomerCode());
 		}
 
 		if (context.equalsIgnoreCase(AppConstants.PUBLISH)) {
 			workItemManager.closeDraftWorkItem(customer);
 			createWorkItemForPublishingUnit(context, comment,
-					unitFromDB);
+					unit);
 		}
 	}
 

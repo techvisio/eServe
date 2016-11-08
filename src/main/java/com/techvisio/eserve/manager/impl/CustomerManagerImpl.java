@@ -20,6 +20,7 @@ import com.techvisio.eserve.beans.Unit;
 import com.techvisio.eserve.beans.UnitBasicCustomer;
 import com.techvisio.eserve.beans.UnitBasicInfo;
 import com.techvisio.eserve.beans.UnitHistory;
+import com.techvisio.eserve.beans.complaintSearchCriteria;
 import com.techvisio.eserve.db.CacheDao;
 import com.techvisio.eserve.db.CustomerDao;
 import com.techvisio.eserve.exception.DuplicateEntityException;
@@ -197,7 +198,6 @@ public class CustomerManagerImpl implements CustomerManager {
 			keyEquipmentHistory.setUnitId(equipmentDetail.getUnitId());
 			keyEquipmentHistory.setVersion(unit.getVersionId());
 			equipmentHistory.setCompositeKeyEquipmentHistory(keyEquipmentHistory);
-			equipmentHistory.setEquipment(equipmentDetail.getEquipment());
 			equipmentHistory.setInvoiceNo(equipmentDetail.getInvoiceNo());
 			equipmentHistory.setSerialNo(equipmentDetail.getSerialNo());
 			equipmentHistory.setEquipmentType(equipmentDetail.getEquipmentType());
@@ -320,4 +320,5 @@ public class CustomerManagerImpl implements CustomerManager {
 		Unit unitFromDB = customerDao.getUnit(unit.getUnitId());
 		return unitFromDB;
 	}
+
 }

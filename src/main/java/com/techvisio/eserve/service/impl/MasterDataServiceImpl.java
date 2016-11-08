@@ -8,7 +8,6 @@ import com.techvisio.eserve.beans.ClientConfig;
 import com.techvisio.eserve.beans.CustomerType;
 import com.techvisio.eserve.beans.Department;
 import com.techvisio.eserve.beans.Designation;
-import com.techvisio.eserve.beans.Equipment;
 import com.techvisio.eserve.beans.InvoiceTaxes;
 import com.techvisio.eserve.beans.Issue;
 import com.techvisio.eserve.beans.Privilege;
@@ -63,11 +62,6 @@ public class MasterDataServiceImpl implements MasterDataService{
 				Long  designationId = masterDataManager.saveDesignation((Designation) object);
 				Designation designation= masterDataManager.getDesignation(designationId);
 				return designation;
-				
-			case "EQUIPMENT":
-				Long  equipmentId = masterDataManager.saveEquipment((Equipment) object);
-				Equipment equipment= masterDataManager.getEquipment(equipmentId);
-				return equipment;
 				
 			case "CONFIG":
 				Long  configTBId = masterDataManager.saveConfig((ClientConfig) object);
@@ -165,16 +159,6 @@ public class MasterDataServiceImpl implements MasterDataService{
 		SearchResultData  designationMasterData = masterDataManager.getDesignationMasterData(clientId);
 		return designationMasterData;
 		
-	}
-
-	
-
-	@Override
-	public SearchResultData getEquipmentMasterData() {
-		// TODO Auto-generated method stub
-		Long clientId = CommonUtil.getCurrentClient().getClientId();
-		SearchResultData  equipmentMasterData = masterDataManager.getEquipmentMasterData(clientId);
-		return equipmentMasterData;
 	}
 
 	
